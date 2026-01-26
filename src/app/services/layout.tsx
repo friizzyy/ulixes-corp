@@ -2,7 +2,11 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Services',
-  description: 'Full-spectrum Calypso expertise: implementation, integration, optimization, and managed support for enterprise trading systems.',
+  description: 'Infrastructure decisions shape financial outcomes. We design for alignment across accounting, capital, and regulatory requirements with proven Calypso platform expertise.',
+  openGraph: {
+    title: 'Services | Ulixes Corporation',
+    description: 'Infrastructure decisions shape financial outcomes. We design for alignment across accounting, capital, and regulatory requirements.',
+  },
 }
 
 export default function ServicesLayout({

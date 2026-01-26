@@ -1,11 +1,25 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export function GridBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
+    // Check if mobile on mount and resize
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  useEffect(() => {
+    // Skip particle animation on mobile for performance
+    if (isMobile) return
+
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -72,24 +86,26 @@ export function GridBackground() {
       window.removeEventListener('resize', resize)
       cancelAnimationFrame(animationId)
     }
-  }, [])
+  }, [isMobile])
 
   return (
     <div
       className="fixed inset-0 pointer-events-none z-0"
       aria-hidden="true"
     >
-      {/* Animated particles canvas */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 opacity-60"
-      />
+      {/* Animated particles canvas - hidden on mobile for performance */}
+      {!isMobile && (
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 opacity-60"
+        />
+      )}
 
-      {/* Subtle vignette */}
+      {/* Subtle vignette - very light to avoid dimming content */}
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(ellipse 80% 60% at 50% 0%, transparent 0%, rgba(10,10,11,0.5) 100%)',
+          background: 'radial-gradient(ellipse 80% 60% at 50% 0%, transparent 0%, rgba(10,10,11,0.15) 100%)',
         }}
       />
 

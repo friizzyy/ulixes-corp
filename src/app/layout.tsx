@@ -23,8 +23,11 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: ['Calypso', 'trading systems', 'financial technology', 'consulting', 'implementation'],
+  keywords: ['Calypso', 'trading systems', 'financial technology', 'consulting', 'implementation', 'capital markets', 'hedge accounting'],
   authors: [{ name: siteConfig.name }],
+  icons: {
+    icon: '/icon.svg',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',

@@ -7,7 +7,8 @@ export const siteConfig = {
   tagline: 'Capital Markets Infrastructure. Engineered for Control.',
   description: 'With 20+ years of proven Calypso delivery, Ulixes helps banks and hedge funds migrate, integrate, and innovate on vendor-hosted platforms.',
   url: 'https://ulixescorp.com',
-  email: 'contact@ulixescorp.com',
+  email: 'ulysses.williams@gmail.com',
+  phone: '+1 (415) 283-9983',
 }
 
 export const navigation = {
@@ -325,12 +326,13 @@ export const contactContent = {
   },
   error: {
     title: 'Something went wrong',
-    description: 'Please try again or email us directly at contact@ulixescorp.com.',
+    description: `Please try again or email us directly at ${siteConfig.email}.`,
   },
   info: {
     title: 'Direct Contact',
     items: [
       { label: 'Email', value: siteConfig.email },
+      { label: 'Phone', value: siteConfig.phone },
     ],
   },
 }
@@ -492,7 +494,7 @@ export const servicesPageContent = {
   cta: {
     title: 'Complex Challenge?',
     description: 'If your infrastructure problem sits at the intersection of accounting, risk, and systems, we should talk.',
-    primaryCta: 'Start Conversation',
+    primaryCta: 'Start a Conversation',
   },
 }
 
@@ -506,7 +508,7 @@ export const workPageContent = {
   cta: {
     title: 'Similar Challenge?',
     description: 'Every institution\'s situation is different, but failure patterns repeat. If these resonate, let\'s talk.',
-    primaryCta: 'Start Conversation',
+    primaryCta: 'Start a Conversation',
   },
 }
 

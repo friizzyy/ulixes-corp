@@ -67,11 +67,11 @@ export function PhilosophySection() {
           <div className="lg:pt-16">
             <div className="relative">
               {/* Large decorative number */}
-              <div className="absolute -top-8 -left-4 text-[10rem] font-bold text-surface select-none leading-none opacity-50">
+              <div className="absolute -top-8 -left-4 text-[10rem] font-bold text-surface select-none leading-none opacity-50 pointer-events-none -z-10">
                 {String(activeIndex + 1).padStart(2, '0')}
               </div>
 
-              <div className="relative p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border">
+              <div className="relative z-10 p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border">
                 {/* Top accent line */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
 

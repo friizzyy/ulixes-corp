@@ -90,11 +90,11 @@ export default function PhilosophyPage() {
             <div className="lg:col-span-7 lg:col-start-6">
               <article className="relative">
                 {/* Large decorative number */}
-                <div className="absolute -top-8 -left-4 text-[12rem] font-bold text-surface select-none leading-none opacity-50">
+                <div className="absolute -top-8 -left-4 text-[12rem] font-bold text-surface select-none leading-none opacity-30 pointer-events-none -z-10">
                   {String(activeSection + 1).padStart(2, '0')}
                 </div>
 
-                <div className="relative">
+                <div className="relative z-10">
                   <h2 className="text-display-sm md:text-display-md font-bold mb-8">
                     {sections[activeSection].title}
                   </h2>

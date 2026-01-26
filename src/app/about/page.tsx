@@ -60,9 +60,6 @@ export default function AboutPage() {
           {/* Narrative Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
             <div className="lg:col-span-5 lg:sticky lg:top-32 lg:self-start">
-              <div className="text-6xl md:text-8xl font-bold text-surface select-none mb-6">
-                01
-              </div>
               <p className="text-body-lg text-text-secondary leading-relaxed">
                 {origin.paragraphs[0]}
               </p>
@@ -149,8 +146,8 @@ export default function AboutPage() {
                     key={item.title}
                     className="group p-6 -mx-6 rounded-lg hover:bg-surface/50 transition-colors duration-200"
                   >
-                    <div className="flex gap-6">
-                      <span className="text-2xl font-bold text-surface group-hover:text-accent/30 transition-colors">
+                    <div className="flex gap-4">
+                      <span className="text-xs font-mono text-accent mt-1">
                         {String(index + 1).padStart(2, '0')}
                       </span>
                       <div>

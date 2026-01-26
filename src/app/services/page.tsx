@@ -199,21 +199,20 @@ export default function ServicesPage() {
             {servicesPageContent.process.steps.map((step, index) => (
               <div
                 key={step.title}
-                className="group relative p-8 rounded-lg bg-bg-primary border border-border hover:border-accent/30 transition-all duration-300"
+                className="group relative p-6 rounded-lg bg-bg-primary border border-border hover:border-accent/30 transition-all duration-300"
               >
-                {/* Hover glow */}
-                <div className="absolute inset-0 rounded-lg bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                <div className="relative">
-                  <div className="text-4xl font-bold text-surface group-hover:text-accent/20 transition-colors mb-4">
+                <div className="flex items-start gap-4">
+                  <span className="text-xs font-mono text-accent mt-1">
                     {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div>
+                    <h3 className="text-heading-sm font-semibold text-text-primary mb-2">
+                      {step.title}
+                    </h3>
+                    <p className="text-body-sm text-text-secondary leading-relaxed">
+                      {step.description}
+                    </p>
                   </div>
-                  <h3 className="text-heading-sm font-semibold text-text-primary mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-body-sm text-text-secondary leading-relaxed">
-                    {step.description}
-                  </p>
                 </div>
               </div>
             ))}
