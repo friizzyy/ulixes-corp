@@ -1,9 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
-import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion'
 import { philosophyContent } from '@/lib/content'
 import { ArrowUpRight } from '@/components/ui'
 
@@ -14,139 +12,155 @@ export default function PhilosophyPage() {
   return (
     <>
       {/* Hero */}
-      <section className="pt-32 pb-12 md:pt-40 md:pb-16 relative z-10">
-        <motion.div
-          className="container-main"
-          variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.div className="max-w-3xl" variants={fadeUp}>
+      <section className="pt-32 pb-16 md:pt-40 md:pb-20 relative z-10">
+        <div className="container-main">
+          <div className="max-w-4xl">
             <div className="section-label">{hero.label}</div>
-            <h1 className="text-display-md md:text-display-lg font-bold mb-4">
+            <h1 className="text-display-lg md:text-display-xl font-bold mb-4">
               {hero.headline}
             </h1>
-            <p className="text-heading-md text-accent font-medium mb-6">
+            <p className="text-heading-md md:text-heading-lg text-accent font-medium mb-6">
               {hero.subtitle}
             </p>
-            <p className="text-body-lg text-text-secondary leading-relaxed">
+            <p className="text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
               {hero.description}
             </p>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </section>
 
-      {/* Introduction */}
-      <section className="py-12 md:py-16 border-y border-border bg-bg-secondary/30">
-        <motion.div
-          className="container-main"
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-        >
-          <p className="max-w-3xl text-body-lg md:text-xl text-text-primary leading-relaxed">
-            {intro.text}
-          </p>
-        </motion.div>
+      {/* Introduction Banner */}
+      <section className="pb-20 md:pb-28">
+        <div className="container-main">
+          <div className="relative p-10 md:p-16 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden">
+            {/* Decorative elements */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
+            <div className="absolute -top-20 -right-20 w-40 h-40 bg-accent/5 rounded-full blur-3xl" />
+
+            <p className="relative text-body-lg md:text-xl text-text-primary leading-relaxed max-w-4xl">
+              {intro.text}
+            </p>
+          </div>
+        </div>
       </section>
 
-      {/* Philosophy Sections - Interactive */}
-      <section className="py-20 md:py-28">
-        <motion.div
-          className="container-main"
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-12 lg:gap-16">
-            {/* Left: Navigation */}
-            <div className="lg:sticky lg:top-32 lg:self-start">
-              <div className="section-label mb-6">Principles</div>
-              <nav className="space-y-1">
-                {sections.map((section, index) => (
-                  <button
-                    key={section.id}
-                    onClick={() => setActiveSection(index)}
-                    className={`w-full text-left px-4 py-3 rounded-sm transition-all duration-200 ${
-                      activeSection === index
-                        ? 'bg-surface border-l-2 border-l-accent'
-                        : 'hover:bg-surface/50'
-                    }`}
-                  >
-                    <span className="text-xs font-mono text-text-muted block mb-1">
-                      0{index + 1}
-                    </span>
-                    <span className={`text-heading-sm font-medium transition-colors ${
-                      activeSection === index ? 'text-text-primary' : 'text-text-secondary'
-                    }`}>
-                      {section.title}
-                    </span>
-                  </button>
-                ))}
-              </nav>
+      {/* Philosophy Principles */}
+      <section className="py-20 md:py-28 border-t border-border">
+        <div className="container-main">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+            {/* Left: Sticky Navigation */}
+            <div className="lg:col-span-4">
+              <div className="lg:sticky lg:top-32">
+                <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-8">
+                  Core Principles
+                </h2>
+                <nav className="space-y-1">
+                  {sections.map((section, index) => (
+                    <button
+                      key={section.id}
+                      onClick={() => setActiveSection(index)}
+                      className={`group w-full text-left p-4 rounded-lg transition-all duration-200 ${
+                        activeSection === index
+                          ? 'bg-surface'
+                          : 'hover:bg-surface/50'
+                      }`}
+                    >
+                      <div className="flex items-start gap-4">
+                        <span className={`text-xs font-mono transition-colors ${
+                          activeSection === index ? 'text-accent' : 'text-text-muted'
+                        }`}>
+                          {String(index + 1).padStart(2, '0')}
+                        </span>
+                        <span className={`text-heading-sm font-medium transition-colors leading-tight ${
+                          activeSection === index ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'
+                        }`}>
+                          {section.title}
+                        </span>
+                      </div>
+                      {activeSection === index && (
+                        <div className="ml-8 mt-2 h-0.5 w-12 bg-accent rounded-full" />
+                      )}
+                    </button>
+                  ))}
+                </nav>
+              </div>
             </div>
 
             {/* Right: Content */}
-            <div className="min-h-[400px]">
-              <AnimatePresence mode="wait">
-                <motion.article
-                  key={activeSection}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="p-8 md:p-10 rounded-md bg-bg-secondary border border-border"
-                >
-                  <div className="text-xs font-mono text-accent uppercase tracking-widest mb-4">
-                    Principle 0{activeSection + 1}
-                  </div>
-                  <h2 className="text-display-sm font-bold mb-6">
+            <div className="lg:col-span-7 lg:col-start-6">
+              <article className="relative">
+                {/* Large decorative number */}
+                <div className="absolute -top-8 -left-4 text-[12rem] font-bold text-surface select-none leading-none opacity-50">
+                  {String(activeSection + 1).padStart(2, '0')}
+                </div>
+
+                <div className="relative">
+                  <h2 className="text-display-sm md:text-display-md font-bold mb-8">
                     {sections[activeSection].title}
                   </h2>
-                  <div className="space-y-4 text-body-lg text-text-secondary leading-relaxed">
+
+                  <div className="space-y-6">
                     {sections[activeSection].content.map((paragraph, idx) => (
-                      <p key={idx}>{paragraph}</p>
+                      <p
+                        key={idx}
+                        className={`text-body-lg leading-relaxed ${
+                          idx === sections[activeSection].content.length - 1
+                            ? 'text-text-primary font-medium border-l-2 border-accent pl-6'
+                            : 'text-text-secondary'
+                        }`}
+                      >
+                        {paragraph}
+                      </p>
                     ))}
                   </div>
-                </motion.article>
-              </AnimatePresence>
+                </div>
+              </article>
+
+              {/* Progress indicator */}
+              <div className="flex items-center gap-2 mt-16">
+                {sections.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveSection(index)}
+                    className={`h-1 rounded-full transition-all duration-300 ${
+                      activeSection === index
+                        ? 'w-8 bg-accent'
+                        : 'w-2 bg-border hover:bg-text-muted'
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </section>
 
-      {/* Closing */}
-      <section className="py-16 md:py-20 border-t border-border">
-        <motion.div
-          className="container-main"
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-        >
-          <motion.div
-            className="flex flex-col md:flex-row md:items-center md:justify-between gap-8"
-            variants={fadeUp}
-          >
-            <div className="max-w-xl">
-              <h2 className="text-heading-lg md:text-display-sm font-bold mb-2">
-                {closing.title}
-              </h2>
-              <p className="text-body-md text-text-secondary">
-                {closing.content}
-              </p>
+      {/* Closing CTA */}
+      <section className="py-20 md:py-28 border-t border-border">
+        <div className="container-main">
+          <div className="relative p-10 md:p-16 rounded-lg bg-bg-secondary border border-border overflow-hidden">
+            {/* Decorative glow */}
+            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-accent/10 rounded-full blur-3xl" />
+
+            <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+              <div className="max-w-xl">
+                <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
+                  {closing.title}
+                </h2>
+                <p className="text-body-lg text-text-secondary leading-relaxed">
+                  {closing.content}
+                </p>
+              </div>
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow transition-shadow shrink-0"
+              >
+                Start a Conversation
+                <ArrowUpRight size={16} />
+              </Link>
             </div>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow transition-shadow shrink-0"
-            >
-              Start a Conversation
-              <ArrowUpRight size={16} />
-            </Link>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </section>
     </>
   )

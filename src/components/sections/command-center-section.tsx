@@ -282,7 +282,7 @@ export function CommandCenterSection() {
       <SectionHeader
         label="Control Surface"
         title="Operational command center for capital-aware systems"
-        description="A premium layer of visual control, instrumentation, and audit-grade output—designed for CFO, CAO, and risk leadership teams."
+        description="A premium layer of visual control, instrumentation, and audit-grade output. Designed for CFO, CAO, and risk leadership teams."
       />
 
       <div className="space-y-16">

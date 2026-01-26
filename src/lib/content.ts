@@ -71,7 +71,7 @@ export const homeContent = {
       },
       {
         title: 'Lifecycle Over Static',
-        description: 'Point-in-time validation misses how instruments behave under stress. We validate across the full lifecycle—origination through maturity.',
+        description: 'Point-in-time validation misses how instruments behave under stress. We validate across the full lifecycle, from origination through maturity.',
       },
       {
         title: 'Migration Is Financial Engineering',
@@ -79,7 +79,7 @@ export const homeContent = {
       },
       {
         title: 'Control Is The Outcome',
-        description: 'Go-live is not success. Institutional control—defensible, durable, owned internally—is the only outcome that matters.',
+        description: 'Go-live is not success. Institutional control that is defensible, durable, and owned internally is the only outcome that matters.',
       },
     ],
     cta: 'Read Full Philosophy',
@@ -101,7 +101,7 @@ export const homeContent = {
   },
   cta: {
     title: 'Infrastructure Decisions Have Consequences',
-    description: 'If you\'re evaluating a platform migration, redesigning hedge accounting, or questioning whether your current architecture can withstand scrutiny—we should talk.',
+    description: 'If you\'re evaluating a platform migration, redesigning hedge accounting, or questioning whether your current architecture can withstand scrutiny, we should talk.',
     primaryCta: 'Start a Conversation',
     secondaryCta: 'View Case Studies',
   },
@@ -242,14 +242,14 @@ export const caseStudies = [
 export const aboutContent = {
   hero: {
     headline: 'Founded on Misalignment',
-    description: 'Ulixes exists because we watched infrastructure projects fail—not from technical defects, but from the space between accounting, risk, and technology where no one was accountable.',
+    description: 'Ulixes exists because we watched infrastructure projects fail. Not from technical defects, but from the space between accounting, risk, and technology where no one was accountable.',
   },
   origin: {
     title: 'The Origin',
     paragraphs: [
       'We came from trading floors, treasury functions, and Big Four advisory practices. We saw the same failure pattern repeatedly: infrastructure that worked technically but created financial control problems that surfaced months or years later.',
       'A hedge accounting framework that passed UAT but failed effectiveness testing under stress. A migration that completed on time but triggered capital ratio drift that took quarters to diagnose. A booking model that processed trades correctly but created earnings volatility that surprised analysts.',
-      'These failures shared a common cause: the disciplines that should have been integrated—accounting policy, derivatives mechanics, risk methodology, system architecture—were siloed. Each team optimized for their domain. No one owned the intersections.',
+      'These failures shared a common cause. The disciplines that should have been integrated were siloed: accounting policy, derivatives mechanics, risk methodology, system architecture. Each team optimized for their domain. No one owned the intersections.',
       'Ulixes was founded to own those intersections.',
     ],
   },
@@ -277,7 +277,7 @@ export const aboutContent = {
       {
         number: '01',
         title: 'Architecture First',
-        description: 'We define the financial architecture—accounting treatment, capital impact, regulatory implications—before discussing technology or vendors.',
+        description: 'We define the financial architecture first: accounting treatment, capital impact, regulatory implications. Only then do we discuss technology or vendors.',
       },
       {
         number: '02',
@@ -287,7 +287,7 @@ export const aboutContent = {
       {
         number: '03',
         title: 'Documentation As Deliverable',
-        description: 'We produce documentation that serves auditors, regulators, and your successors—not just project sign-off.',
+        description: 'We produce documentation that serves auditors, regulators, and your successors. Not just project sign-off.',
       },
       {
         number: '04',
@@ -305,7 +305,7 @@ export const aboutContent = {
 export const contactContent = {
   hero: {
     headline: 'Start a Conversation',
-    description: 'We\'re selective about engagements. If your challenge sits at the intersection of accounting, risk, and infrastructure—and requires practitioners who understand all three—we should talk.',
+    description: 'We\'re selective about engagements. If your challenge sits at the intersection of accounting, risk, and infrastructure, and requires practitioners who understand all three, we should talk.',
   },
   form: {
     nameLabel: 'Name',
@@ -343,7 +343,7 @@ export const philosophyContent = {
     description: 'This is not a methodology. It is the intellectual foundation that shapes every engagement we undertake.',
   },
   intro: {
-    text: 'Capital markets infrastructure is not software. It is financial architecture. The decisions made during design and implementation directly shape earnings behavior, capital ratios, regulatory exposure, valuation integrity, and institutional control. We operate where accounting, derivatives, risk, and system architecture intersect—and design across all layers simultaneously.',
+    text: 'Capital markets infrastructure is not software. It is financial architecture. The decisions made during design and implementation directly shape earnings behavior, capital ratios, regulatory exposure, valuation integrity, and institutional control. We operate where accounting, derivatives, risk, and system architecture intersect. We design across all layers simultaneously.',
   },
   sections: [
     {
@@ -351,7 +351,7 @@ export const philosophyContent = {
       title: 'Infrastructure Is Financial Architecture',
       content: [
         'Most firms treat infrastructure as a technology problem with financial constraints. We treat it as a financial architecture problem that technology implements.',
-        'Every booking model decision affects capital consumption. Every lifecycle event configuration shapes P&L recognition timing. Every hedge designation approach determines earnings volatility exposure. These are not implementation details—they are architectural choices with balance sheet consequences.',
+        'Every booking model decision affects capital consumption. Every lifecycle event configuration shapes P&L recognition timing. Every hedge designation approach determines earnings volatility exposure. These are not implementation details. They are architectural choices with balance sheet consequences.',
         'When infrastructure is designed without this understanding, the gaps surface later: unexpected earnings volatility, capital ratio drift, regulatory findings, audit qualifications. The technology worked. The financial architecture failed.',
       ],
     },
@@ -360,7 +360,7 @@ export const philosophyContent = {
       title: 'Mastery Is Alignment',
       content: [
         'The hardest problems in capital markets infrastructure live in the spaces between disciplines. Accounting policy makes assumptions about system behavior. Risk methodology depends on data the system may not capture cleanly. Regulatory reporting requires lineage that crosses organizational boundaries.',
-        'When these disciplines operate in silos—each optimizing for their own domain—misalignment is inevitable. And misalignment is where institutional risk hides.',
+        'When these disciplines operate in silos, each optimizing for their own domain, misalignment is inevitable. Misalignment is where institutional risk hides.',
         'Mastery means refusing to solve an accounting problem without understanding its system implications, or a system problem without understanding its capital impact. It means designing for alignment, not hoping for it.',
       ],
     },
@@ -369,7 +369,7 @@ export const philosophyContent = {
       title: 'Lifecycle Is The Stress Test',
       content: [
         'Point-in-time validation answers the wrong question. It confirms that a system handles today\'s trades under today\'s conditions. It says nothing about how the system behaves when instruments mature, when hedges become ineffective, when counterparties default, when markets stress.',
-        'We validate across the full lifecycle: origination through maturity, normal conditions through stress scenarios, routine processing through exception handling. This is where fragile architectures reveal themselves—and where robust architectures prove their value.',
+        'We validate across the full lifecycle: origination through maturity, normal conditions through stress scenarios, routine processing through exception handling. This is where fragile architectures reveal themselves. This is where robust architectures prove their value.',
         'If your validation approach doesn\'t stress the edges, it\'s not validation. It\'s confirmation bias.',
       ],
     },
@@ -377,7 +377,7 @@ export const philosophyContent = {
       id: 'migration',
       title: 'Migration Is A Financial Event',
       content: [
-        'Platform migration is where infrastructure failures concentrate. Every mapping decision—how a trade in the source system becomes a trade in the target system—carries accounting, capital, and regulatory implications.',
+        'Platform migration is where infrastructure failures concentrate. Every mapping decision carries accounting, capital, and regulatory implications. How a trade in the source system becomes a trade in the target system matters.',
         'A hedge relationship that designated correctly in the old system but differently in the new system may trigger discontinuation. A booking model that captured CVA one way but captures it differently now may affect capital ratios. A regulatory report that sourced from one data path but now sources from another may break audit trail continuity.',
         'We architect migrations as balance sheet events, not data moves. The technical migration is the easy part. Preserving financial control through the transition is the work.',
       ],
@@ -387,7 +387,7 @@ export const philosophyContent = {
       title: 'Capital Awareness Changes Everything',
       content: [
         'Capital is consumed by infrastructure choices, not just business decisions. The same economic trade can consume different capital depending on how it\'s booked, how it\'s netted, how collateral is reflected, how the system classifies it for regulatory purposes.',
-        'Most infrastructure projects treat capital impact as a downstream concern—something to measure after design decisions are made. We embed capital awareness at design time, ensuring that architectural choices support rather than undermine capital efficiency.',
+        'Most infrastructure projects treat capital impact as a downstream concern, something to measure after design decisions are made. We embed capital awareness at design time, ensuring that architectural choices support rather than undermine capital efficiency.',
         'Under evolving regulatory frameworks, infrastructure that ignores capital implications today creates constraints that bind tomorrow.',
       ],
     },
@@ -421,7 +421,7 @@ export const privacyContent = {
     },
     {
       title: 'Security',
-      content: 'Enterprise-grade encryption in transit and at rest. We advise financial institutions on infrastructure security—we apply the same standards to our own operations.',
+      content: 'Enterprise-grade encryption in transit and at rest. We advise financial institutions on infrastructure security. We apply the same standards to our own operations.',
     },
     {
       title: 'Questions',
@@ -469,7 +469,7 @@ export const servicesPageContent = {
   },
   process: {
     title: 'Engagement Approach',
-    description: 'We begin with financial architecture, not technology selection. The system implements the design—not the reverse.',
+    description: 'We begin with financial architecture, not technology selection. The system implements the design. Not the reverse.',
     steps: [
       {
         title: 'Architecture Definition',
@@ -491,7 +491,7 @@ export const servicesPageContent = {
   },
   cta: {
     title: 'Complex Challenge?',
-    description: 'If your infrastructure problem sits at the intersection of accounting, risk, and systems—we should talk.',
+    description: 'If your infrastructure problem sits at the intersection of accounting, risk, and systems, we should talk.',
     primaryCta: 'Start Conversation',
   },
 }
@@ -500,8 +500,8 @@ export const servicesPageContent = {
 export const workPageContent = {
   hero: {
     label: 'Case Studies',
-    headline: 'The Work',
-    description: 'Selected engagements demonstrating our approach. Most clients require confidentiality—these represent patterns we can discuss.',
+    headline: 'Selected Engagements',
+    description: 'Patterns from our work with banks and hedge funds. Most clients require confidentiality. These represent what we can discuss.',
   },
   cta: {
     title: 'Similar Challenge?',
@@ -542,7 +542,7 @@ export const aboutPageContent = {
   },
   hiring: {
     title: 'Join Us',
-    description: 'We hire senior practitioners who have designed, built, and defended capital markets infrastructure inside institutions. If you\'ve lived the intersection of accounting, risk, and systems—and want to solve these problems without organizational constraints—let\'s talk.',
+    description: 'We hire senior practitioners who have designed, built, and defended capital markets infrastructure inside institutions. If you\'ve lived the intersection of accounting, risk, and systems, and want to solve these problems without organizational constraints, let\'s talk.',
     cta: 'Contact Us',
     ctaHref: 'mailto:careers@ulixescorp.com',
   },
@@ -555,15 +555,15 @@ export const contactPageContent = {
     items: [
       {
         question: 'What types of engagements do you take?',
-        answer: 'Infrastructure design, hedge accounting frameworks, platform migrations, and capital optimization—where the challenge requires integration across accounting, risk, and systems. We don\'t do staff augmentation or pure technology implementation.',
+        answer: 'Infrastructure design, hedge accounting frameworks, platform migrations, and capital optimization. We take on challenges that require integration across accounting, risk, and systems. We don\'t do staff augmentation or pure technology implementation.',
       },
       {
         question: 'How are engagements structured?',
-        answer: 'Fixed-scope with defined deliverables. We align our incentives with yours—if we underestimate, that\'s our problem. Time-and-materials only for genuinely uncertain discovery work.',
+        answer: 'Fixed-scope with defined deliverables. We align our incentives with yours. If we underestimate, that\'s our problem. Time-and-materials only for genuinely uncertain discovery work.',
       },
       {
         question: 'What institutions do you work with?',
-        answer: 'Banks, asset managers, insurance companies, and hedge funds with complex derivatives books and sophisticated infrastructure requirements. We\'re selective—the challenge must warrant senior practitioners.',
+        answer: 'Banks, asset managers, insurance companies, and hedge funds with complex derivatives books and sophisticated infrastructure requirements. We are selective. The challenge must warrant senior practitioners.',
       },
       {
         question: 'How quickly can you start?',

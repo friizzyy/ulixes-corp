@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
-import { motion, AnimatePresence, useInView } from 'framer-motion'
+import { useState } from 'react'
 import { IconChart, IconWrench, IconShield } from '@/components/ui/icons'
 
 const phases = [
@@ -47,20 +46,13 @@ const phases = [
 ]
 
 export function ProcessSection() {
-  const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [activePhase, setActivePhase] = useState(0)
 
   return (
-    <section ref={ref} className="relative z-10 py-20 md:py-28 bg-bg-secondary/40">
+    <section className="relative z-10 py-24 md:py-32 bg-bg-secondary/40">
       <div className="container-main">
         {/* Header */}
-        <motion.div
-          className="max-w-2xl mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-        >
+        <div className="max-w-2xl mb-16">
           <div className="section-label">How We Work</div>
           <h2 className="text-display-sm md:text-display-md font-bold mb-4">
             Predictable process.
@@ -68,84 +60,101 @@ export function ProcessSection() {
           <p className="text-body-lg text-text-secondary">
             Every engagement follows a disciplined rhythm so complex changes land without surprises.
           </p>
-        </motion.div>
+        </div>
 
-        {/* Process Timeline */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          {/* Phase Selector */}
-          <div className="flex flex-wrap items-center gap-0 mb-8">
-            {phases.map((phase, index) => {
-              const Icon = phase.icon
-              const isActive = activePhase === index
-              const isPast = index < activePhase
+        {/* Phase Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+          {phases.map((phase, index) => {
+            const Icon = phase.icon
+            const isActive = activePhase === index
 
-              return (
-                <div key={phase.id} className="flex items-center">
-                  <button
-                    onClick={() => setActivePhase(index)}
-                    className={`relative flex items-center gap-3 px-5 py-3 rounded-sm transition-all duration-200 ${
-                      isActive
-                        ? 'bg-accent text-bg-primary'
-                        : isPast
-                          ? 'bg-surface text-accent'
-                          : 'bg-surface/50 text-text-muted hover:text-text-secondary hover:bg-surface'
-                    }`}
-                  >
-                    <Icon size={18} />
-                    <span className="font-medium">{phase.title}</span>
-                    <span className={`text-xs font-mono hidden sm:inline ${isActive ? 'text-bg-primary/70' : 'text-text-muted'}`}>
-                      {phase.duration}
-                    </span>
-                  </button>
-                  {index < phases.length - 1 && (
-                    <div className={`w-8 h-px hidden md:block ${index < activePhase ? 'bg-accent' : 'bg-border'}`} />
-                  )}
-                </div>
-              )
-            })}
-          </div>
-
-          {/* Active Phase Content */}
-          <div className="relative min-h-[180px]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activePhase}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.2 }}
-                className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-8 p-8 rounded-md bg-bg-secondary border border-border"
+            return (
+              <button
+                key={phase.id}
+                onClick={() => setActivePhase(index)}
+                className={`group relative p-6 rounded-lg text-left transition-all duration-300 ${
+                  isActive
+                    ? 'bg-surface border-accent/50'
+                    : 'bg-bg-secondary hover:bg-surface/50'
+                } border border-border`}
               >
-                <div>
-                  <p className="text-body-lg text-text-secondary leading-relaxed">
-                    {phases[activePhase].description}
-                  </p>
-                </div>
-                <div>
-                  <div className="text-xs font-mono uppercase tracking-wider text-text-muted mb-3">
-                    Deliverables
+                {isActive && (
+                  <div className="absolute top-0 left-0 right-0 h-0.5 bg-accent rounded-t-lg" />
+                )}
+
+                <div className="flex items-center justify-between mb-4">
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
+                    isActive
+                      ? 'bg-accent/20 text-accent'
+                      : 'bg-surface text-text-muted group-hover:text-accent'
+                  }`}>
+                    <Icon size={20} />
                   </div>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {phases[activePhase].deliverables.map((item, i) => (
-                      <li key={i} className="flex items-start gap-2 text-body-sm text-text-secondary">
-                        <span className="text-accent mt-1.5 flex-shrink-0">
-                          <svg width="5" height="5" viewBox="0 0 5 5" fill="currentColor">
-                            <circle cx="2.5" cy="2.5" r="2.5" />
-                          </svg>
-                        </span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+                  <span className={`text-xs font-mono transition-colors ${
+                    isActive ? 'text-accent' : 'text-text-muted'
+                  }`}>
+                    {phase.duration}
+                  </span>
                 </div>
-              </motion.div>
-            </AnimatePresence>
+
+                <h3 className={`text-heading-md font-semibold transition-colors ${
+                  isActive ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'
+                }`}>
+                  {phase.title}
+                </h3>
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Active Phase Content */}
+        <div className="relative p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
+
+          <div className="relative grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div>
+              <div className="text-xs font-mono text-accent uppercase tracking-widest mb-4">
+                Phase {String(activePhase + 1).padStart(2, '0')} — {phases[activePhase].title}
+              </div>
+              <p className="text-body-lg text-text-secondary leading-relaxed">
+                {phases[activePhase].description}
+              </p>
+            </div>
+
+            <div>
+              <div className="text-xs font-mono uppercase tracking-widest text-text-muted mb-4">
+                Deliverables
+              </div>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {phases[activePhase].deliverables.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-body-sm text-text-secondary">
+                    <span className="text-accent mt-1 flex-shrink-0">
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                        <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-        </motion.div>
+        </div>
+
+        {/* Progress Indicator */}
+        <div className="flex items-center justify-center gap-2 mt-8">
+          {phases.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setActivePhase(index)}
+              className={`h-1 rounded-full transition-all duration-300 ${
+                activePhase === index
+                  ? 'w-8 bg-accent'
+                  : 'w-2 bg-border hover:bg-text-muted'
+              }`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   )
