@@ -58,20 +58,17 @@ export default function ContactPage() {
     setFormState('submitting')
 
     try {
-      // Using Formspree for form handling - replace YOUR_FORM_ID with your Formspree form ID
-      // Sign up at https://formspree.io and create a form to get your ID
-      const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+      // Send via Resend API route - handles both admin notification and user confirmation
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
         },
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
           company: formData.company,
           message: formData.message,
-          _subject: `New inquiry from ${formData.name} - Ulixes Corporation`,
         }),
       })
 

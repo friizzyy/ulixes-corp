@@ -1,14 +1,17 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { institutionalExperienceContent } from '@/lib/content'
-import { ArrowUpRight, PageTransition } from '@/components/ui'
+import { ArrowUpRight, PageTransition, HorizontalScroll, ScrollCard } from '@/components/ui'
+import { GlassSurfaceContainer } from '@/components/system'
 import { fadeUp, staggerContainer, staggerContainerFast, viewportOnce } from '@/lib/motion'
 
 export default function InstitutionalExperiencePage() {
   const { hero, credibilityChips, intro, institutions, programs, closing, cta } =
     institutionalExperienceContent
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
 
   return (
     <PageTransition>
@@ -74,10 +77,10 @@ export default function InstitutionalExperiencePage() {
                 </div>
                 <div className="text-right">
                   <div className="text-5xl md:text-6xl font-bold gradient-text mb-1">
-                    9
+                    7
                   </div>
                   <div className="text-body-sm text-text-muted font-mono uppercase tracking-wider">
-                    Institutions
+                    Sectors
                   </div>
                 </div>
               </motion.div>
@@ -136,101 +139,107 @@ export default function InstitutionalExperiencePage() {
         </div>
       </motion.section>
 
-      {/* Institutions Timeline */}
+      {/* Institutions Categories - Accordion Style */}
       <section className="py-20 md:py-28">
         <div className="container-main">
-          {/* Section Header */}
-          <motion.div
-            className="text-center mb-16"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-          >
-            <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-5">
-              Where We&apos;ve Worked
-            </motion.h2>
-            <motion.p variants={fadeUp} className="text-body-md text-text-muted max-w-lg mx-auto">
-              Financial institutions where we&apos;ve designed, implemented, or defended capital markets infrastructure.
-            </motion.p>
-          </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+            {/* Left Column - Header */}
+            <motion.div
+              className="lg:col-span-4 lg:sticky lg:top-32 lg:self-start"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportOnce}
+            >
+              <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
+                Where We&apos;ve Worked
+              </motion.h2>
+              <motion.p variants={fadeUp} className="text-heading-lg md:text-display-sm font-bold mb-4">
+                Our experience spans seven distinct institutional sectors.
+              </motion.p>
+              <motion.p variants={fadeUp} className="text-body-sm text-text-muted">
+                Select a category to learn more about our work in that sector.
+              </motion.p>
+            </motion.div>
 
-          {/* Timeline */}
-          <div className="relative max-w-5xl mx-auto">
-            {/* Central Axis */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-border to-transparent -translate-x-1/2" />
-
-            {/* Timeline Items */}
-            <div className="space-y-6 md:space-y-0">
-              {institutions.items.map((item, index) => {
-                const isLeft = index % 2 === 0
-                return (
-                  <motion.div
-                    key={item.name}
-                    className="relative md:grid md:grid-cols-2 md:items-center md:min-h-[56px]"
-                    initial={{ opacity: 0, x: isLeft ? -20 : 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={viewportOnce}
-                    transition={{ duration: 0.5, delay: index * 0.05 }}
-                  >
-                    {/* Axis Marker */}
+            {/* Right Column - Accordion */}
+            <motion.div
+              className="lg:col-span-8"
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportOnce}
+              variants={staggerContainerFast}
+            >
+              <div className="space-y-2">
+                {institutions.categories.map((category, index) => {
+                  const isExpanded = expandedIndex === index
+                  return (
                     <motion.div
-                      className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 items-center justify-center"
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      viewport={viewportOnce}
-                      transition={{ duration: 0.3, delay: index * 0.05 + 0.2 }}
+                      key={category.name}
+                      variants={fadeUp}
+                      className="group"
                     >
-                      <div className="w-2 h-2 rounded-full bg-accent/80" />
+                      <button
+                        onClick={() => setExpandedIndex(isExpanded ? null : index)}
+                        className="w-full text-left"
+                      >
+                        <div
+                          className={`
+                            flex items-center justify-between gap-4 p-4 rounded-md border transition-all duration-300
+                            ${isExpanded
+                              ? 'bg-surface border-accent/40'
+                              : 'bg-transparent border-border hover:border-border-accent hover:bg-surface/50'
+                            }
+                          `}
+                        >
+                          <div className="flex items-center gap-4">
+                            <span className={`text-xs font-mono transition-colors ${isExpanded ? 'text-accent' : 'text-text-muted'}`}>
+                              {String(index + 1).padStart(2, '0')}
+                            </span>
+                            <h3 className={`text-base font-semibold transition-colors ${isExpanded ? 'text-accent' : 'text-text-primary'}`}>
+                              {category.name}
+                            </h3>
+                          </div>
+                          <motion.span
+                            className="text-text-muted text-xl font-light"
+                            animate={{ rotate: isExpanded ? 45 : 0 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            +
+                          </motion.span>
+                        </div>
+                      </button>
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                            className="overflow-hidden"
+                          >
+                            <div className="px-4 pb-4 pt-2 ml-12">
+                              <p className="text-body-sm text-text-secondary leading-relaxed">
+                                {category.description}
+                              </p>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </motion.div>
-
-                    {/* Content */}
-                    {isLeft ? (
-                      <>
-                        <div className="md:pr-16 md:text-right">
-                          <h3 className="text-base font-semibold text-text-primary tracking-tight">
-                            {item.name}
-                          </h3>
-                          <p className="text-sm text-text-muted whitespace-nowrap">
-                            {item.description}
-                          </p>
-                        </div>
-                        <div />
-                      </>
-                    ) : (
-                      <>
-                        <div />
-                        <div className="md:pl-16">
-                          <h3 className="text-base font-semibold text-text-primary tracking-tight">
-                            {item.name}
-                          </h3>
-                          <p className="text-sm text-text-muted whitespace-nowrap">
-                            {item.description}
-                          </p>
-                        </div>
-                      </>
-                    )}
-
-                    {/* Mobile marker */}
-                    <div className="md:hidden absolute -left-4 top-1">
-                      <div className="w-1.5 h-1.5 rounded-full bg-accent/80" />
-                    </div>
-                  </motion.div>
-                )
-              })}
-            </div>
-
-            {/* Mobile axis */}
-            <div className="md:hidden absolute -left-[10px] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-border to-transparent" />
+                  )
+                })}
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Programs & Scope */}
+      {/* Programs & Scope - Clean Grid */}
       <section className="py-24 md:py-32 bg-bg-secondary/50 border-y border-border">
         <div className="container-main">
           <motion.div
-            className="mb-16"
+            className="mb-12"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -239,35 +248,33 @@ export default function InstitutionalExperiencePage() {
             <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
               {programs.title}
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-display-sm md:text-display-md font-bold max-w-2xl">
+            <motion.p variants={fadeUp} className="text-heading-lg md:text-display-sm font-bold max-w-xl">
               {programs.description}
             </motion.p>
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
-            variants={staggerContainerFast}
-            initial="hidden"
-            whileInView="visible"
+            className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border rounded-lg overflow-hidden"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={viewportOnce}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
             {programs.tags.map((tag, index) => (
               <motion.div
                 key={tag}
-                variants={fadeUp}
-                className="group relative p-6 rounded-lg bg-bg-primary border border-border hover:border-accent/30 transition-all duration-300"
+                className="bg-bg-primary p-5 md:p-6 hover:bg-surface transition-colors duration-200 group"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={viewportOnce}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
               >
-                {/* Hover glow effect */}
-                <div className="absolute inset-0 rounded-lg bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                <div className="relative">
-                  <span className="inline-block text-xs font-mono text-accent mb-3">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <p className="text-body-sm text-text-secondary leading-relaxed group-hover:text-text-primary transition-colors">
-                    {tag}
-                  </p>
-                </div>
+                <span className="text-[10px] font-mono text-accent/60 group-hover:text-accent transition-colors">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <p className="text-body-sm text-text-secondary group-hover:text-text-primary transition-colors mt-2 leading-snug">
+                  {tag}
+                </p>
               </motion.div>
             ))}
           </motion.div>

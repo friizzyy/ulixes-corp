@@ -578,43 +578,35 @@ export const institutionalExperienceContent = {
   },
   institutions: {
     title: 'Where We\'ve Worked',
-    description: 'Financial institutions where we\'ve designed, implemented, or defended capital markets infrastructure.',
-    items: [
+    description: 'Financial institutions where we\'ve architected, modernized, or defended mission-critical capital markets infrastructure.',
+    categories: [
       {
-        name: 'Wells Fargo',
-        description: 'Treasury and derivatives infrastructure supporting enterprise hedging programs.',
+        name: 'Global Systemically Important Banks (GSIBs)',
+        description: 'Enterprise treasury and derivatives architecture supporting large-scale hedging programs, capital optimization, liquidity management, and regulatory scrutiny.',
       },
       {
-        name: 'Silicon Valley Bank',
-        description: 'Pre-crisis infrastructure architecture for interest rate risk and liquidity management.',
+        name: 'U.S. Super-Regionals & Large Regionals',
+        description: 'Interest rate risk, balance sheet management, and enterprise hedge accounting frameworks across volatile rate cycles.',
       },
       {
-        name: 'Rabobank',
-        description: 'Global derivatives operations across agricultural and corporate banking divisions.',
+        name: 'Farm Credit & Agricultural Lending Institutions',
+        description: 'Structured lending and derivatives infrastructure supporting complex funding and commodity exposure strategies.',
       },
       {
-        name: 'CoBank',
-        description: 'Farm Credit System infrastructure for complex structured lending and hedging.',
+        name: 'Multilateral & Trade Finance Banks',
+        description: 'Cross-border derivatives, structured flows, and risk management platforms operating across emerging and developed markets.',
       },
       {
-        name: 'Federal Home Loan Bank of San Francisco',
-        description: 'Member services infrastructure and balance sheet management systems.',
+        name: 'Federal Liquidity & Housing Finance Institutions',
+        description: 'Member services infrastructure and balance sheet management systems within highly regulated liquidity frameworks.',
       },
       {
-        name: 'U.S. Bank',
-        description: 'Enterprise treasury infrastructure and regulatory capital optimization.',
+        name: 'Global Asset Managers',
+        description: 'Pre- and post-acquisition platform integration, portfolio operations infrastructure, and institutional risk architecture.',
       },
       {
-        name: 'Bladex',
-        description: 'Latin American trade finance and derivatives infrastructure.',
-      },
-      {
-        name: 'Barclays Global Investors',
-        description: 'Pre-BlackRock acquisition asset management infrastructure.',
-      },
-      {
-        name: 'Charles Schwab',
-        description: 'Retail and institutional brokerage infrastructure programs.',
+        name: 'Brokerage & Clearing Platforms',
+        description: 'Retail and institutional trading infrastructure programs spanning front-to-back processing, capital markets controls, and operational risk governance.',
       },
     ],
   },
