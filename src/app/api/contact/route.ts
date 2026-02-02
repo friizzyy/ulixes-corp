@@ -93,7 +93,7 @@ export async function POST(request: Request) {
                 Thank you for reaching out, ${name}.
               </p>
               <p style="color: #a1a1aa; font-size: 15px; line-height: 1.7; margin: 0 0 32px 0;">
-                We've received your inquiry and a partner will respond within one business day. At Ulixes, we take every conversation seriously—your message is now with our team.
+                We've received your inquiry and a partner will respond within one business day. At Ulixes, we take every conversation seriously. Your message is now with our team.
               </p>
 
               <!-- Submission details card -->
