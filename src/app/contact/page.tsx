@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Input, Textarea, CheckCircle, AlertCircle, Loader } from '@/components/ui'
+import { motion } from 'framer-motion'
+import { Input, Textarea, CheckCircle, AlertCircle, Loader, PageTransition } from '@/components/ui'
 import { contactContent, contactPageContent, siteConfig } from '@/lib/content'
+import { fadeUp, staggerContainer, staggerContainerFast, viewportOnce } from '@/lib/motion'
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
@@ -101,19 +103,24 @@ export default function ContactPage() {
   }
 
   return (
-    <>
+    <PageTransition>
       {/* Hero */}
       <section className="pt-32 pb-16 md:pt-40 md:pb-20 relative z-10">
         <div className="container-main">
-          <div className="max-w-4xl">
-            <div className="section-label">Contact</div>
-            <h1 className="text-display-lg md:text-display-xl font-bold mb-6">
+          <motion.div
+            className="max-w-4xl"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.div variants={fadeUp} className="section-label">Contact</motion.div>
+            <motion.h1 variants={fadeUp} className="text-display-lg md:text-display-xl font-bold mb-6">
               {hero.headline}
-            </h1>
-            <p className="text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
+            </motion.h1>
+            <motion.p variants={fadeUp} className="text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
               {hero.description}
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
         </div>
       </section>
 
@@ -122,7 +129,12 @@ export default function ContactPage() {
         <div className="container-main">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
             {/* Form */}
-            <div className="lg:col-span-7">
+            <motion.div
+              className="lg:col-span-7"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
               <div className="relative p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden">
                 {/* Decorative elements */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
@@ -224,10 +236,15 @@ export default function ContactPage() {
                   </form>
                 )}
               </div>
-            </div>
+            </motion.div>
 
             {/* Contact Info */}
-            <div className="lg:col-span-4 lg:col-start-9 space-y-6">
+            <motion.div
+              className="lg:col-span-4 lg:col-start-9 space-y-6"
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
               {/* Direct Contact */}
               <div className="relative p-8 rounded-lg bg-bg-secondary border border-border overflow-hidden">
                 <div className="absolute -top-10 -right-10 w-20 h-20 bg-accent/5 rounded-full blur-2xl" />
@@ -249,7 +266,12 @@ export default function ContactPage() {
               </div>
 
               {/* Response Time */}
-              <div className="p-6 rounded-lg bg-surface/50 border border-border">
+              <motion.div
+                className="p-6 rounded-lg bg-surface/50 border border-border"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+              >
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
                   <span className="text-body-sm text-text-muted">Response Time</span>
@@ -257,8 +279,8 @@ export default function ContactPage() {
                 <p className="text-body-md text-text-secondary">
                   A partner will respond within one business day.
                 </p>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -267,7 +289,13 @@ export default function ContactPage() {
       <section className="py-24 md:py-32 bg-bg-secondary/50 border-t border-border">
         <div className="container-main">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-            <div className="lg:col-span-4">
+            <motion.div
+              className="lg:col-span-4"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={viewportOnce}
+              transition={{ duration: 0.6 }}
+            >
               <div className="lg:sticky lg:top-32">
                 <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                   {contactPageContent.faq.title}
@@ -276,14 +304,21 @@ export default function ContactPage() {
                   Before you reach out
                 </p>
               </div>
-            </div>
+            </motion.div>
 
             <div className="lg:col-span-7 lg:col-start-6">
-              <div className="space-y-8">
+              <motion.div
+                className="space-y-8"
+                variants={staggerContainerFast}
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewportOnce}
+              >
                 {contactPageContent.faq.items.map((item, index) => (
-                  <div
+                  <motion.div
                     key={item.question}
                     className="group"
+                    variants={fadeUp}
                   >
                     <div className="flex items-start gap-4">
                       <span className="text-xs font-mono text-text-muted pt-1">
@@ -301,13 +336,13 @@ export default function ContactPage() {
                     {index < contactPageContent.faq.items.length - 1 && (
                       <div className="mt-8 h-px bg-border ml-8" />
                     )}
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
       </section>
-    </>
+    </PageTransition>
   )
 }

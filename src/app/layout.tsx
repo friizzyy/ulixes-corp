@@ -3,6 +3,7 @@ import { Outfit, JetBrains_Mono } from 'next/font/google'
 import { Navigation, Footer, GridBackground } from '@/components/layout'
 import { ErrorBoundary } from '@/components/ui'
 import { siteConfig } from '@/lib/content'
+import { Agentation } from 'agentation'
 import '@/styles/globals.css'
 
 const outfit = Outfit({
@@ -63,6 +64,7 @@ export default function RootLayout({
           </main>
           <Footer />
         </ErrorBoundary>
+        {process.env.NODE_ENV === 'development' && <Agentation />}
       </body>
     </html>
   )

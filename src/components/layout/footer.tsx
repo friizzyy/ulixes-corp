@@ -39,12 +39,12 @@ export function Footer() {
             <ul className="space-y-3">
               {navigation.footer.services.map((item) => (
                 <li key={item.href}>
-                  <Link
+                  <a
                     href={item.href}
                     className="text-body-sm text-text-secondary hover:text-text-primary transition-colors"
                   >
                     {item.label}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>

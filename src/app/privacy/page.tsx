@@ -2,14 +2,14 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { Section, Button, ArrowRight } from '@/components/ui'
+import { Section, Button, ArrowRight, PageTransition } from '@/components/ui'
 import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion'
 import { privacyContent, siteConfig } from '@/lib/content'
 import { GlassSurfaceContainer } from '@/components/system'
 
 export default function PrivacyPage() {
   return (
-    <>
+    <PageTransition>
       {/* Hero */}
       <section className="pt-32 pb-16 md:pt-40 md:pb-20 relative z-10">
         <motion.div
@@ -117,6 +117,6 @@ export default function PrivacyPage() {
           </motion.div>
         </div>
       </Section>
-    </>
+    </PageTransition>
   )
 }

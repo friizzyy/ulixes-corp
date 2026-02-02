@@ -1,8 +1,10 @@
 'use client'
 
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { Terminal, ArrowUpRight } from '@/components/ui'
 import { homeContent } from '@/lib/content'
+import { fadeUp, staggerContainer } from '@/lib/motion'
 
 export function HeroSection() {
   const { hero, terminal } = homeContent
@@ -12,23 +14,39 @@ export function HeroSection() {
       <div className="container-main w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
           {/* Left: Copy */}
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface border border-border text-xs font-mono text-text-muted uppercase tracking-wider mb-8">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.div
+              variants={fadeUp}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface border border-border text-xs font-mono text-text-muted uppercase tracking-wider mb-8"
+            >
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
               {hero.badge}
-            </div>
+            </motion.div>
 
-            <h1 className="text-[2.75rem] md:text-[3.5rem] lg:text-[4rem] font-bold leading-[1.1] tracking-tight mb-6">
+            <motion.h1
+              variants={fadeUp}
+              className="text-[2.75rem] md:text-[3.5rem] lg:text-[4rem] font-bold leading-[1.1] tracking-tight mb-6"
+            >
               <span className="text-text-primary">{hero.headline}</span>
               <br />
               <span className="gradient-text">{hero.headlineAccent}</span>
-            </h1>
+            </motion.h1>
 
-            <p className="text-lg md:text-xl text-text-secondary leading-relaxed max-w-[540px] mb-10">
+            <motion.p
+              variants={fadeUp}
+              className="text-lg md:text-xl text-text-secondary leading-relaxed max-w-[540px] mb-10"
+            >
               {hero.description}
-            </p>
+            </motion.p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-12">
+            <motion.div
+              variants={fadeUp}
+              className="flex flex-col sm:flex-row gap-4 mb-12"
+            >
               <Link
                 href="/services"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow transition-shadow"
@@ -42,9 +60,12 @@ export function HeroSection() {
               >
                 {hero.secondaryCta}
               </Link>
-            </div>
+            </motion.div>
 
-            <div className="flex items-center gap-6">
+            <motion.div
+              variants={fadeUp}
+              className="flex items-center gap-6"
+            >
               <div className="flex items-center gap-4">
                 <div>
                   <div className="text-2xl font-bold font-mono gradient-text">20+</div>
@@ -56,11 +77,16 @@ export function HeroSection() {
                   <div className="text-xs text-text-muted">Implementations</div>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Right: Terminal */}
-          <div className="relative">
+          <motion.div
+            className="relative"
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.4, 0, 0.2, 1] }}
+          >
             {/* Ambient glow behind terminal */}
             <div className="absolute -inset-4 bg-gradient-to-br from-accent/5 via-transparent to-accent-secondary/5 rounded-lg blur-xl opacity-60" />
 
@@ -68,7 +94,7 @@ export function HeroSection() {
             <div className="rounded-lg border border-border bg-bg-secondary/80 backdrop-blur-sm shadow-2xl shadow-black/20 overflow-hidden">
               <Terminal lines={terminal.lines} typingSpeed={25} />
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

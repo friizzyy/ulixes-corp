@@ -12,6 +12,7 @@
     "remotion:render:hero": "remotion render --config=remotion/remotion.config.ts remotion/src/index.ts AmbientHero out/ambient-hero.mp4"
   },
   "dependencies": {
+    "agentation": "^1.3.2",
     "clsx": "^2.1.1",
     "framer-motion": "^11.2.6",
     "next": "14.2.3",

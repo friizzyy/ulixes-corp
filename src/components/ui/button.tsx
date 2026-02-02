@@ -1,6 +1,7 @@
 'use client'
 
 import { forwardRef } from 'react'
+import Link from 'next/link'
 import { motion, HTMLMotionProps } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { buttonHover } from '@/lib/motion'
@@ -41,16 +42,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     if (href) {
       return (
-        <motion.a
-          href={href}
-          className={combinedClassName}
-          variants={buttonHover}
-          initial="rest"
-          whileHover="hover"
-          whileTap="tap"
-        >
+        <Link href={href} className={combinedClassName}>
           {children}
-        </motion.a>
+        </Link>
       )
     }
 

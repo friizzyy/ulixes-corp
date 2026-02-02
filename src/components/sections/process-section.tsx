@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { IconChart, IconWrench, IconShield } from '@/components/ui/icons'
+import { fadeUp, staggerContainer, staggerContainerFast, viewportOnce } from '@/lib/motion'
 
 const phases = [
   {
@@ -52,25 +54,38 @@ export function ProcessSection() {
     <section className="relative z-10 py-24 md:py-32 bg-bg-secondary/40">
       <div className="container-main">
         {/* Header */}
-        <div className="max-w-2xl mb-16">
-          <div className="section-label">How We Work</div>
-          <h2 className="text-display-sm md:text-display-md font-bold mb-4">
+        <motion.div
+          className="max-w-2xl mb-16"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+        >
+          <motion.div variants={fadeUp} className="section-label">How We Work</motion.div>
+          <motion.h2 variants={fadeUp} className="text-display-sm md:text-display-md font-bold mb-4">
             Predictable process.
-          </h2>
-          <p className="text-body-lg text-text-secondary">
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-body-lg text-text-secondary">
             Every engagement follows a disciplined rhythm so complex changes land without surprises.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Phase Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12"
+          variants={staggerContainerFast}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+        >
           {phases.map((phase, index) => {
             const Icon = phase.icon
             const isActive = activePhase === index
 
             return (
-              <button
+              <motion.button
                 key={phase.id}
+                variants={fadeUp}
                 onClick={() => setActivePhase(index)}
                 className={`group relative p-6 rounded-lg text-left transition-all duration-300 ${
                   isActive
@@ -79,7 +94,10 @@ export function ProcessSection() {
                 } border border-border`}
               >
                 {isActive && (
-                  <div className="absolute top-0 left-0 right-0 h-0.5 bg-accent rounded-t-lg" />
+                  <motion.div
+                    layoutId="process-indicator"
+                    className="absolute top-0 left-0 right-0 h-0.5 bg-accent rounded-t-lg"
+                  />
                 )}
 
                 <div className="flex items-center justify-between mb-4">
@@ -102,47 +120,74 @@ export function ProcessSection() {
                 }`}>
                   {phase.title}
                 </h3>
-              </button>
+              </motion.button>
             )
           })}
-        </div>
+        </motion.div>
 
         {/* Active Phase Content */}
-        <div className="relative p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden">
+        <motion.div
+          className="relative p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewportOnce}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
 
-          <div className="relative grid grid-cols-1 md:grid-cols-2 gap-10">
-            <div>
-              <div className="text-xs font-mono text-accent uppercase tracking-widest mb-4">
-                Phase {String(activePhase + 1).padStart(2, '0')} — {phases[activePhase].title}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activePhase}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="relative grid grid-cols-1 md:grid-cols-2 gap-10"
+            >
+              <div>
+                <div className="text-xs font-mono text-accent uppercase tracking-widest mb-4">
+                  Phase {String(activePhase + 1).padStart(2, '0')} — {phases[activePhase].title}
+                </div>
+                <p className="text-body-lg text-text-secondary leading-relaxed">
+                  {phases[activePhase].description}
+                </p>
               </div>
-              <p className="text-body-lg text-text-secondary leading-relaxed">
-                {phases[activePhase].description}
-              </p>
-            </div>
 
-            <div>
-              <div className="text-xs font-mono uppercase tracking-widest text-text-muted mb-4">
-                Deliverables
+              <div>
+                <div className="text-xs font-mono uppercase tracking-widest text-text-muted mb-4">
+                  Deliverables
+                </div>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {phases[activePhase].deliverables.map((item, i) => (
+                    <motion.li
+                      key={i}
+                      initial={{ opacity: 0, x: 10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: i * 0.05 }}
+                      className="flex items-start gap-2 text-body-sm text-text-secondary"
+                    >
+                      <span className="text-accent mt-1 flex-shrink-0">
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                          <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </span>
+                      {item}
+                    </motion.li>
+                  ))}
+                </ul>
               </div>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {phases[activePhase].deliverables.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-body-sm text-text-secondary">
-                    <span className="text-accent mt-1 flex-shrink-0">
-                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                        <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </AnimatePresence>
+        </motion.div>
 
         {/* Progress Indicator */}
-        <div className="flex items-center justify-center gap-2 mt-8">
+        <motion.div
+          className="flex items-center justify-center gap-2 mt-8"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={viewportOnce}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           {phases.map((_, index) => (
             <button
               key={index}
@@ -154,7 +199,7 @@ export function ProcessSection() {
               }`}
             />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )
