@@ -22,35 +22,121 @@ export async function POST(request: Request) {
       replyTo: email,
       subject: `New inquiry from ${name} - Ulixes Corporation`,
       html: `
-        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-          <div style="border-bottom: 2px solid #8B5CF6; padding-bottom: 20px; margin-bottom: 30px;">
-            <h1 style="color: #0a0a0a; font-size: 24px; margin: 0;">New Contact Form Submission</h1>
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="margin: 0; padding: 0; background-color: #0a0a0b;">
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0b;">
+
+            <!-- Header with accent line -->
+            <div style="padding: 40px 32px 0 32px;">
+              <div style="height: 2px; background: linear-gradient(90deg, #8B5CF6 0%, rgba(139,92,246,0.3) 50%, transparent 100%); margin-bottom: 32px;"></div>
+
+              <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                  <td>
+                    <p style="color: #8B5CF6; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin: 0 0 8px 0;">
+                      ULIXES CORPORATION
+                    </p>
+                    <h1 style="color: #fafafa; font-size: 28px; font-weight: 700; margin: 0; letter-spacing: -0.02em; line-height: 1.2;">
+                      New Inquiry Received
+                    </h1>
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <!-- Main content -->
+            <div style="padding: 32px;">
+              <p style="color: #a1a1aa; font-size: 15px; line-height: 1.7; margin: 0 0 32px 0;">
+                A new contact form submission has been received. Details below.
+              </p>
+
+              <!-- Submission details card -->
+              <div style="background: #111113; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; overflow: hidden; margin-bottom: 32px;">
+
+                <!-- Card header -->
+                <div style="background: #18181b; padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                  <p style="color: #71717a; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin: 0;">
+                    Contact Details
+                  </p>
+                </div>
+
+                <!-- Card content -->
+                <div style="padding: 20px;">
+                  <!-- Name -->
+                  <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 16px;">
+                    <tr>
+                      <td style="width: 100px; vertical-align: top;">
+                        <p style="color: #71717a; font-size: 12px; margin: 0;">Name</p>
+                      </td>
+                      <td>
+                        <p style="color: #fafafa; font-size: 14px; margin: 0; font-weight: 500;">${name}</p>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Email -->
+                  <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 16px;">
+                    <tr>
+                      <td style="width: 100px; vertical-align: top;">
+                        <p style="color: #71717a; font-size: 12px; margin: 0;">Email</p>
+                      </td>
+                      <td>
+                        <p style="margin: 0;">
+                          <a href="mailto:${email}" style="color: #A78BFA; font-size: 14px; text-decoration: none;">${email}</a>
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+
+                  ${company ? `
+                  <!-- Institution -->
+                  <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 16px;">
+                    <tr>
+                      <td style="width: 100px; vertical-align: top;">
+                        <p style="color: #71717a; font-size: 12px; margin: 0;">Institution</p>
+                      </td>
+                      <td>
+                        <p style="color: #fafafa; font-size: 14px; margin: 0;">${company}</p>
+                      </td>
+                    </tr>
+                  </table>
+                  ` : ''}
+
+                  <!-- Message -->
+                  <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 8px;">
+                    <p style="color: #71717a; font-size: 12px; margin: 0 0 8px 0;">Message</p>
+                    <p style="color: #fafafa; font-size: 14px; line-height: 1.6; margin: 0; white-space: pre-wrap;">${message}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick action -->
+              <div style="text-align: center;">
+                <a href="mailto:${email}" style="display: inline-block; background: #8B5CF6; color: #ffffff; font-size: 14px; font-weight: 600; text-decoration: none; padding: 12px 24px; border-radius: 6px;">Reply to ${name}</a>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div style="padding: 24px 32px 40px 32px; border-top: 1px solid rgba(255,255,255,0.06);">
+              <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                  <td>
+                    <p style="color: #52525b; font-size: 12px; margin: 0;">
+                      This message was sent via the contact form at ulixescorp.com
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+
           </div>
-
-          <div style="background: #f9fafb; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
-            <p style="margin: 0 0 8px 0; color: #6b7280; font-size: 14px;">From</p>
-            <p style="margin: 0 0 20px 0; color: #0a0a0a; font-size: 16px; font-weight: 600;">${name}</p>
-
-            <p style="margin: 0 0 8px 0; color: #6b7280; font-size: 14px;">Email</p>
-            <p style="margin: 0 0 20px 0; color: #0a0a0a; font-size: 16px;">
-              <a href="mailto:${email}" style="color: #8B5CF6; text-decoration: none;">${email}</a>
-            </p>
-
-            ${company ? `
-              <p style="margin: 0 0 8px 0; color: #6b7280; font-size: 14px;">Institution</p>
-              <p style="margin: 0 0 20px 0; color: #0a0a0a; font-size: 16px;">${company}</p>
-            ` : ''}
-
-            <p style="margin: 0 0 8px 0; color: #6b7280; font-size: 14px;">Message</p>
-            <p style="margin: 0; color: #0a0a0a; font-size: 16px; line-height: 1.6; white-space: pre-wrap;">${message}</p>
-          </div>
-
-          <div style="border-top: 1px solid #e5e7eb; padding-top: 20px;">
-            <p style="margin: 0; color: #9ca3af; font-size: 12px;">
-              This message was sent via the contact form at ulixescorp.com
-            </p>
-          </div>
-        </div>
+        </body>
+        </html>
       `,
     })
 
