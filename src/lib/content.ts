@@ -7,7 +7,7 @@ export const siteConfig = {
   tagline: 'Capital Markets Infrastructure. Engineered for Control.',
   description: 'With 20+ years of proven Calypso delivery, Ulixes helps banks and hedge funds migrate, integrate, and innovate on vendor-hosted platforms.',
   url: 'https://ulixescorp.com',
-  email: 'ulysses.williams@gmail.com',
+  email: 'admin@ulixescorp.com',
   phone: '+1 (415) 283-9983',
 }
 
