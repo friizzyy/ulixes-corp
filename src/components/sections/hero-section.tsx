@@ -52,7 +52,7 @@ export function HeroSection() {
                 </div>
                 <div className="w-px h-8 bg-border" />
                 <div>
-                  <div className="text-2xl font-bold font-mono gradient-text">20+</div>
+                  <div className="text-2xl font-bold font-mono gradient-text">20</div>
                   <div className="text-xs text-text-muted">Implementations</div>
                 </div>
               </div>
@@ -64,20 +64,9 @@ export function HeroSection() {
             {/* Ambient glow behind terminal */}
             <div className="absolute -inset-4 bg-gradient-to-br from-accent/5 via-transparent to-accent-secondary/5 rounded-lg blur-xl opacity-60" />
 
-            {/* Terminal container */}
-            <div className="relative">
-              {/* Status indicator */}
-              <div className="absolute -top-3 -right-3 z-10">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-bg-secondary border border-border text-xs font-mono">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                  <span className="text-text-muted">Live</span>
-                </div>
-              </div>
-
-              {/* Terminal */}
-              <div className="rounded-lg border border-border bg-bg-secondary/80 backdrop-blur-sm shadow-2xl shadow-black/20 overflow-hidden">
-                <Terminal lines={terminal.lines} typingSpeed={25} />
-              </div>
+            {/* Terminal */}
+            <div className="rounded-lg border border-border bg-bg-secondary/80 backdrop-blur-sm shadow-2xl shadow-black/20 overflow-hidden">
+              <Terminal lines={terminal.lines} typingSpeed={25} />
             </div>
           </div>
         </div>

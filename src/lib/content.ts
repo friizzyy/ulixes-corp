@@ -44,22 +44,29 @@ export const homeContent = {
     badge: 'Calypso Platform Specialists',
     headline: 'Infrastructure Is',
     headlineAccent: 'Financial Architecture',
-    description: 'With 20+ years of proven Calypso delivery and 20+ successful implementations, we help banks and hedge funds migrate, integrate, and innovate on vendor-hosted platforms.',
+    description: 'With 20+ years of proven Calypso delivery and 20 successful implementations, we help banks and hedge funds migrate, integrate, and innovate on vendor-hosted platforms.',
     primaryCta: 'Explore Our Services',
     secondaryCta: 'Contact Us',
   },
   terminal: {
     lines: [
       { type: 'command' as const, text: 'ulixes validate --scope lifecycle' },
+      { type: 'output' as const, text: 'Lifecycle validated.' },
       { type: 'processing' as const, text: 'Hedge effectiveness analysis' },
-      { type: 'processing' as const, text: 'Capital ratio stress test' },
-      { type: 'output' as const, text: 'No designation discontinuations detected' },
-      { type: 'success' as const, text: 'Architecture validated. Control established.' },
+      { type: 'output' as const, text: 'Within policy threshold.' },
+      { type: 'processing' as const, text: 'Exposure aggregation review' },
+      { type: 'output' as const, text: 'Netting set reconciled.' },
+      { type: 'processing' as const, text: 'Capital ratio stress assessment' },
+      { type: 'output' as const, text: 'Impact contained.' },
+      { type: 'processing' as const, text: 'Designation stability check' },
+      { type: 'output' as const, text: 'No discontinuations detected.' },
+      { type: 'success' as const, text: 'Architecture validated.' },
+      { type: 'success' as const, text: 'Control established.' },
     ],
   },
   stats: [
     { value: '20+', label: 'Years Experience' },
-    { value: '20+', label: 'Implementations' },
+    { value: '20', label: 'Implementations' },
   ],
   philosophy: {
     label: 'Our Philosophy',
@@ -539,7 +546,7 @@ export const aboutPageContent = {
     title: 'By The Numbers',
     stats: [
       { value: '20+', label: 'Years Experience' },
-      { value: '20+', label: 'Implementations' },
+      { value: '20', label: 'Implementations' },
     ],
   },
   hiring: {
