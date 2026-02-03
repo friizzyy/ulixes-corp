@@ -16,7 +16,6 @@ export const navigation = {
     { label: 'Philosophy', href: '/philosophy' },
     { label: 'Services', href: '/services' },
     { label: 'Experience', href: '/institutional-experience' },
-    { label: 'Work', href: '/work' },
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
   ],
@@ -29,8 +28,8 @@ export const navigation = {
     ],
     company: [
       { label: 'Philosophy', href: '/philosophy' },
+      { label: 'Experience', href: '/institutional-experience' },
       { label: 'About', href: '/about' },
-      { label: 'Work', href: '/work' },
       { label: 'Contact', href: '/contact' },
     ],
     legal: [
@@ -558,13 +557,17 @@ export const aboutPageContent = {
   },
 }
 
-// Institutional Experience page content
-export const institutionalExperienceContent = {
+// Experience page content (consolidated from Work + Institutional Experience)
+export const experienceContent = {
   hero: {
-    label: 'Background',
+    label: 'Experience',
     headline: 'Institutional Experience',
-    description: 'Experience built inside global capital markets institutions over two decades.',
+    description: 'Built inside global capital markets institutions over two decades. Not alongside them.',
   },
+  stats: [
+    { value: '20+', label: 'Years Experience' },
+    { value: '7', label: 'Sectors' },
+  ],
   credibilityChips: [
     '20+ years Calypso execution',
     'Multi-asset + multi-jurisdiction delivery',
