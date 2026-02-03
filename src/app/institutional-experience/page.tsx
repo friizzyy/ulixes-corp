@@ -8,7 +8,7 @@ import { ArrowUpRight, PageTransition } from '@/components/ui'
 import { fadeUp, staggerContainer, staggerContainerFast, viewportOnce } from '@/lib/motion'
 
 export default function ExperiencePage() {
-  const { hero, stats, credibilityChips, intro, institutions, programs, closing, cta } = experienceContent
+  const { hero, stats, credibilityChips, intro, institutions, closing, cta } = experienceContent
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
   const [activeStudy, setActiveStudy] = useState(0)
   const study = caseStudies[activeStudy]
@@ -404,52 +404,6 @@ export default function ExperiencePage() {
               </div>
             </motion.div>
           </AnimatePresence>
-        </div>
-      </section>
-
-      {/* Programs & Scope */}
-      <section className="py-24 md:py-32">
-        <div className="container-main">
-          <motion.div
-            className="mb-12"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-          >
-            <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
-              {programs.title}
-            </motion.h2>
-            <motion.p variants={fadeUp} className="text-heading-lg md:text-display-sm font-bold max-w-xl">
-              {programs.description}
-            </motion.p>
-          </motion.div>
-
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border rounded-lg overflow-hidden"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={viewportOnce}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            {programs.tags.map((tag, index) => (
-              <motion.div
-                key={tag}
-                className="bg-bg-primary p-5 md:p-6 hover:bg-surface transition-colors duration-200 group"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={viewportOnce}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-              >
-                <span className="text-[10px] font-mono text-accent/60 group-hover:text-accent transition-colors">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <p className="text-body-sm text-text-secondary group-hover:text-text-primary transition-colors mt-2 leading-snug">
-                  {tag}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
         </div>
       </section>
 
