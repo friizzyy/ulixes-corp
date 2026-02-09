@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Input, Textarea, CheckCircle, AlertCircle, Loader, PageTransition } from '@/components/ui'
+import { Input, Textarea, Turnstile, CheckCircle, AlertCircle, Loader, PageTransition } from '@/components/ui'
 import { contactContent, contactPageContent, siteConfig } from '@/lib/content'
 import { fadeUp, staggerContainer, staggerContainerFast, viewportOnce } from '@/lib/motion'
 
@@ -13,6 +13,7 @@ interface FormErrors {
   email?: string
   company?: string
   message?: string
+  turnstile?: string
 }
 
 export default function ContactPage() {
@@ -20,6 +21,7 @@ export default function ContactPage() {
 
   const [formState, setFormState] = useState<FormState>('idle')
   const [errors, setErrors] = useState<FormErrors>({})
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -55,6 +57,11 @@ export default function ContactPage() {
 
     if (!validateForm()) return
 
+    if (!turnstileToken) {
+      setErrors(prev => ({ ...prev, turnstile: 'Please complete the verification' }))
+      return
+    }
+
     setFormState('submitting')
 
     try {
@@ -69,6 +76,7 @@ export default function ContactPage() {
           email: formData.email,
           company: formData.company,
           message: formData.message,
+          turnstileToken,
         }),
       })
 
@@ -95,6 +103,7 @@ export default function ContactPage() {
 
   const resetForm = () => {
     setFormData({ name: '', email: '', company: '', message: '' })
+    setTurnstileToken(null)
     setFormState('idle')
     setErrors({})
   }
@@ -216,6 +225,19 @@ export default function ContactPage() {
                       disabled={formState === 'submitting'}
                       required
                     />
+                    <div>
+                      <Turnstile
+                        onVerify={(token) => {
+                          setTurnstileToken(token)
+                          setErrors(prev => ({ ...prev, turnstile: undefined }))
+                        }}
+                        onExpire={() => setTurnstileToken(null)}
+                        onError={() => setTurnstileToken(null)}
+                      />
+                      {errors.turnstile && (
+                        <p className="mt-2 text-sm text-red-400">{errors.turnstile}</p>
+                      )}
+                    </div>
                     <button
                       type="submit"
                       disabled={formState === 'submitting'}
