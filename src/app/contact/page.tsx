@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { Input, Textarea, CheckCircle, AlertCircle, Loader, PageTransition } from '@/components/ui'
 import { contactContent, contactPageContent, siteConfig } from '@/lib/content'
@@ -26,6 +26,36 @@ export default function ContactPage() {
     company: '',
     message: '',
   })
+
+  const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+
+  // Load reCAPTCHA v3 script
+  useEffect(() => {
+    if (!recaptchaSiteKey) return
+    const script = document.createElement('script')
+    script.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`
+    script.async = true
+    document.head.appendChild(script)
+    return () => {
+      document.head.removeChild(script)
+    }
+  }, [recaptchaSiteKey])
+
+  const getRecaptchaToken = useCallback(async (): Promise<string | null> => {
+    if (!recaptchaSiteKey) return null
+    try {
+      await new Promise<void>((resolve) => {
+        if (window.grecaptcha?.ready) {
+          window.grecaptcha.ready(() => resolve())
+        } else {
+          resolve()
+        }
+      })
+      return await window.grecaptcha.execute(recaptchaSiteKey, { action: 'contact_form' })
+    } catch {
+      return null
+    }
+  }, [recaptchaSiteKey])
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {}
@@ -58,7 +88,8 @@ export default function ContactPage() {
     setFormState('submitting')
 
     try {
-      // Send via Resend API route - handles both admin notification and user confirmation
+      const recaptchaToken = await getRecaptchaToken()
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -69,6 +100,7 @@ export default function ContactPage() {
           email: formData.email,
           company: formData.company,
           message: formData.message,
+          recaptchaToken,
         }),
       })
 
