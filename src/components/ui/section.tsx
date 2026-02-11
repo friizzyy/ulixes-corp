@@ -8,10 +8,10 @@ import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion'
 type SpacingVariant = 'compact' | 'default' | 'relaxed' | 'dramatic'
 
 const spacingClasses: Record<SpacingVariant, string> = {
-  compact: 'py-16 md:py-20',
-  default: 'py-24 md:py-32',
-  relaxed: 'py-32 md:py-40',
-  dramatic: 'py-40 md:py-48',
+  compact: 'py-12 sm:py-16 md:py-20',
+  default: 'py-16 sm:py-20 md:py-32',
+  relaxed: 'py-20 sm:py-28 md:py-40',
+  dramatic: 'py-24 sm:py-32 md:py-48',
 }
 
 interface SectionProps extends HTMLMotionProps<'section'> {

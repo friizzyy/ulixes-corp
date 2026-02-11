@@ -255,14 +255,15 @@ export const pageTransition: Variants = {
 }
 
 // Viewport settings for scroll animations
+// Smaller margin on mobile ensures elements animate earlier when scrolling
 export const viewportOnce = {
   once: true,
-  margin: '-50px',
+  margin: '-30px',
 }
 
 export const viewportRepeating = {
   once: false,
-  margin: '-100px',
+  margin: '-60px',
 }
 
 // Reduced motion utilities

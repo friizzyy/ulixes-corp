@@ -16,7 +16,7 @@ export default function ExperiencePage() {
   return (
     <PageTransition>
       {/* Hero */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-20 relative z-10">
+      <section className="pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-40 md:pb-20 relative z-10">
         <div className="container-main">
           <motion.div
             className="max-w-4xl"
@@ -25,10 +25,10 @@ export default function ExperiencePage() {
             animate="visible"
           >
             <motion.div variants={fadeUp} className="section-label">{hero.label}</motion.div>
-            <motion.h1 variants={fadeUp} className="text-display-lg md:text-display-xl font-bold mb-6">
+            <motion.h1 variants={fadeUp} className="text-[2.25rem] sm:text-display-lg md:text-display-xl font-bold mb-6">
               {hero.headline}
             </motion.h1>
-            <motion.p variants={fadeUp} className="text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
+            <motion.p variants={fadeUp} className="text-base sm:text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
               {hero.description}
             </motion.p>
           </motion.div>
@@ -36,10 +36,10 @@ export default function ExperiencePage() {
       </section>
 
       {/* Stats Banner */}
-      <section className="pb-24 md:pb-32">
+      <section className="pb-16 sm:pb-20 md:pb-32">
         <div className="container-main">
           <motion.div
-            className="relative mb-20 p-10 md:p-16 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
+            className="relative mb-20 p-5 sm:p-8 md:p-16 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
@@ -55,20 +55,20 @@ export default function ExperiencePage() {
                 <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                   Institutional Perspective
                 </h2>
-                <p className="text-heading-lg md:text-display-sm font-semibold text-text-primary max-w-lg">
+                <p className="text-base sm:text-heading-lg md:text-display-sm font-semibold text-text-primary max-w-lg">
                   Built from inside the organizations we work with today.
                 </p>
               </motion.div>
 
               <motion.div
-                className="flex gap-12 md:gap-16"
+                className="flex gap-6 sm:gap-10 md:gap-16"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
               >
                 {stats.map((stat) => (
                   <div key={stat.label} className="text-right">
-                    <div className="text-5xl md:text-6xl font-bold gradient-text mb-1">
+                    <div className="text-3xl sm:text-5xl md:text-6xl font-bold gradient-text mb-1">
                       {stat.value}
                     </div>
                     <div className="text-body-sm text-text-muted font-mono uppercase tracking-wider">
@@ -82,7 +82,7 @@ export default function ExperiencePage() {
 
           {/* Narrative Grid */}
           <motion.div
-            className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-8"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
@@ -133,9 +133,9 @@ export default function ExperiencePage() {
       </motion.section>
 
       {/* Institutions Categories - Accordion Style */}
-      <section className="py-20 md:py-28">
+      <section className="py-14 sm:py-20 md:py-28">
         <div className="container-main">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16">
             {/* Left Column - Header */}
             <motion.div
               className="lg:col-span-4 lg:sticky lg:top-32 lg:self-start"
@@ -147,7 +147,7 @@ export default function ExperiencePage() {
               <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                 Where We&apos;ve Worked
               </motion.h2>
-              <motion.p variants={fadeUp} className="text-heading-lg md:text-display-sm font-bold mb-4">
+              <motion.p variants={fadeUp} className="text-base sm:text-heading-lg md:text-display-sm font-bold mb-4">
                 Our experience spans seven distinct institutional sectors.
               </motion.p>
               <motion.p variants={fadeUp} className="text-body-sm text-text-muted">
@@ -178,7 +178,7 @@ export default function ExperiencePage() {
                       >
                         <div
                           className={`
-                            flex items-center justify-between gap-4 p-4 rounded-md border transition-all duration-300
+                            min-h-[44px] flex items-center justify-between gap-4 p-4 rounded-md border transition-all duration-300
                             ${isExpanded
                               ? 'bg-surface border-accent/40'
                               : 'bg-transparent border-border hover:border-border-accent hover:bg-surface/50'
@@ -229,7 +229,7 @@ export default function ExperiencePage() {
       </section>
 
       {/* Case Studies Section */}
-      <section className="py-24 md:py-32 bg-bg-secondary/50 border-y border-border">
+      <section className="py-16 sm:py-20 md:py-32 bg-bg-secondary/50 border-y border-border">
         <div className="container-main">
           <motion.div
             className="mb-16"
@@ -241,7 +241,7 @@ export default function ExperiencePage() {
             <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
               Selected Engagements
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-heading-lg md:text-display-sm font-bold max-w-xl">
+            <motion.p variants={fadeUp} className="text-base sm:text-heading-lg md:text-display-sm font-bold max-w-xl">
               Patterns from our work. Most clients require confidentiality. These represent what we can discuss.
             </motion.p>
           </motion.div>
@@ -258,7 +258,7 @@ export default function ExperiencePage() {
               <button
                 key={cs.id}
                 onClick={() => setActiveStudy(index)}
-                className={`group relative px-6 py-3 transition-all duration-300 ${
+                className={`group relative px-6 py-3 min-h-[44px] transition-all duration-300 ${
                   activeStudy === index
                     ? 'text-text-primary'
                     : 'text-text-muted hover:text-text-secondary'
@@ -281,7 +281,7 @@ export default function ExperiencePage() {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeStudy}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24"
+              className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-24"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -305,7 +305,7 @@ export default function ExperiencePage() {
                 </motion.div>
 
                 <motion.h3
-                  className="text-display-sm md:text-display-md font-bold mb-6 leading-tight"
+                  className="text-[1.5rem] sm:text-display-sm md:text-display-md font-bold mb-6 leading-tight"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15 }}
@@ -383,7 +383,7 @@ export default function ExperiencePage() {
                   <h4 className="text-xs font-mono uppercase tracking-widest text-accent mb-8">
                     Results
                   </h4>
-                  <div className="grid grid-cols-3 gap-8">
+                  <div className="grid grid-cols-3 gap-4 sm:gap-8">
                     {study.outcome.metrics.map((metric, idx) => (
                       <motion.div
                         key={metric.label}
@@ -391,7 +391,7 @@ export default function ExperiencePage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 + idx * 0.1 }}
                       >
-                        <div className="text-3xl md:text-4xl font-bold text-text-primary mb-2">
+                        <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary mb-2">
                           {metric.value}
                         </div>
                         <div className="text-body-sm text-text-muted">
@@ -408,10 +408,10 @@ export default function ExperiencePage() {
       </section>
 
       {/* Closing Quote + CTA */}
-      <section className="py-24 md:py-32 border-t border-border">
+      <section className="py-16 sm:py-20 md:py-32 border-t border-border">
         <div className="container-main">
           <motion.div
-            className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-24"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -424,7 +424,7 @@ export default function ExperiencePage() {
                 <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                   Our Perspective
                 </h2>
-                <blockquote className="text-display-sm font-bold mb-6 leading-tight">
+                <blockquote className="text-[1.5rem] sm:text-display-sm font-bold mb-6 leading-tight">
                   &ldquo;{closing.quote}&rdquo;
                 </blockquote>
               </div>
@@ -433,7 +433,7 @@ export default function ExperiencePage() {
             {/* CTA Card */}
             <motion.div
               variants={fadeUp}
-              className="relative p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface to-bg-secondary border border-border"
+              className="relative p-5 sm:p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface to-bg-secondary border border-border"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl" />
               <div className="relative">
@@ -445,7 +445,7 @@ export default function ExperiencePage() {
                 </p>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow transition-shadow"
+                  className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow transition-shadow"
                 >
                   {cta.primaryCta}
                   <ArrowUpRight size={16} />

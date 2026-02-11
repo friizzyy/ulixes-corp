@@ -134,7 +134,7 @@ export default function ContactPage() {
   return (
     <PageTransition>
       {/* Hero */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-20 relative z-10">
+      <section className="pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-40 md:pb-20 relative z-10">
         <div className="container-main">
           <motion.div
             className="max-w-4xl"
@@ -143,10 +143,10 @@ export default function ContactPage() {
             animate="visible"
           >
             <motion.div variants={fadeUp} className="section-label">Contact</motion.div>
-            <motion.h1 variants={fadeUp} className="text-display-lg md:text-display-xl font-bold mb-6">
+            <motion.h1 variants={fadeUp} className="text-[2.25rem] sm:text-display-lg md:text-display-xl font-bold mb-6">
               {hero.headline}
             </motion.h1>
-            <motion.p variants={fadeUp} className="text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
+            <motion.p variants={fadeUp} className="text-base sm:text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
               {hero.description}
             </motion.p>
           </motion.div>
@@ -154,9 +154,9 @@ export default function ContactPage() {
       </section>
 
       {/* Form + Info */}
-      <section className="pb-24 md:pb-32">
+      <section className="pb-16 sm:pb-20 md:pb-32">
         <div className="container-main">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16">
             {/* Form */}
             <motion.div
               className="lg:col-span-7"
@@ -164,7 +164,7 @@ export default function ContactPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <div className="relative p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden">
+              <div className="relative p-5 sm:p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden">
                 {/* Decorative elements */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
 
@@ -251,7 +251,7 @@ export default function ContactPage() {
                     <button
                       type="submit"
                       disabled={formState === 'submitting'}
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow transition-shadow disabled:opacity-50"
+                      className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow active:scale-[0.98] transition-shadow disabled:opacity-50"
                     >
                       {formState === 'submitting' ? (
                         <>
@@ -275,7 +275,7 @@ export default function ContactPage() {
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               {/* Direct Contact */}
-              <div className="relative p-8 rounded-lg bg-bg-secondary border border-border overflow-hidden">
+              <div className="relative p-5 sm:p-8 rounded-lg bg-bg-secondary border border-border overflow-hidden">
                 <div className="absolute -top-10 -right-10 w-20 h-20 bg-accent/5 rounded-full blur-2xl" />
 
                 <div className="relative">
@@ -286,7 +286,7 @@ export default function ContactPage() {
                     <div className="text-body-sm text-text-muted mb-2">Email</div>
                     <a
                       href={`mailto:${siteConfig.email}`}
-                      className="text-heading-md font-medium text-text-primary hover:text-accent transition-colors"
+                      className="text-base sm:text-heading-md font-medium text-text-primary hover:text-accent transition-colors break-all"
                     >
                       {siteConfig.email}
                     </a>
@@ -315,9 +315,9 @@ export default function ContactPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-24 md:py-32 bg-bg-secondary/50 border-t border-border">
+      <section className="py-16 sm:py-20 md:py-32 bg-bg-secondary/50 border-t border-border">
         <div className="container-main">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16">
             <motion.div
               className="lg:col-span-4"
               initial={{ opacity: 0, x: -30 }}
@@ -329,7 +329,7 @@ export default function ContactPage() {
                 <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                   {contactPageContent.faq.title}
                 </h2>
-                <p className="text-display-sm font-bold">
+                <p className="text-[1.75rem] sm:text-display-sm font-bold">
                   Before you reach out
                 </p>
               </div>

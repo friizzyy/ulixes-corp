@@ -43,7 +43,7 @@ export default function ServicesPage() {
   return (
     <PageTransition>
       {/* Hero */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-20 relative z-10">
+      <section className="pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-40 md:pb-20 relative z-10">
         <div className="container-main">
           <motion.div
             className="max-w-4xl"
@@ -52,10 +52,10 @@ export default function ServicesPage() {
             animate="visible"
           >
             <motion.div variants={fadeUp} className="section-label">{servicesPageContent.hero.label}</motion.div>
-            <motion.h1 variants={fadeUp} className="text-display-lg md:text-display-xl font-bold mb-6">
+            <motion.h1 variants={fadeUp} className="text-[2.25rem] sm:text-display-lg md:text-display-xl font-bold mb-6">
               {servicesPageContent.hero.headline}
             </motion.h1>
-            <motion.p variants={fadeUp} className="text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
+            <motion.p variants={fadeUp} className="text-base sm:text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
               {servicesPageContent.hero.description}
             </motion.p>
           </motion.div>
@@ -63,11 +63,11 @@ export default function ServicesPage() {
       </section>
 
       {/* Services Grid */}
-      <section className="pb-24 md:pb-32" ref={servicesGridRef}>
+      <section className="pb-16 sm:pb-20 md:pb-32" ref={servicesGridRef}>
         <div className="container-main">
           {/* Service Selector - Cards */}
           <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-16"
+            className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 mb-8 sm:mb-16"
             variants={staggerContainerFast}
             initial="hidden"
             animate="visible"
@@ -80,7 +80,7 @@ export default function ServicesPage() {
                   id={service.id}
                   variants={fadeUp}
                   onClick={() => setActiveIndex(index)}
-                  className={`group relative p-6 rounded-lg text-left transition-all duration-300 ${
+                  className={`group relative p-4 sm:p-6 rounded-lg text-left transition-all duration-300 ${
                     activeIndex === index
                       ? 'bg-surface border-accent/50'
                       : 'bg-bg-secondary hover:bg-surface/50'
@@ -94,7 +94,7 @@ export default function ServicesPage() {
                     />
                   )}
 
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-4 transition-colors ${
+                  <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center mb-4 transition-colors ${
                     activeIndex === index
                       ? 'bg-accent/20 text-accent'
                       : 'bg-surface text-text-muted group-hover:text-accent'
@@ -106,7 +106,7 @@ export default function ServicesPage() {
                     {String(index + 1).padStart(2, '0')}
                   </div>
 
-                  <h3 className={`text-heading-sm font-medium transition-colors ${
+                  <h3 className={`text-sm sm:text-heading-sm font-medium transition-colors ${
                     activeIndex === index ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'
                   }`}>
                     {service.title}
@@ -118,7 +118,7 @@ export default function ServicesPage() {
 
           {/* Active Service Content */}
           <motion.div
-            className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
@@ -134,14 +134,14 @@ export default function ServicesPage() {
                   transition={{ duration: 0.3 }}
                 >
                   <div className="flex items-center gap-4 mb-8">
-                    <div className="w-14 h-14 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
+                    <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
                       <IconComponent size={28} />
                     </div>
                     <div>
                       <div className="text-xs font-mono text-accent uppercase tracking-wider mb-1">
                         Service {String(activeIndex + 1).padStart(2, '0')}
                       </div>
-                      <h2 className="text-display-sm font-bold">
+                      <h2 className="text-[1.5rem] sm:text-display-sm font-bold">
                         {activeService.title}
                       </h2>
                     </div>
@@ -156,7 +156,7 @@ export default function ServicesPage() {
                     <h3 className="text-xs font-mono uppercase tracking-widest text-accent mb-6">
                       What You Get
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                       {activeService.whatYouGet.map((item, i) => (
                         <motion.div
                           key={i}
@@ -196,7 +196,7 @@ export default function ServicesPage() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
-                  className="relative p-8 rounded-lg overflow-hidden"
+                  className="relative p-5 sm:p-8 rounded-lg overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 via-red-500/5 to-transparent" />
                   <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-red-500/50 via-red-500/20 to-transparent" />
@@ -219,7 +219,7 @@ export default function ServicesPage() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3, delay: 0.1 }}
-                  className="relative p-8 rounded-lg overflow-hidden"
+                  className="relative p-5 sm:p-8 rounded-lg overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-accent/5 to-transparent" />
                   <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-accent/50 via-accent/20 to-transparent" />
@@ -260,7 +260,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Engagement Process */}
-      <section className="py-24 md:py-32 bg-bg-secondary/50 border-y border-border">
+      <section className="py-16 sm:py-20 md:py-32 bg-bg-secondary/50 border-y border-border">
         <div className="container-main">
           <motion.div
             className="mb-16"
@@ -272,13 +272,13 @@ export default function ServicesPage() {
             <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
               {servicesPageContent.process.title}
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-display-sm md:text-display-md font-bold max-w-2xl">
+            <motion.p variants={fadeUp} className="text-[1.75rem] sm:text-display-sm md:text-display-md font-bold max-w-2xl">
               {servicesPageContent.process.description}
             </motion.p>
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6"
             variants={staggerContainerFast}
             initial="hidden"
             whileInView="visible"
@@ -310,10 +310,10 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 md:py-28">
+      <section className="py-14 sm:py-20 md:py-28">
         <div className="container-main">
           <motion.div
-            className="relative p-10 md:p-16 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
+            className="relative p-6 sm:p-10 md:p-16 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={viewportOnce}
@@ -331,7 +331,7 @@ export default function ServicesPage() {
               viewport={viewportOnce}
             >
               <motion.div variants={fadeUp} className="max-w-xl">
-                <h2 className="text-display-sm font-bold mb-3">
+                <h2 className="text-[1.75rem] sm:text-display-sm font-bold mb-3">
                   {servicesPageContent.cta.title}
                 </h2>
                 <p className="text-body-lg text-text-secondary">
@@ -341,7 +341,7 @@ export default function ServicesPage() {
               <motion.div variants={fadeUp}>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow transition-shadow shrink-0"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow transition-shadow shrink-0 min-h-[48px]"
                 >
                   {servicesPageContent.cta.primaryCta}
                   <ArrowUpRight size={16} />

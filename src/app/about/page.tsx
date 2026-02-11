@@ -12,7 +12,7 @@ export default function AboutPage() {
   return (
     <PageTransition>
       {/* Hero */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-20 relative z-10">
+      <section className="pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-40 md:pb-20 relative z-10">
         <div className="container-main">
           <motion.div
             className="max-w-4xl"
@@ -21,10 +21,10 @@ export default function AboutPage() {
             animate="visible"
           >
             <motion.div variants={fadeUp} className="section-label">About</motion.div>
-            <motion.h1 variants={fadeUp} className="text-display-lg md:text-display-xl font-bold mb-6">
+            <motion.h1 variants={fadeUp} className="text-[2.25rem] sm:text-display-lg md:text-display-xl font-bold mb-6">
               {hero.headline}
             </motion.h1>
-            <motion.p variants={fadeUp} className="text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
+            <motion.p variants={fadeUp} className="text-base sm:text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
               {hero.description}
             </motion.p>
           </motion.div>
@@ -32,11 +32,11 @@ export default function AboutPage() {
       </section>
 
       {/* Origin Story */}
-      <section className="pb-24 md:pb-32">
+      <section className="pb-16 sm:pb-20 md:pb-32">
         <div className="container-main">
           {/* Large Stats Banner */}
           <motion.div
-            className="relative mb-20 p-10 md:p-16 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
+            className="relative mb-20 p-5 sm:p-8 md:p-16 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
@@ -53,13 +53,13 @@ export default function AboutPage() {
                 <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                   {origin.title}
                 </h2>
-                <p className="text-heading-lg md:text-display-sm font-semibold text-text-primary max-w-lg">
+                <p className="text-base sm:text-heading-lg md:text-display-sm font-semibold text-text-primary max-w-lg">
                   We came from trading floors, treasury functions, and Big Four advisory practices.
                 </p>
               </motion.div>
 
               <motion.div
-                className="flex gap-12 md:gap-16"
+                className="flex gap-6 sm:gap-10 md:gap-16"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
@@ -72,7 +72,7 @@ export default function AboutPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.6 + idx * 0.1 }}
                   >
-                    <div className="text-5xl md:text-6xl font-bold gradient-text mb-1">
+                    <div className="text-3xl sm:text-5xl md:text-6xl font-bold gradient-text mb-1">
                       {stat.value}
                     </div>
                     <div className="text-body-sm text-text-muted font-mono uppercase tracking-wider">
@@ -86,7 +86,7 @@ export default function AboutPage() {
 
           {/* Narrative Grid */}
           <motion.div
-            className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-8"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
@@ -116,7 +116,7 @@ export default function AboutPage() {
       </section>
 
       {/* What We Believe */}
-      <section className="py-24 md:py-32 bg-bg-secondary/50 border-y border-border">
+      <section className="py-16 sm:py-20 md:py-32 bg-bg-secondary/50 border-y border-border">
         <div className="container-main">
           <motion.div
             className="mb-16"
@@ -128,13 +128,13 @@ export default function AboutPage() {
             <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
               What We Believe
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-display-sm md:text-display-md font-bold max-w-2xl">
+            <motion.p variants={fadeUp} className="text-[1.75rem] sm:text-display-sm md:text-display-md font-bold max-w-2xl">
               The principles that shape every engagement
             </motion.p>
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+            className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"
             variants={staggerContainerFast}
             initial="hidden"
             whileInView="visible"
@@ -144,7 +144,7 @@ export default function AboutPage() {
               <motion.div
                 key={point.title}
                 variants={fadeUp}
-                className="group relative p-8 rounded-lg bg-bg-primary border border-border hover:border-accent/30 transition-all duration-300"
+                className="group relative p-5 sm:p-8 rounded-lg bg-bg-primary border border-border hover:border-accent/30 transition-all duration-300"
               >
                 {/* Hover glow effect */}
                 <div className="absolute inset-0 rounded-lg bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -167,9 +167,9 @@ export default function AboutPage() {
       </section>
 
       {/* Operating Principles */}
-      <section className="py-24 md:py-32">
+      <section className="py-16 sm:py-20 md:py-32">
         <div className="container-main">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16">
             <motion.div
               className="lg:col-span-4"
               initial={{ opacity: 0, x: -30 }}
@@ -181,7 +181,7 @@ export default function AboutPage() {
                 <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                   How We Work
                 </h2>
-                <p className="text-display-sm font-bold mb-6">
+                <p className="text-[1.75rem] sm:text-display-sm font-bold mb-4 sm:mb-6">
                   {aboutPageContent.values.title}
                 </p>
                 <p className="text-body-md text-text-secondary">
@@ -226,10 +226,10 @@ export default function AboutPage() {
       </section>
 
       {/* Team + Hiring */}
-      <section className="py-24 md:py-32 border-t border-border">
+      <section className="py-16 sm:py-20 md:py-32 border-t border-border">
         <div className="container-main">
           <motion.div
-            className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 lg:gap-24"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -242,7 +242,7 @@ export default function AboutPage() {
                 <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                   The Team
                 </h2>
-                <p className="text-display-sm font-bold mb-6">
+                <p className="text-[1.75rem] sm:text-display-sm font-bold mb-4 sm:mb-6">
                   {team.title}
                 </p>
                 <p className="text-body-lg text-text-secondary leading-relaxed mb-8">
@@ -261,7 +261,7 @@ export default function AboutPage() {
             {/* Hiring Card */}
             <motion.div
               variants={fadeUp}
-              className="relative p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface to-bg-secondary border border-border"
+              className="relative p-5 sm:p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface to-bg-secondary border border-border"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl" />
               <div className="relative">

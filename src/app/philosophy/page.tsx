@@ -14,7 +14,7 @@ export default function PhilosophyPage() {
   return (
     <PageTransition>
       {/* Hero */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-20 relative z-10">
+      <section className="pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-40 md:pb-20 relative z-10">
         <div className="container-main">
           <motion.div
             className="max-w-4xl"
@@ -23,13 +23,13 @@ export default function PhilosophyPage() {
             animate="visible"
           >
             <motion.div variants={fadeUp} className="section-label">{hero.label}</motion.div>
-            <motion.h1 variants={fadeUp} className="text-display-lg md:text-display-xl font-bold mb-4">
+            <motion.h1 variants={fadeUp} className="text-[2.25rem] sm:text-display-lg md:text-display-xl font-bold mb-4">
               {hero.headline}
             </motion.h1>
-            <motion.p variants={fadeUp} className="text-heading-md md:text-heading-lg text-accent font-medium mb-6">
+            <motion.p variants={fadeUp} className="text-base sm:text-heading-md md:text-heading-lg text-accent font-medium mb-6">
               {hero.subtitle}
             </motion.p>
-            <motion.p variants={fadeUp} className="text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
+            <motion.p variants={fadeUp} className="text-base sm:text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
               {hero.description}
             </motion.p>
           </motion.div>
@@ -37,10 +37,10 @@ export default function PhilosophyPage() {
       </section>
 
       {/* Introduction Banner */}
-      <section className="pb-20 md:pb-28">
+      <section className="pb-12 sm:pb-16 md:pb-28">
         <div className="container-main">
           <motion.div
-            className="relative p-10 md:p-16 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
+            className="relative p-5 sm:p-8 md:p-16 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3, ease: [0.4, 0, 0.2, 1] }}
@@ -49,7 +49,7 @@ export default function PhilosophyPage() {
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
             <div className="absolute -top-20 -right-20 w-40 h-40 bg-accent/5 rounded-full blur-3xl" />
 
-            <p className="relative text-body-lg md:text-xl text-text-primary leading-relaxed max-w-4xl">
+            <p className="relative text-base sm:text-body-lg md:text-xl text-text-primary leading-relaxed max-w-4xl">
               {intro.text}
             </p>
           </motion.div>
@@ -57,9 +57,9 @@ export default function PhilosophyPage() {
       </section>
 
       {/* Philosophy Principles */}
-      <section className="py-20 md:py-28 border-t border-border">
+      <section className="py-14 sm:py-20 md:py-28 border-t border-border">
         <div className="container-main">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16">
             {/* Left: Sticky Navigation */}
             <motion.div
               className="lg:col-span-4"
@@ -77,7 +77,7 @@ export default function PhilosophyPage() {
                     <button
                       key={section.id}
                       onClick={() => setActiveSection(index)}
-                      className={`group w-full text-left p-4 rounded-lg transition-all duration-200 ${
+                      className={`group w-full text-left p-3 sm:p-4 min-h-[44px] rounded-lg transition-all duration-200 ${
                         activeSection === index
                           ? 'bg-surface'
                           : 'hover:bg-surface/50'
@@ -120,7 +120,7 @@ export default function PhilosophyPage() {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeSection}
-                    className="absolute -top-8 -left-4 text-[12rem] font-bold text-surface select-none leading-none opacity-30 pointer-events-none -z-10"
+                    className="absolute -top-8 -left-4 text-[6rem] sm:text-[9rem] lg:text-[12rem] font-bold text-surface select-none leading-none opacity-30 pointer-events-none -z-10"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 0.3, scale: 1 }}
                     exit={{ opacity: 0, scale: 1.2 }}
@@ -139,7 +139,7 @@ export default function PhilosophyPage() {
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.4 }}
                   >
-                    <h2 className="text-display-sm md:text-display-md font-bold mb-8">
+                    <h2 className="text-[1.75rem] sm:text-display-sm md:text-display-md font-bold mb-8">
                       {sections[activeSection].title}
                     </h2>
 
@@ -170,7 +170,7 @@ export default function PhilosophyPage() {
                   <button
                     key={index}
                     onClick={() => setActiveSection(index)}
-                    className={`h-1 rounded-full transition-all duration-300 ${
+                    className={`min-h-[44px] flex items-center h-1 rounded-full transition-all duration-300 ${
                       activeSection === index
                         ? 'w-8 bg-accent'
                         : 'w-2 bg-border hover:bg-text-muted'
@@ -184,10 +184,10 @@ export default function PhilosophyPage() {
       </section>
 
       {/* Closing CTA */}
-      <section className="py-20 md:py-28 border-t border-border">
+      <section className="py-14 sm:py-20 md:py-28 border-t border-border">
         <div className="container-main">
           <motion.div
-            className="relative p-10 md:p-16 rounded-lg bg-bg-secondary border border-border overflow-hidden"
+            className="relative p-5 sm:p-8 md:p-16 rounded-lg bg-bg-secondary border border-border overflow-hidden"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={viewportOnce}
@@ -219,7 +219,7 @@ export default function PhilosophyPage() {
               >
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow transition-shadow shrink-0"
+                  className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow transition-shadow shrink-0"
                 >
                   Start a Conversation
                   <ArrowUpRight size={16} />

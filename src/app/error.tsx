@@ -43,18 +43,18 @@ export default function Error({
           </svg>
         </motion.div>
         <motion.h1
-          className="text-display-sm font-bold mb-4"
+          className="text-[1.75rem] sm:text-display-sm font-bold mb-4"
           variants={fadeUp}
         >
           Something went wrong
         </motion.h1>
         <motion.p
-          className="text-body-lg text-text-secondary mb-10 max-w-md mx-auto"
+          className="text-base sm:text-body-lg text-text-secondary mb-8 sm:mb-10 max-w-md mx-auto"
           variants={fadeUp}
         >
           An unexpected error occurred. Our team has been notified.
         </motion.p>
-        <motion.div className="flex flex-col sm:flex-row gap-4 justify-center" variants={fadeUp}>
+        <motion.div className="flex flex-col xs:flex-row gap-3 sm:gap-4 justify-center" variants={fadeUp}>
           <Button onClick={reset} size="lg">
             Try Again
           </Button>

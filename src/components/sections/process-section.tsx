@@ -51,28 +51,28 @@ export function ProcessSection() {
   const [activePhase, setActivePhase] = useState(0)
 
   return (
-    <section className="relative z-10 py-24 md:py-32 bg-bg-secondary/40">
+    <section className="relative z-10 py-16 sm:py-20 md:py-32 bg-bg-secondary/40">
       <div className="container-main">
         {/* Header */}
         <motion.div
-          className="max-w-2xl mb-16"
+          className="max-w-2xl mb-10 sm:mb-16"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
         >
           <motion.div variants={fadeUp} className="section-label">How We Work</motion.div>
-          <motion.h2 variants={fadeUp} className="text-display-sm md:text-display-md font-bold mb-4">
+          <motion.h2 variants={fadeUp} className="text-[1.75rem] sm:text-display-sm md:text-display-md font-bold mb-3 sm:mb-4">
             Predictable process.
           </motion.h2>
-          <motion.p variants={fadeUp} className="text-body-lg text-text-secondary">
+          <motion.p variants={fadeUp} className="text-base sm:text-body-lg text-text-secondary">
             Every engagement follows a disciplined rhythm so complex changes land without surprises.
           </motion.p>
         </motion.div>
 
-        {/* Phase Cards */}
+        {/* Phase Cards — horizontal scroll on small mobile, grid on md+ */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12"
+          className="grid grid-cols-3 md:grid-cols-3 gap-2 sm:gap-4 mb-8 sm:mb-12"
           variants={staggerContainerFast}
           initial="hidden"
           whileInView="visible"
@@ -87,10 +87,10 @@ export function ProcessSection() {
                 key={phase.id}
                 variants={fadeUp}
                 onClick={() => setActivePhase(index)}
-                className={`group relative p-6 rounded-lg text-left transition-all duration-300 ${
+                className={`group relative p-4 sm:p-6 rounded-lg text-left transition-all duration-300 min-h-[44px] ${
                   isActive
                     ? 'bg-surface border-accent/50'
-                    : 'bg-bg-secondary hover:bg-surface/50'
+                    : 'bg-bg-secondary hover:bg-surface/50 active:bg-surface/50'
                 } border border-border`}
               >
                 {isActive && (
@@ -100,22 +100,23 @@ export function ProcessSection() {
                   />
                 )}
 
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center transition-colors ${
                     isActive
                       ? 'bg-accent/20 text-accent'
                       : 'bg-surface text-text-muted group-hover:text-accent'
                   }`}>
-                    <Icon size={20} />
+                    <Icon size={16} className="sm:hidden" />
+                    <Icon size={20} className="hidden sm:block" />
                   </div>
-                  <span className={`text-xs font-mono transition-colors ${
+                  <span className={`text-[10px] sm:text-xs font-mono transition-colors ${
                     isActive ? 'text-accent' : 'text-text-muted'
                   }`}>
                     {phase.duration}
                   </span>
                 </div>
 
-                <h3 className={`text-heading-md font-semibold transition-colors ${
+                <h3 className={`text-sm sm:text-heading-md font-semibold transition-colors ${
                   isActive ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'
                 }`}>
                   {phase.title}
@@ -127,7 +128,7 @@ export function ProcessSection() {
 
         {/* Active Phase Content */}
         <motion.div
-          className="relative p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
+          className="relative p-5 sm:p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={viewportOnce}
@@ -142,22 +143,22 @@ export function ProcessSection() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
-              className="relative grid grid-cols-1 md:grid-cols-2 gap-10"
+              className="relative grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10"
             >
               <div>
-                <div className="text-xs font-mono text-accent uppercase tracking-widest mb-4">
+                <div className="text-xs font-mono text-accent uppercase tracking-widest mb-3 sm:mb-4">
                   Phase {String(activePhase + 1).padStart(2, '0')} — {phases[activePhase].title}
                 </div>
-                <p className="text-body-lg text-text-secondary leading-relaxed">
+                <p className="text-base sm:text-body-lg text-text-secondary leading-relaxed">
                   {phases[activePhase].description}
                 </p>
               </div>
 
               <div>
-                <div className="text-xs font-mono uppercase tracking-widest text-text-muted mb-4">
+                <div className="text-xs font-mono uppercase tracking-widest text-text-muted mb-3 sm:mb-4">
                   Deliverables
                 </div>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                   {phases[activePhase].deliverables.map((item, i) => (
                     <motion.li
                       key={i}
@@ -182,7 +183,7 @@ export function ProcessSection() {
 
         {/* Progress Indicator */}
         <motion.div
-          className="flex items-center justify-center gap-2 mt-8"
+          className="flex items-center justify-center gap-3 mt-6 sm:mt-8"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={viewportOnce}
@@ -192,12 +193,17 @@ export function ProcessSection() {
             <button
               key={index}
               onClick={() => setActivePhase(index)}
-              className={`h-1 rounded-full transition-all duration-300 ${
+              className={`h-1 rounded-full transition-all duration-300 min-h-[44px] flex items-center ${
                 activePhase === index
-                  ? 'w-8 bg-accent'
-                  : 'w-2 bg-border hover:bg-text-muted'
+                  ? 'bg-accent'
+                  : 'bg-border hover:bg-text-muted active:bg-text-muted'
               }`}
-            />
+              aria-label={`Go to phase ${index + 1}`}
+            >
+              <div className={`h-1 rounded-full ${
+                activePhase === index ? 'w-8 bg-accent' : 'w-2 bg-border'
+              }`} />
+            </button>
           ))}
         </motion.div>
       </div>

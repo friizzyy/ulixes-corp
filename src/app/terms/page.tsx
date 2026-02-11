@@ -11,7 +11,7 @@ export default function TermsPage() {
   return (
     <PageTransition>
       {/* Hero */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-20 relative z-10">
+      <section className="pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-40 md:pb-20 relative z-10">
         <motion.div
           className="container-main"
           variants={staggerContainer}
@@ -20,7 +20,7 @@ export default function TermsPage() {
         >
           <motion.div className="max-w-3xl" variants={fadeUp}>
             <div className="section-label">Legal</div>
-            <h1 className="text-display-md font-bold mb-4">
+            <h1 className="text-[1.75rem] sm:text-display-sm md:text-display-md font-bold mb-4">
               {termsContent.title}
             </h1>
             <p className="text-body-md text-text-muted font-mono">
@@ -32,7 +32,7 @@ export default function TermsPage() {
 
       {/* Content */}
       <Section className="pt-0">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 sm:gap-12">
           {/* Table of Contents */}
           <motion.div
             className="lg:sticky lg:top-32 self-start"

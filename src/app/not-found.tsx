@@ -15,19 +15,19 @@ export default function NotFound() {
         animate="visible"
       >
         <motion.div
-          className="text-[8rem] md:text-[12rem] font-bold gradient-text leading-none mb-4"
+          className="text-[5rem] sm:text-[8rem] md:text-[12rem] font-bold gradient-text leading-none mb-4"
           variants={fadeUp}
         >
           {notFoundContent.headline}
         </motion.div>
         <motion.h1
-          className="text-display-sm font-bold mb-4"
+          className="text-[1.75rem] sm:text-display-sm font-bold mb-4"
           variants={fadeUp}
         >
           {notFoundContent.title}
         </motion.h1>
         <motion.p
-          className="text-body-lg text-text-secondary mb-10 max-w-md mx-auto"
+          className="text-base sm:text-body-lg text-text-secondary mb-8 sm:mb-10 max-w-md mx-auto"
           variants={fadeUp}
         >
           {notFoundContent.description}

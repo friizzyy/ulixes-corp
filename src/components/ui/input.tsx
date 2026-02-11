@@ -13,7 +13,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const inputId = id || props.name
 
     return (
-      <div className="space-y-2">
+      <div className="space-y-1.5 sm:space-y-2">
         {label && (
           <label
             htmlFor={inputId}
@@ -26,8 +26,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={inputId}
           className={cn(
-            'w-full px-4 py-3 bg-bg-secondary border border-border rounded-sm',
-            'text-body-md text-text-primary placeholder:text-text-muted',
+            'w-full px-4 py-3 min-h-[48px] bg-bg-secondary border border-border rounded-sm',
+            'text-[16px] sm:text-body-md text-text-primary placeholder:text-text-muted',
             'transition-all duration-200',
             'focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent',
             'hover:border-border-accent',
@@ -37,7 +37,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {error && (
-          <p className="text-body-sm text-red-400">{error}</p>
+          <p className="text-body-sm text-red-400 mt-1">{error}</p>
         )}
       </div>
     )
@@ -56,7 +56,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const inputId = id || props.name
 
     return (
-      <div className="space-y-2">
+      <div className="space-y-1.5 sm:space-y-2">
         {label && (
           <label
             htmlFor={inputId}
@@ -70,7 +70,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           id={inputId}
           className={cn(
             'w-full px-4 py-3 bg-bg-secondary border border-border rounded-sm',
-            'text-body-md text-text-primary placeholder:text-text-muted',
+            'text-[16px] sm:text-body-md text-text-primary placeholder:text-text-muted',
             'transition-all duration-200 resize-none',
             'focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent',
             'hover:border-border-accent',
@@ -81,7 +81,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           {...props}
         />
         {error && (
-          <p className="text-body-sm text-red-400">{error}</p>
+          <p className="text-body-sm text-red-400 mt-1">{error}</p>
         )}
       </div>
     )
