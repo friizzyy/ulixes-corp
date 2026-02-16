@@ -72,35 +72,29 @@ export default function PhilosophyPage() {
                 <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-8">
                   Core Principles
                 </h2>
-                <nav className="space-y-1">
+                <nav className="space-y-0.5">
                   {sections.map((section, index) => (
                     <button
                       key={section.id}
                       onClick={() => setActiveSection(index)}
-                      className={`group w-full text-left p-3 sm:p-4 min-h-[44px] rounded-lg transition-all duration-200 ${
+                      className={`group w-full text-left p-3 sm:p-4 min-h-[44px] transition-all duration-200 border-l-2 ${
                         activeSection === index
-                          ? 'bg-surface'
-                          : 'hover:bg-surface/50'
+                          ? 'border-l-accent bg-gradient-to-r from-accent/[0.06] to-transparent'
+                          : 'border-l-transparent hover:bg-surface/30'
                       }`}
                     >
                       <div className="flex items-start gap-4">
-                        <span className={`text-xs font-mono transition-colors ${
-                          activeSection === index ? 'text-accent' : 'text-text-muted'
+                        <span className={`text-xs font-mono font-semibold transition-colors ${
+                          activeSection === index ? 'text-accent' : 'text-text-muted/50'
                         }`}>
                           {String(index + 1).padStart(2, '0')}
                         </span>
                         <span className={`text-heading-sm font-medium transition-colors leading-tight ${
-                          activeSection === index ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'
+                          activeSection === index ? 'text-text-primary' : 'text-text-muted group-hover:text-text-secondary'
                         }`}>
                           {section.title}
                         </span>
                       </div>
-                      {activeSection === index && (
-                        <motion.div
-                          className="ml-8 mt-2 h-0.5 w-12 bg-accent rounded-full"
-                          layoutId="activePrinciple"
-                        />
-                      )}
                     </button>
                   ))}
                 </nav>
@@ -170,12 +164,12 @@ export default function PhilosophyPage() {
                   <button
                     key={index}
                     onClick={() => setActiveSection(index)}
-                    className={`min-h-[44px] flex items-center h-1 rounded-full transition-all duration-300 ${
-                      activeSection === index
-                        ? 'w-8 bg-accent'
-                        : 'w-2 bg-border hover:bg-text-muted'
-                    }`}
-                  />
+                    className="min-h-[44px] flex items-center"
+                  >
+                    <div className={`rounded-full transition-all duration-300 ${
+                      activeSection === index ? 'w-6 h-1 bg-accent' : 'w-1.5 h-1.5 bg-border hover:bg-text-muted'
+                    }`} />
+                  </button>
                 ))}
               </div>
             </motion.div>
