@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tab Button Mockups — Ulixes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg-primary: #0a0a0b;
+    --bg-secondary: #111113;
+    --surface: #1f1f23;
+    --surface-hover: #27272b;
+    --border: rgba(255,255,255,0.06);
+    --border-accent: rgba(255,255,255,0.12);
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --accent: #8B5CF6;
+    --accent-secondary: #A78BFA;
+    --accent-glow: rgba(139,92,246,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Outfit', system-ui, sans-serif;
+    padding: 40px 24px 80px;
+    max-width: 1100px;
+    margin: 0 auto;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .page-desc {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 56px;
+    line-height: 1.6;
+  }
+
+  /* ---- shared ---- */
+  .mockup-block { margin-bottom: 72px; }
+
+  .mockup-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .mockup-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .mockup-desc {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 28px;
+    line-height: 1.6;
+    max-width: 640px;
+  }
+
+  /* ---- current (for reference) ---- */
+  .current-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .current-tab {
+    position: relative;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .current-tab.active {
+    background: var(--surface);
+    border-color: rgba(139,92,246,0.5);
+  }
+
+  .current-tab.active::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 12px 12px 0 0;
+  }
+
+  .current-tab .icon-box {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 12px;
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .current-tab.active .icon-box {
+    background: rgba(139,92,246,0.2);
+    color: var(--accent);
+  }
+
+  .current-tab .tab-label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: color 0.3s;
+  }
+
+  .current-tab.active .tab-label {
+    color: var(--text-primary);
+  }
+
+  /* ================================================================
+     OPTION A — Underline Minimal
+     Clean inline tabs with a sliding accent underline.
+     No card backgrounds. Quiet until active.
+     ================================================================ */
+  .option-a-row {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .option-a-tab {
+    position: relative;
+    padding: 14px 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.25s;
+  }
+
+  .option-a-tab .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+    transition: color 0.25s;
+  }
+
+  .option-a-tab .label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: color 0.25s;
+    white-space: nowrap;
+  }
+
+  .option-a-tab:hover .label { color: var(--text-secondary); }
+  .option-a-tab:hover .num { color: var(--text-secondary); }
+
+  .option-a-tab.active .label { color: var(--text-primary); }
+  .option-a-tab.active .num { color: var(--accent); }
+
+  .option-a-tab::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 24px;
+    right: 24px;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .option-a-tab.active::after {
+    transform: scaleX(1);
+  }
+
+  /* 4-col card variant for Services */
+  .option-a-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .option-a-grid .option-a-tab {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 16px 16px 14px;
+  }
+
+  .option-a-grid .option-a-tab::after {
+    left: 16px;
+    right: 16px;
+  }
+
+  /* ================================================================
+     OPTION B — Ghost Chip
+     Soft pill/chip shape. Very light fill on active.
+     Subtle and tactile without being loud.
+     ================================================================ */
+  .option-b-row {
+    display: flex;
+    gap: 6px;
+    padding: 4px;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  .option-b-tab {
+    position: relative;
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s;
+  }
+
+  .option-b-tab .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+    transition: color 0.25s;
+  }
+
+  .option-b-tab .label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: color 0.25s;
+    white-space: nowrap;
+  }
+
+  .option-b-tab:hover {
+    background: rgba(255,255,255,0.03);
+  }
+  .option-b-tab:hover .label { color: var(--text-secondary); }
+
+  .option-b-tab.active {
+    background: var(--surface);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.04);
+  }
+
+  .option-b-tab.active .label { color: var(--text-primary); }
+  .option-b-tab.active .num { color: var(--accent); }
+
+  /* 4-col card variant for Services */
+  .option-b-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    padding: 6px;
+    background: var(--bg-secondary);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+  }
+
+  .option-b-grid .option-b-tab {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 14px 16px;
+    border-radius: 10px;
+  }
+
+  /* ================================================================
+     OPTION C — Mono Index
+     Monospace number prefix with a left accent border.
+     Editorial/architectural feel. Minimal footprint.
+     ================================================================ */
+  .option-c-row {
+    display: flex;
+    gap: 2px;
+  }
+
+  .option-c-tab {
+    position: relative;
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    border-left: 2px solid transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+  }
+
+  .option-c-tab .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: color 0.2s;
+    opacity: 0.5;
+  }
+
+  .option-c-tab .label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+
+  .option-c-tab .dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 0.25s;
+    flex-shrink: 0;
+  }
+
+  .option-c-tab:hover .label { color: var(--text-secondary); }
+  .option-c-tab:hover .num { opacity: 0.8; }
+
+  .option-c-tab.active {
+    border-left-color: var(--accent);
+    background: linear-gradient(90deg, rgba(139,92,246,0.06) 0%, transparent 100%);
+  }
+
+  .option-c-tab.active .num {
+    color: var(--accent);
+    opacity: 1;
+  }
+
+  .option-c-tab.active .label { color: var(--text-primary); }
+  .option-c-tab.active .dot { background: var(--accent); }
+
+  /* 4-col card variant for Services */
+  .option-c-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+
+  .option-c-grid .option-c-tab {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 16px 16px;
+    border-left: 2px solid transparent;
+    border-top: none;
+  }
+
+  .option-c-grid .option-c-tab .dot { display: none; }
+
+  .option-c-grid .option-c-tab.active {
+    border-left-color: var(--accent);
+    background: linear-gradient(90deg, rgba(139,92,246,0.06) 0%, transparent 100%);
+  }
+
+  /* ---- dividers ---- */
+  hr.sep {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 56px 0;
+  }
+
+  .variant-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .traits {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .trait {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+<h1>Tab Button Redesign</h1>
+<p class="page-desc">Three alternatives to the current card-style tabs. Each shown in both the inline (3-col process) and grid (4-col services) layout. Active state is the first item in each row.</p>
+
+<!-- ============================================
+     CURRENT (reference)
+     ============================================ -->
+<div class="mockup-block">
+  <div class="mockup-label">Current</div>
+  <div class="mockup-title">Card Tabs with Top Bar Indicator</div>
+  <p class="mockup-desc">Large card backgrounds with a bright purple top edge on active. Visually heavy and competes with the content below.</p>
+
+  <div class="variant-label">4-column (services)</div>
+  <div class="current-grid">
+    <div class="current-tab active">
+      <div class="icon-box">01</div>
+      <div class="tab-label">Calypso Implementation</div>
+    </div>
+    <div class="current-tab">
+      <div class="icon-box">02</div>
+      <div class="tab-label">Platform Migration</div>
+    </div>
+    <div class="current-tab">
+      <div class="icon-box">03</div>
+      <div class="tab-label">AI-Driven Compliance</div>
+    </div>
+    <div class="current-tab">
+      <div class="icon-box">04</div>
+      <div class="tab-label">Intelligent Testing</div>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- ============================================
+     OPTION A — Underline Minimal
+     ============================================ -->
+<div class="mockup-block">
+  <div class="mockup-label">Option A</div>
+  <div class="mockup-title">Underline Minimal</div>
+  <p class="mockup-desc">Clean inline tabs with a subtle accent underline. No card backgrounds — just text that gets out of the way. The active state is indicated by a single 1px line and brighter text. Quiet, elegant, lets the content panel below do the talking.</p>
+
+  <div class="variant-label">Inline (process)</div>
+  <div class="option-a-row" style="margin-bottom: 28px;">
+    <button class="option-a-tab active">
+      <span class="num">01</span>
+      <span class="label">Assess</span>
+    </button>
+    <button class="option-a-tab">
+      <span class="num">02</span>
+      <span class="label">Design</span>
+    </button>
+    <button class="option-a-tab">
+      <span class="num">03</span>
+      <span class="label">Execute</span>
+    </button>
+  </div>
+
+  <div class="variant-label">4-column (services)</div>
+  <div class="option-a-grid">
+    <button class="option-a-tab active">
+      <span class="num">01</span>
+      <span class="label">Calypso Implementation</span>
+    </button>
+    <button class="option-a-tab">
+      <span class="num">02</span>
+      <span class="label">Platform Migration</span>
+    </button>
+    <button class="option-a-tab">
+      <span class="num">03</span>
+      <span class="label">AI-Driven Compliance</span>
+    </button>
+    <button class="option-a-tab">
+      <span class="num">04</span>
+      <span class="label">Intelligent Testing</span>
+    </button>
+  </div>
+
+  <div class="traits">
+    <span class="trait">minimal</span>
+    <span class="trait">no background</span>
+    <span class="trait">underline indicator</span>
+    <span class="trait">very quiet</span>
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- ============================================
+     OPTION B — Ghost Chip
+     ============================================ -->
+<div class="mockup-block">
+  <div class="mockup-label">Option B</div>
+  <div class="mockup-title">Segmented Control</div>
+  <p class="mockup-desc">Tabs sit inside a subtle recessed container. The active tab gets a raised surface fill with a soft shadow — like a physical toggle that's been pressed. Inactive tabs are invisible until hovered. Feels tactile without being loud.</p>
+
+  <div class="variant-label">Inline (process)</div>
+  <div class="option-b-row" style="margin-bottom: 28px; display: inline-flex;">
+    <button class="option-b-tab active">
+      <span class="num">01</span>
+      <span class="label">Assess</span>
+    </button>
+    <button class="option-b-tab">
+      <span class="num">02</span>
+      <span class="label">Design</span>
+    </button>
+    <button class="option-b-tab">
+      <span class="num">03</span>
+      <span class="label">Execute</span>
+    </button>
+  </div>
+
+  <div class="variant-label">4-column (services)</div>
+  <div class="option-b-grid">
+    <button class="option-b-tab active">
+      <span class="num">01</span>
+      <span class="label">Calypso Implementation</span>
+    </button>
+    <button class="option-b-tab">
+      <span class="num">02</span>
+      <span class="label">Platform Migration</span>
+    </button>
+    <button class="option-b-tab">
+      <span class="num">03</span>
+      <span class="label">AI-Driven Compliance</span>
+    </button>
+    <button class="option-b-tab">
+      <span class="num">04</span>
+      <span class="label">Intelligent Testing</span>
+    </button>
+  </div>
+
+  <div class="traits">
+    <span class="trait">contained</span>
+    <span class="trait">raised active</span>
+    <span class="trait">segmented feel</span>
+    <span class="trait">tactile</span>
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- ============================================
+     OPTION C — Mono Index
+     ============================================ -->
+<div class="mockup-block">
+  <div class="mockup-label">Option C</div>
+  <div class="mockup-title">Left-Border Index</div>
+  <p class="mockup-desc">A 2px accent left border marks the active tab with a barely-there gradient wash. Leans into the site's terminal/monospace aesthetic — each tab reads like an indexed entry. Compact, architectural, zero noise.</p>
+
+  <div class="variant-label">Inline (process)</div>
+  <div class="option-c-row" style="margin-bottom: 28px;">
+    <button class="option-c-tab active">
+      <span class="num">01</span>
+      <span class="label">Assess</span>
+      <span class="dot"></span>
+    </button>
+    <button class="option-c-tab">
+      <span class="num">02</span>
+      <span class="label">Design</span>
+      <span class="dot"></span>
+    </button>
+    <button class="option-c-tab">
+      <span class="num">03</span>
+      <span class="label">Execute</span>
+      <span class="dot"></span>
+    </button>
+  </div>
+
+  <div class="variant-label">4-column (services)</div>
+  <div class="option-c-grid">
+    <button class="option-c-tab active">
+      <span class="num">01</span>
+      <span class="label">Calypso Implementation</span>
+    </button>
+    <button class="option-c-tab">
+      <span class="num">02</span>
+      <span class="label">Platform Migration</span>
+    </button>
+    <button class="option-c-tab">
+      <span class="num">03</span>
+      <span class="label">AI-Driven Compliance</span>
+    </button>
+    <button class="option-c-tab">
+      <span class="num">04</span>
+      <span class="label">Intelligent Testing</span>
+    </button>
+  </div>
+
+  <div class="traits">
+    <span class="trait">editorial</span>
+    <span class="trait">left-border accent</span>
+    <span class="trait">gradient wash</span>
+    <span class="trait">terminal-native</span>
+  </div>
+</div>
+
+</body>
+</html>
