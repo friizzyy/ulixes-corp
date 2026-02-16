@@ -65,55 +65,37 @@ export default function ServicesPage() {
       {/* Services Grid */}
       <section className="pb-16 sm:pb-20 md:pb-32" ref={servicesGridRef}>
         <div className="container-main">
-          {/* Service Selector - Cards */}
+          {/* Service Selector */}
           <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 mb-8 sm:mb-16"
+            className="grid grid-cols-2 md:grid-cols-4 gap-0.5 mb-8 sm:mb-16"
             variants={staggerContainerFast}
             initial="hidden"
             animate="visible"
           >
-            {services.map((service, index) => {
-              const Icon = iconMap[service.iconType]
-              return (
-                <motion.button
-                  key={service.id}
-                  id={service.id}
-                  variants={fadeUp}
-                  onClick={() => setActiveIndex(index)}
-                  className={`group relative p-4 sm:p-6 rounded-lg text-left transition-all duration-300 ${
-                    activeIndex === index
-                      ? 'bg-surface border-accent/50'
-                      : 'bg-bg-secondary hover:bg-surface/50'
-                  } border border-border`}
-                >
-                  {/* Active indicator */}
-                  {activeIndex === index && (
-                    <motion.div
-                      layoutId="services-page-indicator"
-                      className="absolute top-0 left-0 right-0 h-0.5 bg-accent rounded-t-lg"
-                    />
-                  )}
-
-                  <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center mb-4 transition-colors ${
-                    activeIndex === index
-                      ? 'bg-accent/20 text-accent'
-                      : 'bg-surface text-text-muted group-hover:text-accent'
-                  }`}>
-                    <Icon size={20} />
-                  </div>
-
-                  <div className="text-xs font-mono text-text-muted mb-1">
-                    {String(index + 1).padStart(2, '0')}
-                  </div>
-
-                  <h3 className={`text-sm sm:text-heading-sm font-medium transition-colors ${
-                    activeIndex === index ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'
-                  }`}>
-                    {service.title}
-                  </h3>
-                </motion.button>
-              )
-            })}
+            {services.map((service, index) => (
+              <motion.button
+                key={service.id}
+                id={service.id}
+                variants={fadeUp}
+                onClick={() => setActiveIndex(index)}
+                className={`group relative p-3.5 sm:p-4 text-left transition-all duration-200 min-h-[44px] border-l-2 ${
+                  activeIndex === index
+                    ? 'border-l-accent bg-gradient-to-r from-accent/[0.06] to-transparent'
+                    : 'border-l-transparent hover:bg-surface/30'
+                }`}
+              >
+                <span className={`block font-mono text-[11px] sm:text-xs font-semibold mb-1 transition-colors ${
+                  activeIndex === index ? 'text-accent' : 'text-text-muted/50'
+                }`}>
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 className={`text-sm sm:text-heading-sm font-medium transition-colors ${
+                  activeIndex === index ? 'text-text-primary' : 'text-text-muted group-hover:text-text-secondary'
+                }`}>
+                  {service.title}
+                </h3>
+              </motion.button>
+            ))}
           </motion.div>
 
           {/* Active Service Content */}

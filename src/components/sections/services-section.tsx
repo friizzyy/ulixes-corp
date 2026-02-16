@@ -42,49 +42,35 @@ export function ServicesSection() {
 
         {/* Service Cards Grid */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 mb-8 sm:mb-12"
+          className="grid grid-cols-2 md:grid-cols-4 gap-0.5 mb-8 sm:mb-12"
           variants={staggerContainerFast}
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
         >
-          {services.map((service, index) => {
-            const Icon = iconMap[service.iconType]
-            return (
-              <motion.button
-                key={service.id}
-                variants={fadeUp}
-                onClick={() => setActiveIndex(index)}
-                className={`group relative p-3.5 sm:p-5 rounded-lg text-left transition-all duration-300 min-h-[44px] ${
-                  activeIndex === index
-                    ? 'bg-surface border-accent/50'
-                    : 'bg-bg-secondary hover:bg-surface/50 active:bg-surface/50'
-                } border border-border`}
-              >
-                {activeIndex === index && (
-                  <motion.div
-                    layoutId="services-indicator"
-                    className="absolute top-0 left-0 right-0 h-0.5 bg-accent rounded-t-lg"
-                  />
-                )}
-
-                <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center mb-2.5 sm:mb-3 transition-colors ${
-                  activeIndex === index
-                    ? 'bg-accent/20 text-accent'
-                    : 'bg-surface text-text-muted group-hover:text-accent'
-                }`}>
-                  <Icon size={16} className="sm:hidden" />
-                  <Icon size={18} className="hidden sm:block" />
-                </div>
-
-                <h3 className={`text-[13px] sm:text-body-sm font-medium transition-colors leading-tight ${
-                  activeIndex === index ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'
-                }`}>
-                  {service.title}
-                </h3>
-              </motion.button>
-            )
-          })}
+          {services.map((service, index) => (
+            <motion.button
+              key={service.id}
+              variants={fadeUp}
+              onClick={() => setActiveIndex(index)}
+              className={`group relative p-3.5 sm:p-4 text-left transition-all duration-200 min-h-[44px] border-l-2 ${
+                activeIndex === index
+                  ? 'border-l-accent bg-gradient-to-r from-accent/[0.06] to-transparent'
+                  : 'border-l-transparent hover:bg-surface/30'
+              }`}
+            >
+              <span className={`block font-mono text-[11px] sm:text-xs font-semibold mb-1 transition-colors ${
+                activeIndex === index ? 'text-accent' : 'text-text-muted/50'
+              }`}>
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <h3 className={`text-[13px] sm:text-body-sm font-medium transition-colors leading-tight ${
+                activeIndex === index ? 'text-text-primary' : 'text-text-muted group-hover:text-text-secondary'
+              }`}>
+                {service.title}
+              </h3>
+            </motion.button>
+          ))}
         </motion.div>
 
         {/* Active Service Content */}

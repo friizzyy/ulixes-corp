@@ -70,16 +70,15 @@ export function ProcessSection() {
           </motion.p>
         </motion.div>
 
-        {/* Phase Cards — horizontal scroll on small mobile, grid on md+ */}
+        {/* Phase Cards */}
         <motion.div
-          className="grid grid-cols-3 md:grid-cols-3 gap-2 sm:gap-4 mb-8 sm:mb-12"
+          className="grid grid-cols-3 gap-0.5 mb-8 sm:mb-12"
           variants={staggerContainerFast}
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
         >
           {phases.map((phase, index) => {
-            const Icon = phase.icon
             const isActive = activePhase === index
 
             return (
@@ -87,37 +86,27 @@ export function ProcessSection() {
                 key={phase.id}
                 variants={fadeUp}
                 onClick={() => setActivePhase(index)}
-                className={`group relative p-4 sm:p-6 rounded-lg text-left transition-all duration-300 min-h-[44px] ${
+                className={`group relative p-3.5 sm:p-4 text-left transition-all duration-200 min-h-[44px] border-l-2 ${
                   isActive
-                    ? 'bg-surface border-accent/50'
-                    : 'bg-bg-secondary hover:bg-surface/50 active:bg-surface/50'
-                } border border-border`}
+                    ? 'border-l-accent bg-gradient-to-r from-accent/[0.06] to-transparent'
+                    : 'border-l-transparent hover:bg-surface/30'
+                }`}
               >
-                {isActive && (
-                  <motion.div
-                    layoutId="process-indicator"
-                    className="absolute top-0 left-0 right-0 h-0.5 bg-accent rounded-t-lg"
-                  />
-                )}
-
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center transition-colors ${
-                    isActive
-                      ? 'bg-accent/20 text-accent'
-                      : 'bg-surface text-text-muted group-hover:text-accent'
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className={`font-mono text-[11px] sm:text-xs font-semibold transition-colors ${
+                    isActive ? 'text-accent' : 'text-text-muted/50'
                   }`}>
-                    <Icon size={16} className="sm:hidden" />
-                    <Icon size={20} className="hidden sm:block" />
-                  </div>
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
                   <span className={`text-[10px] sm:text-xs font-mono transition-colors ${
-                    isActive ? 'text-accent' : 'text-text-muted'
+                    isActive ? 'text-text-secondary' : 'text-text-muted/50'
                   }`}>
                     {phase.duration}
                   </span>
                 </div>
 
                 <h3 className={`text-sm sm:text-heading-md font-semibold transition-colors ${
-                  isActive ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'
+                  isActive ? 'text-text-primary' : 'text-text-muted group-hover:text-text-secondary'
                 }`}>
                   {phase.title}
                 </h3>
@@ -183,7 +172,7 @@ export function ProcessSection() {
 
         {/* Progress Indicator */}
         <motion.div
-          className="flex items-center justify-center gap-3 mt-6 sm:mt-8"
+          className="flex items-center justify-center gap-2 mt-6 sm:mt-8"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={viewportOnce}
@@ -193,15 +182,11 @@ export function ProcessSection() {
             <button
               key={index}
               onClick={() => setActivePhase(index)}
-              className={`h-1 rounded-full transition-all duration-300 min-h-[44px] flex items-center ${
-                activePhase === index
-                  ? 'bg-accent'
-                  : 'bg-border hover:bg-text-muted active:bg-text-muted'
-              }`}
+              className="min-h-[44px] flex items-center"
               aria-label={`Go to phase ${index + 1}`}
             >
-              <div className={`h-1 rounded-full ${
-                activePhase === index ? 'w-8 bg-accent' : 'w-2 bg-border'
+              <div className={`rounded-full transition-all duration-300 ${
+                activePhase === index ? 'w-6 h-1 bg-accent' : 'w-1.5 h-1.5 bg-border hover:bg-text-muted'
               }`} />
             </button>
           ))}

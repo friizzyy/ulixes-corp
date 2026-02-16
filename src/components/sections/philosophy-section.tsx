@@ -31,35 +31,29 @@ export function PhilosophySection() {
             </motion.p>
 
             {/* Tab Navigation */}
-            <motion.nav variants={fadeUp} className="space-y-1 mb-6 sm:mb-8">
+            <motion.nav variants={fadeUp} className="space-y-0.5 mb-6 sm:mb-8">
               {philosophy.points.map((point, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}
-                  className={`group w-full text-left p-3 sm:p-4 rounded-lg transition-all duration-200 min-h-[44px] ${
+                  className={`group w-full text-left p-3 sm:p-4 transition-all duration-200 min-h-[44px] border-l-2 ${
                     activeIndex === index
-                      ? 'bg-surface'
-                      : 'hover:bg-surface/50 active:bg-surface/50'
+                      ? 'border-l-accent bg-gradient-to-r from-accent/[0.06] to-transparent'
+                      : 'border-l-transparent hover:bg-surface/30'
                   }`}
                 >
                   <div className="flex items-start gap-3 sm:gap-4">
-                    <span className={`text-xs font-mono transition-colors ${
-                      activeIndex === index ? 'text-accent' : 'text-text-muted'
+                    <span className={`text-xs font-mono font-semibold transition-colors ${
+                      activeIndex === index ? 'text-accent' : 'text-text-muted/50'
                     }`}>
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <span className={`text-base sm:text-heading-sm font-medium transition-colors ${
-                      activeIndex === index ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'
+                      activeIndex === index ? 'text-text-primary' : 'text-text-muted group-hover:text-text-secondary'
                     }`}>
                       {point.title}
                     </span>
                   </div>
-                  {activeIndex === index && (
-                    <motion.div
-                      layoutId="philosophy-indicator"
-                      className="ml-7 sm:ml-8 mt-2 h-0.5 w-12 bg-accent rounded-full"
-                    />
-                  )}
                 </button>
               ))}
             </motion.nav>
