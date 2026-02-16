@@ -49,7 +49,7 @@ export function CTASection() {
                 <ArrowUpRight size={16} />
               </Link>
               <Link
-                href="/work"
+                href="/institutional-experience"
                 className="text-text-secondary hover:text-accent active:text-accent transition-colors font-medium min-h-[44px] inline-flex items-center"
               >
                 {cta.secondaryCta}
