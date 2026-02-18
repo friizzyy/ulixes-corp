@@ -17,7 +17,7 @@ export function Footer() {
       whileInView="visible"
       viewport={viewportOnce}
     >
-      <div className="container-main py-12 sm:py-16 md:py-20">
+      <div className="container-main py-12 sm:py-16 md:py-20" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 3rem)' }}>
         {/* Mobile: 2-column grid for link sections, full width for brand */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-8">
           {/* Brand Column — full width on mobile */}
@@ -40,12 +40,12 @@ export function Footer() {
             <ul className="space-y-2.5 sm:space-y-3">
               {navigation.footer.services.map((item) => (
                 <li key={item.href}>
-                  <a
+                  <Link
                     href={item.href}
-                    className="text-body-sm text-text-secondary hover:text-text-primary active:text-text-primary transition-colors inline-flex items-center min-h-[32px]"
+                    className="text-body-sm text-text-secondary hover:text-text-primary active:text-text-primary transition-colors inline-flex items-center min-h-[36px]"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

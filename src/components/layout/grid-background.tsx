@@ -7,13 +7,20 @@ export function GridBackground() {
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    // Check if mobile on mount and resize
+    // Check if mobile on mount and resize (debounced)
+    let resizeTimer: ReturnType<typeof setTimeout>
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(() => {
+        setIsMobile(window.innerWidth < 768)
+      }, 150)
     }
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', checkMobile, { passive: true })
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+      clearTimeout(resizeTimer)
+    }
   }, [])
 
   useEffect(() => {
@@ -78,13 +85,20 @@ export function GridBackground() {
       animationId = requestAnimationFrame(animate)
     }
 
+    let resizeTimer: ReturnType<typeof setTimeout>
+    const debouncedResize = () => {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(resize, 200)
+    }
+
     resize()
-    window.addEventListener('resize', resize)
+    window.addEventListener('resize', debouncedResize, { passive: true })
     animate()
 
     return () => {
-      window.removeEventListener('resize', resize)
+      window.removeEventListener('resize', debouncedResize)
       cancelAnimationFrame(animationId)
+      clearTimeout(resizeTimer)
     }
   }, [isMobile])
 

@@ -383,7 +383,7 @@ export default function ExperiencePage() {
                   <h4 className="text-xs font-mono uppercase tracking-widest text-accent mb-8">
                     Results
                   </h4>
-                  <div className="grid grid-cols-3 gap-4 sm:gap-8">
+                  <div className="grid grid-cols-1 xs:grid-cols-3 gap-4 sm:gap-8">
                     {study.outcome.metrics.map((metric, idx) => (
                       <motion.div
                         key={metric.label}

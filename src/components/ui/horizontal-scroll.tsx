@@ -35,13 +35,20 @@ export function HorizontalScroll({
     const el = scrollRef.current
     if (!el) return
 
+    let resizeTimer: ReturnType<typeof setTimeout>
+    const debouncedCheck = () => {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(checkScroll, 150)
+    }
+
     checkScroll()
     el.addEventListener('scroll', checkScroll, { passive: true })
-    window.addEventListener('resize', checkScroll)
+    window.addEventListener('resize', debouncedCheck, { passive: true })
 
     return () => {
       el.removeEventListener('scroll', checkScroll)
-      window.removeEventListener('resize', checkScroll)
+      window.removeEventListener('resize', debouncedCheck)
+      clearTimeout(resizeTimer)
     }
   }, [])
 

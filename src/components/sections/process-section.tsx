@@ -96,10 +96,18 @@ export function ProcessSection() {
                   <span className={`font-mono text-[11px] sm:text-xs font-semibold transition-colors ${
                     isActive ? 'text-accent' : 'text-text-muted/50'
                   }`}>
+<<<<<<< HEAD
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <span className={`text-[10px] sm:text-xs font-mono transition-colors ${
                     isActive ? 'text-text-secondary' : 'text-text-muted/50'
+=======
+                    <Icon size={16} className="sm:hidden" />
+                    <Icon size={20} className="hidden sm:block" />
+                  </div>
+                  <span className={`text-[11px] sm:text-xs font-mono transition-colors ${
+                    isActive ? 'text-accent' : 'text-text-muted'
+>>>>>>> 10fe835 (Mobile QA sweep: fix touch targets, focus trap, debounced handlers, safe-area insets)
                   }`}>
                     {phase.duration}
                   </span>
@@ -182,11 +190,11 @@ export function ProcessSection() {
             <button
               key={index}
               onClick={() => setActivePhase(index)}
-              className="min-h-[44px] flex items-center"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center"
               aria-label={`Go to phase ${index + 1}`}
             >
-              <div className={`rounded-full transition-all duration-300 ${
-                activePhase === index ? 'w-6 h-1 bg-accent' : 'w-1.5 h-1.5 bg-border hover:bg-text-muted'
+              <div className={`h-1.5 rounded-full transition-all duration-300 ${
+                activePhase === index ? 'w-8 bg-accent' : 'w-3 bg-border hover:bg-text-muted active:bg-text-muted'
               }`} />
             </button>
           ))}

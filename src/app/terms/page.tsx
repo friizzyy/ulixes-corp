@@ -49,7 +49,7 @@ export default function TermsPage() {
                   <a
                     key={section.title}
                     href={`#section-${index}`}
-                    className="block text-body-sm text-text-secondary hover:text-accent transition-colors"
+                    className="block text-body-sm text-text-secondary hover:text-accent active:text-accent transition-colors min-h-[36px] flex items-center"
                   >
                     {section.title}
                   </a>

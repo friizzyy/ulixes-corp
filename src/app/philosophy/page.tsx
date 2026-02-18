@@ -159,15 +159,18 @@ export default function PhilosophyPage() {
               </article>
 
               {/* Progress indicator */}
-              <div className="flex items-center gap-2 mt-16">
+              <div className="flex items-center gap-1 mt-16">
                 {sections.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setActiveSection(index)}
-                    className="min-h-[44px] flex items-center"
+                    className="min-h-[44px] min-w-[44px] flex items-center justify-center"
+                    aria-label={`Go to principle ${index + 1}`}
                   >
-                    <div className={`rounded-full transition-all duration-300 ${
-                      activeSection === index ? 'w-6 h-1 bg-accent' : 'w-1.5 h-1.5 bg-border hover:bg-text-muted'
+                    <div className={`h-1.5 rounded-full transition-all duration-300 ${
+                      activeSection === index
+                        ? 'w-8 bg-accent'
+                        : 'w-3 bg-border hover:bg-text-muted active:bg-text-muted'
                     }`} />
                   </button>
                 ))}

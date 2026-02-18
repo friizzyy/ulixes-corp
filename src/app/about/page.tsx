@@ -202,7 +202,7 @@ export default function AboutPage() {
                   <motion.div
                     key={item.title}
                     variants={fadeUp}
-                    className="group p-6 -mx-6 rounded-lg hover:bg-surface/50 transition-colors duration-200"
+                    className="group p-4 sm:p-6 -mx-4 sm:-mx-6 rounded-lg hover:bg-surface/50 active:bg-surface/50 transition-colors duration-200"
                   >
                     <div className="flex gap-4">
                       <span className="text-xs font-mono text-accent mt-1">

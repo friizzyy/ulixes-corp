@@ -329,6 +329,18 @@
   }
 }
 
+/* Touch UX polish */
+a, button, [role="button"], input[type="submit"], summary {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Overscroll containment for modals/overlays */
+[role="dialog"],
+[aria-modal="true"] {
+  overscroll-behavior: contain;
+}
+
 /* iOS viewport height fix */
 @supports (height: 100dvh) {
   .min-h-screen-safe {

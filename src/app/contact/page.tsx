@@ -181,7 +181,7 @@ export default function ContactPage() {
                     </p>
                     <button
                       onClick={resetForm}
-                      className="px-5 py-2.5 border border-accent/30 text-accent font-medium rounded-sm hover:bg-accent/10 transition-colors"
+                      className="px-5 py-2.5 min-h-[44px] border border-accent/30 text-accent font-medium rounded-sm hover:bg-accent/10 active:bg-accent/10 transition-colors"
                     >
                       Send Another Message
                     </button>
@@ -199,7 +199,7 @@ export default function ContactPage() {
                     </p>
                     <button
                       onClick={() => setFormState('idle')}
-                      className="px-5 py-2.5 border border-border text-text-primary font-medium rounded-sm hover:border-accent/30 transition-colors"
+                      className="px-5 py-2.5 min-h-[44px] border border-border text-text-primary font-medium rounded-sm hover:border-accent/30 active:border-accent/30 transition-colors"
                     >
                       Try Again
                     </button>
@@ -210,6 +210,7 @@ export default function ContactPage() {
                       <Input
                         label={form.nameLabel}
                         name="name"
+                        autoComplete="name"
                         placeholder={form.namePlaceholder}
                         value={formData.name}
                         onChange={handleInputChange}
@@ -221,6 +222,8 @@ export default function ContactPage() {
                         label={form.emailLabel}
                         name="email"
                         type="email"
+                        autoComplete="email"
+                        inputMode="email"
                         placeholder={form.emailPlaceholder}
                         value={formData.email}
                         onChange={handleInputChange}
@@ -232,6 +235,7 @@ export default function ContactPage() {
                     <Input
                       label={form.companyLabel}
                       name="company"
+                      autoComplete="organization"
                       placeholder={form.companyPlaceholder}
                       value={formData.company}
                       onChange={handleInputChange}
