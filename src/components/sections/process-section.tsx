@@ -96,18 +96,10 @@ export function ProcessSection() {
                   <span className={`font-mono text-[11px] sm:text-xs font-semibold transition-colors ${
                     isActive ? 'text-accent' : 'text-text-muted/50'
                   }`}>
-<<<<<<< HEAD
                     {String(index + 1).padStart(2, '0')}
                   </span>
-                  <span className={`text-[10px] sm:text-xs font-mono transition-colors ${
-                    isActive ? 'text-text-secondary' : 'text-text-muted/50'
-=======
-                    <Icon size={16} className="sm:hidden" />
-                    <Icon size={20} className="hidden sm:block" />
-                  </div>
                   <span className={`text-[11px] sm:text-xs font-mono transition-colors ${
-                    isActive ? 'text-accent' : 'text-text-muted'
->>>>>>> 10fe835 (Mobile QA sweep: fix touch targets, focus trap, debounced handlers, safe-area insets)
+                    isActive ? 'text-text-secondary' : 'text-text-muted/50'
                   }`}>
                     {phase.duration}
                   </span>
