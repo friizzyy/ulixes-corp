@@ -43,7 +43,7 @@ export function CTASection() {
             <motion.div variants={fadeUp} className="flex flex-col xs:flex-row items-start xs:items-center gap-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow active:scale-[0.98] transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow active:scale-[0.98] transition-shadow duration-200"
               >
                 {cta.primaryCta}
                 <ArrowUpRight size={16} />

@@ -49,14 +49,14 @@ export function HeroSection() {
             >
               <Link
                 href="/services"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 min-h-[48px] bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow active:scale-[0.98] transition-all"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 min-h-[48px] bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow active:scale-[0.98] transition-shadow duration-200"
               >
                 {hero.primaryCta}
                 <ArrowUpRight size={18} />
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 min-h-[48px] bg-transparent text-text-primary border border-border-accent font-medium rounded-sm hover:bg-surface active:bg-surface transition-all"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 min-h-[48px] bg-transparent text-text-primary border border-border-accent font-medium rounded-sm hover:bg-surface active:bg-surface transition-colors duration-200"
               >
                 {hero.secondaryCta}
               </Link>

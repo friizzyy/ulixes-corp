@@ -31,7 +31,7 @@ const sizeStyles: Record<ButtonSize, string> = {
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', children, href, ...props }, ref) => {
-    const baseStyles = 'group inline-flex items-center justify-center rounded-sm font-medium transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none'
+    const baseStyles = 'group inline-flex items-center justify-center rounded-sm font-medium transition-colors transition-shadow duration-200 disabled:opacity-50 disabled:pointer-events-none'
 
     const combinedClassName = cn(
       baseStyles,
