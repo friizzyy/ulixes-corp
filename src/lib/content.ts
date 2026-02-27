@@ -418,7 +418,7 @@ export const philosophyContent = {
 
 export const privacyContent = {
   title: 'Privacy Policy',
-  lastUpdated: 'January 2025',
+  lastUpdated: 'February 2026',
   sections: [
     {
       title: 'Information We Collect',
@@ -441,7 +441,7 @@ export const privacyContent = {
 
 export const termsContent = {
   title: 'Terms of Service',
-  lastUpdated: 'January 2025',
+  lastUpdated: 'February 2026',
   sections: [
     {
       title: 'Agreement',

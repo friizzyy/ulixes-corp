@@ -63,9 +63,15 @@ export default function RootLayout({
     <html lang="en" className={`${outfit.variable} ${jetbrainsMono.variable}`}>
       <body className="font-display">
         <ErrorBoundary>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-bg-primary focus:rounded-sm focus:text-body-sm focus:font-medium"
+          >
+            Skip to main content
+          </a>
           <GridBackground />
           <Navigation />
-          <main className="min-h-screen">
+          <main id="main-content" className="min-h-screen">
             {children}
           </main>
           <Footer />

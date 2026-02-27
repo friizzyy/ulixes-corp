@@ -1,9 +1,9 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Section, HorizontalScroll, ScrollCard } from '@/components/ui'
 import { GlassSurfaceContainer } from '@/components/system'
+import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion'
 
 const clientTypes = [
   {
@@ -33,17 +33,18 @@ const clientTypes = [
 ]
 
 export function ClientsSection() {
-  const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-50px' })
-
   return (
     <Section className="border-y border-border bg-bg-secondary/40">
-      <div ref={ref} className="text-center">
+      <motion.div
+        className="text-center"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewportOnce}
+      >
         <motion.p
           className="text-body-sm text-text-muted font-mono uppercase tracking-wider mb-8"
-          initial={{ opacity: 0, y: 10 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
+          variants={fadeUp}
         >
           Trusted by institutions that move markets
         </motion.p>
@@ -52,9 +53,8 @@ export function ClientsSection() {
           {clientTypes.map((client, index) => (
             <ScrollCard key={client.name} width="sm">
               <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
+                variants={fadeUp}
+                transition={{ delay: index * 0.05 }}
               >
                 <GlassSurfaceContainer padding="lg" className="h-full text-left">
                   <div className="text-lg font-semibold text-text-primary">
@@ -72,16 +72,14 @@ export function ClientsSection() {
 
         <motion.div
           className="mt-12 pt-10 border-t border-border max-w-xl mx-auto"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          variants={fadeUp}
         >
           <p className="text-text-muted text-body-sm">
             We work under NDA with most clients. The case studies on this site represent
             engagements where clients have permitted disclosure.
           </p>
         </motion.div>
-      </div>
+      </motion.div>
     </Section>
   )
 }

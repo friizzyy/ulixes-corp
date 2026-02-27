@@ -1,7 +1,16 @@
 import { Resend } from 'resend'
 import { NextResponse } from 'next/server'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+export const dynamic = 'force-dynamic'
+
+let resend: Resend
+
+function getResend() {
+  if (!resend) {
+    resend = new Resend(process.env.RESEND_API_KEY)
+  }
+  return resend
+}
 
 async function verifyRecaptcha(token: string): Promise<boolean> {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY
@@ -49,7 +58,7 @@ export async function POST(request: Request) {
     }
 
     // Send notification email to admin
-    const adminEmail = await resend.emails.send({
+    const adminEmail = await getResend().emails.send({
       from: 'Ulixes Contact Form <noreply@ulixescorp.com>',
       to: 'admin@ulixescorp.com',
       replyTo: email,
@@ -174,7 +183,7 @@ export async function POST(request: Request) {
     })
 
     // Send confirmation email to the submitter
-    const confirmationEmail = await resend.emails.send({
+    const confirmationEmail = await getResend().emails.send({
       from: 'Ulixes Corporation <noreply@ulixescorp.com>',
       to: email,
       subject: 'Thank you for contacting Ulixes Corporation',
