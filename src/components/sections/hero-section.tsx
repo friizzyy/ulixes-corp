@@ -39,7 +39,7 @@ export function HeroSection() {
 
         {/* Bottom: Asymmetric grid — description left, terminal right */}
         <motion.div
-          className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-6 items-start"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-10 items-start"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}

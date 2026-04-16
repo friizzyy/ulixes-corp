@@ -34,6 +34,7 @@ export function ServicesSection() {
 
         {/* Tab navigation — clean text tabs with underline, NOT card buttons */}
         <motion.div
+          role="tablist"
           className="flex items-center gap-0 border-b border-border mb-10 sm:mb-14 overflow-x-auto scrollbar-none -mx-5 px-5 sm:mx-0 sm:px-0"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -45,6 +46,9 @@ export function ServicesSection() {
             return (
               <button
                 key={service.id}
+                role="tab"
+                aria-selected={isActive}
+                aria-label={`View ${service.title}`}
                 onClick={() => setActiveIndex(index)}
                 className={`relative whitespace-nowrap px-4 sm:px-6 py-3 sm:py-4 text-body-sm font-medium transition-colors duration-200 min-h-[44px] ${
                   isActive
@@ -53,10 +57,9 @@ export function ServicesSection() {
                 }`}
               >
                 {service.title}
-                {/* Active underline */}
                 <span className={`absolute bottom-0 left-0 right-0 h-0.5 transition-all duration-300 ${
                   isActive ? 'bg-accent' : 'bg-transparent'
-                }`} />
+                }`} aria-hidden="true" />
               </button>
             )
           })}

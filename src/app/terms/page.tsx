@@ -74,7 +74,7 @@ export default function TermsPage() {
                   className="scroll-mt-32"
                   variants={fadeUp}
                 >
-                  <h2 className="text-heading-lg font-semibold mb-4 flex items-center gap-3">
+                  <h2 className="font-display text-heading-lg font-semibold mb-4 flex items-center gap-3">
                     <span className="text-accent font-mono text-body-sm">
                       {String(index + 1).padStart(2, '0')}
                     </span>

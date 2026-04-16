@@ -263,7 +263,7 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-14 sm:py-20 md:py-28">
+      <section className="py-20 sm:py-28 md:py-36">
         <div className="container-main">
           <motion.div
             className="relative p-6 sm:p-10 md:p-16 rounded-lg bg-bg-secondary border border-border overflow-hidden"

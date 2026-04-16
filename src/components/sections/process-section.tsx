@@ -95,7 +95,7 @@ export function ProcessSection() {
               </div>
 
               {/* Phase content */}
-              <div className={`pb-10 md:pb-0 ${index < phases.length - 1 ? 'md:pr-8 lg:pr-12' : ''} ${index > 0 ? 'pl-7 md:pl-0' : 'pl-7 md:pl-0'}`}>
+              <div className={`pb-10 md:pb-0 pl-7 md:pl-0 ${index < phases.length - 1 ? 'md:pr-8 lg:pr-12' : ''}`}>
                 <div className="flex items-baseline gap-3 mb-2">
                   <span className="text-[11px] font-mono text-accent uppercase tracking-widest">
                     Phase {String(index + 1).padStart(2, '0')}

@@ -45,7 +45,7 @@ export default function PhilosophyPage() {
       </section>
 
       {/* Philosophy Principles */}
-      <section className="py-14 sm:py-20 md:py-28 border-t border-border">
+      <section className="py-20 sm:py-28 md:py-36 border-t border-border">
         <div className="container-main">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16">
             {/* Left: Sticky Navigation */}
@@ -154,7 +154,7 @@ export default function PhilosophyPage() {
       </section>
 
       {/* Closing CTA */}
-      <section className="py-14 sm:py-20 md:py-28 border-t border-border">
+      <section className="py-20 sm:py-28 md:py-36 border-t border-border">
         <div className="container-main">
           <motion.div
             className="relative p-5 sm:p-8 md:p-16 rounded-lg bg-bg-secondary border border-border overflow-hidden"

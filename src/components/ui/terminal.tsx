@@ -185,7 +185,7 @@ export function Terminal({ lines, className, typingSpeed = 30 }: TerminalProps) 
           <div className="terminal-dot bg-[#28c840]" />
         </div>
         <span className="ml-auto flex items-center gap-2 text-[10px] text-text-muted font-mono">
-          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-accent" />
           Live
         </span>
       </div>
