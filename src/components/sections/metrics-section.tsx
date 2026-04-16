@@ -48,7 +48,7 @@ export function MetricsSection() {
           transition={{ duration: 0.5 }}
         >
           <span className="section-label">Track Record</span>
-          <h2 className="text-display-sm md:text-display-md font-bold mb-4">
+          <h2 className="text-display-sm md:text-display-md font-display font-semibold mb-4">
             Numbers Don&apos;t Lie
           </h2>
           <p className="text-body-lg text-text-secondary max-w-2xl mx-auto">

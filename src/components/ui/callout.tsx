@@ -30,11 +30,9 @@ export function Callout({ children, className, variant = 'default' }: CalloutPro
       whileInView="visible"
       viewport={viewportOnce}
     >
-      {/* Decorative gradient for non-quote variants */}
+      {/* Clean top border for non-quote variants */}
       {variant !== 'quote' && (
         <>
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
-          <div className="absolute -top-20 -right-20 w-40 h-40 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
         </>
       )}
 

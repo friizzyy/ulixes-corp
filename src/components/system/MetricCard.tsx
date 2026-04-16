@@ -112,7 +112,6 @@ export function MetricCard({
       <GlassSurfaceContainer
         className={cn('group relative overflow-hidden', className)}
         padding="none"
-        glow
       >
         <div className={cn('relative z-10', sizeClasses[size].container)}>
           {/* Icon */}

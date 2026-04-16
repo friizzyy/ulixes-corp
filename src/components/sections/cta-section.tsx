@@ -10,41 +10,34 @@ export function CTASection() {
   const { cta } = homeContent
 
   return (
-    <section className="relative z-10 py-14 sm:py-20 md:py-28 border-t border-border">
+    <section className="relative z-10 py-20 sm:py-28 md:py-36 border-t border-border overflow-hidden">
       <div className="container-main">
         <motion.div
-          className="relative p-6 sm:p-10 md:p-16 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          className="relative"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
           viewport={viewportOnce}
-          transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
         >
-          {/* Decorative elements */}
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
-          <div className="absolute -bottom-20 -right-20 w-60 h-60 bg-accent/5 rounded-full blur-3xl" />
-          <div className="absolute -top-20 -left-20 w-40 h-40 bg-accent/5 rounded-full blur-3xl" />
-
-          <motion.div
-            className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 sm:gap-8"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+          {/* Large display headline — full width, institutional weight */}
+          <motion.h2
+            variants={fadeUp}
+            className="font-display text-[1.75rem] sm:text-display-sm md:text-display-lg lg:text-display-xl font-semibold leading-[1.08] tracking-tight mb-6 sm:mb-8 max-w-4xl"
           >
-            <motion.div variants={fadeUp} className="max-w-xl">
-              <h2 className="text-[1.75rem] sm:text-display-sm md:text-display-md font-bold mb-2 sm:mb-3">
-                {cta.title}
-              </h2>
-              <p className="text-base sm:text-body-lg text-text-secondary">
-                {cta.description}
-              </p>
-            </motion.div>
+            {cta.title}
+          </motion.h2>
 
-            <motion.div variants={fadeUp} className="flex flex-col xs:flex-row items-start xs:items-center gap-4">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow active:scale-[0.98] transition-shadow duration-200"
-              >
+          {/* Description + CTA — grid layout with wide gap */}
+          <motion.div
+            variants={fadeUp}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-16 items-end"
+          >
+            <p className="lg:col-span-6 text-base sm:text-body-lg text-text-secondary leading-relaxed">
+              {cta.description}
+            </p>
+
+            <div className="lg:col-span-6 flex flex-col xs:flex-row items-start xs:items-center gap-4 lg:justify-end">
+              <Link href="/contact" className="cta-primary">
                 {cta.primaryCta}
                 <ArrowUpRight size={16} />
               </Link>
@@ -54,7 +47,7 @@ export function CTASection() {
               >
                 {cta.secondaryCta}
               </Link>
-            </motion.div>
+            </div>
           </motion.div>
         </motion.div>
       </div>

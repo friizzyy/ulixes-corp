@@ -14,44 +14,32 @@ export default function PhilosophyPage() {
   return (
     <PageTransition>
       {/* Hero */}
-      <section className="pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-40 md:pb-20 relative z-10">
+      <section className="pt-32 pb-16 sm:pt-40 sm:pb-20 md:pt-48 md:pb-28 relative z-10">
         <div className="container-main">
           <motion.div
-            className="max-w-4xl"
+            className="flex flex-col items-center text-center"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
           >
             <motion.div variants={fadeUp} className="section-label">{hero.label}</motion.div>
-            <motion.h1 variants={fadeUp} className="text-[2.25rem] sm:text-display-lg md:text-display-xl font-bold mb-4">
+            <motion.h1 variants={fadeUp} className="font-display text-[2.75rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem] font-semibold leading-[1.05] tracking-tight mb-4 sm:mb-6">
               {hero.headline}
             </motion.h1>
-            <motion.p variants={fadeUp} className="text-base sm:text-heading-md md:text-heading-lg text-accent font-medium mb-6">
+            <motion.p variants={fadeUp} className="text-sm sm:text-base md:text-lg text-accent font-mono uppercase tracking-widest mb-12 sm:mb-16 md:mb-20">
               {hero.subtitle}
             </motion.p>
-            <motion.p variants={fadeUp} className="text-base sm:text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
+            <motion.div
+              variants={fadeUp}
+              className="max-w-3xl mx-auto border-t border-border pt-10 sm:pt-14 md:pt-16"
+            >
+              <p className="font-display text-lg sm:text-xl md:text-2xl lg:text-[1.75rem] font-semibold text-text-primary leading-relaxed">
+                {intro.text}
+              </p>
+            </motion.div>
+            <motion.p variants={fadeUp} className="mt-8 sm:mt-10 text-sm sm:text-base text-text-muted max-w-xl mx-auto leading-relaxed">
               {hero.description}
             </motion.p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Introduction Banner */}
-      <section className="pb-12 sm:pb-16 md:pb-28">
-        <div className="container-main">
-          <motion.div
-            className="relative p-5 sm:p-8 md:p-16 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3, ease: [0.4, 0, 0.2, 1] }}
-          >
-            {/* Decorative elements */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
-            <div className="absolute -top-20 -right-20 w-40 h-40 bg-accent/5 rounded-full blur-3xl" />
-
-            <p className="relative text-base sm:text-body-lg md:text-xl text-text-primary leading-relaxed max-w-4xl">
-              {intro.text}
-            </p>
           </motion.div>
         </div>
       </section>
@@ -72,24 +60,20 @@ export default function PhilosophyPage() {
                 <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-8">
                   Core Principles
                 </h2>
-                <nav className="space-y-0.5">
+                <nav className="space-y-1">
                   {sections.map((section, index) => (
                     <button
                       key={section.id}
                       onClick={() => setActiveSection(index)}
-                      className={`group w-full text-left p-3 sm:p-4 min-h-[44px] transition-all duration-200 border-l-2 ${
-                        activeSection === index
-                          ? 'border-l-accent bg-gradient-to-r from-accent/[0.06] to-transparent'
-                          : 'border-l-transparent hover:bg-surface/30'
-                      }`}
+                      className="group w-full text-left py-2.5 min-h-[44px] transition-colors duration-200"
                     >
-                      <div className="flex items-start gap-4">
-                        <span className={`text-xs font-mono font-semibold transition-colors ${
-                          activeSection === index ? 'text-accent' : 'text-text-muted/50'
+                      <div className="flex items-start gap-3">
+                        <span className={`text-xs font-mono transition-colors mt-0.5 ${
+                          activeSection === index ? 'text-accent' : 'text-text-muted/40'
                         }`}>
                           {String(index + 1).padStart(2, '0')}
                         </span>
-                        <span className={`text-heading-sm font-medium transition-colors leading-tight ${
+                        <span className={`text-body-sm font-medium transition-colors leading-snug ${
                           activeSection === index ? 'text-text-primary' : 'text-text-muted group-hover:text-text-secondary'
                         }`}>
                           {section.title}
@@ -114,9 +98,9 @@ export default function PhilosophyPage() {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeSection}
-                    className="absolute -top-8 -left-4 text-[6rem] sm:text-[9rem] lg:text-[12rem] font-bold text-surface select-none leading-none opacity-30 pointer-events-none -z-10"
+                    className="absolute -top-8 -left-4 text-[6rem] sm:text-[9rem] lg:text-[12rem] font-bold text-white/[0.03] select-none leading-none pointer-events-none -z-10"
                     initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 0.3, scale: 1 }}
+                    animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 1.2 }}
                     transition={{ duration: 0.3 }}
                   >
@@ -133,7 +117,7 @@ export default function PhilosophyPage() {
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.4 }}
                   >
-                    <h2 className="text-[1.75rem] sm:text-display-sm md:text-display-md font-bold mb-8">
+                    <h2 className="font-display text-[1.75rem] sm:text-display-sm md:text-display-md font-semibold mb-8">
                       {sections[activeSection].title}
                     </h2>
 
@@ -158,22 +142,11 @@ export default function PhilosophyPage() {
                 </AnimatePresence>
               </article>
 
-              {/* Progress indicator */}
-              <div className="flex items-center gap-1 mt-16">
-                {sections.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setActiveSection(index)}
-                    className="min-h-[44px] min-w-[44px] flex items-center justify-center"
-                    aria-label={`Go to principle ${index + 1}`}
-                  >
-                    <div className={`h-1.5 rounded-full transition-all duration-300 ${
-                      activeSection === index
-                        ? 'w-8 bg-accent'
-                        : 'w-3 bg-border hover:bg-text-muted active:bg-text-muted'
-                    }`} />
-                  </button>
-                ))}
+              {/* Current position indicator — subtle text, not dots */}
+              <div className="mt-12 pt-6 border-t border-border">
+                <span className="text-xs font-mono text-text-muted">
+                  {String(activeSection + 1).padStart(2, '0')} / {String(sections.length).padStart(2, '0')}
+                </span>
               </div>
             </motion.div>
           </div>
@@ -190,9 +163,6 @@ export default function PhilosophyPage() {
             viewport={viewportOnce}
             transition={{ duration: 0.6 }}
           >
-            {/* Decorative glow */}
-            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-accent/10 rounded-full blur-3xl" />
-
             <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
               <motion.div
                 className="max-w-xl"
@@ -214,10 +184,7 @@ export default function PhilosophyPage() {
                 viewport={viewportOnce}
                 transition={{ duration: 0.5, delay: 0.3 }}
               >
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow transition-shadow shrink-0"
-                >
+                <Link href="/contact" className="cta-primary shrink-0">
                   Start a Conversation
                   <ArrowUpRight size={16} />
                 </Link>

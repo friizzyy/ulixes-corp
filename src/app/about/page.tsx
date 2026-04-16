@@ -11,78 +11,60 @@ export default function AboutPage() {
 
   return (
     <PageTransition>
-      {/* Hero */}
-      <section className="pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-40 md:pb-20 relative z-10">
+      {/* Hero + Stats */}
+      <section className="pt-32 pb-16 sm:pt-40 sm:pb-20 md:pt-48 md:pb-24 relative z-10">
         <div className="container-main">
           <motion.div
-            className="max-w-4xl"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
           >
-            <motion.div variants={fadeUp} className="section-label">About</motion.div>
-            <motion.h1 variants={fadeUp} className="text-[2.25rem] sm:text-display-lg md:text-display-xl font-bold mb-6">
-              {hero.headline}
-            </motion.h1>
-            <motion.p variants={fadeUp} className="text-base sm:text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
-              {hero.description}
-            </motion.p>
-          </motion.div>
-        </div>
-      </section>
+            <motion.div variants={fadeUp} className="lg:col-span-7">
+              <div className="section-label">About</div>
+              <h1 className="font-display text-[2.25rem] sm:text-display-lg md:text-display-xl font-semibold mb-6 sm:mb-8">
+                {hero.headline}
+              </h1>
+              <p className="text-base sm:text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-xl">
+                {hero.description}
+              </p>
+            </motion.div>
 
-      {/* Origin Story */}
-      <section className="pb-16 sm:pb-20 md:pb-32">
-        <div className="container-main">
-          {/* Large Stats Banner */}
-          <motion.div
-            className="relative mb-20 p-5 sm:p-8 md:p-16 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
-          >
-            {/* Decorative accent line */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
-
-            <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-10">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
-                  {origin.title}
-                </h2>
-                <p className="text-base sm:text-heading-lg md:text-display-sm font-semibold text-text-primary max-w-lg">
-                  We came from trading floors, treasury functions, and Big Four advisory practices.
-                </p>
-              </motion.div>
-
-              <motion.div
-                className="flex gap-6 sm:gap-10 md:gap-16"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-              >
+            <motion.div variants={fadeUp} className="lg:col-span-5 lg:pt-14">
+              <div className="flex flex-row lg:flex-col gap-8 lg:gap-0">
                 {aboutPageContent.numbers.stats.map((stat, idx) => (
-                  <motion.div
+                  <div
                     key={stat.label}
-                    className="text-right"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.6 + idx * 0.1 }}
+                    className={`${idx > 0 ? 'lg:border-t lg:border-border lg:pt-8 lg:mt-8' : ''} ${idx > 0 ? 'border-l lg:border-l-0 border-border pl-8 lg:pl-0' : ''}`}
                   >
-                    <div className="text-3xl sm:text-5xl md:text-6xl font-bold gradient-text mb-1">
+                    <div className="font-display text-5xl sm:text-6xl md:text-7xl font-semibold text-text-primary mb-2">
                       {stat.value}
                     </div>
                     <div className="text-body-sm text-text-muted font-mono uppercase tracking-wider">
                       {stat.label}
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Origin — editorial narrative */}
+      <section className="pb-20 sm:pb-28 md:pb-36 border-b border-border">
+        <div className="container-main">
+          {/* Lead quote */}
+          <motion.blockquote
+            className="border-l-2 border-accent pl-6 sm:pl-8 mb-16 sm:mb-20 md:mb-24"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <p className="font-display text-heading-lg sm:text-display-sm md:text-[1.75rem] font-semibold text-text-primary max-w-2xl leading-snug">
+              We came from trading floors, treasury functions, and Big Four advisory practices.
+            </p>
+          </motion.blockquote>
 
           {/* Narrative Grid */}
           <motion.div
@@ -115,11 +97,11 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* What We Believe */}
-      <section className="py-16 sm:py-20 md:py-32 bg-bg-secondary/50 border-y border-border">
+      {/* What We Believe — NOT a 3-card grid. Full-width principles with depth. */}
+      <section className="py-20 sm:py-28 md:py-36">
         <div className="container-main">
           <motion.div
-            className="mb-16"
+            className="mb-16 sm:mb-20"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -128,13 +110,14 @@ export default function AboutPage() {
             <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
               What We Believe
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-[1.75rem] sm:text-display-sm md:text-display-md font-bold max-w-2xl">
+            <motion.p variants={fadeUp} className="font-display text-[1.75rem] sm:text-display-sm md:text-display-md font-semibold max-w-2xl">
               The principles that shape every engagement
             </motion.p>
           </motion.div>
 
+          {/* Principles as full-width rows with number + title + description */}
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"
+            className="space-y-0"
             variants={staggerContainerFast}
             initial="hidden"
             whileInView="visible"
@@ -144,19 +127,20 @@ export default function AboutPage() {
               <motion.div
                 key={point.title}
                 variants={fadeUp}
-                className="group relative p-5 sm:p-8 rounded-lg bg-bg-primary border border-border hover:border-accent/30 transition-all duration-300"
+                className="group grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 py-8 sm:py-10 border-b border-border first:border-t"
               >
-                {/* Hover glow effect */}
-                <div className="absolute inset-0 rounded-lg bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                <div className="relative">
-                  <span className="inline-block text-xs font-mono text-accent mb-4">
+                <div className="md:col-span-1">
+                  <span className="text-xs font-mono text-text-muted group-hover:text-accent transition-colors">
                     {String(index + 1).padStart(2, '0')}
                   </span>
-                  <h3 className="text-heading-md font-semibold text-text-primary mb-3">
+                </div>
+                <div className="md:col-span-4">
+                  <h3 className="font-display text-heading-md sm:text-heading-lg font-semibold text-text-primary group-hover:text-accent transition-colors">
                     {point.title}
                   </h3>
-                  <p className="text-body-sm text-text-secondary leading-relaxed">
+                </div>
+                <div className="md:col-span-7">
+                  <p className="text-body-md text-text-secondary leading-relaxed">
                     {point.description}
                   </p>
                 </div>
@@ -166,14 +150,14 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Operating Principles */}
-      <section className="py-16 sm:py-20 md:py-32">
+      {/* How We Work — Operating Principles as structured rows, not hover-reveal */}
+      <section className="py-20 sm:py-28 md:py-36 bg-bg-secondary/40 border-y border-border">
         <div className="container-main">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16">
             <motion.div
               className="lg:col-span-4"
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={viewportOnce}
               transition={{ duration: 0.6 }}
             >
@@ -181,10 +165,10 @@ export default function AboutPage() {
                 <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                   How We Work
                 </h2>
-                <p className="text-[1.75rem] sm:text-display-sm font-bold mb-4 sm:mb-6">
+                <p className="font-display text-[1.75rem] sm:text-display-sm font-semibold mb-4 sm:mb-6">
                   {aboutPageContent.values.title}
                 </p>
-                <p className="text-body-md text-text-secondary">
+                <p className="text-body-md text-text-secondary leading-relaxed">
                   We are senior practitioners, not staffing leverage. Every engagement is led by partners who have designed, built, and defended these systems inside institutions.
                 </p>
               </div>
@@ -192,7 +176,7 @@ export default function AboutPage() {
 
             <div className="lg:col-span-7 lg:col-start-6">
               <motion.div
-                className="space-y-1"
+                className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8"
                 variants={staggerContainerFast}
                 initial="hidden"
                 whileInView="visible"
@@ -202,21 +186,17 @@ export default function AboutPage() {
                   <motion.div
                     key={item.title}
                     variants={fadeUp}
-                    className="group p-4 sm:p-6 -mx-4 sm:-mx-6 rounded-lg hover:bg-surface/50 active:bg-surface/50 transition-colors duration-200"
+                    className="relative"
                   >
-                    <div className="flex gap-4">
-                      <span className="text-xs font-mono text-accent mt-1">
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
-                      <div>
-                        <h3 className="text-heading-sm font-semibold text-text-primary mb-2 group-hover:text-accent transition-colors">
-                          {item.title}
-                        </h3>
-                        <p className="text-body-md text-text-secondary leading-relaxed">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
+                    <span className="text-xs font-mono text-accent mb-3 block">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <h3 className="text-heading-sm font-semibold text-text-primary mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-body-sm text-text-secondary leading-relaxed">
+                      {item.description}
+                    </p>
                   </motion.div>
                 ))}
               </motion.div>
@@ -225,56 +205,46 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Team + Hiring */}
-      <section className="py-16 sm:py-20 md:py-32 border-t border-border">
+      {/* Team + Hiring — asymmetric, not two equal boxes */}
+      <section className="py-20 sm:py-28 md:py-36">
         <div className="container-main">
           <motion.div
-            className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 lg:gap-24"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-16 lg:gap-8"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
           >
-            {/* Team */}
-            <motion.div variants={fadeUp} className="relative">
-              <div className="absolute -top-4 -left-4 w-24 h-24 bg-accent/10 rounded-full blur-2xl" />
-              <div className="relative">
-                <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
-                  The Team
-                </h2>
-                <p className="text-[1.75rem] sm:text-display-sm font-bold mb-4 sm:mb-6">
-                  {team.title}
-                </p>
-                <p className="text-body-lg text-text-secondary leading-relaxed mb-8">
-                  {team.description}
-                </p>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow transition-shadow"
-                >
-                  Work With Us
-                  <ArrowUpRight size={16} />
-                </Link>
-              </div>
+            {/* Team — takes more space */}
+            <motion.div variants={fadeUp} className="lg:col-span-7">
+              <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
+                The Team
+              </h2>
+              <p className="font-display text-[1.75rem] sm:text-display-sm font-semibold mb-4 sm:mb-6">
+                {team.title}
+              </p>
+              <p className="text-body-lg text-text-secondary leading-relaxed mb-8 max-w-lg">
+                {team.description}
+              </p>
+              <Link href="/contact" className="cta-primary">
+                Work With Us
+                <ArrowUpRight size={16} />
+              </Link>
             </motion.div>
 
-            {/* Hiring Card */}
+            {/* Hiring — compact sidebar */}
             <motion.div
               variants={fadeUp}
-              className="relative p-5 sm:p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface to-bg-secondary border border-border"
+              className="lg:col-span-4 lg:col-start-9"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl" />
-              <div className="relative">
+              <div className="border-l-2 border-accent pl-6">
                 <h3 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                   {aboutPageContent.hiring.title}
                 </h3>
-                <p className="text-body-md text-text-secondary leading-relaxed mb-8">
+                <p className="text-body-sm text-text-secondary leading-relaxed mb-6">
                   {aboutPageContent.hiring.description}
                 </p>
-                <Link
-                  href={aboutPageContent.hiring.ctaHref}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 border border-accent/30 text-accent font-medium rounded-sm hover:bg-accent/10 transition-colors"
-                >
+                <Link href={aboutPageContent.hiring.ctaHref} className="cta-outline-accent">
                   {aboutPageContent.hiring.cta}
                   <ArrowUpRight size={16} />
                 </Link>

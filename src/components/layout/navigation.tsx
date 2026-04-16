@@ -93,7 +93,7 @@ export function Navigation() {
           'fixed top-0 left-0 right-0 z-50 px-5 sm:px-6 md:px-10 py-4 sm:py-5',
           'transition-all duration-300',
           isScrolled
-            ? 'bg-bg-primary/80 backdrop-blur-xl border-b border-border'
+            ? 'bg-bg-primary/50 backdrop-blur-2xl border-b border-white/[0.06]'
             : 'bg-transparent'
         )}
         variants={fadeDown}

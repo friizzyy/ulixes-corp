@@ -133,29 +133,24 @@ export default function ContactPage() {
 
   return (
     <PageTransition>
-      {/* Hero */}
-      <section className="pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-40 md:pb-20 relative z-10">
+      {/* Hero + Form — merged into one section, no separate hero block */}
+      <section className="pt-32 pb-16 sm:pt-40 sm:pb-20 md:pt-48 md:pb-32 relative z-10">
         <div className="container-main">
+          {/* Inline headline — no separate hero section */}
           <motion.div
-            className="max-w-4xl"
+            className="mb-12 sm:mb-16 md:mb-20 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-16 items-end"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
           >
-            <motion.div variants={fadeUp} className="section-label">Contact</motion.div>
-            <motion.h1 variants={fadeUp} className="text-[2.25rem] sm:text-display-lg md:text-display-xl font-bold mb-6">
+            <motion.h1 variants={fadeUp} className="font-display text-[2.25rem] sm:text-display-lg md:text-display-xl font-semibold lg:col-span-7">
               {hero.headline}
             </motion.h1>
-            <motion.p variants={fadeUp} className="text-base sm:text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
+            <motion.p variants={fadeUp} className="text-base sm:text-body-lg text-text-secondary leading-relaxed lg:col-span-5">
               {hero.description}
             </motion.p>
           </motion.div>
-        </div>
-      </section>
 
-      {/* Form + Info */}
-      <section className="pb-16 sm:pb-20 md:pb-32">
-        <div className="container-main">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16">
             {/* Form */}
             <motion.div
@@ -164,16 +159,14 @@ export default function ContactPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <div className="relative p-5 sm:p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden">
-                {/* Decorative elements */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
+              <div className="relative p-5 sm:p-8 md:p-10 rounded-lg bg-bg-secondary border border-border overflow-hidden">
 
                 {formState === 'success' ? (
                   <div className="relative text-center py-12">
                     <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-accent/20 flex items-center justify-center">
                       <CheckCircle size={32} className="text-accent" />
                     </div>
-                    <h2 className="text-display-sm font-bold mb-3">
+                    <h2 className="text-display-sm font-display font-semibold mb-3">
                       {success.title}
                     </h2>
                     <p className="text-body-md text-text-secondary mb-8">
@@ -191,7 +184,7 @@ export default function ContactPage() {
                     <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-red-500/20 flex items-center justify-center">
                       <AlertCircle size={32} className="text-red-400" />
                     </div>
-                    <h2 className="text-display-sm font-bold mb-3">
+                    <h2 className="text-display-sm font-display font-semibold mb-3">
                       {error.title}
                     </h2>
                     <p className="text-body-md text-text-secondary mb-8">
@@ -255,7 +248,7 @@ export default function ContactPage() {
                     <button
                       type="submit"
                       disabled={formState === 'submitting'}
-                      className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow active:scale-[0.98] transition-shadow disabled:opacity-50"
+                      className="cta-primary disabled:opacity-50 disabled:pointer-events-none"
                     >
                       {formState === 'submitting' ? (
                         <>
@@ -271,55 +264,41 @@ export default function ContactPage() {
               </div>
             </motion.div>
 
-            {/* Contact Info */}
+            {/* Contact Info — clean, no card wrappers */}
             <motion.div
-              className="lg:col-span-4 lg:col-start-9 space-y-6"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
+              className="lg:col-span-4 lg:col-start-9 lg:pt-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              {/* Direct Contact */}
-              <div className="relative p-5 sm:p-8 rounded-lg bg-bg-secondary border border-border overflow-hidden">
-                <div className="absolute -top-10 -right-10 w-20 h-20 bg-accent/5 rounded-full blur-2xl" />
-
-                <div className="relative">
-                  <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-6">
+              <div className="space-y-8">
+                <div>
+                  <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                     {info.title}
                   </h2>
-                  <div>
-                    <div className="text-body-sm text-text-muted mb-2">Email</div>
-                    <a
-                      href={`mailto:${siteConfig.email}`}
-                      className="text-base sm:text-heading-md font-medium text-text-primary hover:text-accent transition-colors break-all"
-                    >
-                      {siteConfig.email}
-                    </a>
-                  </div>
+                  <div className="text-body-sm text-text-muted mb-1.5">Email</div>
+                  <a
+                    href={`mailto:${siteConfig.email}`}
+                    className="text-base sm:text-heading-md font-medium text-text-primary hover:text-accent transition-colors break-all"
+                  >
+                    {siteConfig.email}
+                  </a>
+                </div>
+
+                <div className="border-t border-border pt-6">
+                  <div className="text-body-sm text-text-muted mb-1.5">Response Time</div>
+                  <p className="text-body-md text-text-primary">
+                    Within one business day.
+                  </p>
                 </div>
               </div>
-
-              {/* Response Time */}
-              <motion.div
-                className="p-6 rounded-lg bg-surface/50 border border-border"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                  <span className="text-body-sm text-text-muted">Response Time</span>
-                </div>
-                <p className="text-body-md text-text-secondary">
-                  A partner will respond within one business day.
-                </p>
-              </motion.div>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="py-16 sm:py-20 md:py-32 bg-bg-secondary/50 border-t border-border">
+      <section className="py-20 sm:py-28 md:py-36 bg-bg-secondary/50 border-t border-border">
         <div className="container-main">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16">
             <motion.div
@@ -333,7 +312,7 @@ export default function ContactPage() {
                 <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                   {contactPageContent.faq.title}
                 </h2>
-                <p className="text-[1.75rem] sm:text-display-sm font-bold">
+                <p className="text-[1.75rem] sm:text-display-sm font-display font-semibold">
                   Before you reach out
                 </p>
               </div>

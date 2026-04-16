@@ -255,10 +255,11 @@ export const pageTransition: Variants = {
 }
 
 // Viewport settings for scroll animations
-// Smaller margin on mobile ensures elements animate earlier when scrolling
+// Large bottom margin triggers animation well before element is fully in view
 export const viewportOnce = {
   once: true,
-  margin: '-30px',
+  amount: 0.05 as const,
+  margin: '200px 0px 0px 0px',
 }
 
 export const viewportRepeating = {
@@ -312,18 +313,9 @@ export const scaleIn: Variants = {
   },
 }
 
-// Hover lift animation - for cards
+// Hover lift animation - disabled for institutional feel
+// Cards should use border-color transitions only
 export const hoverLift: Variants = {
-  rest: {
-    y: 0,
-    boxShadow: '0 0 0 rgba(139, 92, 246, 0)',
-  },
-  hover: {
-    y: -4,
-    boxShadow: '0 0 20px rgba(139, 92, 246, 0.15)',
-    transition: {
-      duration: 0.3,
-      ease: easing.smooth,
-    },
-  },
+  rest: {},
+  hover: {},
 }

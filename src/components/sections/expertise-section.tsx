@@ -44,7 +44,7 @@ export function ExpertiseSection() {
           whileInView="visible"
           viewport={viewportOnce}
         >
-          <h2 className="text-display-sm md:text-display-md font-bold mb-6">
+          <h2 className="text-display-sm md:text-display-md font-display font-semibold mb-6">
             {expertise.title}
           </h2>
           <p className="text-body-lg text-text-secondary mb-8 leading-relaxed">

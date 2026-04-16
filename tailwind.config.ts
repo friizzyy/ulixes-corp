@@ -47,7 +47,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        display: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-serif)', 'Georgia', 'Times New Roman', 'serif'],
+        sans: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-jetbrains)', 'monospace'],
       },
       fontSize: {
@@ -59,6 +60,7 @@ const config: Config = {
         'heading-lg': ['1.5rem', { lineHeight: '1.3', letterSpacing: '-0.01em' }],
         'heading-md': ['1.25rem', { lineHeight: '1.4', letterSpacing: '-0.01em' }],
         'heading-sm': ['1.125rem', { lineHeight: '1.4' }],
+        'body-xl': ['1.25rem', { lineHeight: '1.7', letterSpacing: '-0.005em' }],
         'body-lg': ['1.125rem', { lineHeight: '1.7' }],
         'body-md': ['1rem', { lineHeight: '1.6' }],
         'body-sm': ['0.875rem', { lineHeight: '1.6' }],
@@ -81,8 +83,8 @@ const config: Config = {
         'sm': '0 1px 2px rgba(0,0,0,0.4)',
         'md': '0 4px 12px rgba(0,0,0,0.5)',
         'lg': '0 8px 32px rgba(0,0,0,0.6)',
-        'glow': '0 0 20px rgba(139,92,246,0.2)',
-        'glow-strong': '0 0 40px rgba(139,92,246,0.3)',
+        'glow': '0 0 20px rgba(139,92,246,0.08)',
+        'glow-strong': '0 0 40px rgba(139,92,246,0.12)',
       },
       animation: {
         'fade-up': 'fadeUp 0.6s ease-out forwards',
@@ -90,8 +92,6 @@ const config: Config = {
         'slide-up': 'slideUp 0.5s ease-out forwards',
         'pulse-glow': 'pulseGlow 2s infinite',
         'terminal-line': 'terminalLine 0.3s ease forwards',
-        'float': 'float 6s ease-in-out infinite',
-        'float-delayed': 'float 6s ease-in-out 3s infinite',
       },
       keyframes: {
         fadeUp: {
@@ -113,10 +113,6 @@ const config: Config = {
         terminalLine: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
-        },
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-20px)' },
         },
       },
       transitionTimingFunction: {

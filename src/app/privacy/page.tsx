@@ -11,7 +11,7 @@ export default function PrivacyPage() {
   return (
     <PageTransition>
       {/* Hero */}
-      <section className="pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-40 md:pb-20 relative z-10">
+      <section className="pt-28 pb-12 sm:pt-32 sm:pb-16 md:pt-44 md:pb-20 relative z-10">
         <motion.div
           className="container-main"
           variants={staggerContainer}
@@ -20,7 +20,7 @@ export default function PrivacyPage() {
         >
           <motion.div className="max-w-3xl" variants={fadeUp}>
             <div className="section-label">Legal</div>
-            <h1 className="text-[1.75rem] sm:text-display-sm md:text-display-md font-bold mb-4">
+            <h1 className="text-[1.75rem] sm:text-display-sm md:text-display-md font-display font-semibold mb-4">
               {privacyContent.title}
             </h1>
             <p className="text-body-md text-text-muted font-mono">

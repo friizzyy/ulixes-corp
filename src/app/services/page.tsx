@@ -43,206 +43,177 @@ export default function ServicesPage() {
   return (
     <PageTransition>
       {/* Hero */}
-      <section className="pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-40 md:pb-20 relative z-10">
+      <section className="pt-32 pb-8 sm:pt-40 sm:pb-12 md:pt-48 md:pb-16 relative z-10">
         <div className="container-main">
-          <motion.div
-            className="max-w-4xl"
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.div variants={fadeUp} className="section-label">{servicesPageContent.hero.label}</motion.div>
-            <motion.h1 variants={fadeUp} className="text-[2.25rem] sm:text-display-lg md:text-display-xl font-bold mb-6">
-              {servicesPageContent.hero.headline}
-            </motion.h1>
-            <motion.p variants={fadeUp} className="text-base sm:text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
-              {servicesPageContent.hero.description}
-            </motion.p>
-          </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end">
+            {/* Left: Headline */}
+            <motion.div
+              className="lg:col-span-7"
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+            >
+              <motion.div variants={fadeUp} className="section-label">{servicesPageContent.hero.label}</motion.div>
+              <motion.h1 variants={fadeUp} className="font-display text-[2.25rem] sm:text-[2.75rem] md:text-[3.5rem] lg:text-[4rem] font-semibold leading-[1.08] tracking-tight mb-6 sm:mb-8">
+                {servicesPageContent.hero.headline}
+              </motion.h1>
+              <motion.p variants={fadeUp} className="text-base sm:text-body-lg text-text-secondary leading-relaxed max-w-lg">
+                {servicesPageContent.hero.description}
+              </motion.p>
+            </motion.div>
+
+            {/* Right: Service Index */}
+            <motion.div
+              className="lg:col-span-4 lg:col-start-9"
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+            >
+              <nav className="space-y-0">
+                {services.map((service, index) => (
+                  <motion.button
+                    key={service.id}
+                    variants={fadeUp}
+                    onClick={() => {
+                      setActiveIndex(index)
+                      servicesGridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                    }}
+                    className="group flex items-baseline gap-3 w-full text-left py-3 border-b border-border last:border-b-0 transition-colors duration-200"
+                  >
+                    <span className="text-xs font-mono text-text-muted/50 group-hover:text-accent transition-colors">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span className="text-base sm:text-lg font-medium text-text-secondary group-hover:text-text-primary transition-colors">
+                      {service.title}
+                    </span>
+                  </motion.button>
+                ))}
+              </nav>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Services Grid */}
-      <section className="pb-16 sm:pb-20 md:pb-32" ref={servicesGridRef}>
+      {/* Services Detail */}
+      <section className="pb-20 sm:pb-28 md:pb-36" ref={servicesGridRef}>
         <div className="container-main">
-          {/* Service Selector */}
+          {/* Tab navigation — clean underline tabs */}
           <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-0.5 mb-8 sm:mb-16"
-            variants={staggerContainerFast}
-            initial="hidden"
-            animate="visible"
+            className="flex items-center gap-0 border-b border-border mb-12 sm:mb-16 overflow-x-auto scrollbar-none -mx-5 px-5 sm:mx-0 sm:px-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
           >
-            {services.map((service, index) => (
-              <motion.button
-                key={service.id}
-                id={service.id}
-                variants={fadeUp}
-                onClick={() => setActiveIndex(index)}
-                className={`group relative p-3.5 sm:p-4 text-left transition-all duration-200 min-h-[44px] border-l-2 ${
-                  activeIndex === index
-                    ? 'border-l-accent bg-gradient-to-r from-accent/[0.06] to-transparent'
-                    : 'border-l-transparent hover:bg-surface/30'
-                }`}
-              >
-                <span className={`block font-mono text-[11px] sm:text-xs font-semibold mb-1 transition-colors ${
-                  activeIndex === index ? 'text-accent' : 'text-text-muted/50'
-                }`}>
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <h3 className={`text-sm sm:text-heading-sm font-medium transition-colors ${
-                  activeIndex === index ? 'text-text-primary' : 'text-text-muted group-hover:text-text-secondary'
-                }`}>
+            {services.map((service, index) => {
+              const isActive = activeIndex === index
+              return (
+                <button
+                  key={service.id}
+                  id={service.id}
+                  onClick={() => setActiveIndex(index)}
+                  className={`relative whitespace-nowrap px-4 sm:px-6 py-3 sm:py-4 text-body-sm font-medium transition-colors duration-200 min-h-[44px] ${
+                    isActive ? 'text-text-primary' : 'text-text-muted hover:text-text-secondary'
+                  }`}
+                >
                   {service.title}
-                </h3>
-              </motion.button>
-            ))}
+                  <span className={`absolute bottom-0 left-0 right-0 h-0.5 transition-all duration-300 ${
+                    isActive ? 'bg-accent' : 'bg-transparent'
+                  }`} />
+                </button>
+              )
+            })}
           </motion.div>
 
-          {/* Active Service Content */}
-          <motion.div
-            className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            {/* Left: Main Content */}
-            <div className="lg:col-span-7">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeIndex}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
-                      <IconComponent size={28} />
-                    </div>
-                    <div>
-                      <div className="text-xs font-mono text-accent uppercase tracking-wider mb-1">
-                        Service {String(activeIndex + 1).padStart(2, '0')}
-                      </div>
-                      <h2 className="text-[1.5rem] sm:text-display-sm font-bold">
-                        {activeService.title}
-                      </h2>
-                    </div>
+          {/* Active service — open layout */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16">
+                {/* Left: Main content */}
+                <div className="lg:col-span-7">
+                  <div className="text-xs font-mono text-accent uppercase tracking-wider mb-3">
+                    Service {String(activeIndex + 1).padStart(2, '0')}
                   </div>
+                  <h2 className="font-display text-[1.5rem] sm:text-display-sm font-semibold mb-6 sm:mb-8">
+                    {activeService.title}
+                  </h2>
 
                   <p className="text-body-lg text-text-secondary leading-relaxed mb-10">
                     {activeService.fullDescription}
                   </p>
 
-                  {/* Deliverables */}
+                  {/* Deliverables — clean list, no card wrappers */}
                   <div className="mb-10">
-                    <h3 className="text-xs font-mono uppercase tracking-widest text-accent mb-6">
+                    <h3 className="text-xs font-mono uppercase tracking-widest text-text-muted mb-6">
                       What You Get
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {activeService.whatYouGet.map((item, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.3, delay: i * 0.05 }}
-                          className="flex items-start gap-3 p-4 rounded-lg bg-surface/50 border border-border"
-                        >
+                        <div key={i} className="flex items-start gap-3 text-body-sm text-text-secondary">
                           <span className="text-accent mt-0.5 flex-shrink-0">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                               <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
                           </span>
-                          <span className="text-body-sm text-text-secondary">{item}</span>
-                        </motion.div>
+                          {item}
+                        </div>
                       ))}
                     </div>
                   </div>
 
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow transition-shadow"
-                  >
+                  <Link href="/contact" className="cta-primary">
                     Discuss {activeService.title}
                     <ArrowUpRight size={16} />
                   </Link>
-                </motion.div>
-              </AnimatePresence>
-            </div>
+                </div>
 
-            {/* Right: Risk/Control Cards */}
-            <div className="lg:col-span-5 space-y-6">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={`risk-${activeIndex}`}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.3 }}
-                  className="relative p-5 sm:p-8 rounded-lg overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 via-red-500/5 to-transparent" />
-                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-red-500/50 via-red-500/20 to-transparent" />
-
-                  <div className="relative">
-                    <div className="text-xs font-mono uppercase tracking-widest text-red-400 mb-4">
-                      Risk Prevented
+                {/* Right: Risk + control + approach */}
+                <div className="lg:col-span-5 space-y-10 lg:pt-10">
+                  <div>
+                    <div className="text-[11px] font-mono uppercase tracking-widest text-text-muted mb-3">
+                      The risk
                     </div>
-                    <p className="text-body-md text-text-primary leading-relaxed">
+                    <p className="text-body-md text-text-secondary leading-relaxed border-l-2 border-red-500/30 pl-4">
                       {activeService.riskPrevented}
                     </p>
                   </div>
-                </motion.div>
-              </AnimatePresence>
 
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={`control-${activeIndex}`}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.3, delay: 0.1 }}
-                  className="relative p-5 sm:p-8 rounded-lg overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-accent/5 to-transparent" />
-                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-accent/50 via-accent/20 to-transparent" />
-
-                  <div className="relative">
-                    <div className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
-                      Control Created
+                  <div>
+                    <div className="text-[11px] font-mono uppercase tracking-widest text-text-muted mb-3">
+                      The outcome
                     </div>
-                    <p className="text-body-md text-text-primary leading-relaxed">
+                    <p className="text-body-md text-text-secondary leading-relaxed border-l-2 border-accent/40 pl-4">
                       {activeService.controlCreated}
                     </p>
                   </div>
-                </motion.div>
-              </AnimatePresence>
 
-              {/* Process Quick View */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="p-6 rounded-lg bg-bg-secondary border border-border"
-              >
-                <h4 className="text-xs font-mono uppercase tracking-widest text-text-muted mb-4">
-                  Our Approach
-                </h4>
-                <div className="space-y-3">
-                  {servicesPageContent.process.steps.slice(0, 3).map((step, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <span className="text-xs font-mono text-accent">{String(i + 1).padStart(2, '0')}</span>
-                      <span className="text-body-sm text-text-secondary">{step.title}</span>
+                  <div className="pt-6 border-t border-border">
+                    <h4 className="text-[11px] font-mono uppercase tracking-widest text-text-muted mb-4">
+                      Our Approach
+                    </h4>
+                    <div className="space-y-3">
+                      {servicesPageContent.process.steps.slice(0, 3).map((step, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                          <span className="text-xs font-mono text-accent">{String(i + 1).padStart(2, '0')}</span>
+                          <span className="text-body-sm text-text-secondary">{step.title}</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </motion.div>
-            </div>
-          </motion.div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </section>
 
       {/* Engagement Process */}
-      <section className="py-16 sm:py-20 md:py-32 bg-bg-secondary/50 border-y border-border">
+      <section className="py-20 sm:py-28 md:py-36 bg-bg-secondary/50 border-y border-border">
         <div className="container-main">
           <motion.div
             className="mb-16"
@@ -254,7 +225,7 @@ export default function ServicesPage() {
             <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
               {servicesPageContent.process.title}
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-[1.75rem] sm:text-display-sm md:text-display-md font-bold max-w-2xl">
+            <motion.p variants={fadeUp} className="text-[1.75rem] sm:text-display-sm md:text-display-md font-display font-semibold max-w-2xl">
               {servicesPageContent.process.description}
             </motion.p>
           </motion.div>
@@ -295,16 +266,12 @@ export default function ServicesPage() {
       <section className="py-14 sm:py-20 md:py-28">
         <div className="container-main">
           <motion.div
-            className="relative p-6 sm:p-10 md:p-16 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
+            className="relative p-6 sm:p-10 md:p-16 rounded-lg bg-bg-secondary border border-border overflow-hidden"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={viewportOnce}
             transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
           >
-            {/* Decorative elements */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
-            <div className="absolute -bottom-20 -right-20 w-60 h-60 bg-accent/5 rounded-full blur-3xl" />
-
             <motion.div
               className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8"
               variants={staggerContainer}
@@ -313,7 +280,7 @@ export default function ServicesPage() {
               viewport={viewportOnce}
             >
               <motion.div variants={fadeUp} className="max-w-xl">
-                <h2 className="text-[1.75rem] sm:text-display-sm font-bold mb-3">
+                <h2 className="text-[1.75rem] sm:text-display-sm font-display font-semibold mb-3">
                   {servicesPageContent.cta.title}
                 </h2>
                 <p className="text-body-lg text-text-secondary">
@@ -321,10 +288,7 @@ export default function ServicesPage() {
                 </p>
               </motion.div>
               <motion.div variants={fadeUp}>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow transition-shadow shrink-0 min-h-[48px]"
-                >
+                <Link href="/contact" className="cta-primary shrink-0">
                   {servicesPageContent.cta.primaryCta}
                   <ArrowUpRight size={16} />
                 </Link>

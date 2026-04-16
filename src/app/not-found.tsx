@@ -15,13 +15,13 @@ export default function NotFound() {
         animate="visible"
       >
         <motion.div
-          className="text-[5rem] sm:text-[8rem] md:text-[12rem] font-bold gradient-text leading-none mb-4"
+          className="text-[5rem] sm:text-[8rem] md:text-[12rem] font-display font-semibold text-accent leading-none mb-4"
           variants={fadeUp}
         >
           {notFoundContent.headline}
         </motion.div>
         <motion.h1
-          className="text-[1.75rem] sm:text-display-sm font-bold mb-4"
+          className="text-[1.75rem] sm:text-display-sm font-display font-semibold mb-4"
           variants={fadeUp}
         >
           {notFoundContent.title}

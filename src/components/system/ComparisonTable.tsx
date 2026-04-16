@@ -150,7 +150,7 @@ export function BeforeAfter({ before, after, className }: BeforeAfterProps) {
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.5, delay: 0.1 }}
       >
-        <GlassSurfaceContainer className="h-full" padding="none" glow>
+        <GlassSurfaceContainer className="h-full" padding="none">
           <div className="px-4 py-3 border-b border-border bg-accent/5">
             <span className="text-sm font-medium text-accent">
               {after.label || 'After'}

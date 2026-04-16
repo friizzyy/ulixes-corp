@@ -9,78 +9,70 @@ import { fadeUp, staggerContainer, staggerContainerFast, viewportOnce } from '@/
 
 export default function ExperiencePage() {
   const { hero, stats, credibilityChips, intro, institutions, closing, cta } = experienceContent
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
   const [activeStudy, setActiveStudy] = useState(0)
   const study = caseStudies[activeStudy]
 
   return (
     <PageTransition>
       {/* Hero */}
-      <section className="pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-40 md:pb-20 relative z-10">
+      <section className="pt-32 pb-12 sm:pt-40 sm:pb-16 md:pt-48 md:pb-20 relative z-10">
         <div className="container-main">
           <motion.div
-            className="max-w-4xl"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
           >
             <motion.div variants={fadeUp} className="section-label">{hero.label}</motion.div>
-            <motion.h1 variants={fadeUp} className="text-[2.25rem] sm:text-display-lg md:text-display-xl font-bold mb-6">
+            <motion.h1 variants={fadeUp} className="font-display text-[2.5rem] sm:text-display-lg md:text-display-xl lg:text-[4.5rem] font-semibold mb-10 sm:mb-14 max-w-5xl leading-[1.1]">
               {hero.headline}
             </motion.h1>
-            <motion.p variants={fadeUp} className="text-base sm:text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-2xl">
-              {hero.description}
-            </motion.p>
+
+            {/* Description + inline stats */}
+            <motion.div variants={fadeUp} className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 md:gap-16">
+              <p className="text-base sm:text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-xl">
+                {hero.description}
+              </p>
+
+              <div className="flex items-start gap-6 sm:gap-8 shrink-0">
+                {stats.map((stat, idx) => (
+                  <div key={stat.label} className="flex items-start gap-6 sm:gap-8">
+                    {idx > 0 && (
+                      <div className="w-px h-14 sm:h-16 bg-border self-center" />
+                    )}
+                    <div>
+                      <div className="font-display text-4xl sm:text-5xl font-semibold text-text-primary mb-1">
+                        {stat.value}
+                      </div>
+                      <div className="text-body-sm text-text-muted font-mono uppercase tracking-wider">
+                        {stat.label}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Credibility chips */}
+          <motion.div
+            className="mt-12 sm:mt-16 flex flex-wrap gap-x-8 gap-y-3"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
+          >
+            {credibilityChips.map((chip) => (
+              <div key={chip} className="flex items-center gap-3 text-text-muted">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                <span className="text-body-sm font-medium">{chip}</span>
+              </div>
+            ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Stats Banner */}
+      {/* Narrative Grid */}
       <section className="pb-16 sm:pb-20 md:pb-32">
         <div className="container-main">
-          <motion.div
-            className="relative mb-20 p-5 sm:p-8 md:p-16 rounded-lg bg-gradient-to-br from-surface via-bg-secondary to-surface border border-border overflow-hidden"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
-          >
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
-
-            <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-10">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
-                  Institutional Perspective
-                </h2>
-                <p className="text-base sm:text-heading-lg md:text-display-sm font-semibold text-text-primary max-w-lg">
-                  Built from inside the organizations we work with today.
-                </p>
-              </motion.div>
-
-              <motion.div
-                className="flex gap-6 sm:gap-10 md:gap-16"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-              >
-                {stats.map((stat) => (
-                  <div key={stat.label} className="text-right">
-                    <div className="text-3xl sm:text-5xl md:text-6xl font-bold gradient-text mb-1">
-                      {stat.value}
-                    </div>
-                    <div className="text-body-sm text-text-muted font-mono uppercase tracking-wider">
-                      {stat.label}
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-            </div>
-          </motion.div>
-
-          {/* Narrative Grid */}
           <motion.div
             className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-8"
             variants={staggerContainer}
@@ -132,104 +124,60 @@ export default function ExperiencePage() {
         </div>
       </motion.section>
 
-      {/* Institutions Categories - Accordion Style */}
-      <section className="py-14 sm:py-20 md:py-28">
+      {/* Institutions — static grid, no accordion (content too short to justify expand/collapse) */}
+      <section className="py-20 sm:py-28 md:py-36">
         <div className="container-main">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16">
-            {/* Left Column - Header */}
-            <motion.div
-              className="lg:col-span-4 lg:sticky lg:top-32 lg:self-start"
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
-            >
-              <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
-                Where We&apos;ve Worked
-              </motion.h2>
-              <motion.p variants={fadeUp} className="text-base sm:text-heading-lg md:text-display-sm font-bold mb-4">
-                Our experience spans seven distinct institutional sectors.
-              </motion.p>
-              <motion.p variants={fadeUp} className="text-body-sm text-text-muted">
-                Select a category to learn more about our work in that sector.
-              </motion.p>
-            </motion.div>
+          <motion.div
+            className="mb-14 sm:mb-18 md:mb-20"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+          >
+            <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
+              Where We&apos;ve Worked
+            </motion.h2>
+            <motion.p variants={fadeUp} className="font-display text-[1.75rem] sm:text-display-sm md:text-display-md font-semibold max-w-2xl">
+              Seven distinct institutional sectors.
+            </motion.p>
+          </motion.div>
 
-            {/* Right Column - Accordion */}
-            <motion.div
-              className="lg:col-span-8"
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
-              variants={staggerContainerFast}
-            >
-              <div className="space-y-2">
-                {institutions.categories.map((category, index) => {
-                  const isExpanded = expandedIndex === index
-                  return (
-                    <motion.div
-                      key={category.name}
-                      variants={fadeUp}
-                      className="group"
-                    >
-                      <button
-                        onClick={() => setExpandedIndex(isExpanded ? null : index)}
-                        className="w-full text-left"
-                      >
-                        <div
-                          className={`
-                            min-h-[44px] flex items-center justify-between gap-4 p-4 rounded-md border transition-all duration-300
-                            ${isExpanded
-                              ? 'bg-surface border-accent/40'
-                              : 'bg-transparent border-border hover:border-border-accent hover:bg-surface/50'
-                            }
-                          `}
-                        >
-                          <div className="flex items-center gap-4">
-                            <span className={`text-xs font-mono transition-colors ${isExpanded ? 'text-accent' : 'text-text-muted'}`}>
-                              {String(index + 1).padStart(2, '0')}
-                            </span>
-                            <h3 className={`text-base font-semibold transition-colors ${isExpanded ? 'text-accent' : 'text-text-primary'}`}>
-                              {category.name}
-                            </h3>
-                          </div>
-                          <motion.span
-                            className="text-text-muted text-xl font-light"
-                            animate={{ rotate: isExpanded ? 45 : 0 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            +
-                          </motion.span>
-                        </div>
-                      </button>
-                      <AnimatePresence>
-                        {isExpanded && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                            className="overflow-hidden"
-                          >
-                            <div className="px-4 pb-4 pt-2 ml-12">
-                              <p className="text-body-sm text-text-secondary leading-relaxed">
-                                {category.description}
-                              </p>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.div>
-                  )
-                })}
-              </div>
-            </motion.div>
-          </div>
+          <motion.div
+            className="space-y-0"
+            variants={staggerContainerFast}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+          >
+            {institutions.categories.map((category, index) => (
+              <motion.div
+                key={category.name}
+                variants={fadeUp}
+                className="group grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-8 py-6 sm:py-8 border-b border-border first:border-t"
+              >
+                <div className="md:col-span-1">
+                  <span className="text-xs font-mono text-text-muted group-hover:text-accent transition-colors">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                </div>
+                <div className="md:col-span-4">
+                  <h3 className="text-body-md sm:text-heading-sm font-semibold text-text-primary">
+                    {category.name}
+                  </h3>
+                </div>
+                <div className="md:col-span-7">
+                  <p className="text-body-sm text-text-secondary leading-relaxed">
+                    {category.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
       {/* Case Studies Section */}
-      <section className="py-16 sm:py-20 md:py-32 bg-bg-secondary/50 border-y border-border">
+      <section className="py-20 sm:py-28 md:py-36 bg-bg-secondary/50 border-y border-border">
         <div className="container-main">
           <motion.div
             className="mb-16"
@@ -241,7 +189,7 @@ export default function ExperiencePage() {
             <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
               Selected Engagements
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-base sm:text-heading-lg md:text-display-sm font-bold max-w-xl">
+            <motion.p variants={fadeUp} className="text-base sm:text-heading-lg md:text-display-sm font-display font-semibold max-w-xl">
               Patterns from our work. Most clients require confidentiality. These represent what we can discuss.
             </motion.p>
           </motion.div>
@@ -305,7 +253,7 @@ export default function ExperiencePage() {
                 </motion.div>
 
                 <motion.h3
-                  className="text-[1.5rem] sm:text-display-sm md:text-display-md font-bold mb-6 leading-tight"
+                  className="text-[1.5rem] sm:text-display-sm md:text-display-md font-display font-semibold mb-6 leading-tight"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15 }}
@@ -408,7 +356,7 @@ export default function ExperiencePage() {
       </section>
 
       {/* Closing Quote + CTA */}
-      <section className="py-16 sm:py-20 md:py-32 border-t border-border">
+      <section className="py-20 sm:py-28 md:py-36 border-t border-border">
         <div className="container-main">
           <motion.div
             className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-24"
@@ -419,12 +367,11 @@ export default function ExperiencePage() {
           >
             {/* Quote */}
             <motion.div variants={fadeUp} className="relative">
-              <div className="absolute -top-4 -left-4 w-24 h-24 bg-accent/10 rounded-full blur-2xl" />
               <div className="relative">
                 <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                   Our Perspective
                 </h2>
-                <blockquote className="text-[1.5rem] sm:text-display-sm font-bold mb-6 leading-tight">
+                <blockquote className="text-[1.5rem] sm:text-display-sm font-display font-semibold mb-6 leading-tight">
                   &ldquo;{closing.quote}&rdquo;
                 </blockquote>
               </div>
@@ -433,9 +380,8 @@ export default function ExperiencePage() {
             {/* CTA Card */}
             <motion.div
               variants={fadeUp}
-              className="relative p-5 sm:p-8 md:p-10 rounded-lg bg-gradient-to-br from-surface to-bg-secondary border border-border"
+              className="relative p-5 sm:p-8 md:p-10 rounded-lg bg-bg-secondary border border-border"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl" />
               <div className="relative">
                 <h3 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                   {cta.title}
@@ -443,10 +389,7 @@ export default function ExperiencePage() {
                 <p className="text-body-md text-text-secondary leading-relaxed mb-8">
                   {cta.description}
                 </p>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 min-h-[48px] bg-accent text-bg-primary font-medium rounded-sm hover:shadow-glow transition-shadow"
-                >
+                <Link href="/contact" className="cta-primary">
                   {cta.primaryCta}
                   <ArrowUpRight size={16} />
                 </Link>

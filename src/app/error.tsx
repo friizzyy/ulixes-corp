@@ -43,7 +43,7 @@ export default function Error({
           </svg>
         </motion.div>
         <motion.h1
-          className="text-[1.75rem] sm:text-display-sm font-bold mb-4"
+          className="text-[1.75rem] sm:text-display-sm font-display font-semibold mb-4"
           variants={fadeUp}
         >
           Something went wrong

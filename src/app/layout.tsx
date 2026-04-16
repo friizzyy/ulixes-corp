@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Outfit, JetBrains_Mono } from 'next/font/google'
+import { Outfit, JetBrains_Mono, EB_Garamond } from 'next/font/google'
 import { Navigation, Footer, GridBackground } from '@/components/layout'
 import { ErrorBoundary } from '@/components/ui'
 import { siteConfig } from '@/lib/content'
@@ -9,6 +9,12 @@ import '@/styles/globals.css'
 const outfit = Outfit({
   subsets: ['latin'],
   variable: '--font-outfit',
+  display: 'swap',
+})
+
+const ebGaramond = EB_Garamond({
+  subsets: ['latin'],
+  variable: '--font-serif',
   display: 'swap',
 })
 
@@ -60,8 +66,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${outfit.variable} ${jetbrainsMono.variable}`}>
-      <body className="font-display">
+    <html lang="en" className={`${outfit.variable} ${ebGaramond.variable} ${jetbrainsMono.variable}`}>
+      <body className="font-sans">
         <ErrorBoundary>
           <a
             href="#main-content"

@@ -8,7 +8,6 @@ interface GlassSurfaceContainerProps {
   className?: string
   padding?: 'none' | 'sm' | 'md' | 'lg'
   border?: boolean
-  glow?: boolean
 }
 
 const paddingMap = {
@@ -19,15 +18,15 @@ const paddingMap = {
 }
 
 export const GlassSurfaceContainer = forwardRef<HTMLDivElement, GlassSurfaceContainerProps>(
-  ({ children, className, padding = 'md', border = true, glow = false }, ref) => {
+  ({ children, className, padding = 'md', border = true }, ref) => {
     return (
       <div
         ref={ref}
         className={cn(
           'relative rounded-md overflow-hidden',
-          'bg-bg-secondary/80 backdrop-blur-sm',
-          border && 'border border-border',
-          glow && 'shadow-[0_0_20px_rgba(16,185,129,0.05)]',
+          'bg-white/[0.03] backdrop-blur-xl',
+          'shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]',
+          border && 'border border-white/[0.06]',
           paddingMap[padding],
           className
         )}
