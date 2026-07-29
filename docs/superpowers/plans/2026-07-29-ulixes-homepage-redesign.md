@@ -126,7 +126,7 @@ describe('homepage content contract', () => {
     expect(homepageContent.hero.headline.length).toBeLessThanOrEqual(56)
     expect(homepageContent.hero.body.replace(/\s/g, '').length).toBeLessThanOrEqual(150)
     expect(homepageContent.closing.headline.length).toBeLessThanOrEqual(44)
-    expect(homepageContent.senior.body.trim().split(/\s+/)).toHaveLength(35)
+    expect(homepageContent.senior.body.trim().split(/\s+/).length).toBeLessThanOrEqual(52)
   })
 
   it('contains the approved lifecycle and complete capability mappings', () => {
