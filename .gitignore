@@ -56,3 +56,8 @@ coverage
 # Codex local workspaces and agent ledgers
 .worktrees/
 .superpowers/
+
+# Hero media masters and visual-inspection frames
+design-assets/hero/*-master-4k.mp4
+design-assets/hero/*-poster-frame.tmp.png
+design-assets/hero/inspection-frames/
