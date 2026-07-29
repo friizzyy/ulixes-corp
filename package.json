@@ -10,6 +10,7 @@
     "test": "vitest",
     "test:run": "vitest run",
     "media:prepare": "node scripts/prepare-hero-media.mjs",
+    "media:inspect": "node scripts/extract-hero-inspection-frames.mjs",
     "media:verify": "node scripts/verify-hero-media.mjs",
     "remotion:studio": "remotion studio --config=remotion/remotion.config.ts remotion/src/index.ts",
     "remotion:render": "remotion render --config=remotion/remotion.config.ts remotion/src/index.ts UlixesVideo out/ulixes-video.mp4",

@@ -3,6 +3,7 @@ import { existsSync, statSync } from 'node:fs';
 
 import ffmpegPath from 'ffmpeg-static';
 import ffprobeStatic from 'ffprobe-static';
+import sharp from 'sharp';
 
 const expected = [
   ['public/media/hero/ulixes-signal-desktop-1440.webm', 2560, 1440, 8_000_000],
@@ -12,8 +13,8 @@ const expected = [
 ];
 
 const posters = [
-  ['public/media/hero/ulixes-signal-desktop-poster.avif', 350_000],
-  ['public/media/hero/ulixes-signal-mobile-poster.avif', 220_000],
+  ['public/media/hero/ulixes-signal-desktop-poster.avif', 2560, 1440, 350_000],
+  ['public/media/hero/ulixes-signal-mobile-poster.avif', 1080, 1920, 220_000],
 ];
 
 function fail(message) {
@@ -26,8 +27,29 @@ function requireFile(file, maxBytes) {
   }
 
   const size = statSync(file).size;
+  if (size === 0) {
+    fail(`${file} is empty`);
+  }
   if (size > maxBytes) {
     fail(`${file} is ${size} bytes; budget is ${maxBytes} bytes`);
+  }
+}
+
+async function verifyPoster(file, width, height, maxBytes) {
+  requireFile(file, maxBytes);
+
+  let metadata;
+  try {
+    metadata = await sharp(file, { failOn: 'error' }).metadata();
+  } catch (error) {
+    fail(`${file} is not decodable: ${error.message}`);
+  }
+
+  if (metadata.mediaType !== 'image/avif') {
+    fail(`${file} media type is ${metadata.mediaType}; expected image/avif`);
+  }
+  if (metadata.width !== width || metadata.height !== height) {
+    fail(`${file} is ${metadata.width}x${metadata.height}; expected ${width}x${height}`);
   }
 }
 
@@ -99,8 +121,8 @@ for (const [file, width, height, maxBytes] of expected) {
   }
 }
 
-for (const [file, maxBytes] of posters) {
-  requireFile(file, maxBytes);
+for (const [file, width, height, maxBytes] of posters) {
+  await verifyPoster(file, width, height, maxBytes);
 }
 
 console.log('Hero media verification passed.');

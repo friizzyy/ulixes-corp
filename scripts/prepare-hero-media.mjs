@@ -20,16 +20,28 @@ for (const master of Object.values(masters)) {
 mkdirSync(outputDirectory, { recursive: true });
 
 function encodeVideo(input, output, args) {
+  const isWebm = output.endsWith('.webm');
   execFileSync(
     ffmpegPath,
     [
       '-v',
       'error',
       '-y',
+      ...(isWebm ? ['-bitexact'] : []),
       '-i',
       input,
       '-map_metadata',
       '-1',
+      ...(isWebm
+        ? [
+            '-fflags',
+            '+bitexact',
+            '-flags',
+            '+bitexact',
+            '-metadata',
+            'creation_time=1970-01-01T00:00:00Z',
+          ]
+        : []),
       ...args,
       '-an',
       path.join(outputDirectory, output),
