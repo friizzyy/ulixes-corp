@@ -52,3 +52,7 @@ coverage
 
 # Claude local settings
 .claude/
+
+# Codex local workspaces and agent ledgers
+.worktrees/
+.superpowers/
