@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
-import { act, render, screen, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { parse, type AtRule, type Rule } from 'postcss'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
@@ -302,11 +302,10 @@ describe('CapabilityStage', () => {
     }
   })
 
-  it('uses the observed heading as the native fragment and 45% scroll target', () => {
+  it('activates and aligns a focused heading link while preserving link focus', () => {
     const media = createMediaEnvironment(true)
     vi.spyOn(window, 'matchMedia').mockImplementation(media.matchMedia)
-    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
-    render(<CapabilityStage />)
+    const { container } = render(<CapabilityStage />)
 
     const article = screen
       .getByRole('heading', { name: 'Platform migration' })
@@ -317,6 +316,7 @@ describe('CapabilityStage', () => {
     const link = within(heading).getByRole('link', {
       name: 'Platform migration',
     })
+    heading.scrollIntoView = vi.fn()
     expect(link).toHaveAttribute('href', `#${heading.id}`)
     expect(article).toHaveAttribute('aria-labelledby', heading.id)
     expect(heading).toHaveAttribute('data-capability-heading', 'migration')
@@ -325,11 +325,94 @@ describe('CapabilityStage', () => {
     )
     expect(declarationsFor('.capabilityArticle')['scroll-margin-top']).toBeUndefined()
 
-    link.focus()
+    act(() => {
+      link.focus()
+    })
 
     expect(link).toHaveFocus()
+    expect(link).toHaveAttribute('aria-current', 'true')
+    expect(highlightedStageIds(container)).toEqual(capabilities[1].stageIds)
+    expect(heading.scrollIntoView).toHaveBeenCalledWith({
+      behavior: 'smooth',
+      block: 'start',
+    })
+    expect(window.location.hash).toBe('')
+
+    media.setReducedMotion(true)
+    const complianceHeading = screen.getByRole('heading', {
+      name: 'AI-assisted compliance',
+    })
+    const complianceLink = within(complianceHeading).getByRole('link', {
+      name: 'AI-assisted compliance',
+    })
+    complianceHeading.scrollIntoView = vi.fn()
+
+    act(() => {
+      complianceLink.focus()
+    })
+
+    expect(complianceLink).toHaveFocus()
+    expect(complianceLink).toHaveAttribute('aria-current', 'true')
+    expect(highlightedStageIds(container)).toEqual(capabilities[2].stageIds)
+    expect(complianceHeading.scrollIntoView).toHaveBeenCalledWith({
+      behavior: 'auto',
+      block: 'start',
+    })
+  })
+
+  it('deduplicates pointer focus before native click navigation', () => {
+    vi.useFakeTimers()
+    const media = createMediaEnvironment(true)
+    vi.spyOn(window, 'matchMedia').mockImplementation(media.matchMedia)
+    Object.defineProperty(window, 'onscrollend', {
+      configurable: true,
+      value: null,
+    })
+    const addEventListener = vi.spyOn(window, 'addEventListener')
+    const setTimeout = vi.spyOn(window, 'setTimeout')
+    render(<CapabilityStage />)
+    const heading = screen.getByRole('heading', { name: 'Platform migration' })
+    const link = within(heading).getByRole('link', {
+      name: 'Platform migration',
+    })
+    heading.scrollIntoView = vi.fn()
+    let defaultPrevented = true
+    document.addEventListener(
+      'click',
+      (event) => {
+        defaultPrevented = event.defaultPrevented
+      },
+      { once: true },
+    )
+
+    fireEvent.pointerDown(link)
+    link.focus()
+    fireEvent.pointerUp(link)
+
+    expect(link).toHaveFocus()
+    expect(heading.scrollIntoView).not.toHaveBeenCalled()
     expect(link).not.toHaveAttribute('aria-current')
-    expect(scrollTo).not.toHaveBeenCalled()
+
+    act(() => {
+      link.click()
+    })
+    vi.advanceTimersByTime(0)
+
+    expect(defaultPrevented).toBe(false)
+    expect(window.location.hash).toBe(`#${heading.id}`)
+    expect(link).toHaveAttribute('aria-current', 'true')
+    expect(heading.scrollIntoView).not.toHaveBeenCalled()
+    expect(
+      addEventListener.mock.calls.filter(([type]) => type === 'scrollend'),
+    ).toHaveLength(1)
+    expect(
+      setTimeout.mock.calls.filter(([, delay]) =>
+        delay === SMOOTH_FOCUS_SAFETY_MS
+      ),
+    ).toHaveLength(1)
+
+    window.dispatchEvent(new Event('scrollend'))
+    expect(heading).toHaveFocus()
   })
 
   it('retains native hash navigation and focuses after smooth scrollend', () => {

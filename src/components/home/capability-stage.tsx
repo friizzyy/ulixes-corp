@@ -5,6 +5,7 @@ import {
   useId,
   useRef,
   useState,
+  type FocusEvent,
   type MouseEvent,
 } from 'react'
 import {
@@ -35,6 +36,7 @@ export function CapabilityStage() {
     useState<CapabilityId>('implementation')
   const headingsRef = useRef(new Map<CapabilityId, HTMLHeadingElement>())
   const scrollFocusCleanupRef = useRef<null | (() => void)>(null)
+  const pointerFocusCapabilityRef = useRef<CapabilityId | null>(null)
   const activeCapability =
     capabilities.find((capability) => capability.id === activeCapabilityId) ??
     capabilities[0]
@@ -92,6 +94,30 @@ export function CapabilityStage() {
     [],
   )
 
+  const handleHeadingFocus = (
+    event: FocusEvent<HTMLAnchorElement>,
+    capability: Capability,
+  ) => {
+    if (pointerFocusCapabilityRef.current === capability.id) {
+      pointerFocusCapabilityRef.current = null
+      return
+    }
+
+    const heading = document.getElementById(
+      event.currentTarget.hash.slice(1),
+    )
+    if (!heading) return
+
+    scrollFocusCleanupRef.current?.()
+    setActiveCapabilityId(capability.id)
+    heading.scrollIntoView({
+      behavior: window.matchMedia(reducedMotionMediaQuery).matches
+        ? 'auto'
+        : 'smooth',
+      block: 'start',
+    })
+  }
+
   const handleHeadingClick = (
     event: MouseEvent<HTMLAnchorElement>,
     capability: Capability,
@@ -102,6 +128,7 @@ export function CapabilityStage() {
     if (!heading) return
     const targetHeading = heading
 
+    pointerFocusCapabilityRef.current = null
     setActiveCapabilityId(capability.id)
     scrollFocusCleanupRef.current?.()
 
@@ -222,6 +249,26 @@ export function CapabilityStage() {
                         className={styles.capabilityArticleLink}
                         href={`#${headingId}`}
                         aria-current={isActive ? 'true' : undefined}
+                        onPointerDown={() => {
+                          pointerFocusCapabilityRef.current = capability.id
+                        }}
+                        onPointerUp={() => {
+                          if (
+                            pointerFocusCapabilityRef.current === capability.id
+                          ) {
+                            pointerFocusCapabilityRef.current = null
+                          }
+                        }}
+                        onPointerCancel={() => {
+                          if (
+                            pointerFocusCapabilityRef.current === capability.id
+                          ) {
+                            pointerFocusCapabilityRef.current = null
+                          }
+                        }}
+                        onFocus={(event) =>
+                          handleHeadingFocus(event, capability)
+                        }
                         onClick={(event) =>
                           handleHeadingClick(event, capability)
                         }
