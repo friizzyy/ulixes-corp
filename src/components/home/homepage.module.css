@@ -192,6 +192,10 @@
 }
 
 @media (min-width: 1441px) {
+  .copy {
+    grid-column: 1 / span 6;
+  }
+
   .headline {
     font-size: 3.42rem;
   }
@@ -1679,9 +1683,10 @@
   .mandateRoute,
   .mandateMovement[data-mandate-position='2'] .mandateRoute,
   .mandateMovement[data-mandate-position='3'] .mandateRoute {
-    inset: auto -24px 20px 34px;
+    inset: auto -24px 0 34px;
     width: calc(100% + 18px);
     height: 120px;
+    min-height: 0;
     opacity: 0.34;
     transform: none;
   }

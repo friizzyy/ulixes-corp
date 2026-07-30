@@ -41,7 +41,7 @@ function declarationsFor(selector: string, media?: string) {
   return declarations
 }
 
-describe('ClosingSignalCTA mobile geometry', () => {
+describe('Homepage signal routes on mobile', () => {
   it('removes the artificial gap between the convergence point and CTA', () => {
     const network = declarationsFor('.closingSignalNetwork', MOBILE_MEDIA_QUERY)
     const action = declarationsFor('.closingSignalAction', MOBILE_MEDIA_QUERY)
@@ -55,6 +55,13 @@ describe('ClosingSignalCTA mobile geometry', () => {
       'margin-top': '0',
       'min-height': '48px',
       'align-self': 'flex-end',
+    })
+  })
+
+  it('keeps mandate routes below the copy instead of inheriting the shared 520px floor', () => {
+    expect(declarationsFor('.mandateRoute', MOBILE_MEDIA_QUERY)).toMatchObject({
+      height: '120px',
+      'min-height': '0',
     })
   })
 })

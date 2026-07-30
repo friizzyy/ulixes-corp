@@ -135,13 +135,13 @@ export function SystemTrace() {
             >
               <path
                 className={`${styles.systemHandoffRoute} ${styles.systemHandoffRouteDesktop}`}
-                d="M 920 0 C 920 72, 858 104, 780 128 C 640 172, 600 286, 420 320 C 252 350, 90 354, 0 360"
+                d="M 920 0 C 920 82, 1120 86, 1160 150 C 1192 210, 1186 282, 1100 310 C 860 352, 360 356, 0 360"
                 pathLength="1"
                 vectorEffect="non-scaling-stroke"
               />
               <path
                 className={`${styles.systemHandoffRoute} ${styles.systemHandoffRouteMobile}`}
-                d="M 920 0 C 920 90, 820 112, 730 142 C 520 212, 390 304, 12 360"
+                d="M 920 0 C 920 100, 1120 100, 1160 160 C 1190 210, 1180 278, 1120 300 C 880 348, 380 356, 12 360"
                 pathLength="1"
                 vectorEffect="non-scaling-stroke"
               />

@@ -432,7 +432,12 @@ describe('HomepageHero', () => {
   })
 
   it('keeps the approved copy cap while freezing wide-desktop type at the 1440 size', () => {
-    expect(declarationsFor('.copy', WIDE_DESKTOP_MEDIA_QUERY)).toEqual({})
+    expect(declarationsFor('.copy', WIDE_DESKTOP_MEDIA_QUERY)).toMatchObject({
+      'grid-column': '1 / span 6',
+    })
+    expect(declarationsFor('.copy', WIDE_DESKTOP_MEDIA_QUERY)).not.toHaveProperty(
+      'max-width',
+    )
     expect(declarationsFor('.headline', WIDE_DESKTOP_MEDIA_QUERY)).toMatchObject({
       'font-size': '3.42rem',
     })
