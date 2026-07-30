@@ -1,8 +1,8 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync, statSync } from 'node:fs';
 
+import ffprobeInstaller from '@ffprobe-installer/ffprobe';
 import ffmpegPath from 'ffmpeg-static';
-import ffprobeStatic from 'ffprobe-static';
 import sharp from 'sharp';
 
 const expected = [
@@ -56,7 +56,7 @@ async function verifyPoster(file, width, height, maxBytes) {
 function probe(file) {
   return JSON.parse(
     execFileSync(
-      ffprobeStatic.path,
+      ffprobeInstaller.path,
       ['-v', 'error', '-show_streams', '-show_format', '-of', 'json', file],
       { encoding: 'utf8' },
     ),
