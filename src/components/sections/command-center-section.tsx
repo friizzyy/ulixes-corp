@@ -258,15 +258,15 @@ export function CommandCenterSection() {
             <div className="mt-4 space-y-3 text-sm text-text-secondary">
               <div className="flex items-center justify-between">
                 <span>Accounting checks</span>
-                <span className="text-accent">100%</span>
+                <span className="text-violet-light">100%</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Capital validation</span>
-                <span className="text-accent">96%</span>
+                <span className="text-violet-light">96%</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Regulatory mapping</span>
-                <span className="text-accent">92%</span>
+                <span className="text-violet-light">92%</span>
               </div>
               <div className="mt-4 h-px bg-gradient-to-r from-accent/40 to-transparent" />
               <div className="text-xs text-text-muted">Drift alerts enabled</div>

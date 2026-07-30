@@ -15,7 +15,7 @@ export default function NotFound() {
         animate="visible"
       >
         <motion.div
-          className="text-[5rem] sm:text-[8rem] md:text-[12rem] font-display font-semibold text-accent leading-none mb-4"
+          className="text-[5rem] sm:text-[8rem] md:text-[12rem] font-display font-semibold text-violet-light leading-none mb-4"
           variants={fadeUp}
         >
           {notFoundContent.headline}

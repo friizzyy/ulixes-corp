@@ -49,7 +49,7 @@ export default function PrivacyPage() {
                   <a
                     key={section.title}
                     href={`#section-${index}`}
-                    className="block text-body-sm text-text-secondary hover:text-accent active:text-accent transition-colors min-h-[36px] flex items-center"
+                    className="block text-body-sm text-text-secondary hover:text-violet-light active:text-violet-light transition-colors min-h-[36px] flex items-center"
                   >
                     {section.title}
                   </a>
@@ -75,7 +75,7 @@ export default function PrivacyPage() {
                   variants={fadeUp}
                 >
                   <h2 className="font-display text-heading-lg font-semibold mb-4 flex items-center gap-3">
-                    <span className="text-accent font-mono text-body-sm">
+                    <span className="text-violet-light font-mono text-body-sm">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     {section.title}
@@ -101,13 +101,13 @@ export default function PrivacyPage() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href={`mailto:${siteConfig.email}`}
-                  className="text-body-sm text-accent hover:underline underline-offset-4"
+                  className="text-body-sm text-violet-light hover:underline underline-offset-4"
                 >
                   {siteConfig.email}
                 </Link>
                 <Link
                   href="/terms"
-                  className="inline-flex items-center gap-2 text-body-sm text-text-secondary hover:text-accent transition-colors"
+                  className="inline-flex items-center gap-2 text-body-sm text-text-secondary hover:text-violet-light transition-colors"
                 >
                   View Terms of Service
                   <ArrowRight size={14} />

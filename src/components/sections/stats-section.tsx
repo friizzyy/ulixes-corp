@@ -44,7 +44,7 @@ export function StatsSection() {
               value={0}
               label="Restatements"
               size="md"
-              icon={<IconShield size={18} className="text-accent" />}
+              icon={<IconShield size={18} className="text-violet-light" />}
               className="bg-transparent p-0"
             />
           </div>

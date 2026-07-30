@@ -26,7 +26,7 @@ export default function PhilosophyPage() {
             <motion.h1 variants={fadeUp} className="font-display text-[2.75rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem] font-semibold leading-[1.05] tracking-tight mb-4 sm:mb-6">
               {hero.headline}
             </motion.h1>
-            <motion.p variants={fadeUp} className="text-sm sm:text-base md:text-lg text-accent font-mono uppercase tracking-widest mb-12 sm:mb-16 md:mb-20">
+            <motion.p variants={fadeUp} className="text-sm sm:text-base md:text-lg text-violet-light font-mono uppercase tracking-widest mb-12 sm:mb-16 md:mb-20">
               {hero.subtitle}
             </motion.p>
             <motion.div
@@ -57,7 +57,7 @@ export default function PhilosophyPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="lg:sticky lg:top-32">
-                <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-8">
+                <h2 className="text-xs font-mono uppercase tracking-widest text-violet-light mb-8">
                   Core Principles
                 </h2>
                 <nav className="space-y-1">
@@ -69,7 +69,7 @@ export default function PhilosophyPage() {
                     >
                       <div className="flex items-start gap-3">
                         <span className={`text-xs font-mono transition-colors mt-0.5 ${
-                          activeSection === index ? 'text-accent' : 'text-text-muted/40'
+                          activeSection === index ? 'text-violet-light' : 'text-text-muted/40'
                         }`}>
                           {String(index + 1).padStart(2, '0')}
                         </span>
@@ -130,7 +130,7 @@ export default function PhilosophyPage() {
                           transition={{ duration: 0.4, delay: idx * 0.1 }}
                           className={`text-body-lg leading-relaxed ${
                             idx === sections[activeSection].content.length - 1
-                              ? 'text-text-primary font-medium border-l-2 border-accent pl-6'
+                              ? 'text-text-primary font-medium border-l-2 border-violet-light pl-6'
                               : 'text-text-secondary'
                           }`}
                         >
@@ -171,7 +171,7 @@ export default function PhilosophyPage() {
                 viewport={viewportOnce}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
+                <h2 className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
                   {closing.title}
                 </h2>
                 <p className="text-body-lg text-text-secondary leading-relaxed">

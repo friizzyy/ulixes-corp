@@ -44,8 +44,23 @@ describe('Footer', () => {
     expect(
       screen.getByText('Senior-led Calypso and capital-markets systems advisory.'),
     ).toBeInTheDocument()
-    expect(screen.queryByText('admin@ulixescorp.com')).not.toBeInTheDocument()
-    expect(screen.queryByText('+1 (415) 283-9983')).not.toBeInTheDocument()
+    const publishedText = screen.getByRole('contentinfo').textContent?.toLowerCase() ?? ''
+    const prohibitedClaims = [
+      'admin@ulixescorp.com',
+      '+1 (415) 283-9983',
+      'san francisco',
+      'california',
+      '20+',
+      '20 implementations',
+      'four regions',
+      'banks',
+      'hedge funds',
+      'clients',
+    ]
+
+    for (const prohibited of prohibitedClaims) {
+      expect(publishedText).not.toContain(prohibited)
+    }
   })
 
   it('uses working homepage URLs for expertise and approach on interior routes', () => {

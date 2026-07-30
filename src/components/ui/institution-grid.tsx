@@ -38,7 +38,7 @@ export function InstitutionGrid({ institutions, className }: InstitutionGridProp
           {/* Subtle top accent line on hover */}
           <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-accent/0 to-transparent group-hover:via-accent/40 transition-all duration-500" />
 
-          <h3 className="text-heading-md font-semibold text-text-primary mb-2 group-hover:text-accent transition-colors duration-300">
+          <h3 className="text-heading-md font-semibold text-text-primary mb-2 group-hover:text-violet-light transition-colors duration-300">
             {institution.name}
           </h3>
           <p className="text-body-sm text-text-muted leading-relaxed">

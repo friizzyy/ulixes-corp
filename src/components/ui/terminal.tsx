@@ -104,12 +104,12 @@ export function Terminal({ lines, className, typingSpeed = 30 }: TerminalProps) 
       <div key={index} className="flex items-start gap-2 min-h-[1.4em]">
         {isCommand && (
           <>
-            <span className="text-accent select-none shrink-0">$</span>
+            <span className="text-violet-light select-none shrink-0">$</span>
             <span className="text-text-primary">
               {displayText}
               {isCurrentLine && isTyping && (
                 <span className={cn(
-                  'inline-block w-[2px] h-[1em] bg-accent ml-px align-middle translate-y-px',
+                  'inline-block w-[2px] h-[1em] bg-ultraviolet ml-px align-middle translate-y-px',
                   showCursor ? 'opacity-100' : 'opacity-0'
                 )} />
               )}
@@ -138,21 +138,21 @@ export function Terminal({ lines, className, typingSpeed = 30 }: TerminalProps) 
                 {[0, 1, 2].map(i => (
                   <motion.span
                     key={i}
-                    className="w-1 h-1 bg-accent rounded-full"
+                    className="w-1 h-1 bg-ultraviolet rounded-full"
                     animate={{ opacity: [0.4, 1, 0.4] }}
                     transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.12 }}
                   />
                 ))}
               </span>
             ) : (
-              <span className="text-accent w-4">OK</span>
+              <span className="text-violet-light w-4">OK</span>
             )}
             {line.text}
           </motion.span>
         )}
         {line.type === 'success' && isPastLine && (
           <motion.span
-            className="text-accent flex items-center gap-2"
+            className="text-violet-light flex items-center gap-2"
             initial={{ opacity: 0, x: -4 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.25 }}
@@ -185,7 +185,7 @@ export function Terminal({ lines, className, typingSpeed = 30 }: TerminalProps) 
           <div className="terminal-dot bg-[#28c840]" />
         </div>
         <span className="ml-auto flex items-center gap-2 text-[10px] text-text-muted font-mono">
-          <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+          <span className="w-1.5 h-1.5 rounded-full bg-ultraviolet" />
           Live
         </span>
       </div>
@@ -194,9 +194,9 @@ export function Terminal({ lines, className, typingSpeed = 30 }: TerminalProps) 
         {/* Resting cursor when all lines complete */}
         {visibleLines >= lines.length && !isTyping && (
           <div className="flex items-center gap-2 pt-1">
-            <span className="text-accent">$</span>
+            <span className="text-violet-light">$</span>
             <span className={cn(
-              'inline-block w-[2px] h-[1em] bg-accent',
+              'inline-block w-[2px] h-[1em] bg-ultraviolet',
               showCursor ? 'opacity-100' : 'opacity-0'
             )} />
           </div>
@@ -233,9 +233,9 @@ export function CodeKeyword({ children }: { children: React.ReactNode }) {
 }
 
 export function CodeString({ children }: { children: React.ReactNode }) {
-  return <span className="text-accent">{children}</span>
+  return <span className="text-violet-light">{children}</span>
 }
 
 export function CodeFunction({ children }: { children: React.ReactNode }) {
-  return <span className="text-accent-secondary">{children}</span>
+  return <span className="text-violet-light">{children}</span>
 }

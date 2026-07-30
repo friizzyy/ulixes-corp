@@ -129,7 +129,7 @@ export function CheckCircle({ className, size = 20 }: IconProps) {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="text-accent"
+        className="text-violet-light"
       />
     </svg>
   )

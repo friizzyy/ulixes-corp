@@ -80,7 +80,7 @@ export default function ServicesPage() {
                     }}
                     className="group flex items-baseline gap-3 w-full text-left py-3 border-b border-border last:border-b-0 transition-colors duration-200"
                   >
-                    <span className="text-xs font-mono text-text-muted/50 group-hover:text-accent transition-colors">
+                    <span className="text-xs font-mono text-text-muted/50 group-hover:text-violet-light transition-colors">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <span className="text-base sm:text-lg font-medium text-text-secondary group-hover:text-text-primary transition-colors">
@@ -117,7 +117,7 @@ export default function ServicesPage() {
                 >
                   {service.title}
                   <span className={`absolute bottom-0 left-0 right-0 h-0.5 transition-all duration-300 ${
-                    isActive ? 'bg-accent' : 'bg-transparent'
+                    isActive ? 'bg-ultraviolet' : 'bg-transparent'
                   }`} />
                 </button>
               )
@@ -136,7 +136,7 @@ export default function ServicesPage() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16">
                 {/* Left: Main content */}
                 <div className="lg:col-span-7">
-                  <div className="text-xs font-mono text-accent uppercase tracking-wider mb-3">
+                  <div className="text-xs font-mono text-violet-light uppercase tracking-wider mb-3">
                     Service {String(activeIndex + 1).padStart(2, '0')}
                   </div>
                   <h2 className="font-display text-[1.5rem] sm:text-display-sm font-semibold mb-6 sm:mb-8">
@@ -155,7 +155,7 @@ export default function ServicesPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {activeService.whatYouGet.map((item, i) => (
                         <div key={i} className="flex items-start gap-3 text-body-sm text-text-secondary">
-                          <span className="text-accent mt-0.5 flex-shrink-0">
+                          <span className="text-violet-light mt-0.5 flex-shrink-0">
                             <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                               <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
@@ -187,7 +187,7 @@ export default function ServicesPage() {
                     <div className="text-[11px] font-mono uppercase tracking-widest text-text-muted mb-3">
                       The outcome
                     </div>
-                    <p className="text-body-md text-text-secondary leading-relaxed border-l-2 border-accent/40 pl-4">
+                    <p className="text-body-md text-text-secondary leading-relaxed border-l-2 border-violet-light/40 pl-4">
                       {activeService.controlCreated}
                     </p>
                   </div>
@@ -199,7 +199,7 @@ export default function ServicesPage() {
                     <div className="space-y-3">
                       {servicesPageContent.process.steps.slice(0, 3).map((step, i) => (
                         <div key={i} className="flex items-start gap-3">
-                          <span className="text-xs font-mono text-accent">{String(i + 1).padStart(2, '0')}</span>
+                          <span className="text-xs font-mono text-violet-light">{String(i + 1).padStart(2, '0')}</span>
                           <span className="text-body-sm text-text-secondary">{step.title}</span>
                         </div>
                       ))}
@@ -222,7 +222,7 @@ export default function ServicesPage() {
             whileInView="visible"
             viewport={viewportOnce}
           >
-            <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
+            <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
               {servicesPageContent.process.title}
             </motion.h2>
             <motion.p variants={fadeUp} className="text-[1.75rem] sm:text-display-sm md:text-display-md font-display font-semibold max-w-2xl">
@@ -241,10 +241,10 @@ export default function ServicesPage() {
               <motion.div
                 key={step.title}
                 variants={fadeUp}
-                className="group relative p-6 rounded-lg bg-bg-primary border border-border hover:border-accent/30 transition-all duration-300"
+                className="group relative p-6 rounded-lg bg-bg-primary border border-border hover:border-violet-light/30 transition-all duration-300"
               >
                 <div className="flex items-start gap-4">
-                  <span className="text-xs font-mono text-accent mt-1">
+                  <span className="text-xs font-mono text-violet-light mt-1">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <div>

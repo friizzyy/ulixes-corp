@@ -100,6 +100,68 @@ describe('Navigation', () => {
     expect(window.scrollTo).toHaveBeenCalledWith(0, 240)
   })
 
+  it('wraps focus forward from the final mobile action to the close control', async () => {
+    const user = userEvent.setup()
+    render(createElement(Navigation))
+
+    await user.click(screen.getByRole('button', { name: 'Open menu' }))
+    const dialog = screen.getByRole('dialog', { name: 'Navigation menu' })
+    const finalAction = dialog.querySelector<HTMLAnchorElement>('a[href="/contact"]')!
+    finalAction.focus()
+
+    await user.tab()
+
+    expect(screen.getByRole('button', { name: 'Close menu' })).toHaveFocus()
+  })
+
+  it('wraps focus backward from the close control to the final mobile action', async () => {
+    const user = userEvent.setup()
+    render(createElement(Navigation))
+
+    await user.click(screen.getByRole('button', { name: 'Open menu' }))
+    const dialog = screen.getByRole('dialog', { name: 'Navigation menu' })
+    const finalAction = dialog.querySelector<HTMLAnchorElement>('a[href="/contact"]')!
+
+    await user.tab({ shift: true })
+
+    expect(finalAction).toHaveFocus()
+  })
+
+  it('restores body and scroll state when the open navigation unmounts', async () => {
+    const user = userEvent.setup()
+    Object.defineProperty(window, 'scrollY', {
+      configurable: true,
+      value: 180,
+      writable: true,
+    })
+    const { unmount } = render(createElement(Navigation))
+    await user.click(screen.getByRole('button', { name: 'Open menu' }))
+
+    unmount()
+
+    expect(document.body.style.overflow).toBe('')
+    expect(document.body.style.position).toBe('')
+    expect(window.scrollTo).toHaveBeenCalledWith(0, 180)
+  })
+
+  it('closes and restores body state when the route changes', async () => {
+    const user = userEvent.setup()
+    Object.defineProperty(window, 'scrollY', {
+      configurable: true,
+      value: 120,
+      writable: true,
+    })
+    const { rerender } = render(createElement(Navigation))
+    await user.click(screen.getByRole('button', { name: 'Open menu' }))
+
+    mockUsePathname.mockReturnValue('/services')
+    rerender(createElement(Navigation))
+
+    expect(screen.queryByRole('dialog', { name: 'Navigation menu' })).not.toBeInTheDocument()
+    expect(document.body.style.overflow).toBe('')
+    expect(window.scrollTo).toHaveBeenCalledWith(0, 120)
+  })
+
   it('uses a Carbon surface at the 24px homepage scroll threshold', () => {
     render(createElement(Navigation))
 
@@ -113,5 +175,15 @@ describe('Navigation', () => {
     window.scrollY = 24
     fireEvent.scroll(window)
     expect(navigation).toHaveAttribute('data-surface', 'carbon')
+  })
+
+  it('always uses a Carbon surface on interior routes', () => {
+    mockUsePathname.mockReturnValue('/services')
+    render(createElement(Navigation))
+
+    expect(screen.getByRole('navigation', { name: 'Primary navigation' })).toHaveAttribute(
+      'data-surface',
+      'carbon',
+    )
   })
 })

@@ -25,7 +25,14 @@
     --text-primary: var(--white);
     --text-secondary: var(--titanium);
     --text-muted: var(--titanium);
-    --accent: var(--ultraviolet);
+    --accent-text-dark: var(--violet-light);
+    --action-fill: var(--ultraviolet);
+    --action-fill-hover: var(--violet-light);
+    --action-ink: var(--carbon);
+    --focus-ring-dark: var(--violet-light);
+    --focus-ring-light: var(--violet-ink);
+    --focus-ring-color: var(--focus-ring-dark);
+    --accent: var(--accent-text-dark);
     --accent-glow: rgba(139, 92, 246, 0.15);
     --accent-secondary: var(--violet-light);
     /* Safe area insets for notched devices */
@@ -50,15 +57,21 @@
     overflow-x: hidden;
   }
 
+  [data-color-field='mineral'],
+  .field-mineral,
+  .bg-mineral {
+    --focus-ring-color: var(--focus-ring-light);
+  }
+
   /* Custom selection */
   ::selection {
-    background: var(--accent);
-    color: var(--bg-primary);
+    background: var(--action-fill);
+    color: var(--action-ink);
   }
 
   /* Focus styles with delay to prevent flash during keyboard navigation */
   :focus-visible {
-    outline: 2px solid var(--violet-light);
+    outline: 2px solid var(--focus-ring-color);
     outline-offset: 3px;
     animation: focus-ring-appear 0.1s ease-out;
   }
@@ -173,7 +186,7 @@
   }
 
   .btn-primary {
-    @apply bg-accent text-bg-primary hover:bg-accent/90;
+    @apply bg-action text-action-ink hover:bg-action-hover;
   }
 
   .btn-secondary {
@@ -186,7 +199,7 @@
 
   /* Standardized CTA link — use on all primary action links */
   .cta-primary {
-    @apply inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-7 sm:py-3.5 min-h-[44px] sm:min-h-[48px] bg-accent text-bg-primary font-medium text-body-sm sm:text-base rounded-[3px] hover:bg-accent/90 active:scale-[0.98] transition-all duration-200;
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-7 sm:py-3.5 min-h-[44px] sm:min-h-[48px] bg-action text-action-ink font-medium text-body-sm sm:text-base rounded-[3px] hover:bg-action-hover active:scale-[0.98] transition-all duration-200;
   }
 
   .cta-secondary {
@@ -194,7 +207,7 @@
   }
 
   .cta-outline-accent {
-    @apply inline-flex items-center gap-2 px-5 py-2.5 min-h-[44px] border border-accent/30 text-accent font-medium rounded-sm hover:bg-accent/10 transition-colors duration-200;
+    @apply inline-flex items-center gap-2 px-5 py-2.5 min-h-[44px] border border-violet-light text-violet-light font-medium rounded-sm hover:bg-ultraviolet/10 transition-colors duration-200;
   }
 
   /* Link with center-out underline animation */
@@ -204,7 +217,7 @@
 
   .link-underline::after {
     content: '';
-    @apply absolute bottom-0 left-1/2 w-0 h-px bg-accent transition-all duration-300;
+    @apply absolute bottom-0 left-1/2 w-0 h-px bg-ultraviolet transition-all duration-300;
     transform: translateX(-50%);
   }
 
@@ -219,7 +232,7 @@
 
   .link-underline-ltr::after {
     content: '';
-    @apply absolute bottom-0 left-0 w-0 h-px bg-accent transition-all duration-300;
+    @apply absolute bottom-0 left-0 w-0 h-px bg-ultraviolet transition-all duration-300;
   }
 
   .link-underline-ltr:hover::after {
@@ -228,7 +241,7 @@
 
   /* Section label */
   .section-label {
-    @apply font-mono text-label text-accent uppercase tracking-widest mb-4;
+    @apply font-mono text-label text-violet-light uppercase tracking-widest mb-4;
   }
 
   /* Terminal component */

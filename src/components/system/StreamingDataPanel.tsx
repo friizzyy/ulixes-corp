@@ -131,7 +131,7 @@ export function StreamingDataPanel({
               className={cn(
                 'text-xs font-mono px-2 py-1 rounded transition-colors',
                 isStreaming
-                  ? 'bg-accent/10 text-accent hover:bg-accent/20'
+                  ? 'bg-ultraviolet/10 text-violet-light hover:bg-ultraviolet/20'
                   : 'bg-surface text-text-secondary hover:text-text-primary'
               )}
             >

@@ -48,7 +48,7 @@ export function FeatureShowcase({
         transition={{ duration: 0.6 }}
       >
         {badge && (
-          <span className="inline-block px-3 py-1 mb-4 text-xs font-mono text-accent bg-accent/10 border border-accent/20 rounded-full">
+          <span className="inline-block px-3 py-1 mb-4 text-xs font-mono text-violet-light bg-ultraviolet/10 border border-violet-light/20 rounded-full">
             {badge}
           </span>
         )}
@@ -71,9 +71,9 @@ export function FeatureShowcase({
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
               >
-                <span className="flex-shrink-0 w-5 h-5 mt-0.5 rounded-full bg-accent/20 flex items-center justify-center">
+                <span className="flex-shrink-0 w-5 h-5 mt-0.5 rounded-full bg-ultraviolet/20 flex items-center justify-center">
                   <svg
-                    className="w-3 h-3 text-accent"
+                    className="w-3 h-3 text-violet-light"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -91,7 +91,7 @@ export function FeatureShowcase({
         {cta && (
           <motion.a
             href={cta.href}
-            className="inline-flex items-center gap-2 text-accent font-medium hover:underline underline-offset-4"
+            className="inline-flex items-center gap-2 text-violet-light font-medium hover:underline underline-offset-4"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.3, delay: 0.5 }}
@@ -175,7 +175,7 @@ export function BentoGrid({ items, className }: BentoGridProps) {
           {/* Content */}
           <div className="p-5 md:p-6">
             {item.icon && (
-              <div className="w-10 h-10 rounded-md bg-surface border border-border flex items-center justify-center mb-4 text-text-secondary group-hover:text-accent transition-colors">
+              <div className="w-10 h-10 rounded-md bg-surface border border-border flex items-center justify-center mb-4 text-text-secondary group-hover:text-violet-light transition-colors">
                 {item.icon}
               </div>
             )}

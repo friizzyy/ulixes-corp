@@ -139,7 +139,7 @@ export function Navigation() {
 
             <Link
               href="/contact"
-              className="inline-flex min-h-[44px] items-center justify-center rounded-sm bg-accent px-5 py-2.5 text-body-sm font-semibold text-bg-primary transition-colors hover:bg-accent/90"
+              className="inline-flex min-h-[44px] items-center justify-center rounded-sm bg-action px-5 py-2.5 text-body-sm font-semibold text-action-ink transition-colors hover:bg-action-hover"
             >
               Discuss the mandate
             </Link>
@@ -209,7 +209,7 @@ export function Navigation() {
           <Link
             href="/contact"
             onClick={() => closeMenu(false)}
-            className="inline-flex min-h-[52px] items-center justify-center rounded-sm bg-accent px-5 py-3 text-base font-semibold text-bg-primary"
+            className="inline-flex min-h-[52px] items-center justify-center rounded-sm bg-action px-5 py-3 text-base font-semibold text-action-ink transition-colors hover:bg-action-hover"
           >
             Discuss the mandate
           </Link>

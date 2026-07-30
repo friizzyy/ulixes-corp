@@ -62,7 +62,7 @@ export default function ExperiencePage() {
           >
             {credibilityChips.map((chip) => (
               <div key={chip} className="flex items-center gap-3 text-text-muted">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                <span className="w-1.5 h-1.5 rounded-full bg-ultraviolet" />
                 <span className="text-body-sm font-medium">{chip}</span>
               </div>
             ))}
@@ -86,7 +86,7 @@ export default function ExperiencePage() {
             </motion.div>
 
             <motion.div variants={fadeUp} className="lg:col-span-6 lg:col-start-7 space-y-8">
-              <p className="text-body-md leading-relaxed text-text-primary font-medium border-l-2 border-accent pl-6">
+              <p className="text-body-md leading-relaxed text-text-primary font-medium border-l-2 border-violet-light pl-6">
                 {intro.paragraphs[1]}
               </p>
             </motion.div>
@@ -116,7 +116,7 @@ export default function ExperiencePage() {
                 variants={fadeUp}
                 className="flex items-center gap-3 text-text-muted"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                <span className="w-1.5 h-1.5 rounded-full bg-ultraviolet" />
                 <span className="text-body-sm font-medium">{chip}</span>
               </motion.div>
             ))}
@@ -134,7 +134,7 @@ export default function ExperiencePage() {
             whileInView="visible"
             viewport={viewportOnce}
           >
-            <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
+            <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
               Where We&apos;ve Worked
             </motion.h2>
             <motion.p variants={fadeUp} className="font-display text-[1.75rem] sm:text-display-sm md:text-display-md font-semibold max-w-2xl">
@@ -156,7 +156,7 @@ export default function ExperiencePage() {
                 className="group grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-8 py-6 sm:py-8 border-b border-border first:border-t"
               >
                 <div className="md:col-span-1">
-                  <span className="text-xs font-mono text-text-muted group-hover:text-accent transition-colors">
+                  <span className="text-xs font-mono text-text-muted group-hover:text-violet-light transition-colors">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                 </div>
@@ -186,7 +186,7 @@ export default function ExperiencePage() {
             whileInView="visible"
             viewport={viewportOnce}
           >
-            <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
+            <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
               Selected Engagements
             </motion.h2>
             <motion.p variants={fadeUp} className="text-base sm:text-heading-lg md:text-display-sm font-display font-semibold max-w-xl">
@@ -217,7 +217,7 @@ export default function ExperiencePage() {
                 </span>
                 <span className={`absolute bottom-0 left-0 right-0 h-px transition-all duration-300 ${
                   activeStudy === index
-                    ? 'bg-accent'
+                    ? 'bg-ultraviolet'
                     : 'bg-transparent group-hover:bg-border'
                 }`} />
               </button>
@@ -280,7 +280,7 @@ export default function ExperiencePage() {
                   {study.services.map((service, idx) => (
                     <motion.span
                       key={service}
-                      className="px-4 py-2 text-body-sm text-accent border border-accent/30 rounded-full"
+                      className="px-4 py-2 text-body-sm text-violet-light border border-violet-light/30 rounded-full"
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.3 + idx * 0.05 }}
@@ -299,7 +299,7 @@ export default function ExperiencePage() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2 }}
                 >
-                  <h4 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
+                  <h4 className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
                     Challenge
                   </h4>
                   <p className="text-body-md text-text-secondary leading-relaxed">
@@ -313,7 +313,7 @@ export default function ExperiencePage() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  <h4 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
+                  <h4 className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
                     Approach
                   </h4>
                   <p className="text-body-md text-text-secondary leading-relaxed">
@@ -328,7 +328,7 @@ export default function ExperiencePage() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 }}
                 >
-                  <h4 className="text-xs font-mono uppercase tracking-widest text-accent mb-8">
+                  <h4 className="text-xs font-mono uppercase tracking-widest text-violet-light mb-8">
                     Results
                   </h4>
                   <div className="grid grid-cols-1 xs:grid-cols-3 gap-4 sm:gap-8">
@@ -368,7 +368,7 @@ export default function ExperiencePage() {
             {/* Quote */}
             <motion.div variants={fadeUp} className="relative">
               <div className="relative">
-                <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
+                <h2 className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
                   Our Perspective
                 </h2>
                 <blockquote className="text-[1.5rem] sm:text-display-sm font-display font-semibold mb-6 leading-tight">
@@ -383,7 +383,7 @@ export default function ExperiencePage() {
               className="relative p-5 sm:p-8 md:p-10 rounded-lg bg-bg-secondary border border-border"
             >
               <div className="relative">
-                <h3 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
+                <h3 className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
                   {cta.title}
                 </h3>
                 <p className="text-body-md text-text-secondary leading-relaxed mb-8">

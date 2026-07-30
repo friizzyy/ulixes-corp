@@ -45,10 +45,10 @@ const config: Config = {
           secondary: '#8A8D96',
           muted: '#8A8D96',
         },
-        accent: {
-          DEFAULT: '#8B5CF6',
-          glow: 'rgba(139, 92, 246, 0.15)',
-          secondary: '#A78BFA',
+        action: {
+          DEFAULT: 'var(--action-fill)',
+          hover: 'var(--action-fill-hover)',
+          ink: 'var(--action-ink)',
         },
       },
       fontFamily: {

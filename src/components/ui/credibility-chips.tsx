@@ -24,12 +24,12 @@ export function CredibilityChips({ chips, className }: CredibilityChipsProps) {
             'inline-flex items-center gap-2 px-4 py-2',
             'bg-surface/60 backdrop-blur-sm border border-border/60 rounded-full',
             'text-body-sm text-text-secondary font-medium',
-            'transition-all duration-300 hover:border-accent/30 hover:bg-surface/80'
+            'transition-all duration-300 hover:border-violet-light/30 hover:bg-surface/80'
           )}
           variants={fadeUp}
           custom={index}
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-accent/60" />
+          <span className="w-1.5 h-1.5 rounded-full bg-ultraviolet/60" />
           {chip}
         </motion.div>
       ))}

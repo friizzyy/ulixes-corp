@@ -163,8 +163,8 @@ export default function ContactPage() {
 
                 {formState === 'success' ? (
                   <div className="relative text-center py-12">
-                    <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-accent/20 flex items-center justify-center">
-                      <CheckCircle size={32} className="text-accent" />
+                    <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-ultraviolet/20 flex items-center justify-center">
+                      <CheckCircle size={32} className="text-violet-light" />
                     </div>
                     <h2 className="text-display-sm font-display font-semibold mb-3">
                       {success.title}
@@ -174,7 +174,7 @@ export default function ContactPage() {
                     </p>
                     <button
                       onClick={resetForm}
-                      className="px-5 py-2.5 min-h-[44px] border border-accent/30 text-accent font-medium rounded-sm hover:bg-accent/10 active:bg-accent/10 transition-colors"
+                      className="px-5 py-2.5 min-h-[44px] border border-violet-light/30 text-violet-light font-medium rounded-sm hover:bg-ultraviolet/10 active:bg-ultraviolet/10 transition-colors"
                     >
                       Send Another Message
                     </button>
@@ -192,7 +192,7 @@ export default function ContactPage() {
                     </p>
                     <button
                       onClick={() => setFormState('idle')}
-                      className="px-5 py-2.5 min-h-[44px] border border-border text-text-primary font-medium rounded-sm hover:border-accent/30 active:border-accent/30 transition-colors"
+                      className="px-5 py-2.5 min-h-[44px] border border-border text-text-primary font-medium rounded-sm hover:border-violet-light/30 active:border-violet-light/30 transition-colors"
                     >
                       Try Again
                     </button>
@@ -273,13 +273,13 @@ export default function ContactPage() {
             >
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
+                  <h2 className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
                     {info.title}
                   </h2>
                   <div className="text-body-sm text-text-muted mb-1.5">Email</div>
                   <a
                     href={`mailto:${siteConfig.email}`}
-                    className="text-base sm:text-heading-md font-medium text-text-primary hover:text-accent transition-colors break-all"
+                    className="text-base sm:text-heading-md font-medium text-text-primary hover:text-violet-light transition-colors break-all"
                   >
                     {siteConfig.email}
                   </a>
@@ -309,7 +309,7 @@ export default function ContactPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="lg:sticky lg:top-32">
-                <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
+                <h2 className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
                   {contactPageContent.faq.title}
                 </h2>
                 <p className="text-[1.75rem] sm:text-display-sm font-display font-semibold">
@@ -337,7 +337,7 @@ export default function ContactPage() {
                         {String(index + 1).padStart(2, '0')}
                       </span>
                       <div>
-                        <h3 className="text-heading-sm font-semibold text-text-primary mb-3 group-hover:text-accent transition-colors">
+                        <h3 className="text-heading-sm font-semibold text-text-primary mb-3 group-hover:text-violet-light transition-colors">
                           {item.question}
                         </h3>
                         <p className="text-body-md text-text-secondary leading-relaxed">
