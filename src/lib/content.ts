@@ -205,72 +205,66 @@ export const services: Array<{
   },
 ]
 
-export const caseStudies = [
-  {
-    id: 'calypso-migration',
-    title: 'Vendor-Hosted Platform Migration',
-    client: 'Major Financial Institution',
-    industry: 'Banking',
-    summary: 'Complete migration to vendor-hosted Calypso platform with full business continuity maintained throughout transition.',
-    challenge: 'Legacy on-premise system reaching end of support. Complex integration requirements with existing downstream systems. Tight regulatory reporting deadlines requiring zero disruption.',
-    approach: 'We applied our proven migration methodology developed over 20+ implementations. Comprehensive data mapping, parallel run validation, and phased cutover ensured operational continuity.',
-    outcome: {
-      metrics: [
-        { value: 'Zero', label: 'Business Disruption' },
-        { value: 'On-time', label: 'Delivery' },
-        { value: 'Full', label: 'Compliance Maintained' },
-      ],
-    },
-    services: ['Platform Migration', 'Calypso Implementation'],
-  },
+export const experiencePatterns = [
   {
     id: 'front-to-back',
     title: 'Front-to-Back Implementation',
-    client: 'Hedge Fund',
-    industry: 'Asset Management',
-    summary: 'Full Calypso implementation enabling consolidated front-to-back operations across multiple asset classes.',
-    challenge: 'Fragmented systems creating operational inefficiency and reporting delays. Need for real-time position management and integrated compliance monitoring.',
-    approach: 'We designed and implemented an integrated Calypso solution covering trading, risk, operations, and compliance. Our AI-driven compliance tools provided real-time regulatory insights from day one.',
-    outcome: {
-      metrics: [
-        { value: 'Real-time', label: 'Position Visibility' },
-        { value: 'Integrated', label: 'Compliance' },
-        { value: 'Streamlined', label: 'Operations' },
-      ],
-    },
-    services: ['Calypso Implementation', 'AI-Driven Compliance'],
+    context: 'Representative Pattern',
+    qualifier: 'Not a client case study',
+    summary: 'A bank is extending Calypso across products and operating teams whose decisions cannot be isolated.',
+    challenge: 'Product setup, market data, lifecycle processing, risk, accounting, messaging, and settlement must operate as one connected model.',
+    approach: 'Ulixes makes downstream consequences visible before configuration is committed, keeping product and control decisions connected across the lifecycle.',
+    coverage: [
+      { value: 'Products', label: 'Setup & booking' },
+      { value: 'Risk', label: 'Valuation & control' },
+      { value: 'Operations', label: 'Settlement & reporting' },
+    ],
+    services: ['Calypso Implementation', 'Lifecycle Architecture'],
   },
   {
-    id: 'qa-transformation',
-    title: 'Testing Transformation',
-    client: 'Regional Bank',
-    industry: 'Banking',
-    summary: 'Comprehensive QA program implementation reducing release cycles while improving platform stability.',
-    challenge: 'Manual testing processes creating bottlenecks in release cycles. Recurring production issues eroding confidence in platform stability.',
-    approach: 'We implemented our intelligent testing framework, combining automated regression testing with scenario-based validation. Deep Calypso expertise ensured comprehensive coverage of critical business flows.',
-    outcome: {
-      metrics: [
-        { value: 'Faster', label: 'Release Cycles' },
-        { value: 'Improved', label: 'Stability' },
-        { value: 'Automated', label: 'Regression Testing' },
-      ],
-    },
-    services: ['Intelligent Testing', 'Calypso Implementation'],
+    id: 'migration',
+    title: 'Controlled Platform Migration',
+    context: 'Representative Pattern',
+    qualifier: 'Not a client case study',
+    summary: 'A platform or portfolio transition must preserve positions, lifecycle history, accounting treatment, and operational continuity.',
+    challenge: 'Target state, data mapping, reconciliation, parallel validation, cutover, and stabilization must be treated as one control program.',
+    approach: 'Ulixes frames the transition around evidence of continuity before any step becomes irreversible.',
+    coverage: [
+      { value: 'Target state', label: 'Architecture & mapping' },
+      { value: 'Parallel', label: 'Validation & reconciliation' },
+      { value: 'Cutover', label: 'Control & stabilization' },
+    ],
+    services: ['Platform Migration', 'Operational Readiness'],
+  },
+  {
+    id: 'testing',
+    title: 'Lifecycle-Led Testing',
+    context: 'Representative Pattern',
+    qualifier: 'Not a client case study',
+    summary: 'Release confidence depends on more than screens and happy-path scenarios.',
+    challenge: 'Testing must cover real products, lifecycle events, controls, and the paths where business impact compounds.',
+    approach: 'Ulixes aligns SIT, UAT, and regression coverage with production readiness across the complete trade lifecycle.',
+    coverage: [
+      { value: 'SIT', label: 'System integration' },
+      { value: 'UAT', label: 'Business validation' },
+      { value: 'Regression', label: 'Release confidence' },
+    ],
+    services: ['Intelligent Testing', 'Production Readiness'],
   },
 ]
 
 export const aboutContent = {
   hero: {
-    headline: 'Founded on Misalignment',
-    description: 'Ulixes exists because we watched infrastructure projects fail. Not from technical defects, but from the space between accounting, risk, and technology where no one was accountable.',
+    headline: 'Built From Front-to-Back Experience',
+    description: 'Ulixes is led by Ulysses Williams, whose Calypso work since 2004 spans front-, middle-, and back-office delivery across four regions.',
   },
   origin: {
     title: 'The Origin',
     paragraphs: [
-      'We came from trading floors, treasury functions, and Big Four advisory practices. We saw the same failure pattern repeatedly: infrastructure that worked technically but created financial control problems that surfaced months or years later.',
-      'A hedge accounting framework that passed UAT but failed effectiveness testing under stress. A migration that completed on time but triggered capital ratio drift that took quarters to diagnose. A booking model that processed trades correctly but created earnings volatility that surprised analysts.',
-      'These failures shared a common cause. The disciplines that should have been integrated were siloed: accounting policy, derivatives mechanics, risk methodology, system architecture. Each team optimized for their domain. No one owned the intersections.',
-      'Ulixes was founded to own those intersections.',
+      'Ulysses Williams began working with Calypso Technology in 2004 and has since led delivery across front-, middle-, and back-office functions.',
+      'His experience spans interest-rate derivatives, foreign exchange, fixed income, money markets, commodities, and equity derivatives across North America, Europe, APAC, and Latin America.',
+      'That range shaped a simple view: platform decisions should be evaluated across the entire trade lifecycle, not within isolated workstreams.',
+      'Ulixes was founded to bring that whole-system judgment closer to each mandate.',
     ],
   },
   philosophy: {
@@ -282,7 +276,7 @@ export const aboutContent = {
       },
       {
         title: 'Alignment Is The Work',
-        description: 'The hardest problems live where accounting, risk, and systems meet. Solving them requires practitioners who speak all three languages and refuse to optimize one at the expense of another.',
+        description: 'The hardest problems live where accounting, risk, and systems meet. Solving them requires fluency across all three and the discipline not to optimize one at the expense of another.',
       },
       {
         title: 'Durability Over Delivery',
@@ -292,7 +286,7 @@ export const aboutContent = {
   },
   approach: {
     title: 'How We Work',
-    description: 'We are senior practitioners, not staffing leverage. Every engagement is led by partners who have designed, built, and defended these systems inside institutions.',
+    description: 'Mandates stay senior-led and close to the decision. Ulysses brings experience designing, building, and governing these systems inside institutions.',
     steps: [
       {
         number: '01',
@@ -317,8 +311,8 @@ export const aboutContent = {
     ],
   },
   team: {
-    title: 'The Team',
-    description: 'Senior practitioners with deep Calypso platform expertise. We bring decades of experience in capital markets infrastructure, working alongside banks and hedge funds on complex implementations.',
+    title: 'Led by Ulysses Williams',
+    description: 'Ulysses is a Calypso subject-matter expert with experience across products, regions, and the complete trade lifecycle. He leads Ulixes with senior judgment kept close to architecture, delivery, and control decisions.',
   },
 }
 
@@ -537,8 +531,8 @@ export const aboutPageContent = {
     title: 'Operating Principles',
     items: [
       {
-        title: 'Senior Practitioners Only',
-        description: 'Every engagement is staffed with partners and senior practitioners. No junior consultants learning on your infrastructure.',
+        title: 'Senior Leadership, Directly',
+        description: 'Mandates remain senior-led, with Ulysses close to architecture, delivery, and control decisions.',
       },
       {
         title: 'Architecture Before Technology',
@@ -557,13 +551,13 @@ export const aboutPageContent = {
   numbers: {
     title: 'By The Numbers',
     stats: [
-      { value: '20+', label: 'Years Experience' },
-      { value: '20', label: 'Implementations' },
+      { value: '20+', label: 'Years With Calypso' },
+      { value: '4', label: 'Regions' },
     ],
   },
   hiring: {
-    title: 'Join Us',
-    description: 'We hire senior practitioners who have designed, built, and defended capital markets infrastructure inside institutions. If you\'ve lived the intersection of accounting, risk, and systems, and want to solve these problems without organizational constraints, let\'s talk.',
+    title: 'Work With Ulixes',
+    description: 'Ulixes welcomes conversations with senior Calypso and capital-markets specialists who understand the connections between products, controls, and operating systems.',
     cta: 'Contact Us',
     ctaHref: 'mailto:careers@ulixescorp.com',
   },
@@ -574,11 +568,11 @@ export const experienceContent = {
   hero: {
     label: 'Experience',
     headline: 'Institutional Experience',
-    description: 'Built inside global capital markets institutions over two decades. Not alongside them.',
+    description: 'Ulysses Williams brings Calypso experience since 2004 across front-, middle-, and back-office delivery.',
   },
   stats: [
     { value: '20+', label: 'Years Experience' },
-    { value: '7', label: 'Sectors' },
+    { value: '4', label: 'Regions' },
   ],
   credibilityChips: [
     '20+ years Calypso execution',
@@ -587,13 +581,13 @@ export const experienceContent = {
   ],
   intro: {
     paragraphs: [
-      'Before Ulixes, our work happened inside large financial institutions, not alongside them. We worked within treasury teams, derivatives operations, and core infrastructure programs where decisions were tied directly to balance sheets, controls, and regulatory outcomes.',
-      'That experience shapes how we approach every engagement. We do not advise from theory. Our perspective comes from having lived with the consequences of infrastructure decisions, during earnings cycles, in audit reviews, and under regulatory examination.',
+      'Before Ulixes, Ulysses worked inside global financial institutions and within the operating programs responsible for front-, middle-, and back-office delivery.',
+      'That experience shapes a practical approach: connect product, risk, control, settlement, and reporting decisions before implementation makes them expensive to reverse.',
     ],
   },
   institutions: {
-    title: 'Where We\'ve Worked',
-    description: 'Financial institutions where we\'ve architected, modernized, or defended mission-critical capital markets infrastructure.',
+    title: 'Institutional Contexts',
+    description: 'Types of capital-markets environments represented across Ulysses Williams\'s career.',
     categories: [
       {
         name: 'Global Systemically Important Banks (GSIBs)',
@@ -640,11 +634,11 @@ export const experienceContent = {
     ],
   },
   closing: {
-    quote: 'We\'ve sat where you sit. We\'ve defended infrastructure decisions to boards, auditors, and regulators. That perspective informs every recommendation we make.',
+    quote: 'The best platform decisions are made with their downstream consequences in view—from booking and risk through controls, settlement, and reporting.',
   },
   cta: {
     title: 'Ready to Talk?',
-    description: 'If your challenge requires practitioners who\'ve lived inside institutional infrastructure, not just consulted on it, we should connect.',
+    description: 'If your challenge benefits from senior Calypso experience and a front-to-back view, we should connect.',
     primaryCta: 'Start a Conversation',
   },
 }

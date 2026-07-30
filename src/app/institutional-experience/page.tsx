@@ -3,14 +3,14 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { experienceContent, caseStudies } from '@/lib/content'
+import { experienceContent, experiencePatterns } from '@/lib/content'
 import { ArrowUpRight, PageTransition } from '@/components/ui'
 import { fadeUp, staggerContainer, staggerContainerFast, viewportOnce } from '@/lib/motion'
 
 export default function ExperiencePage() {
   const { hero, stats, credibilityChips, intro, institutions, closing, cta } = experienceContent
   const [activeStudy, setActiveStudy] = useState(0)
-  const study = caseStudies[activeStudy]
+  const study = experiencePatterns[activeStudy]
 
   return (
     <PageTransition>
@@ -135,10 +135,10 @@ export default function ExperiencePage() {
             viewport={viewportOnce}
           >
             <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
-              Where We&apos;ve Worked
+              {institutions.title}
             </motion.h2>
             <motion.p variants={fadeUp} className="font-display text-[1.75rem] sm:text-display-sm md:text-display-md font-semibold max-w-2xl">
-              Seven distinct institutional sectors.
+              {institutions.description}
             </motion.p>
           </motion.div>
 
@@ -176,7 +176,7 @@ export default function ExperiencePage() {
         </div>
       </section>
 
-      {/* Case Studies Section */}
+      {/* Representative mandate patterns */}
       <section className="py-20 sm:py-28 md:py-36 bg-bg-secondary/50 border-y border-border">
         <div className="container-main">
           <motion.div
@@ -187,10 +187,10 @@ export default function ExperiencePage() {
             viewport={viewportOnce}
           >
             <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
-              Selected Engagements
+              Representative Mandate Patterns
             </motion.h2>
             <motion.p variants={fadeUp} className="text-base sm:text-heading-lg md:text-display-sm font-display font-semibold max-w-xl">
-              Patterns from our work. Most clients require confidentiality. These represent what we can discuss.
+              Operating patterns, not client case studies or claimed outcomes.
             </motion.p>
           </motion.div>
 
@@ -202,10 +202,12 @@ export default function ExperiencePage() {
             viewport={viewportOnce}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            {caseStudies.map((cs, index) => (
+            {experiencePatterns.map((pattern, index) => (
               <button
-                key={cs.id}
+                key={pattern.id}
                 onClick={() => setActiveStudy(index)}
+                aria-label={`Show ${pattern.title}`}
+                aria-pressed={activeStudy === index}
                 className={`group relative px-6 py-3 min-h-[44px] transition-all duration-300 ${
                   activeStudy === index
                     ? 'text-text-primary'
@@ -225,7 +227,7 @@ export default function ExperiencePage() {
             <div className="flex-1 h-px bg-border ml-4" />
           </motion.div>
 
-          {/* Featured Case Study */}
+          {/* Selected mandate pattern */}
           <AnimatePresence mode="wait">
             <motion.div
               key={activeStudy}
@@ -244,11 +246,11 @@ export default function ExperiencePage() {
                   transition={{ delay: 0.1 }}
                 >
                   <span className="text-xs font-mono tracking-wider text-text-muted uppercase">
-                    {study.industry}
+                    {study.context}
                   </span>
                   <span className="w-1 h-1 rounded-full bg-border" />
                   <span className="text-xs font-mono tracking-wider text-text-muted">
-                    {study.client}
+                    {study.qualifier}
                   </span>
                 </motion.div>
 
@@ -321,7 +323,7 @@ export default function ExperiencePage() {
                   </p>
                 </motion.div>
 
-                {/* Results */}
+                {/* Decision coverage */}
                 <motion.div
                   className="pt-8 border-t border-border"
                   initial={{ opacity: 0, x: 20 }}
@@ -329,10 +331,10 @@ export default function ExperiencePage() {
                   transition={{ delay: 0.4 }}
                 >
                   <h4 className="text-xs font-mono uppercase tracking-widest text-violet-light mb-8">
-                    Results
+                    Decision Coverage
                   </h4>
                   <div className="grid grid-cols-1 xs:grid-cols-3 gap-4 sm:gap-8">
-                    {study.outcome.metrics.map((metric, idx) => (
+                    {study.coverage.map((metric, idx) => (
                       <motion.div
                         key={metric.label}
                         initial={{ opacity: 0, y: 10 }}

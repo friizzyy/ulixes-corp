@@ -62,7 +62,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <p className="font-display text-heading-lg sm:text-display-sm md:text-[1.75rem] font-semibold text-text-primary max-w-2xl leading-snug">
-              We came from trading floors, treasury functions, and Big Four advisory practices.
+              Calypso experience since 2004, carried across the whole trade lifecycle.
             </p>
           </motion.blockquote>
 
@@ -169,7 +169,7 @@ export default function AboutPage() {
                   {aboutPageContent.values.title}
                 </p>
                 <p className="text-body-md text-text-secondary leading-relaxed">
-                  We are senior practitioners, not staffing leverage. Every engagement is led by partners who have designed, built, and defended these systems inside institutions.
+                  Mandates stay senior-led and close to the decision. Ulysses brings experience designing, building, and governing these systems inside institutions.
                 </p>
               </div>
             </motion.div>
@@ -218,7 +218,7 @@ export default function AboutPage() {
             {/* Team — takes more space */}
             <motion.div variants={fadeUp} className="lg:col-span-7">
               <h2 className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
-                The Team
+                Leadership
               </h2>
               <p className="font-display text-[1.75rem] sm:text-display-sm font-semibold mb-4 sm:mb-6">
                 {team.title}
@@ -227,7 +227,7 @@ export default function AboutPage() {
                 {team.description}
               </p>
               <Link href="/contact" className="cta-primary">
-                Work With Us
+                Discuss a Mandate
                 <ArrowUpRight size={16} />
               </Link>
             </motion.div>
