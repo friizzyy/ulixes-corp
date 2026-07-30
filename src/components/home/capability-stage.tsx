@@ -5,7 +5,6 @@ import {
   useId,
   useRef,
   useState,
-  type FocusEvent,
   type MouseEvent,
 } from 'react'
 import {
@@ -21,6 +20,8 @@ import styles from './homepage.module.css'
 const desktopMediaQuery = '(min-width: 768px)'
 const reducedMotionMediaQuery = '(prefers-reduced-motion: reduce)'
 const activationMargin = '-45% 0px -54% 0px'
+const instantScrollFocusDelayMs = 1
+const smoothScrollFocusSafetyMs = 2000
 
 const stageLabels = new Map<LifecycleStageId, string>(
   lifecycleStages.map((stage) => [stage.id, stage.label]),
@@ -33,6 +34,7 @@ export function CapabilityStage() {
   const [activeCapabilityId, setActiveCapabilityId] =
     useState<CapabilityId>('implementation')
   const headingsRef = useRef(new Map<CapabilityId, HTMLHeadingElement>())
+  const scrollFocusCleanupRef = useRef<null | (() => void)>(null)
   const activeCapability =
     capabilities.find((capability) => capability.id === activeCapabilityId) ??
     capabilities[0]
@@ -83,48 +85,74 @@ export function CapabilityStage() {
     }
   }, [])
 
-  const alignArticle = (
-    capability: Capability,
-    article: HTMLElement,
-    focusHeading: boolean,
-  ) => {
-    setActiveCapabilityId(capability.id)
-
-    const top =
-      window.scrollY +
-      article.getBoundingClientRect().top -
-      window.innerHeight * 0.45
-    const reducedMotion = window.matchMedia(reducedMotionMediaQuery).matches
-
-    window.scrollTo({
-      top: Math.max(0, top),
-      behavior: reducedMotion ? 'auto' : 'smooth',
-    })
-
-    if (focusHeading) {
-      window.requestAnimationFrame(() => {
-        headingsRef.current.get(capability.id)?.focus({ preventScroll: true })
-      })
-    }
-  }
-
-  const handleHeadingFocus = (
-    event: FocusEvent<HTMLAnchorElement>,
-    capability: Capability,
-  ) => {
-    const article = event.currentTarget.closest('article')
-    if (article) alignArticle(capability, article, false)
-  }
+  useEffect(
+    () => () => {
+      scrollFocusCleanupRef.current?.()
+    },
+    [],
+  )
 
   const handleHeadingClick = (
     event: MouseEvent<HTMLAnchorElement>,
     capability: Capability,
   ) => {
-    const article = event.currentTarget.closest('article')
-    if (!article) return
+    const heading = document.getElementById(
+      event.currentTarget.hash.slice(1),
+    )
+    if (!heading) return
+    const targetHeading = heading
 
-    event.preventDefault()
-    alignArticle(capability, article, true)
+    setActiveCapabilityId(capability.id)
+    scrollFocusCleanupRef.current?.()
+
+    let settled = false
+    let fallbackId: number | undefined
+    let listeningForScrollEnd = false
+
+    const removeScheduledFocus = () => {
+      if (listeningForScrollEnd) {
+        window.removeEventListener('scrollend', finishFocus)
+      }
+      if (fallbackId !== undefined) {
+        window.clearTimeout(fallbackId)
+      }
+    }
+
+    const cancelFocus = () => {
+      if (settled) return
+      settled = true
+      removeScheduledFocus()
+      if (scrollFocusCleanupRef.current === cancelFocus) {
+        scrollFocusCleanupRef.current = null
+      }
+    }
+
+    function finishFocus() {
+      if (settled) return
+      settled = true
+      removeScheduledFocus()
+      if (scrollFocusCleanupRef.current === cancelFocus) {
+        scrollFocusCleanupRef.current = null
+      }
+      if (!targetHeading.isConnected) return
+
+      targetHeading.focus({ preventScroll: true })
+    }
+
+    const reducedMotion = window.matchMedia(reducedMotionMediaQuery).matches
+    const shouldWaitForScrollEnd =
+      !reducedMotion && 'onscrollend' in window
+
+    if (shouldWaitForScrollEnd) {
+      listeningForScrollEnd = true
+      window.addEventListener('scrollend', finishFocus, { once: true })
+    }
+
+    fallbackId = window.setTimeout(
+      finishFocus,
+      reducedMotion ? instantScrollFocusDelayMs : smoothScrollFocusSafetyMs,
+    )
+    scrollFocusCleanupRef.current = cancelFocus
   }
 
   return (
@@ -167,8 +195,8 @@ export function CapabilityStage() {
           <div className={styles.capabilityArticles}>
             {capabilities.map((capability) => {
               const isActive = capability.id === activeCapabilityId
-              const articleId = `capability-${capability.id}`
-              const headingId = `${articleId}-title-${instanceId}`
+              const headingId = `capability-${capability.id}`
+              const articleId = `${headingId}-article-${instanceId}`
 
               return (
                 <article
@@ -192,11 +220,8 @@ export function CapabilityStage() {
                     >
                       <a
                         className={styles.capabilityArticleLink}
-                        href={`#${articleId}`}
+                        href={`#${headingId}`}
                         aria-current={isActive ? 'true' : undefined}
-                        onFocus={(event) =>
-                          handleHeadingFocus(event, capability)
-                        }
                         onClick={(event) =>
                           handleHeadingClick(event, capability)
                         }
@@ -213,6 +238,7 @@ export function CapabilityStage() {
                     <SignalNetwork
                       highlightedStageIds={capability.stageIds}
                       renderMode={capability.renderMode}
+                      orientation="vertical"
                       className={styles.capabilityArticleNetwork}
                     />
                     <ul

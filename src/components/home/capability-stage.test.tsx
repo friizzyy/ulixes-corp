@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
-import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { act, render, screen, within } from '@testing-library/react'
 import { parse, type AtRule, type Rule } from 'postcss'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
@@ -12,6 +12,13 @@ import { CapabilityStage } from './capability-stage'
 
 const DESKTOP_MEDIA_QUERY = '(min-width: 768px)'
 const MOBILE_MEDIA_QUERY = '(max-width: 767px)'
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
+const INSTANT_FOCUS_DELAY_MS = 1
+const SMOOTH_FOCUS_SAFETY_MS = 2000
+const originalScrollEndDescriptor = Object.getOwnPropertyDescriptor(
+  window,
+  'onscrollend',
+)
 const stylesheet = parse(
   readFileSync(
     path.join(process.cwd(), 'src/components/home/homepage.module.css'),
@@ -69,8 +76,12 @@ class IntersectionObserverHarness implements IntersectionObserver {
   }
 }
 
-function createMediaEnvironment(initialDesktop: boolean) {
+function createMediaEnvironment(
+  initialDesktop: boolean,
+  initialReducedMotion = false,
+) {
   let desktop = initialDesktop
+  let reducedMotion = initialReducedMotion
   const listeners = new Map<string, Set<MediaListener>>()
 
   const matchMedia = vi.fn((query: string) => {
@@ -81,7 +92,7 @@ function createMediaEnvironment(initialDesktop: boolean) {
       get matches() {
         if (query === DESKTOP_MEDIA_QUERY) return desktop
         if (query === MOBILE_MEDIA_QUERY) return !desktop
-        if (query === '(prefers-reduced-motion: reduce)') return false
+        if (query === REDUCED_MOTION_QUERY) return reducedMotion
         return false
       },
       media: query,
@@ -105,6 +116,9 @@ function createMediaEnvironment(initialDesktop: boolean) {
       listeners.get(DESKTOP_MEDIA_QUERY)?.forEach((listener) => {
         listener({ matches: desktop, media: DESKTOP_MEDIA_QUERY } as MediaQueryListEvent)
       })
+    },
+    setReducedMotion(nextReducedMotion: boolean) {
+      reducedMotion = nextReducedMotion
     },
   }
 }
@@ -162,8 +176,15 @@ beforeEach(() => {
 })
 
 afterEach(() => {
+  vi.useRealTimers()
   vi.unstubAllGlobals()
   vi.restoreAllMocks()
+  if (originalScrollEndDescriptor) {
+    Object.defineProperty(window, 'onscrollend', originalScrollEndDescriptor)
+  } else {
+    Reflect.deleteProperty(window, 'onscrollend')
+  }
+  window.history.replaceState(null, '', '/')
 })
 
 describe('CapabilityStage', () => {
@@ -205,6 +226,24 @@ describe('CapabilityStage', () => {
 
     expect(sharedNetwork(container)).toHaveAttribute('data-render-mode', 'path')
     expect(highlightedStageIds(container)).toEqual(capabilities[0].stageIds)
+    const implementationPath = container.querySelector<SVGPathElement>(
+      '[data-capability-shared-network] path[data-stage-id="capture"]',
+    )
+
+    expect(implementationPath).toHaveAttribute('data-highlighted', 'true')
+    expect(
+      getComputedStyle(implementationPath as SVGPathElement).stroke,
+    ).not.toBe('rgba(138, 141, 150, 0.42)')
+    expect(
+      declarationsFor(
+        ".capabilityStage .signalRoute:not([data-highlighted='true'])",
+      ).stroke,
+    ).toBe('rgba(138, 141, 150, 0.42)')
+    expect(
+      declarationsFor(
+        ".capabilityStage .signalRoute[data-highlighted='true']",
+      ).stroke,
+    ).toBe('currentColor')
 
     act(() => {
       observer.cross(screen.getByRole('heading', { name: 'Platform migration' }))
@@ -216,6 +255,13 @@ describe('CapabilityStage', () => {
       'settlement',
       'reporting',
     ])
+    const inactiveMigrationPath = container.querySelector<SVGPathElement>(
+      '[data-capability-shared-network] path[data-stage-id="risk"]',
+    )
+    expect(inactiveMigrationPath).not.toHaveAttribute('data-highlighted')
+    expect(getComputedStyle(inactiveMigrationPath as SVGPathElement).stroke).toBe(
+      'rgba(138, 141, 150, 0.42)',
+    )
 
     act(() => {
       observer.cross(screen.getByRole('heading', { name: 'AI-assisted compliance' }))
@@ -243,31 +289,23 @@ describe('CapabilityStage', () => {
         '[data-capability-shared-network] path[data-highlighted="true"]',
       ),
     ).toHaveLength(0)
+    expect(
+      getComputedStyle(
+        container.querySelector(
+          '[data-capability-shared-network] path[data-stage-id="capture"]',
+        ) as SVGPathElement,
+      ).stroke,
+    ).toBe('rgba(138, 141, 150, 0.42)')
 
     for (const capability of capabilities) {
       expect(screen.getByText(capability.description)).toBeVisible()
     }
   })
 
-  it('provides native heading links that align and focus their article target', () => {
+  it('uses the observed heading as the native fragment and 45% scroll target', () => {
     const media = createMediaEnvironment(true)
     vi.spyOn(window, 'matchMedia').mockImplementation(media.matchMedia)
     const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
-    vi.stubGlobal(
-      'requestAnimationFrame',
-      (callback: FrameRequestCallback) => {
-        callback(0)
-        return 1
-      },
-    )
-    Object.defineProperty(window, 'scrollY', {
-      configurable: true,
-      value: 100,
-    })
-    Object.defineProperty(window, 'innerHeight', {
-      configurable: true,
-      value: 1000,
-    })
     render(<CapabilityStage />)
 
     const article = screen
@@ -279,29 +317,133 @@ describe('CapabilityStage', () => {
     const link = within(heading).getByRole('link', {
       name: 'Platform migration',
     })
-    vi.spyOn(article as HTMLElement, 'getBoundingClientRect').mockReturnValue({
-      bottom: 1200,
-      height: 600,
-      left: 0,
-      right: 600,
-      top: 600,
-      width: 600,
-      x: 0,
-      y: 600,
-      toJSON: () => ({}),
+    expect(link).toHaveAttribute('href', `#${heading.id}`)
+    expect(article).toHaveAttribute('aria-labelledby', heading.id)
+    expect(heading).toHaveAttribute('data-capability-heading', 'migration')
+    expect(declarationsFor('.capabilityArticleTitle')['scroll-margin-top']).toBe(
+      '45vh',
+    )
+    expect(declarationsFor('.capabilityArticle')['scroll-margin-top']).toBeUndefined()
+
+    link.focus()
+
+    expect(link).toHaveFocus()
+    expect(link).not.toHaveAttribute('aria-current')
+    expect(scrollTo).not.toHaveBeenCalled()
+  })
+
+  it('retains native hash navigation and focuses after smooth scrollend', () => {
+    vi.useFakeTimers()
+    const media = createMediaEnvironment(true)
+    vi.spyOn(window, 'matchMedia').mockImplementation(media.matchMedia)
+    Object.defineProperty(window, 'onscrollend', {
+      configurable: true,
+      value: null,
     })
-
-    expect(article).toHaveAttribute('id', 'capability-migration')
-    expect(link).toHaveAttribute('href', '#capability-migration')
-
-    fireEvent.click(link)
-
-    expect(scrollTo).toHaveBeenLastCalledWith({
-      behavior: 'smooth',
-      top: 250,
+    const removeEventListener = vi.spyOn(window, 'removeEventListener')
+    const clearTimeout = vi.spyOn(window, 'clearTimeout')
+    const setTimeout = vi.spyOn(window, 'setTimeout')
+    render(<CapabilityStage />)
+    const heading = screen.getByRole('heading', { name: 'Platform migration' })
+    const link = within(heading).getByRole('link', {
+      name: 'Platform migration',
     })
-    expect(heading).toHaveFocus()
+    let defaultPrevented = true
+    document.addEventListener(
+      'click',
+      (event) => {
+        defaultPrevented = event.defaultPrevented
+      },
+      { once: true },
+    )
+
+    act(() => {
+      link.click()
+    })
+    vi.advanceTimersByTime(0)
+
+    expect(defaultPrevented).toBe(false)
+    expect(window.location.hash).toBe(`#${heading.id}`)
+    expect(heading).not.toHaveFocus()
     expect(link).toHaveAttribute('aria-current', 'true')
+    const fallbackIndex = setTimeout.mock.calls.findIndex(
+      ([, delay]) => delay === SMOOTH_FOCUS_SAFETY_MS,
+    )
+    const fallbackId = setTimeout.mock.results[fallbackIndex]?.value
+
+    expect(fallbackIndex).toBeGreaterThanOrEqual(0)
+    vi.advanceTimersByTime(SMOOTH_FOCUS_SAFETY_MS - 1)
+    expect(heading).not.toHaveFocus()
+
+    window.dispatchEvent(new Event('scrollend'))
+
+    expect(heading).toHaveFocus()
+    expect(clearTimeout).toHaveBeenCalledWith(fallbackId)
+    expect(removeEventListener).toHaveBeenCalledWith(
+      'scrollend',
+      expect.any(Function),
+    )
+  })
+
+  it('focuses after the instant native fragment task with reduced motion', () => {
+    vi.useFakeTimers()
+    const media = createMediaEnvironment(true, true)
+    vi.spyOn(window, 'matchMedia').mockImplementation(media.matchMedia)
+    render(<CapabilityStage />)
+    const heading = screen.getByRole('heading', { name: 'Platform migration' })
+    const link = within(heading).getByRole('link', {
+      name: 'Platform migration',
+    })
+
+    act(() => {
+      link.click()
+    })
+    vi.advanceTimersByTime(0)
+
+    expect(window.location.hash).toBe(`#${heading.id}`)
+    expect(heading).not.toHaveFocus()
+
+    vi.advanceTimersByTime(INSTANT_FOCUS_DELAY_MS)
+
+    expect(heading).toHaveFocus()
+  })
+
+  it('cleans pending heading focus work on unmount', () => {
+    vi.useFakeTimers()
+    const media = createMediaEnvironment(true)
+    vi.spyOn(window, 'matchMedia').mockImplementation(media.matchMedia)
+    Object.defineProperty(window, 'onscrollend', {
+      configurable: true,
+      value: null,
+    })
+    const removeEventListener = vi.spyOn(window, 'removeEventListener')
+    const clearTimeout = vi.spyOn(window, 'clearTimeout')
+    const setTimeout = vi.spyOn(window, 'setTimeout')
+    const { unmount } = render(<CapabilityStage />)
+    const heading = screen.getByRole('heading', { name: 'Platform migration' })
+    const link = within(heading).getByRole('link', {
+      name: 'Platform migration',
+    })
+
+    act(() => {
+      link.click()
+    })
+    vi.advanceTimersByTime(0)
+    const fallbackIndex = setTimeout.mock.calls.findIndex(
+      ([, delay]) => delay === SMOOTH_FOCUS_SAFETY_MS,
+    )
+    const fallbackId = setTimeout.mock.results[fallbackIndex]?.value
+
+    unmount()
+    window.dispatchEvent(new Event('scrollend'))
+    vi.advanceTimersByTime(SMOOTH_FOCUS_SAFETY_MS)
+
+    expect(heading).not.toHaveFocus()
+    expect(clearTimeout).toHaveBeenCalledWith(fallbackId)
+    expect(removeEventListener).toHaveBeenCalledWith(
+      'scrollend',
+      expect.any(Function),
+    )
   })
 
   it('disables and cleans up observation below 768px while keeping one static map per article', () => {
@@ -320,8 +462,39 @@ describe('CapabilityStage', () => {
       ).map((stage) => stage.dataset.stageId as LifecycleStageId)
 
       expect(snapshot).toHaveAttribute('data-render-mode', capability.renderMode)
+      expect(snapshot).toHaveAttribute('data-orientation', 'vertical')
+      expect(snapshot).toHaveAttribute('viewBox', '0 0 144 640')
+      expect(snapshot).toHaveAttribute('preserveAspectRatio', 'xMidYMid meet')
       expect(highlighted).toEqual(capability.stageIds)
+
+      const paths = Array.from(snapshot?.querySelectorAll('path') ?? [])
+      const nodes = Array.from(snapshot?.querySelectorAll('circle') ?? [])
+      expect(paths.every((route) => route.getAttribute('d')?.includes('72'))).toBe(
+        true,
+      )
+      expect(nodes.every((node) => node.getAttribute('cx') === '72')).toBe(true)
+      expect(nodes.every((node) => node.getAttribute('r') === '8')).toBe(true)
     })
+
+    const testingArticle = articles[3]
+    expect(
+      testingArticle.querySelectorAll('path[data-highlighted="true"]'),
+    ).toHaveLength(0)
+    expect(
+      testingArticle.querySelectorAll('circle[data-highlighted="true"]'),
+    ).toHaveLength(6)
+
+    const mobileNetwork = declarationsFor(
+      '.capabilityArticleNetwork',
+      MOBILE_MEDIA_QUERY,
+    )
+    const renderedNodeWidth =
+      (Number(mobileNetwork.width.replace('px', '')) / 144) * 16
+    const renderedNodeHeight =
+      (Number(mobileNetwork.height.replace('px', '')) / 640) * 16
+
+    expect(renderedNodeWidth).toBeGreaterThanOrEqual(5.5)
+    expect(Math.abs(renderedNodeWidth - renderedNodeHeight)).toBeLessThan(0.2)
 
     expect(declarationsFor('.capabilitySharedVisual')).toMatchObject({
       position: 'sticky',

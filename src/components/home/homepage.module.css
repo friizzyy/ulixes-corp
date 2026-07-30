@@ -890,8 +890,12 @@
   letter-spacing: 0.04em;
 }
 
-.capabilityStage .signalRoute {
+.capabilityStage .signalRoute:not([data-highlighted='true']) {
   stroke: rgba(138, 141, 150, 0.42);
+}
+
+.capabilityStage .signalRoute[data-highlighted='true'] {
+  stroke: currentColor;
 }
 
 .capabilityStage .signalNode {
@@ -917,7 +921,6 @@
   justify-content: center;
   padding: clamp(64px, 8vh, 96px) 0;
   border-top: 1px solid rgba(138, 141, 150, 0.32);
-  scroll-margin-top: 45vh;
 }
 
 .capabilityArticle:last-child {
@@ -946,6 +949,7 @@
 .capabilityArticleTitle {
   margin: 0;
   outline: none;
+  scroll-margin-top: 45vh;
   font-size: clamp(2rem, 3vw, 3rem);
   font-weight: 580;
   line-height: 1.02;
@@ -1094,7 +1098,6 @@
   .capabilityArticle {
     min-height: 0;
     padding: 64px 0 68px;
-    scroll-margin-top: 45vh;
   }
 
   .capabilityArticle::before {
@@ -1113,7 +1116,7 @@
 
   .capabilityArticleMap {
     display: grid;
-    grid-template-columns: 34px minmax(0, 1fr);
+    grid-template-columns: 54px minmax(0, 1fr);
     gap: 20px;
     min-height: 236px;
     margin-top: 38px;
@@ -1123,7 +1126,7 @@
     position: relative;
     inset: auto;
     display: block;
-    width: 34px;
+    width: 54px;
     height: 236px;
     min-height: 0;
     color: var(--violet-light);
