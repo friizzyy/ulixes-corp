@@ -415,6 +415,87 @@ describe('CapabilityStage', () => {
     expect(heading).toHaveFocus()
   })
 
+  it('clears pointer modality after outside release and on unmount', () => {
+    const media = createMediaEnvironment(true)
+    vi.spyOn(window, 'matchMedia').mockImplementation(media.matchMedia)
+    const addEventListener = vi.spyOn(window, 'addEventListener')
+    const removeEventListener = vi.spyOn(window, 'removeEventListener')
+    const { container, unmount } = render(<CapabilityStage />)
+    const migrationHeading = screen.getByRole('heading', {
+      name: 'Platform migration',
+    })
+    const migrationLink = within(migrationHeading).getByRole('link', {
+      name: 'Platform migration',
+    })
+    const complianceHeading = screen.getByRole('heading', {
+      name: 'AI-assisted compliance',
+    })
+    const complianceLink = within(complianceHeading).getByRole('link', {
+      name: 'AI-assisted compliance',
+    })
+    const migrationScrollIntoView = vi.fn()
+    migrationHeading.scrollIntoView = migrationScrollIntoView
+    complianceHeading.scrollIntoView = vi.fn()
+
+    act(() => {
+      migrationLink.focus()
+    })
+    expect(migrationLink).toHaveAttribute('aria-current', 'true')
+
+    fireEvent.pointerDown(migrationLink)
+
+    expect(addEventListener).toHaveBeenCalledWith(
+      'pointerup',
+      expect.any(Function),
+      { once: true },
+    )
+    expect(addEventListener).toHaveBeenCalledWith(
+      'pointercancel',
+      expect.any(Function),
+      { once: true },
+    )
+
+    fireEvent.pointerUp(window)
+
+    expect(removeEventListener).toHaveBeenCalledWith(
+      'pointerup',
+      expect.any(Function),
+    )
+    expect(removeEventListener).toHaveBeenCalledWith(
+      'pointercancel',
+      expect.any(Function),
+    )
+
+    act(() => {
+      complianceLink.focus()
+    })
+    migrationScrollIntoView.mockClear()
+
+    act(() => {
+      migrationLink.focus()
+    })
+
+    expect(migrationLink).toHaveFocus()
+    expect(migrationLink).toHaveAttribute('aria-current', 'true')
+    expect(highlightedStageIds(container)).toEqual(capabilities[1].stageIds)
+    expect(migrationHeading.scrollIntoView).toHaveBeenCalledWith({
+      behavior: 'smooth',
+      block: 'start',
+    })
+
+    fireEvent.pointerDown(migrationLink)
+    unmount()
+
+    expect(
+      removeEventListener.mock.calls.filter(([type]) => type === 'pointerup'),
+    ).toHaveLength(2)
+    expect(
+      removeEventListener.mock.calls.filter(
+        ([type]) => type === 'pointercancel',
+      ),
+    ).toHaveLength(2)
+  })
+
   it('retains native hash navigation and focuses after smooth scrollend', () => {
     vi.useFakeTimers()
     const media = createMediaEnvironment(true)

@@ -37,6 +37,7 @@ export function CapabilityStage() {
   const headingsRef = useRef(new Map<CapabilityId, HTMLHeadingElement>())
   const scrollFocusCleanupRef = useRef<null | (() => void)>(null)
   const pointerFocusCapabilityRef = useRef<CapabilityId | null>(null)
+  const pointerFocusCleanupRef = useRef<null | (() => void)>(null)
   const activeCapability =
     capabilities.find((capability) => capability.id === activeCapabilityId) ??
     capabilities[0]
@@ -90,18 +91,44 @@ export function CapabilityStage() {
   useEffect(
     () => () => {
       scrollFocusCleanupRef.current?.()
+      pointerFocusCleanupRef.current?.()
     },
     [],
   )
+
+  const beginPointerFocus = (capabilityId: CapabilityId) => {
+    pointerFocusCleanupRef.current?.()
+    pointerFocusCapabilityRef.current = capabilityId
+
+    let cleaned = false
+
+    const cleanup = () => {
+      if (cleaned) return
+      cleaned = true
+      window.removeEventListener('pointerup', cleanup)
+      window.removeEventListener('pointercancel', cleanup)
+      if (pointerFocusCapabilityRef.current === capabilityId) {
+        pointerFocusCapabilityRef.current = null
+      }
+      if (pointerFocusCleanupRef.current === cleanup) {
+        pointerFocusCleanupRef.current = null
+      }
+    }
+
+    pointerFocusCleanupRef.current = cleanup
+    window.addEventListener('pointerup', cleanup, { once: true })
+    window.addEventListener('pointercancel', cleanup, { once: true })
+  }
 
   const handleHeadingFocus = (
     event: FocusEvent<HTMLAnchorElement>,
     capability: Capability,
   ) => {
     if (pointerFocusCapabilityRef.current === capability.id) {
-      pointerFocusCapabilityRef.current = null
+      pointerFocusCleanupRef.current?.()
       return
     }
+    pointerFocusCleanupRef.current?.()
 
     const heading = document.getElementById(
       event.currentTarget.hash.slice(1),
@@ -128,7 +155,7 @@ export function CapabilityStage() {
     if (!heading) return
     const targetHeading = heading
 
-    pointerFocusCapabilityRef.current = null
+    pointerFocusCleanupRef.current?.()
     setActiveCapabilityId(capability.id)
     scrollFocusCleanupRef.current?.()
 
@@ -250,21 +277,7 @@ export function CapabilityStage() {
                         href={`#${headingId}`}
                         aria-current={isActive ? 'true' : undefined}
                         onPointerDown={() => {
-                          pointerFocusCapabilityRef.current = capability.id
-                        }}
-                        onPointerUp={() => {
-                          if (
-                            pointerFocusCapabilityRef.current === capability.id
-                          ) {
-                            pointerFocusCapabilityRef.current = null
-                          }
-                        }}
-                        onPointerCancel={() => {
-                          if (
-                            pointerFocusCapabilityRef.current === capability.id
-                          ) {
-                            pointerFocusCapabilityRef.current = null
-                          }
+                          beginPointerFocus(capability.id)
                         }}
                         onFocus={(event) =>
                           handleHeadingFocus(event, capability)
