@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
-import { Navigation, Footer, GridBackground } from '@/components/layout'
+import { Navigation, Footer } from '@/components/layout'
 import { ErrorBoundary } from '@/components/ui'
 import { siteConfig } from '@/lib/content'
 import { sharedSocialImage, siteMetadataTitle } from '@/lib/metadata'
@@ -116,7 +116,6 @@ export default function RootLayout({
           >
             Skip to main content
           </a>
-          <GridBackground />
           <Navigation />
           <main id="main-content" className="min-h-screen">
             {children}

@@ -155,6 +155,31 @@ describe('site metadata', () => {
     expect(
       routeModules['/institutional-experience'].metadata?.title,
     ).toBe('Institutional Experience')
+
+    expect(routeModules['/about'].metadata).toMatchObject({
+      description:
+        'Ulysses Williams has Calypso experience since 2004, spanning front-, middle-, and back-office delivery across North America, Europe, APAC, and Latin America.',
+      openGraph: {
+        description:
+          "Ulysses Williams's product-domain experience covers interest-rate derivatives, FX, fixed income, money markets, commodities, and equity derivatives.",
+      },
+      twitter: {
+        description:
+          "Ulysses Williams's product-domain experience covers interest-rate derivatives, FX, fixed income, money markets, commodities, and equity derivatives.",
+      },
+    })
+    expect(routeModules['/institutional-experience'].metadata).toMatchObject({
+      description:
+        'Ulysses Williams has Calypso experience since 2004 across front-, middle-, and back-office delivery.',
+      openGraph: {
+        description:
+          "Ulysses Williams's experience spans North America, Europe, APAC, Latin America, interest-rate derivatives, FX, fixed income, money markets, commodities, and equity derivatives.",
+      },
+      twitter: {
+        description:
+          "Ulysses Williams's experience spans North America, Europe, APAC, Latin America, interest-rate derivatives, FX, fixed income, money markets, commodities, and equity derivatives.",
+      },
+    })
   })
 
   it('gives the focused skip link a full-height touch target', async () => {

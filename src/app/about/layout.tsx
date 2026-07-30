@@ -3,9 +3,9 @@ import { createPageMetadata } from '@/lib/metadata'
 export const metadata = createPageMetadata({
   path: '/about',
   title: 'About',
-  description: 'Senior practitioners with 20+ years of Calypso platform expertise. We came from trading floors, treasury functions, and Big Four advisory practices.',
+  description: 'Ulysses Williams has Calypso experience since 2004, spanning front-, middle-, and back-office delivery across North America, Europe, APAC, and Latin America.',
   socialTitle: 'About | Ulixes Corporation',
-  socialDescription: 'Senior practitioners with 20+ years of Calypso platform expertise helping banks and hedge funds with capital markets infrastructure.',
+  socialDescription: "Ulysses Williams's product-domain experience covers interest-rate derivatives, FX, fixed income, money markets, commodities, and equity derivatives.",
 })
 
 export default function AboutLayout({

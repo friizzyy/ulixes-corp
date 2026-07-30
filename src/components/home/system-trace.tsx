@@ -19,6 +19,9 @@ import styles from './homepage.module.css'
 const nextKeys = new Set(['ArrowRight', 'ArrowDown'])
 const previousKeys = new Set(['ArrowLeft', 'ArrowUp'])
 const mobileMediaQuery = '(max-width: 767px)'
+const reducedMotionMediaQuery = '(prefers-reduced-motion: reduce)'
+
+type HandoffState = 'static' | 'armed' | 'complete'
 
 export function SystemTrace() {
   const instanceId = useId().replaceAll(':', '')
@@ -27,7 +30,9 @@ export function SystemTrace() {
   const [previewStageId, setPreviewStageId] =
     useState<LifecycleStageId | null>(null)
   const [isMobile, setIsMobile] = useState(false)
+  const [handoffState, setHandoffState] = useState<HandoffState>('static')
   const tabsRef = useRef<Array<HTMLButtonElement | null>>([])
+  const handoffRef = useRef<HTMLDivElement>(null)
   const activeIndex = lifecycleStages.findIndex(
     (stage) => stage.id === activeStageId,
   )
@@ -47,6 +52,29 @@ export function SystemTrace() {
     return () => {
       mediaQuery.removeEventListener('change', synchronizeOrientation)
     }
+  }, [])
+
+  useEffect(() => {
+    const handoff = handoffRef.current
+    if (!handoff || window.matchMedia(reducedMotionMediaQuery).matches) return
+
+    let completed = false
+    setHandoffState('armed')
+
+    const observer = new IntersectionObserver((entries) => {
+      if (completed || !entries.some((entry) => entry.isIntersecting)) return
+
+      completed = true
+      setHandoffState('complete')
+      observer.disconnect()
+    }, {
+      rootMargin: '0px 0px -15% 0px',
+      threshold: 0.2,
+    })
+
+    observer.observe(handoff)
+
+    return () => observer.disconnect()
   }, [])
 
   const commitStage = (stage: LifecycleStage, index: number, focus = false) => {
@@ -92,18 +120,47 @@ export function SystemTrace() {
       aria-labelledby={`system-trace-title-${instanceId}`}
     >
       <div className={styles.traceLayout}>
-        <header className={styles.traceHeader}>
-          <p className={styles.traceKicker}>Trade lifecycle</p>
-          <h2
-            id={`system-trace-title-${instanceId}`}
-            className={styles.traceTitle}
+        <div className={styles.tracePrelude}>
+          <div
+            ref={handoffRef}
+            className={styles.systemHandoff}
+            data-system-handoff
+            data-handoff-state={handoffState}
+            aria-hidden="true"
           >
-            {homepageContent.systemTrace.title}
-          </h2>
-          <p className={styles.traceIntroduction}>
-            {homepageContent.systemTrace.body}
-          </p>
-        </header>
+            <svg
+              viewBox="0 0 1200 360"
+              preserveAspectRatio="none"
+              focusable="false"
+            >
+              <path
+                className={`${styles.systemHandoffRoute} ${styles.systemHandoffRouteDesktop}`}
+                d="M 920 0 C 920 72, 858 104, 780 128 C 640 172, 600 286, 420 320 C 252 350, 90 354, 0 360"
+                pathLength="1"
+                vectorEffect="non-scaling-stroke"
+              />
+              <path
+                className={`${styles.systemHandoffRoute} ${styles.systemHandoffRouteMobile}`}
+                d="M 920 0 C 920 90, 820 112, 730 142 C 520 212, 390 304, 12 360"
+                pathLength="1"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+          </div>
+
+          <header className={styles.traceHeader}>
+            <p className={styles.traceKicker}>Trade lifecycle</p>
+            <h2
+              id={`system-trace-title-${instanceId}`}
+              className={styles.traceTitle}
+            >
+              {homepageContent.systemTrace.title}
+            </h2>
+            <p className={styles.traceIntroduction}>
+              {homepageContent.systemTrace.body}
+            </p>
+          </header>
+        </div>
 
         <div className={styles.traceCanvas}>
           <SignalNetwork

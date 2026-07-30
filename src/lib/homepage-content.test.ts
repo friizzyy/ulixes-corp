@@ -91,7 +91,12 @@ describe('homepage content contract', () => {
         Array.from(movement.querySelectorAll('p')),
       ),
     ).toHaveLength(3)
-    expect(section.textContent).not.toMatch(/\b(client|metric|result)\b|%/i)
+    expect(section).toHaveTextContent(
+      'Representative mandate patterns, not client case studies.',
+    )
+    for (const movement of movements) {
+      expect(movement.textContent).not.toMatch(/\b(client|metric|result)\b|%/i)
+    }
   })
 
   it('attributes senior judgment to the President and names all four regions', () => {

@@ -16,7 +16,7 @@ const VALID_INTERNAL_ROUTES = [
   '/',
   '/philosophy',
   '/services',
-  '/work',
+  '/institutional-experience',
   '/about',
   '/contact',
   '/privacy',

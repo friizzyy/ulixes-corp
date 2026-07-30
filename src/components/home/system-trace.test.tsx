@@ -11,6 +11,8 @@ import { SignalNetwork } from './signal-network'
 import { SystemTrace } from './system-trace'
 
 const MOBILE_MEDIA_QUERY = '(max-width: 767px)'
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
+const originalIntersectionObserver = window.IntersectionObserver
 const stylesheet = parse(
   readFileSync(
     path.join(process.cwd(), 'src/components/home/homepage.module.css'),
@@ -50,7 +52,35 @@ function declarationsFor(selector: string, media?: string) {
 
 afterEach(() => {
   vi.restoreAllMocks()
+  window.IntersectionObserver = originalIntersectionObserver
+  globalThis.IntersectionObserver = originalIntersectionObserver
 })
+
+class IntersectionObserverHarness implements IntersectionObserver {
+  static instances: IntersectionObserverHarness[] = []
+
+  readonly root = null
+  readonly rootMargin = '0px 0px -15% 0px'
+  readonly thresholds = [0.2]
+  readonly observe = vi.fn()
+  readonly unobserve = vi.fn()
+  readonly disconnect = vi.fn()
+  readonly takeRecords = vi.fn(() => [])
+
+  constructor(
+    readonly callback: IntersectionObserverCallback,
+    readonly options: IntersectionObserverInit = {},
+  ) {
+    IntersectionObserverHarness.instances.push(this)
+  }
+
+  emit(target: Element, isIntersecting: boolean) {
+    this.callback(
+      [{ target, isIntersecting } as IntersectionObserverEntry],
+      this,
+    )
+  }
+}
 
 function renderTrace() {
   return render(createElement(SystemTrace))
@@ -61,6 +91,86 @@ function tabs() {
 }
 
 describe('SystemTrace', () => {
+  it('server-renders a complete static handoff route into the first lifecycle path', () => {
+    const markup = renderToStaticMarkup(createElement(SystemTrace))
+    const document = new DOMParser().parseFromString(markup, 'text/html')
+    const handoff = document.querySelector('[data-system-handoff]')
+    const handoffRoute = handoff?.querySelector('path')
+    const captureRoute = document.querySelector('path[data-stage-id="capture"]')
+
+    expect(handoff?.getAttribute('data-handoff-state')).toBe('static')
+    expect(handoffRoute?.getAttribute('pathLength')).toBe('1')
+    expect(captureRoute?.getAttribute('d')).toMatch(/^M 0 0 L 0 116/)
+  })
+
+  it('draws the handoff once when the lifecycle enters view', () => {
+    IntersectionObserverHarness.instances = []
+    window.IntersectionObserver = IntersectionObserverHarness
+    globalThis.IntersectionObserver = IntersectionObserverHarness
+    const { container } = renderTrace()
+    const handoff = container.querySelector('[data-system-handoff]')!
+    const observer = IntersectionObserverHarness.instances[0]
+
+    expect(IntersectionObserverHarness.instances).toHaveLength(1)
+    expect(observer.options).toMatchObject({
+      rootMargin: '0px 0px -15% 0px',
+      threshold: 0.2,
+    })
+    expect(observer.observe).toHaveBeenCalledWith(handoff)
+    expect(handoff).toHaveAttribute('data-handoff-state', 'armed')
+
+    act(() => observer.emit(handoff, false))
+    expect(handoff).toHaveAttribute('data-handoff-state', 'armed')
+
+    act(() => observer.emit(handoff, true))
+    expect(handoff).toHaveAttribute('data-handoff-state', 'complete')
+    expect(observer.disconnect).toHaveBeenCalledTimes(1)
+
+    act(() => observer.emit(handoff, true))
+    expect(observer.disconnect).toHaveBeenCalledTimes(1)
+  })
+
+  it('keeps the completed static handoff and creates no observer for reduced motion', () => {
+    IntersectionObserverHarness.instances = []
+    window.IntersectionObserver = IntersectionObserverHarness
+    globalThis.IntersectionObserver = IntersectionObserverHarness
+    vi.spyOn(window, 'matchMedia').mockImplementation((query) => ({
+      matches: query === REDUCED_MOTION_QUERY,
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(() => false),
+    }))
+
+    const { container } = renderTrace()
+
+    expect(container.querySelector('[data-system-handoff]')).toHaveAttribute(
+      'data-handoff-state',
+      'static',
+    )
+    expect(IntersectionObserverHarness.instances).toHaveLength(0)
+  })
+
+  it('caps the one-shot handoff draw at 420ms and disables it for reduced motion', () => {
+    expect(
+      declarationsFor(
+        ".systemHandoff[data-handoff-state='complete'] .systemHandoffRoute",
+      ).animation,
+    ).toContain('420ms')
+    expect(
+      declarationsFor(
+        '.systemHandoffRoute',
+        REDUCED_MOTION_QUERY,
+      ),
+    ).toMatchObject({
+      animation: 'none',
+      'stroke-dashoffset': '0',
+    })
+  })
+
   it('starts with Capture and enrich as the one committed lifecycle stage', () => {
     renderTrace()
 

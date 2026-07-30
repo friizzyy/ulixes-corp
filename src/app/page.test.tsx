@@ -38,5 +38,9 @@ describe('HomePage', () => {
     OBSOLETE_HOMEPAGE_COPY.forEach((obsoleteCopy) => {
       expect(document.body.textContent).not.toContain(obsoleteCopy)
     })
+
+    expect(document.body.textContent).toContain(
+      'Representative mandate patterns, not client case studies.',
+    )
   })
 })

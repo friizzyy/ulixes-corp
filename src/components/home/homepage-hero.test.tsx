@@ -115,6 +115,15 @@ afterEach(() => {
 })
 
 describe('HomepageHero', () => {
+  it('passes the camel-cased priority hint through React', () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const markup = renderToString(createElement(HomepageHero))
+
+    expect(markup).toContain('fetchPriority="high"')
+    expect(markup).not.toContain('fetchpriority="high"')
+  })
+
   it('publishes the approved hero copy, actions, and attributed proof', () => {
     render(createElement(HomepageHero))
 
@@ -162,14 +171,14 @@ describe('HomepageHero', () => {
     expect(video).toHaveAttribute('aria-hidden', 'true')
   })
 
-  it('server-renders the React 18 priority hint in lowercase without warnings', () => {
-    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+  it('renders the signal exit at the lower hero boundary', () => {
+    const { container } = render(createElement(HomepageHero))
+    const exit = container.querySelector('[data-hero-signal-exit]')
+    const route = exit?.querySelector('path')
 
-    const markup = renderToString(createElement(HomepageHero))
-
-    expect(markup).toContain('fetchpriority="high"')
-    expect(markup).not.toContain('fetchPriority=')
-    expect(consoleError).not.toHaveBeenCalled()
+    expect(exit).toHaveAttribute('aria-hidden', 'true')
+    expect(route).toHaveAttribute('pathLength', '1')
+    expect(route?.getAttribute('d')).toMatch(/M\s*920\s*0/)
   })
 
   it('orders mobile and desktop WebM/MP4 sources without video controls or audio', () => {
@@ -422,13 +431,10 @@ describe('HomepageHero', () => {
     }
   })
 
-  it('widens the protected copy measure immediately above the approved 1440 composition', () => {
-    expect(declarationsFor('.copy', WIDE_DESKTOP_MEDIA_QUERY)).toMatchObject({
-      'grid-column': '1 / span 6',
-      'max-width': '640px',
-    })
+  it('keeps the approved copy cap while freezing wide-desktop type at the 1440 size', () => {
+    expect(declarationsFor('.copy', WIDE_DESKTOP_MEDIA_QUERY)).toEqual({})
     expect(declarationsFor('.headline', WIDE_DESKTOP_MEDIA_QUERY)).toMatchObject({
-      'max-width': '640px',
+      'font-size': '3.42rem',
     })
 
     expect(declarationsFor('.copy')).toMatchObject({

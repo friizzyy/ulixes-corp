@@ -18,6 +18,9 @@ export function RepresentativeMandates() {
           >
             {homepageContent.mandates.title}
           </h2>
+          <p className={styles.mandatesDescriptor}>
+            Representative mandate patterns, not client case studies.
+          </p>
         </header>
 
         <div className={styles.mandatesSequence}>

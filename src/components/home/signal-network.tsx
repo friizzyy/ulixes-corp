@@ -24,7 +24,7 @@ type RouteDefinition = {
 const routes: readonly RouteDefinition[] = [
   {
     id: 'capture',
-    path: 'M 0 116 C 58 116, 92 116, 152 116',
+    path: 'M 0 0 L 0 116 C 58 116, 92 116, 152 116',
     node: [152, 116],
     verticalPath: 'M 72 0 L 72 74',
     verticalNode: [72, 74],

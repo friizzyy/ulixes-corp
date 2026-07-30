@@ -63,9 +63,11 @@ Run the complete static test and build gate before review or deployment:
 ```bash
 npm run test:run
 npm run media:verify
+npm run verify:links
 npx tsc --noEmit
 npm run build
 npm run lint
+npm audit --omit=dev
 ```
 
 `npm run media:verify` validates video and poster dimensions, duration, audio

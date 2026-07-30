@@ -80,7 +80,7 @@ encodeVideo(masters.desktop, 'ulixes-signal-desktop-1080.mp4', [
 
 encodeVideo(masters.mobile, 'ulixes-signal-mobile-1080.webm', [
   '-vf',
-  'crop=trunc(iw/1.16/2)*2:trunc(ih/1.16/2)*2:(iw-ow)/2:0,scale=1080:1920',
+  'scale=1080:1920',
   '-c:v',
   'libvpx-vp9',
   '-crf',
@@ -93,7 +93,7 @@ encodeVideo(masters.mobile, 'ulixes-signal-mobile-1080.webm', [
 
 encodeVideo(masters.mobile, 'ulixes-signal-mobile-1080.mp4', [
   '-vf',
-  'crop=trunc(iw/1.16/2)*2:trunc(ih/1.16/2)*2:(iw-ow)/2:0,scale=1080:1920',
+  'scale=1080:1920',
   '-c:v',
   'libx264',
   '-crf',
@@ -138,7 +138,7 @@ await encodePoster(masters.desktop, 'ulixes-signal-desktop', 'scale=2560:1440');
 await encodePoster(
   masters.mobile,
   'ulixes-signal-mobile',
-  'crop=trunc(iw/1.16/2)*2:trunc(ih/1.16/2)*2:(iw-ow)/2:0,scale=1080:1920',
+  'scale=1080:1920',
 );
 
 console.log('Hero media preparation completed.');

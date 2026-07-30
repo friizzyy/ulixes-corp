@@ -1,14 +1,18 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 
+import ffmpegPath from 'ffmpeg-static';
 import sharp from 'sharp';
 import { afterEach, describe, expect, it } from 'vitest';
 
 const desktopPoster = 'public/media/hero/ulixes-signal-desktop-poster.avif';
 const originalDesktopPoster = readFileSync(desktopPoster);
+const desktopMp4 = 'public/media/hero/ulixes-signal-desktop-1080.mp4';
+const originalDesktopMp4 = readFileSync(desktopMp4);
 
 afterEach(() => {
   writeFileSync(desktopPoster, originalDesktopPoster);
+  writeFileSync(desktopMp4, originalDesktopMp4);
 });
 
 function verify() {
@@ -40,5 +44,32 @@ describe('hero poster verification', () => {
     }).avif().toBuffer();
     writeFileSync(desktopPoster, wrongSizeAvif);
     expect(verify()).toThrow();
+  });
+});
+
+describe('hero video verification', () => {
+  it('rejects a six-second delivery encoded below 30 fps', () => {
+    execFileSync(
+      ffmpegPath,
+      [
+        '-v',
+        'error',
+        '-y',
+        '-f',
+        'lavfi',
+        '-i',
+        'color=c=black:s=1920x1080:r=24:d=6',
+        '-c:v',
+        'libx264',
+        '-preset',
+        'ultrafast',
+        '-pix_fmt',
+        'yuv420p',
+        desktopMp4,
+      ],
+      { stdio: 'pipe' },
+    );
+
+    expect(verify()).toThrow(/frame rate/i);
   });
 });

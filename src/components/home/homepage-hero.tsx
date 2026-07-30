@@ -7,7 +7,6 @@ import styles from './homepage.module.css'
 
 type VideoReadiness = 'loading' | 'ready' | 'failed'
 
-const posterPriorityProps = { fetchpriority: 'high' } as const
 const reducedMotionQuery = '(prefers-reduced-motion: reduce)'
 const instantScrollFocusDelayMs = 1
 const smoothScrollFocusSafetyMs = 2000
@@ -114,7 +113,7 @@ export function HomepageHero() {
             src="/media/hero/ulixes-signal-desktop-poster.avif"
             width="2560"
             height="1440"
-            {...posterPriorityProps}
+            fetchPriority="high"
             alt=""
             aria-hidden="true"
           />
@@ -158,6 +157,25 @@ export function HomepageHero() {
       <div className={styles.copyScrim} aria-hidden="true" />
       <div className={styles.mobileScrim} aria-hidden="true" />
       <div className={styles.navigationScrim} aria-hidden="true" />
+
+      <div
+        className={styles.heroSignalExit}
+        data-hero-signal-exit
+        aria-hidden="true"
+      >
+        <svg
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+          focusable="false"
+        >
+          <path
+            className={styles.heroSignalExitRoute}
+            d="M 920 0 C 920 42, 920 78, 920 120"
+            pathLength="1"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+      </div>
 
       <div className={styles.layout}>
         <div className={styles.copy}>
