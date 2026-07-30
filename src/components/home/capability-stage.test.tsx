@@ -675,6 +675,13 @@ describe('CapabilityStage', () => {
       display: 'block',
       position: 'relative',
     })
+    expect(
+      declarationsFor('.capabilityArticleLink', MOBILE_MEDIA_QUERY),
+    ).toMatchObject({
+      display: 'inline-flex',
+      'min-height': '44px',
+      'align-items': 'center',
+    })
 
     act(() => {
       media.setDesktop(true)

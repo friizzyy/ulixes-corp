@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import {
   CapabilityStage,
   ClosingSignalCTA,
@@ -6,6 +7,12 @@ import {
   SeniorJudgment,
   SystemTrace,
 } from '@/components/home'
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/',
+  },
+}
 
 export default function HomePage() {
   return (

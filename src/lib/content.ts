@@ -1,13 +1,25 @@
 // Site-wide content configuration
 // Edit this file to update copy across the entire site
 
+const productionSiteUrl = 'https://ulixescorp.com'
+
+function resolveSiteUrl(configuredUrl: string | undefined) {
+  if (!configuredUrl?.trim()) return productionSiteUrl
+
+  try {
+    return new URL(configuredUrl.trim()).origin
+  } catch {
+    return productionSiteUrl
+  }
+}
+
 export const siteConfig = {
   name: 'Ulixes Corporation',
   shortName: 'Ulixes',
   tagline: 'Senior-Led Calypso Advisory',
   description: 'Ulixes provides senior-led Calypso advisory for implementation, migration, compliance analysis, and testing across front-to-back capital-markets workflows.',
   advisoryLine: 'Senior-led Calypso and capital-markets systems advisory.',
-  url: 'https://ulixescorp.com',
+  url: resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL),
   linkedIn: 'https://www.linkedin.com/in/ulysses-williams-2379634/',
   email: 'admin@ulixescorp.com',
   phone: '+1 (415) 283-9983',

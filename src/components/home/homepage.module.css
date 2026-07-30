@@ -164,6 +164,17 @@
   letter-spacing: 0.01em;
 }
 
+@media (min-width: 1600px) {
+  .copy {
+    grid-column: 1 / span 6;
+    max-width: 640px;
+  }
+
+  .headline {
+    max-width: 640px;
+  }
+}
+
 @media (min-width: 768px) and (max-width: 1023px) {
   .mediaSurface {
     object-position: 62% center;
@@ -1109,6 +1120,12 @@
     font-size: clamp(1.9rem, 9vw, 2.35rem);
   }
 
+  .capabilityArticleLink {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+
   .capabilityDescription {
     margin-top: 18px;
     font-size: 1rem;
@@ -1639,7 +1656,7 @@
   .closingSignalAction {
     min-height: 48px;
     align-self: flex-end;
-    margin-top: 86px;
+    margin-top: 0;
     padding: 12px 20px;
   }
 }

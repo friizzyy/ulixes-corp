@@ -33,6 +33,7 @@ const VIDEO_SOURCES = [
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
 const MOBILE_MEDIA_QUERY = '(max-width: 767px)'
+const WIDE_DESKTOP_MEDIA_QUERY = '(min-width: 1600px)'
 const REDUCED_MOTION_MEDIA_QUERY = '(prefers-reduced-motion: reduce)'
 const originalScrollEndDescriptor = Object.getOwnPropertyDescriptor(window, 'onscrollend')
 const stylesheet = parse(
@@ -353,6 +354,11 @@ describe('HomepageHero', () => {
       ':global(html):has(.hero)',
       REDUCED_MOTION_MEDIA_QUERY,
     )
+    const reducedMotionVideo = declarationsFor(
+      '.video',
+      REDUCED_MOTION_MEDIA_QUERY,
+    )
+    const poster = declarationsFor('.poster')
 
     expect(copyScrim.background).toBe(
       'linear-gradient(90deg, rgba(8,9,12,.92) 0%, rgba(8,9,12,.68) 34%, rgba(8,9,12,.18) 52%, transparent 68%)',
@@ -376,6 +382,11 @@ describe('HomepageHero', () => {
     expect(mobileAction['min-width']).toBe('0')
     expect(Number(mobileAction['font-size'].replace('rem', '')) * 16).toBeLessThanOrEqual(12.5)
     expect(reducedMotionHtml['scroll-behavior']).toBe('auto')
+    expect(reducedMotionVideo).toMatchObject({
+      display: 'none',
+      transition: 'none',
+    })
+    expect(poster.display).toBe('block')
 
     const floorRem = Number(mobileHero['min-height'].match(/([\d.]+)rem/)?.[1])
     const topMin = Number(mobileLayout['padding-top'].match(/clamp\(([\d.]+)px/)?.[1])
@@ -409,5 +420,21 @@ describe('HomepageHero', () => {
 
       expect(copyAndActionsBottom).toBeLessThan(compositionHeight * 0.55)
     }
+  })
+
+  it('widens only the protected copy measure on wide desktop screens', () => {
+    expect(declarationsFor('.copy', WIDE_DESKTOP_MEDIA_QUERY)).toMatchObject({
+      'grid-column': '1 / span 6',
+      'max-width': '640px',
+    })
+    expect(declarationsFor('.headline', WIDE_DESKTOP_MEDIA_QUERY)).toMatchObject({
+      'max-width': '640px',
+    })
+
+    expect(declarationsFor('.copy')).toMatchObject({
+      'grid-column': '1 / span 5',
+      'max-width': '520px',
+    })
+    expect(declarationsFor('.headline')['max-width']).toBe('520px')
   })
 })

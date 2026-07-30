@@ -23,6 +23,12 @@ const plexMono = localFont({
 const metadataTitle = 'Ulixes Corporation | Senior-Led Calypso Advisory'
 const organizationId = `${siteConfig.url}/#organization`
 const presidentId = `${siteConfig.url}/#ulysses-williams`
+const socialImage = {
+  url: '/media/ulixes-social-card.jpg',
+  width: 1200,
+  height: 630,
+  alt: 'Ulixes Corporation system signal',
+}
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -54,6 +60,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: {
     default: metadataTitle,
     template: `%s | ${siteConfig.name}`,
@@ -78,11 +85,13 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: metadataTitle,
     description: siteConfig.description,
+    images: [socialImage],
   },
   twitter: {
     card: 'summary_large_image',
     title: metadataTitle,
     description: siteConfig.description,
+    images: [socialImage],
   },
   robots: {
     index: true,
@@ -109,7 +118,7 @@ export default function RootLayout({
         <ErrorBoundary>
           <a
             href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-action focus:text-action-ink focus:rounded-sm focus:text-body-sm focus:font-medium"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:inline-flex focus:min-h-[44px] focus:items-center focus:px-4 focus:py-2 focus:bg-action focus:text-action-ink focus:rounded-sm focus:text-body-sm focus:font-medium"
           >
             Skip to main content
           </a>

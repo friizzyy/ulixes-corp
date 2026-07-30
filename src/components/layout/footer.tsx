@@ -48,6 +48,7 @@ export function Footer() {
               href={siteConfig.linkedIn}
               target="_blank"
               rel="noreferrer"
+              aria-label="LinkedIn (opens in a new tab)"
               className="inline-flex min-h-[44px] items-center text-body-sm text-text-secondary transition-colors hover:text-text-primary"
             >
               LinkedIn
@@ -65,7 +66,7 @@ export function Footer() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="inline-flex min-h-[44px] items-center text-body-sm text-text-muted transition-colors hover:text-text-primary"
+                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-body-sm text-text-muted transition-colors hover:text-text-primary"
               >
                 {item.label}
               </Link>

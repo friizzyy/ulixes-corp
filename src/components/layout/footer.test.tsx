@@ -33,13 +33,18 @@ describe('Footer', () => {
       expect(screen.getByRole('link', { name: label })).toHaveAttribute('href', href)
     }
 
-    const linkedIn = screen.getByRole('link', { name: 'LinkedIn' })
+    const linkedIn = screen.getByRole('link', {
+      name: 'LinkedIn (opens in a new tab)',
+    })
     expect(linkedIn).toHaveAttribute(
       'href',
       'https://www.linkedin.com/in/ulysses-williams-2379634/',
     )
     expect(linkedIn).toHaveAttribute('target', '_blank')
     expect(linkedIn).toHaveAttribute('rel', 'noreferrer')
+
+    const terms = screen.getByRole('link', { name: 'Terms' })
+    expect(terms).toHaveClass('min-h-[44px]', 'min-w-[44px]', 'justify-center')
 
     expect(
       screen.getByText('Senior-led Calypso and capital-markets systems advisory.'),
