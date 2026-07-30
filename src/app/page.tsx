@@ -1,20 +1,21 @@
 import {
-  HeroSection,
-  ServicesSection,
-  CTASection,
-  PhilosophySection,
-  ProcessSection,
-} from '@/components/sections'
-import { PageTransition } from '@/components/ui'
+  CapabilityStage,
+  ClosingSignalCTA,
+  HomepageHero,
+  RepresentativeMandates,
+  SeniorJudgment,
+  SystemTrace,
+} from '@/components/home'
 
 export default function HomePage() {
   return (
-    <PageTransition>
-      <HeroSection />
-      <PhilosophySection />
-      <ServicesSection />
-      <ProcessSection />
-      <CTASection />
-    </PageTransition>
+    <div data-homepage>
+      <HomepageHero />
+      <SystemTrace />
+      <CapabilityStage />
+      <RepresentativeMandates />
+      <SeniorJudgment />
+      <ClosingSignalCTA />
+    </div>
   )
 }
