@@ -9,7 +9,8 @@ type VideoReadiness = 'loading' | 'ready' | 'failed'
 
 const posterPriorityProps = { fetchpriority: 'high' } as const
 const reducedMotionQuery = '(prefers-reduced-motion: reduce)'
-const scrollFocusFallbackMs = 800
+const instantScrollFocusDelayMs = 1
+const smoothScrollFocusSafetyMs = 2000
 
 export function HomepageHero() {
   const [videoReadiness, setVideoReadiness] = useState<VideoReadiness>('loading')
@@ -42,9 +43,12 @@ export function HomepageHero() {
 
     let settled = false
     let fallbackId: number | undefined
+    let listeningForScrollEnd = false
 
     const removeScheduledFocus = () => {
-      window.removeEventListener('scrollend', finishFocus)
+      if (listeningForScrollEnd) {
+        window.removeEventListener('scrollend', finishFocus)
+      }
       if (fallbackId !== undefined) {
         window.clearTimeout(fallbackId)
       }
@@ -74,11 +78,20 @@ export function HomepageHero() {
       targetHeading.focus({ preventScroll: true })
     }
 
-    window.addEventListener('scrollend', finishFocus, { once: true })
-    fallbackId = window.setTimeout(finishFocus, scrollFocusFallbackMs)
+    const behavior = window.matchMedia(reducedMotionQuery).matches ? 'auto' : 'smooth'
+    const shouldWaitForScrollEnd = behavior === 'smooth' && 'onscrollend' in window
+
+    if (shouldWaitForScrollEnd) {
+      listeningForScrollEnd = true
+      window.addEventListener('scrollend', finishFocus, { once: true })
+    }
+
+    fallbackId = window.setTimeout(
+      finishFocus,
+      behavior === 'auto' ? instantScrollFocusDelayMs : smoothScrollFocusSafetyMs,
+    )
     scrollFocusCleanupRef.current = cancelFocus
 
-    const behavior = window.matchMedia(reducedMotionQuery).matches ? 'auto' : 'smooth'
     target.scrollIntoView({ behavior, block: 'start' })
   }
 

@@ -34,6 +34,7 @@ const VIDEO_SOURCES = [
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
 const MOBILE_MEDIA_QUERY = '(max-width: 767px)'
 const REDUCED_MOTION_MEDIA_QUERY = '(prefers-reduced-motion: reduce)'
+const originalScrollEndDescriptor = Object.getOwnPropertyDescriptor(window, 'onscrollend')
 const stylesheet = parse(
   readFileSync(
     path.join(process.cwd(), 'src/components/home/homepage.module.css'),
@@ -103,6 +104,11 @@ function clamp(minimum: number, preferred: number, maximum: number) {
 afterEach(() => {
   vi.useRealTimers()
   vi.restoreAllMocks()
+  if (originalScrollEndDescriptor) {
+    Object.defineProperty(window, 'onscrollend', originalScrollEndDescriptor)
+  } else {
+    Reflect.deleteProperty(window, 'onscrollend')
+  }
   window.history.replaceState(null, '', '/')
   document.getElementById('capabilities')?.remove()
 })
@@ -215,6 +221,10 @@ describe('HomepageHero', () => {
   it('keeps the native hash and focuses after smooth scrolling emits scrollend', () => {
     vi.useFakeTimers()
     setReducedMotion(false)
+    Object.defineProperty(window, 'onscrollend', {
+      configurable: true,
+      value: null,
+    })
     const { heading, target } = appendCapabilitiesTarget()
     const removeEventListener = vi.spyOn(window, 'removeEventListener')
     const setTimeout = vi.spyOn(window, 'setTimeout')
@@ -237,10 +247,12 @@ describe('HomepageHero', () => {
       block: 'start',
     })
     expect(heading).not.toHaveFocus()
-    const fallbackIndex = setTimeout.mock.calls.findIndex(([, delay]) => (
-      typeof delay === 'number' && delay > 0 && delay <= 999
-    ))
+    const fallbackIndex = setTimeout.mock.calls.findIndex(([, delay]) => delay === 2000)
     const fallbackId = setTimeout.mock.results[fallbackIndex]?.value
+
+    expect(fallbackIndex).toBeGreaterThanOrEqual(0)
+    vi.advanceTimersByTime(801)
+    expect(heading).not.toHaveFocus()
 
     window.dispatchEvent(new Event('scrollend'))
 
@@ -250,7 +262,7 @@ describe('HomepageHero', () => {
     expect(removeEventListener).toHaveBeenCalledWith('scrollend', expect.any(Function))
   })
 
-  it('uses instant reduced-motion scrolling and a bounded focus fallback', () => {
+  it('uses instant reduced-motion scrolling and focuses after the native hash default', () => {
     vi.useFakeTimers()
     setReducedMotion(true)
     const { heading, target } = appendCapabilitiesTarget()
@@ -273,15 +285,18 @@ describe('HomepageHero', () => {
     })
     expect(heading).not.toHaveFocus()
 
-    vi.advanceTimersByTime(999)
+    vi.advanceTimersByTime(1)
 
     expect(heading).toHaveFocus()
-    expect(vi.getTimerCount()).toBe(0)
   })
 
   it('cleans pending scroll focus work when the hero unmounts', () => {
     vi.useFakeTimers()
     setReducedMotion(false)
+    Object.defineProperty(window, 'onscrollend', {
+      configurable: true,
+      value: null,
+    })
     const { heading } = appendCapabilitiesTarget()
     const removeEventListener = vi.spyOn(window, 'removeEventListener')
     const setTimeout = vi.spyOn(window, 'setTimeout')
@@ -290,16 +305,36 @@ describe('HomepageHero', () => {
 
     screen.getByRole('link', { name: homepageContent.hero.secondaryCta }).click()
     vi.advanceTimersByTime(0)
-    const fallbackIndex = setTimeout.mock.calls.findIndex(([, delay]) => (
-      typeof delay === 'number' && delay > 0 && delay <= 999
-    ))
+    const fallbackIndex = setTimeout.mock.calls.findIndex(([, delay]) => delay === 2000)
     const fallbackId = setTimeout.mock.results[fallbackIndex]?.value
     unmount()
     window.dispatchEvent(new Event('scrollend'))
-    vi.advanceTimersByTime(1000)
+    vi.advanceTimersByTime(2000)
 
     expect(heading).not.toHaveFocus()
     expect(clearTimeout).toHaveBeenCalledWith(fallbackId)
+    expect(removeEventListener).toHaveBeenCalledWith('scrollend', expect.any(Function))
+  })
+
+  it('uses the conservative smooth-scroll safety fallback when scrollend never arrives', () => {
+    vi.useFakeTimers()
+    setReducedMotion(false)
+    Object.defineProperty(window, 'onscrollend', {
+      configurable: true,
+      value: null,
+    })
+    const { heading } = appendCapabilitiesTarget()
+    const removeEventListener = vi.spyOn(window, 'removeEventListener')
+    render(createElement(HomepageHero))
+
+    screen.getByRole('link', { name: homepageContent.hero.secondaryCta }).click()
+    vi.advanceTimersByTime(1999)
+
+    expect(heading).not.toHaveFocus()
+
+    vi.advanceTimersByTime(1)
+
+    expect(heading).toHaveFocus()
     expect(removeEventListener).toHaveBeenCalledWith('scrollend', expect.any(Function))
   })
 
