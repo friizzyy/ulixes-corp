@@ -3,6 +3,7 @@ import localFont from 'next/font/local'
 import { Navigation, Footer, GridBackground } from '@/components/layout'
 import { ErrorBoundary } from '@/components/ui'
 import { siteConfig } from '@/lib/content'
+import { sharedSocialImage, siteMetadataTitle } from '@/lib/metadata'
 import { Agentation } from 'agentation'
 import '@/styles/globals.css'
 
@@ -20,15 +21,8 @@ const plexMono = localFont({
   display: 'swap',
 })
 
-const metadataTitle = 'Ulixes Corporation | Senior-Led Calypso Advisory'
 const organizationId = `${siteConfig.url}/#organization`
 const presidentId = `${siteConfig.url}/#ulysses-williams`
-const socialImage = {
-  url: '/media/ulixes-social-card.jpg',
-  width: 1200,
-  height: 630,
-  alt: 'Ulixes Corporation system signal',
-}
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -62,7 +56,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: metadataTitle,
+    default: siteMetadataTitle,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
@@ -83,15 +77,15 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: siteConfig.url,
     siteName: siteConfig.name,
-    title: metadataTitle,
+    title: siteMetadataTitle,
     description: siteConfig.description,
-    images: [socialImage],
+    images: [sharedSocialImage],
   },
   twitter: {
     card: 'summary_large_image',
-    title: metadataTitle,
+    title: siteMetadataTitle,
     description: siteConfig.description,
-    images: [socialImage],
+    images: [sharedSocialImage],
   },
   robots: {
     index: true,

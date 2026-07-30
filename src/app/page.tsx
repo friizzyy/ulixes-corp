@@ -1,4 +1,3 @@
-import type { Metadata } from 'next'
 import {
   CapabilityStage,
   ClosingSignalCTA,
@@ -7,12 +6,14 @@ import {
   SeniorJudgment,
   SystemTrace,
 } from '@/components/home'
+import { siteConfig } from '@/lib/content'
+import { createPageMetadata, siteMetadataTitle } from '@/lib/metadata'
 
-export const metadata: Metadata = {
-  alternates: {
-    canonical: '/',
-  },
-}
+export const metadata = createPageMetadata({
+  path: '/',
+  description: siteConfig.description,
+  socialTitle: siteMetadataTitle,
+})
 
 export default function HomePage() {
   return (

@@ -7,7 +7,12 @@ function resolveSiteUrl(configuredUrl: string | undefined) {
   if (!configuredUrl?.trim()) return productionSiteUrl
 
   try {
-    return new URL(configuredUrl.trim()).origin
+    const siteUrl = new URL(configuredUrl.trim())
+    if (siteUrl.protocol !== 'http:' && siteUrl.protocol !== 'https:') {
+      return productionSiteUrl
+    }
+
+    return siteUrl.origin
   } catch {
     return productionSiteUrl
   }

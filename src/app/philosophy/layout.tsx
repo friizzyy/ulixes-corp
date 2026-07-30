@@ -1,13 +1,12 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/metadata'
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
+  path: '/philosophy',
   title: 'Philosophy',
   description: 'The intellectual foundation that shapes every engagement. Infrastructure is financial architecture that directly shapes earnings behavior, capital ratios, and regulatory exposure.',
-  openGraph: {
-    title: 'Philosophy | Ulixes Corporation',
-    description: 'The intellectual foundation that shapes every engagement we undertake.',
-  },
-}
+  socialTitle: 'Philosophy | Ulixes Corporation',
+  socialDescription: 'The intellectual foundation that shapes every engagement we undertake.',
+})
 
 export default function PhilosophyLayout({
   children,

@@ -46,12 +46,14 @@ describe('site metadata', () => {
       new URL('https://preview.ulixes.example'),
     )
     expect(rootMetadata.alternates).toBeUndefined()
-    expect(homepageMetadata?.alternates?.canonical).toBe('/')
+    expect(homepageMetadata?.alternates?.canonical).toBe(
+      'https://preview.ulixes.example',
+    )
     expect(rootMetadata.openGraph).toMatchObject({
       url: 'https://preview.ulixes.example',
       images: [
         {
-          url: '/media/ulixes-social-card.jpg',
+          url: 'https://preview.ulixes.example/media/ulixes-social-card.jpg',
           width: 1200,
           height: 630,
         },
@@ -61,7 +63,7 @@ describe('site metadata', () => {
       card: 'summary_large_image',
       images: [
         {
-          url: '/media/ulixes-social-card.jpg',
+          url: 'https://preview.ulixes.example/media/ulixes-social-card.jpg',
           width: 1200,
           height: 630,
         },
@@ -76,6 +78,83 @@ describe('site metadata', () => {
     const { siteConfig } = await import('@/lib/content')
 
     expect(siteConfig.url).toBe('https://ulixescorp.com')
+  })
+
+  it.each([
+    ['malformed input', 'not a URL'],
+    ['JavaScript URL', 'javascript:alert(1)'],
+    ['file URL', 'file:///tmp/ulixes'],
+    ['mail URL', 'mailto:webmaster@ulixescorp.com'],
+    ['data URL', 'data:text/plain,ulixes'],
+    ['FTP URL', 'ftp://files.ulixescorp.com/site'],
+  ])('falls back to production for %s', async (_label, configuredUrl) => {
+    vi.stubEnv('NEXT_PUBLIC_SITE_URL', configuredUrl)
+    vi.resetModules()
+
+    const { siteConfig } = await import('@/lib/content')
+
+    expect(siteConfig.url).toBe('https://ulixescorp.com')
+  })
+
+  it.each([
+    [
+      'https://preview.ulixes.example/site?ref=qa',
+      'https://preview.ulixes.example',
+    ],
+    ['http://localhost:3000/site?ref=qa', 'http://localhost:3000'],
+  ])(
+    'normalizes the HTTP site URL %s to its origin',
+    async (configuredUrl, expected) => {
+      vi.stubEnv('NEXT_PUBLIC_SITE_URL', configuredUrl)
+      vi.resetModules()
+
+      const { siteConfig } = await import('@/lib/content')
+
+      expect(siteConfig.url).toBe(expected)
+    },
+  )
+
+  it('publishes route-specific canonical and social metadata for every sitemap page', async () => {
+    vi.stubEnv('NEXT_PUBLIC_SITE_URL', 'https://preview.ulixes.example/site')
+    vi.resetModules()
+
+    const [{ default: sitemap }, routeModules] = await Promise.all([
+      import('./sitemap'),
+      loadIndexableRouteModules(),
+    ])
+    const sitemapPaths = sitemap().map((entry) => new URL(entry.url).pathname)
+
+    expect(new Set(Object.keys(routeModules))).toEqual(new Set(sitemapPaths))
+
+    for (const [routePath, routeModule] of Object.entries(routeModules)) {
+      const routeUrl = routePath === '/'
+        ? 'https://preview.ulixes.example'
+        : `https://preview.ulixes.example${routePath}`
+      const sharedImage = {
+        url: 'https://preview.ulixes.example/media/ulixes-social-card.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Ulixes Corporation system signal',
+      }
+
+      expect(
+        routeModule.metadata,
+        `${routePath} must export metadata`,
+      ).toBeDefined()
+      expect(routeModule.metadata?.alternates?.canonical).toBe(routeUrl)
+      expect(routeModule.metadata?.openGraph).toMatchObject({
+        url: routeUrl,
+        images: [sharedImage],
+      })
+      expect(routeModule.metadata?.twitter).toMatchObject({
+        card: 'summary_large_image',
+        images: [sharedImage],
+      })
+    }
+
+    expect(
+      routeModules['/institutional-experience'].metadata?.title,
+    ).toBe('Institutional Experience')
   })
 
   it('gives the focused skip link a full-height touch target', async () => {
@@ -109,6 +188,43 @@ describe('site metadata', () => {
     })
   })
 })
+
+type RouteMetadataModule = { metadata?: Metadata }
+
+async function loadIndexableRouteModules(): Promise<
+  Record<string, RouteMetadataModule>
+> {
+  const [
+    homepage,
+    about,
+    contact,
+    institutionalExperience,
+    philosophy,
+    privacy,
+    services,
+    terms,
+  ] = await Promise.all([
+    import('./page'),
+    import('./about/layout'),
+    import('./contact/layout'),
+    import('./institutional-experience/layout'),
+    import('./philosophy/layout'),
+    import('./privacy/layout'),
+    import('./services/layout'),
+    import('./terms/layout'),
+  ])
+
+  return {
+    '/': homepage,
+    '/about': about,
+    '/contact': contact,
+    '/institutional-experience': institutionalExperience,
+    '/philosophy': philosophy,
+    '/privacy': privacy,
+    '/services': services,
+    '/terms': terms,
+  }
+}
 
 function existsAndIsJpeg(filePath: string) {
   try {

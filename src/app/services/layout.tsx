@@ -1,13 +1,12 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/metadata'
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
+  path: '/services',
   title: 'Services',
   description: 'Infrastructure decisions shape financial outcomes. We design for alignment across accounting, capital, and regulatory requirements with proven Calypso platform expertise.',
-  openGraph: {
-    title: 'Services | Ulixes Corporation',
-    description: 'Infrastructure decisions shape financial outcomes. We design for alignment across accounting, capital, and regulatory requirements.',
-  },
-}
+  socialTitle: 'Services | Ulixes Corporation',
+  socialDescription: 'Infrastructure decisions shape financial outcomes. We design for alignment across accounting, capital, and regulatory requirements.',
+})
 
 export default function ServicesLayout({
   children,
