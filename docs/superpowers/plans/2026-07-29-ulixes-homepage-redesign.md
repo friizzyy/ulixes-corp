@@ -6,13 +6,13 @@
 
 **Architecture:** Keep the existing Next.js App Router application and isolate the new homepage in focused `src/components/home/` units backed by one typed content module. Use server components for static editorial sections, narrowly scoped client components for video readiness, lifecycle selection, and capability activation, and a shared semantic SVG signal map. Generate separate 4K desktop and mobile masters with Higgsfield, commit only optimized browser encodes, and preserve the masters outside the deployment bundle.
 
-**Tech Stack:** Next.js 14.2.3 App Router, React 18.3, TypeScript 5.4, Tailwind CSS 3.4, CSS Modules, Framer Motion 11, Vitest, Testing Library, Higgsfield Nano Banana Pro and Seedance 2.0, ffmpeg-static/ffprobe-static, Vercel.
+**Tech Stack:** Next.js 15.5.21 App Router, React 18.3, TypeScript 5.4, Tailwind CSS 3.4, CSS Modules, Framer Motion 11, Vitest, Testing Library, Higgsfield Nano Banana Pro and Seedance 2.0, ffmpeg-static/ffprobe-static, Vercel.
 
 ## Global Constraints
 
 - Preserve the user's existing unstaged change in `src/app/api/contact/route.ts`; never stage, overwrite, or deploy it accidentally.
 - Implement in an isolated `codex/ulixes-homepage-redesign` worktree created from the current `main` commit.
-- Do not upgrade the Next.js major version in this feature; framework migration is unrelated to the approved homepage design.
+- Keep framework work out of the visual implementation unless a fresh release audit proves the installed line is unsupported or vulnerable. The post-assembly audit did so, therefore Task 8A performs the smallest supported-LTS security migration before browser QA.
 - Use only factual, attributable copy from the approved specification; no invented metrics, outcomes, clients, testimonials, or unnamed "team" claims.
 - The hero animation fills the hero edge to edge and retains the protected left copy zone; no split media column or media card.
 - Hero headline is at most 64px desktop and 44px mobile; no oversized display treatment.
@@ -839,6 +839,51 @@ If the existing Next 14 `next lint` command fails because of repository configur
 ```bash
 git add src/app/page.tsx src/components/sections/index.ts README.md
 git commit -m "feat: assemble redesigned Ulixes homepage"
+```
+
+---
+
+### Task 8A: Supported-LTS Dependency Security Gate
+
+**Files:**
+- Modify: `package.json`
+- Modify: `package-lock.json`
+- Modify: `README.md` only if a command or runtime requirement changes.
+
+**Interfaces:**
+- Preserves all homepage and contact-route behavior.
+- Produces a clean supported dependency graph before browser QA and production release.
+
+- [ ] **Step 1: Capture the failing release audit**
+
+Run `npm audit --omit=dev` and `npm audit`. Record the direct and transitive findings that make the existing Next 14.2.3, Resend 6.9.1, and Remotion 4.0.409 graph unsafe to deploy.
+
+- [ ] **Step 2: Apply the smallest supported security migration**
+
+Upgrade `next` and `eslint-config-next` together to `15.5.21`, retaining React and React DOM 18.3.1. Upgrade `resend` to `6.18.1` and all four Remotion packages to `4.0.501`. Use root npm overrides for `postcss` `8.5.25` and `sharp` `0.35.3` only if the clean install otherwise retains vulnerable transitive copies. Do not migrate Tailwind, React, routing, or application architecture.
+
+- [ ] **Step 3: Validate the migration from a clean install**
+
+Run:
+
+```bash
+npm ci
+npm run test:run
+npm run media:verify
+npx tsc --noEmit
+npm run build
+npm run lint
+npm audit --omit=dev
+npm audit
+```
+
+Resolve compatibility defects with a failing regression test first. Do not suppress audit findings or weaken existing gates.
+
+- [ ] **Step 4: Commit Task 8A**
+
+```bash
+git add package.json package-lock.json README.md
+git commit -m "chore: secure production dependency baseline"
 ```
 
 ---
