@@ -1,15 +1,24 @@
 'use client'
 
 import Link from 'next/link'
-import { useRef, useState, type MouseEvent } from 'react'
+import { useEffect, useRef, useState, type MouseEvent } from 'react'
 import { homepageContent } from '@/lib/homepage-content'
 import styles from './homepage.module.css'
 
 type VideoReadiness = 'loading' | 'ready' | 'failed'
 
+const posterPriorityProps = { fetchpriority: 'high' } as const
+const reducedMotionQuery = '(prefers-reduced-motion: reduce)'
+const scrollFocusFallbackMs = 800
+
 export function HomepageHero() {
   const [videoReadiness, setVideoReadiness] = useState<VideoReadiness>('loading')
   const videoFailedRef = useRef(false)
+  const scrollFocusCleanupRef = useRef<null | (() => void)>(null)
+
+  useEffect(() => () => {
+    scrollFocusCleanupRef.current?.()
+  }, [])
 
   const handleVideoCanPlay = () => {
     if (!videoFailedRef.current) {
@@ -27,12 +36,50 @@ export function HomepageHero() {
     const heading = target?.querySelector<HTMLElement>('h1, h2, h3, h4, h5, h6')
 
     if (!target || !heading) return
+    const targetHeading = heading
 
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    if (!heading.hasAttribute('tabindex')) {
-      heading.setAttribute('tabindex', '-1')
+    scrollFocusCleanupRef.current?.()
+
+    let settled = false
+    let fallbackId: number | undefined
+
+    const removeScheduledFocus = () => {
+      window.removeEventListener('scrollend', finishFocus)
+      if (fallbackId !== undefined) {
+        window.clearTimeout(fallbackId)
+      }
     }
-    heading.focus({ preventScroll: true })
+
+    const cancelFocus = () => {
+      if (settled) return
+      settled = true
+      removeScheduledFocus()
+      if (scrollFocusCleanupRef.current === cancelFocus) {
+        scrollFocusCleanupRef.current = null
+      }
+    }
+
+    function finishFocus() {
+      if (settled) return
+      settled = true
+      removeScheduledFocus()
+      if (scrollFocusCleanupRef.current === cancelFocus) {
+        scrollFocusCleanupRef.current = null
+      }
+      if (!targetHeading.isConnected) return
+
+      if (!targetHeading.hasAttribute('tabindex')) {
+        targetHeading.setAttribute('tabindex', '-1')
+      }
+      targetHeading.focus({ preventScroll: true })
+    }
+
+    window.addEventListener('scrollend', finishFocus, { once: true })
+    fallbackId = window.setTimeout(finishFocus, scrollFocusFallbackMs)
+    scrollFocusCleanupRef.current = cancelFocus
+
+    const behavior = window.matchMedia(reducedMotionQuery).matches ? 'auto' : 'smooth'
+    target.scrollIntoView({ behavior, block: 'start' })
   }
 
   return (
@@ -54,7 +101,7 @@ export function HomepageHero() {
             src="/media/hero/ulixes-signal-desktop-poster.avif"
             width="2560"
             height="1440"
-            fetchPriority="high"
+            {...posterPriorityProps}
             alt=""
             aria-hidden="true"
           />
@@ -96,6 +143,7 @@ export function HomepageHero() {
       </div>
 
       <div className={styles.copyScrim} aria-hidden="true" />
+      <div className={styles.mobileScrim} aria-hidden="true" />
       <div className={styles.navigationScrim} aria-hidden="true" />
 
       <div className={styles.layout}>
