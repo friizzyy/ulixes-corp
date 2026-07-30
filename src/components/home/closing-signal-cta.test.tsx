@@ -49,6 +49,7 @@ describe('ClosingSignalCTA mobile geometry', () => {
     expect(network).toMatchObject({
       bottom: '34px',
       height: '310px',
+      'min-height': '0',
     })
     expect(action).toMatchObject({
       'margin-top': '0',

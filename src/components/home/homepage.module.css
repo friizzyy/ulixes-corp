@@ -1623,6 +1623,7 @@
     left: -66%;
     width: 160%;
     height: 310px;
+    min-height: 0;
     opacity: 0.48;
     transform: none;
   }
