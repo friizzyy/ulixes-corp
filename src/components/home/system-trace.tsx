@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  useEffect,
   useId,
   useRef,
   useState,
@@ -17,6 +18,7 @@ import styles from './homepage.module.css'
 
 const nextKeys = new Set(['ArrowRight', 'ArrowDown'])
 const previousKeys = new Set(['ArrowLeft', 'ArrowUp'])
+const mobileMediaQuery = '(max-width: 767px)'
 
 export function SystemTrace() {
   const instanceId = useId().replaceAll(':', '')
@@ -24,6 +26,7 @@ export function SystemTrace() {
     useState<LifecycleStageId>('capture')
   const [previewStageId, setPreviewStageId] =
     useState<LifecycleStageId | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
   const tabsRef = useRef<Array<HTMLButtonElement | null>>([])
   const activeIndex = lifecycleStages.findIndex(
     (stage) => stage.id === activeStageId,
@@ -33,6 +36,19 @@ export function SystemTrace() {
   const highlightedStageIds = previewStageId
     ? [activeStageId, previewStageId]
     : undefined
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(mobileMediaQuery)
+    const synchronizeOrientation = () => setIsMobile(mediaQuery.matches)
+
+    synchronizeOrientation()
+    mediaQuery.addEventListener('change', synchronizeOrientation)
+
+    return () => {
+      mediaQuery.removeEventListener('change', synchronizeOrientation)
+    }
+  }, [])
+
   const commitStage = (stage: LifecycleStage, index: number, focus = false) => {
     setActiveStageId(stage.id)
     setPreviewStageId(null)
@@ -94,13 +110,14 @@ export function SystemTrace() {
             activeStageId={activeStageId}
             highlightedStageIds={highlightedStageIds}
             renderMode="path"
+            className={styles.traceSystemNetwork}
           />
 
           <div
             className={styles.traceTablist}
             role="tablist"
             aria-label="Trade lifecycle stages"
-            aria-orientation="horizontal"
+            aria-orientation={isMobile ? 'vertical' : 'horizontal'}
             onMouseLeave={() => setPreviewStageId(null)}
           >
             {lifecycleStages.map((stage, index) => {
@@ -113,7 +130,23 @@ export function SystemTrace() {
                   key={stage.id}
                   className={styles.traceStage}
                   role="presentation"
+                  data-trace-stage={stage.id}
                 >
+                  <span
+                    className={styles.traceMobileRoute}
+                    data-mobile-route-stage={stage.id}
+                    data-stage-id={stage.id}
+                    data-traced={index <= activeIndex ? 'true' : undefined}
+                    aria-hidden="true"
+                  >
+                    <span
+                      className={styles.traceMobileNode}
+                      data-mobile-route-node={stage.id}
+                      data-stage-id={stage.id}
+                      data-active={isActive ? 'true' : undefined}
+                      data-preview={isPreview ? 'true' : undefined}
+                    />
+                  </span>
                   <button
                     ref={(node) => {
                       tabsRef.current[index] = node

@@ -405,16 +405,43 @@
   display: contents;
 }
 
-.traceStage:nth-child(1) .traceStageButton,
-.traceStage:nth-child(3) .traceStageButton,
-.traceStage:nth-child(5) .traceStageButton {
+.traceMobileRoute {
+  display: none;
+}
+
+.traceStage:nth-child(1) .traceStageButton {
+  grid-row: 1;
+  grid-column: 1;
   align-self: start;
 }
 
-.traceStage:nth-child(2) .traceStageButton,
-.traceStage:nth-child(4) .traceStageButton,
+.traceStage:nth-child(2) .traceStageButton {
+  grid-row: 2;
+  grid-column: 2;
+  align-self: start;
+}
+
+.traceStage:nth-child(3) .traceStageButton {
+  grid-row: 1;
+  grid-column: 3;
+  align-self: start;
+}
+
+.traceStage:nth-child(4) .traceStageButton {
+  grid-row: 2;
+  grid-column: 4;
+  align-self: start;
+}
+
+.traceStage:nth-child(5) .traceStageButton {
+  grid-row: 1;
+  grid-column: 5;
+  align-self: start;
+}
+
 .traceStage:nth-child(6) .traceStageButton {
   grid-row: 2;
+  grid-column: 6;
   align-self: start;
 }
 
@@ -599,56 +626,60 @@
     min-height: 520px;
   }
 
-  .signalRoute_capture {
+  .traceSystemNetwork {
+    display: none;
+  }
+
+  .signalNetwork:not([data-render-mode='closing']) .signalRoute_capture {
     d: path('M 72 0 L 72 74');
   }
 
-  .signalRoute_lifecycle {
+  .signalNetwork:not([data-render-mode='closing']) .signalRoute_lifecycle {
     d: path('M 72 74 L 72 178');
   }
 
-  .signalRoute_risk {
+  .signalNetwork:not([data-render-mode='closing']) .signalRoute_risk {
     d: path('M 72 178 L 72 282');
   }
 
-  .signalRoute_controls {
+  .signalNetwork:not([data-render-mode='closing']) .signalRoute_controls {
     d: path('M 72 282 L 72 386');
   }
 
-  .signalRoute_settlement {
+  .signalNetwork:not([data-render-mode='closing']) .signalRoute_settlement {
     d: path('M 72 386 L 72 490');
   }
 
-  .signalRoute_reporting {
+  .signalNetwork:not([data-render-mode='closing']) .signalRoute_reporting {
     d: path('M 72 490 L 72 640');
   }
 
-  .signalNode_capture {
+  .signalNetwork:not([data-render-mode='closing']) .signalNode_capture {
     cx: 72px;
     cy: 74px;
   }
 
-  .signalNode_lifecycle {
+  .signalNetwork:not([data-render-mode='closing']) .signalNode_lifecycle {
     cx: 72px;
     cy: 178px;
   }
 
-  .signalNode_risk {
+  .signalNetwork:not([data-render-mode='closing']) .signalNode_risk {
     cx: 72px;
     cy: 282px;
   }
 
-  .signalNode_controls {
+  .signalNetwork:not([data-render-mode='closing']) .signalNode_controls {
     cx: 72px;
     cy: 386px;
   }
 
-  .signalNode_settlement {
+  .signalNetwork:not([data-render-mode='closing']) .signalNode_settlement {
     cx: 72px;
     cy: 490px;
   }
 
-  .signalNode_reporting {
+  .signalNetwork:not([data-render-mode='closing']) .signalNode_reporting {
     cx: 72px;
     cy: 612px;
   }
@@ -659,6 +690,8 @@
     display: flex;
     flex-direction: column;
     gap: 0;
+    width: 100%;
+    min-width: 0;
     padding: 0;
   }
 
@@ -666,31 +699,55 @@
     position: relative;
     display: grid;
     grid-template-columns: 1fr;
+    min-width: 0;
     min-height: 88px;
     padding-left: 54px;
   }
 
-  .traceStageButton {
-    grid-template-columns: 32px minmax(0, 1fr);
-    gap: 8px;
-    min-height: 64px;
-    align-content: center;
-    padding: 10px 0;
+  .traceMobileRoute {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    bottom: 0;
+    left: 12px;
+    display: block;
+    width: 2px;
+    background: rgba(95, 98, 108, 0.36);
+    transition: background-color 220ms ease;
   }
 
-  .traceStageButton::before {
+  .traceMobileRoute[data-traced='true'] {
+    background: var(--violet-ink);
+  }
+
+  .traceMobileNode {
     position: absolute;
-    top: 50%;
-    left: -38px;
+    top: 32px;
+    left: 50%;
     width: 11px;
     height: 11px;
     border: 2px solid var(--mineral);
     border-radius: 50%;
     background: var(--titanium-ink);
     box-shadow: 0 0 0 1px rgba(95, 98, 108, 0.72);
-    content: '';
-    transform: translateY(-50%);
+    transform: translate(-50%, -50%);
     transition: background-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+  }
+
+  .traceMobileNode[data-active='true'],
+  .traceMobileNode[data-preview='true'] {
+    background: var(--violet-ink);
+    box-shadow: 0 0 0 2px var(--violet-ink);
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+
+  .traceStageButton {
+    z-index: 1;
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 8px;
+    min-height: 64px;
+    align-content: center;
+    padding: 10px 0;
   }
 
   .traceStageButton::after {
@@ -700,13 +757,6 @@
     left: 32px;
   }
 
-  .traceStageButton[data-preview='true']::before,
-  .traceStageButton[aria-selected='true']::before {
-    background: var(--violet-ink);
-    box-shadow: 0 0 0 2px var(--violet-ink);
-    transform: translateY(-50%) scale(1.12);
-  }
-
   .traceStageLabel {
     max-width: 270px;
     font-size: 1rem;
@@ -714,8 +764,11 @@
 
   .traceDetail {
     position: static;
+    z-index: 1;
     display: block;
     width: auto;
+    max-width: 100%;
+    min-width: 0;
     margin: 4px 0 30px 32px;
     padding: 18px 0 0;
   }
@@ -734,7 +787,8 @@
 @media (prefers-reduced-motion: reduce) {
   .signalRoute,
   .signalNode,
-  .traceStageButton::before,
+  .traceMobileRoute,
+  .traceMobileNode,
   .traceStageButton::after {
     transition: none;
   }
