@@ -244,7 +244,7 @@ export default function AboutPage() {
                 <p className="text-body-sm text-text-secondary leading-relaxed mb-6">
                   {aboutPageContent.hiring.description}
                 </p>
-                <Link href={aboutPageContent.hiring.ctaHref} className="cta-outline-accent">
+                <Link href={aboutPageContent.hiring.ctaHref} className="cta-outline-violet">
                   {aboutPageContent.hiring.cta}
                   <ArrowUpRight size={16} />
                 </Link>

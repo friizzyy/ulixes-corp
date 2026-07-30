@@ -164,7 +164,7 @@ export function MetricCard({
         </div>
 
         {/* Subtle gradient overlay on hover */}
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/0 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-ultraviolet/0 to-ultraviolet/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
       </GlassSurfaceContainer>
     </motion.div>
   )

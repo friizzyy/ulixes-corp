@@ -38,7 +38,7 @@ const config: Config = {
         },
         border: {
           DEFAULT: 'rgba(247, 247, 244, 0.08)',
-          accent: 'rgba(247, 247, 244, 0.18)',
+          strong: 'rgba(247, 247, 244, 0.18)',
         },
         text: {
           primary: '#F7F7F4',
@@ -125,7 +125,7 @@ const config: Config = {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-accent': 'linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%)',
+        'gradient-signal': 'linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%)',
         'grid-pattern': `
           linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
           linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)

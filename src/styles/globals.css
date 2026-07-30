@@ -21,7 +21,8 @@
     --surface: var(--graphite);
     --surface-hover: rgba(247, 247, 244, 0.12);
     --border: rgba(247, 247, 244, 0.08);
-    --border-accent: rgba(247, 247, 244, 0.18);
+    --border-strong: rgba(247, 247, 244, 0.18);
+    --border-accent: var(--border-strong);
     --text-primary: var(--white);
     --text-secondary: var(--titanium);
     --text-muted: var(--titanium);
@@ -144,7 +145,7 @@
     display: none;
   }
 
-  .section-surface-accent {
+  .section-surface-signal {
     position: relative;
     background: linear-gradient(180deg,
       rgba(139,92,246,0.02) 0%,
@@ -152,7 +153,7 @@
     );
   }
 
-  .section-surface-accent::before {
+  .section-surface-signal::before {
     display: none;
   }
 
@@ -168,7 +169,7 @@
 
   /* Gradient text */
   .gradient-text {
-    @apply bg-gradient-accent bg-clip-text text-transparent;
+    @apply bg-gradient-signal bg-clip-text text-transparent;
   }
 
   /* Card base */
@@ -177,7 +178,7 @@
   }
 
   .card:hover {
-    @apply border-border-accent shadow-md;
+    @apply border-border-strong shadow-md;
   }
 
   /* Button base styles */
@@ -190,7 +191,7 @@
   }
 
   .btn-secondary {
-    @apply bg-transparent text-text-primary border border-border-accent hover:bg-surface hover:border-text-muted;
+    @apply bg-transparent text-text-primary border border-border-strong hover:bg-surface hover:border-text-muted;
   }
 
   .btn-ghost {
@@ -203,10 +204,10 @@
   }
 
   .cta-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-7 sm:py-3.5 min-h-[44px] sm:min-h-[48px] bg-transparent text-text-primary border border-border-accent font-medium text-body-sm sm:text-base rounded-[3px] hover:bg-surface hover:border-text-muted active:bg-surface transition-all duration-200;
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-7 sm:py-3.5 min-h-[44px] sm:min-h-[48px] bg-transparent text-text-primary border border-border-strong font-medium text-body-sm sm:text-base rounded-[3px] hover:bg-surface hover:border-text-muted active:bg-surface transition-all duration-200;
   }
 
-  .cta-outline-accent {
+  .cta-outline-violet {
     @apply inline-flex items-center gap-2 px-5 py-2.5 min-h-[44px] border border-violet-light text-violet-light font-medium rounded-sm hover:bg-ultraviolet/10 transition-colors duration-200;
   }
 

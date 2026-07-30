@@ -14,8 +14,8 @@ interface CardProps extends HTMLMotionProps<'div'> {
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, children, hover = true, highlight = false, ...props }, ref) => {
     const baseStyles = 'relative bg-bg-secondary border border-border rounded-md overflow-hidden transition-all duration-300'
-    const hoverStyles = hover ? 'hover:border-border-accent hover:shadow-md' : ''
-    const highlightStyles = highlight ? 'before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:bg-gradient-accent before:scale-x-0 before:transition-transform before:duration-300 hover:before:scale-x-100' : ''
+    const hoverStyles = hover ? 'hover:border-border-strong hover:shadow-md' : ''
+    const highlightStyles = highlight ? 'before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:bg-gradient-signal before:scale-x-0 before:transition-transform before:duration-300 hover:before:scale-x-100' : ''
 
     return (
       <motion.div

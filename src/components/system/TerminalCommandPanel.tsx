@@ -185,7 +185,7 @@ export function TerminalCommandPanel({
               onKeyDown={handleKeyDown}
               disabled={isExecuting}
               className={cn(
-                'w-full bg-transparent outline-none text-text-primary caret-accent',
+                'w-full bg-transparent outline-none text-text-primary caret-ultraviolet',
                 isExecuting && 'opacity-50'
               )}
               aria-label="Terminal input"

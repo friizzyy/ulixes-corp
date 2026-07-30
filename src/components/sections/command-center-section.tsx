@@ -268,7 +268,7 @@ export function CommandCenterSection() {
                 <span>Regulatory mapping</span>
                 <span className="text-violet-light">92%</span>
               </div>
-              <div className="mt-4 h-px bg-gradient-to-r from-accent/40 to-transparent" />
+              <div className="mt-4 h-px bg-gradient-to-r from-ultraviolet/40 to-transparent" />
               <div className="text-xs text-text-muted">Drift alerts enabled</div>
             </div>
           </div>

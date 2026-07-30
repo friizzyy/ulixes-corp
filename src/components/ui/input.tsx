@@ -30,7 +30,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             'text-[16px] sm:text-body-md text-text-primary placeholder:text-text-muted',
             'transition-all duration-200',
             'focus:outline-none focus:border-[color:var(--focus-ring-color)] focus:ring-1 focus:ring-[color:var(--focus-ring-color)]',
-            'hover:border-border-accent',
+            'hover:border-border-strong',
             error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
             className
           )}
@@ -73,7 +73,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             'text-[16px] sm:text-body-md text-text-primary placeholder:text-text-muted',
             'transition-all duration-200 resize-none',
             'focus:outline-none focus:border-[color:var(--focus-ring-color)] focus:ring-1 focus:ring-[color:var(--focus-ring-color)]',
-            'hover:border-border-accent',
+            'hover:border-border-strong',
             error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
             className
           )}

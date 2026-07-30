@@ -157,7 +157,7 @@ export function BentoGrid({ items, className }: BentoGridProps) {
           key={item.id}
           className={cn(
             'group relative bg-bg-secondary border border-border rounded-lg overflow-hidden',
-            'hover:border-border-accent transition-colors duration-300',
+            'hover:border-border-strong transition-colors duration-300',
             spanClasses[item.span || 'default'],
             item.className
           )}
@@ -190,7 +190,7 @@ export function BentoGrid({ items, className }: BentoGridProps) {
           </div>
 
           {/* Hover gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-accent/0 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-ultraviolet/0 to-ultraviolet/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
         </motion.div>
       ))}
     </div>

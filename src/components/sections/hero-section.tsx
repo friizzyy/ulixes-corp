@@ -21,7 +21,7 @@ export function HeroSection() {
         >
           <motion.div
             variants={fadeUp}
-            className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-surface/80 border border-border-accent text-xs font-mono text-text-secondary uppercase tracking-wider mb-6 sm:mb-8"
+            className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-surface/80 border border-border-strong text-xs font-mono text-text-secondary uppercase tracking-wider mb-6 sm:mb-8"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-ultraviolet" />
             {hero.badge}
@@ -93,7 +93,7 @@ export function HeroSection() {
                 <div className="text-2xl sm:text-3xl md:text-4xl font-bold font-mono text-text-primary leading-none mb-1">20+</div>
                 <div className="text-[11px] sm:text-xs text-text-muted uppercase tracking-wider font-mono">Years Experience</div>
               </div>
-              <div className="w-px h-10 bg-border-accent" />
+              <div className="w-px h-10 bg-border-strong" />
               <div>
                 <div className="text-2xl sm:text-3xl md:text-4xl font-bold font-mono text-text-primary leading-none mb-1">20</div>
                 <div className="text-[11px] sm:text-xs text-text-muted uppercase tracking-wider font-mono">Implementations</div>

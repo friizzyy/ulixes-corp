@@ -87,10 +87,10 @@ export function ProcessSection() {
                 <div className="w-3 h-3 rounded-full bg-ultraviolet flex-shrink-0" />
                 {/* Connector line */}
                 {index < phases.length - 1 && (
-                  <div className="hidden md:block flex-1 h-px bg-gradient-to-r from-accent/40 to-border" />
+                  <div className="hidden md:block flex-1 h-px bg-gradient-to-r from-ultraviolet/40 to-border" />
                 )}
                 {index < phases.length - 1 && (
-                  <div className="md:hidden absolute left-[5px] top-8 w-px h-[calc(100%-2rem)] bg-gradient-to-b from-accent/40 to-border" />
+                  <div className="md:hidden absolute left-[5px] top-8 w-px h-[calc(100%-2rem)] bg-gradient-to-b from-ultraviolet/40 to-border" />
                 )}
               </div>
 
