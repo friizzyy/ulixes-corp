@@ -1153,3 +1153,497 @@
     transition: none;
   }
 }
+
+/* Mandates continue the lifecycle as one editorial route, never case-study cards. */
+.mandates {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background: var(--mineral);
+  color: var(--carbon);
+}
+
+.mandatesLayout {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: clamp(112px, 10vw, 156px) clamp(56px, 4.5vw, 88px) clamp(96px, 8vw, 132px);
+}
+
+.mandatesHeader {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+}
+
+.mandatesTitle {
+  grid-column: 1 / span 7;
+  margin: 0;
+  font-size: clamp(2.75rem, 4.5vw, 4.25rem);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.mandatesSequence {
+  margin-top: clamp(64px, 8vw, 112px);
+}
+
+.mandateMovement {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  min-height: clamp(380px, 38vw, 520px);
+  align-items: center;
+  overflow: clip;
+}
+
+.mandateMovement + .mandateMovement {
+  border-top: 1px solid rgba(95, 98, 108, 0.3);
+}
+
+.mandateRoute {
+  z-index: -1;
+  inset: 50% -4% auto -4%;
+  width: 108%;
+  height: 210px;
+  color: var(--violet-ink);
+  opacity: 0.42;
+  transform: translateY(-50%);
+}
+
+.mandateMovement[data-mandate-position='2'] .mandateRoute {
+  inset: 45% -6% auto -2%;
+  width: 108%;
+  height: 240px;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+.mandateMovement[data-mandate-position='3'] .mandateRoute {
+  inset: 48% -2% auto -7%;
+  width: 109%;
+  height: 226px;
+}
+
+.mandates .signalRoute:not([data-highlighted='true']) {
+  stroke: rgba(95, 98, 108, 0.28);
+}
+
+.mandates .signalNode {
+  fill: var(--mineral);
+}
+
+.mandateTitle,
+.mandateBody {
+  position: relative;
+  z-index: 1;
+}
+
+.mandateTitle {
+  grid-column: 1 / span 6;
+  max-width: 690px;
+  margin: 0;
+  padding: 32px 0;
+  background: linear-gradient(90deg, var(--mineral) 0%, var(--mineral) 82%, rgba(233, 233, 228, 0) 100%);
+  font-size: clamp(2.5rem, 4.25vw, 4rem);
+  font-weight: 570;
+  line-height: 0.99;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.mandateBody {
+  grid-column: 8 / -1;
+  max-width: 560px;
+  margin: 0;
+  padding: 30px 0 30px clamp(20px, 2vw, 34px);
+  background: linear-gradient(90deg, rgba(233, 233, 228, 0) 0%, var(--mineral) 14%, var(--mineral) 100%);
+  color: var(--titanium-ink);
+  font-size: clamp(1.0625rem, 1.4vw, 1.1875rem);
+  line-height: 1.62;
+  text-wrap: pretty;
+}
+
+.mandateMovement[data-mandate-position='2'] .mandateTitle {
+  grid-column: 6 / -1;
+  padding-left: clamp(24px, 4vw, 64px);
+  background: linear-gradient(90deg, rgba(233, 233, 228, 0) 0%, var(--mineral) 12%, var(--mineral) 100%);
+}
+
+.mandateMovement[data-mandate-position='2'] .mandateBody {
+  grid-row: 1;
+  grid-column: 1 / span 5;
+  padding-right: clamp(20px, 2vw, 34px);
+  padding-left: 0;
+  background: linear-gradient(90deg, var(--mineral) 0%, var(--mineral) 88%, rgba(233, 233, 228, 0) 100%);
+}
+
+/* Senior judgment crosses the same route without becoming an About module. */
+.seniorJudgment {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background: var(--mineral);
+  color: var(--carbon);
+}
+
+.seniorJudgmentLayout {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: clamp(96px, 8vw, 128px) clamp(56px, 4.5vw, 88px) clamp(112px, 9vw, 144px);
+  border-top: 1px solid rgba(95, 98, 108, 0.3);
+}
+
+.seniorSignal {
+  position: absolute;
+  top: -2px;
+  left: clamp(56px, 4.5vw, 88px);
+  width: clamp(92px, 17vw, 240px);
+  height: 3px;
+  background: var(--violet-ink);
+}
+
+.seniorSignal::after {
+  position: absolute;
+  top: 50%;
+  right: -4px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--mineral);
+  border-radius: 50%;
+  background: var(--violet-ink);
+  box-shadow: 0 0 0 1px var(--violet-ink);
+  content: '';
+  transform: translateY(-50%);
+}
+
+.seniorJudgmentTitle {
+  grid-column: 1 / span 5;
+  max-width: 520px;
+  margin: 0;
+  font-size: clamp(2.25rem, 3.5vw, 3.5rem);
+  font-weight: 580;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.seniorJudgmentCopy {
+  grid-column: 7 / -1;
+  max-width: 650px;
+}
+
+.seniorJudgmentBody {
+  margin: 0;
+  color: var(--carbon);
+  font-size: clamp(1.0625rem, 1.45vw, 1.1875rem);
+  line-height: 1.62;
+  text-wrap: pretty;
+}
+
+.seniorJudgmentAction {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  color: var(--violet-ink);
+  font-size: 0.9375rem;
+  font-weight: 620;
+  line-height: 1.4;
+  text-decoration: underline;
+  text-decoration-color: rgba(91, 63, 196, 0.45);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.28em;
+  transition: color 220ms ease, text-decoration-color 220ms ease;
+}
+
+.seniorJudgmentAction:hover {
+  color: var(--carbon);
+  text-decoration-color: var(--carbon);
+}
+
+/* The distributed route resolves once, at the sole closing action. */
+.closingSignal {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: clamp(560px, 62vw, 760px);
+  overflow: clip;
+  background: var(--carbon);
+  color: var(--white);
+}
+
+.closingSignalNetwork {
+  z-index: -1;
+  inset: 50% 0 auto;
+  height: min(60vw, 620px);
+  color: var(--violet-light);
+  opacity: 0.66;
+  transform: translateY(-50%);
+}
+
+.closingSignal .signalRoute {
+  stroke: var(--violet-light);
+}
+
+.closingSignal .signalNode {
+  fill: var(--violet-light);
+  stroke: var(--violet-light);
+}
+
+.closingSignalLayout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  align-items: center;
+  width: 100%;
+  max-width: 1440px;
+  min-height: inherit;
+  margin-inline: auto;
+  padding: clamp(112px, 10vw, 156px) clamp(56px, 4.5vw, 88px);
+}
+
+.closingSignalCopy {
+  grid-column: 1 / span 7;
+  max-width: 720px;
+  padding: 34px 10% 38px 0;
+  background: linear-gradient(90deg, var(--carbon) 0%, rgba(8, 9, 12, 0.92) 70%, rgba(8, 9, 12, 0) 100%);
+}
+
+.closingSignalTitle {
+  margin: 0;
+  font-size: clamp(3rem, 5vw, 4.75rem);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.closingSignalBody {
+  max-width: 480px;
+  margin: 24px 0 0;
+  color: var(--titanium);
+  font-size: clamp(1.0625rem, 1.4vw, 1.1875rem);
+  line-height: 1.55;
+}
+
+.closingSignalAction {
+  grid-column: 10 / -1;
+  justify-self: end;
+  display: inline-flex;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 24px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: var(--action-fill);
+  color: var(--action-ink);
+  font-size: 0.9375rem;
+  font-weight: 620;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: background-color 220ms ease;
+}
+
+.closingSignalAction:hover {
+  background: var(--action-fill-hover);
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .mandatesLayout,
+  .seniorJudgmentLayout,
+  .closingSignalLayout {
+    padding-right: 32px;
+    padding-left: 32px;
+  }
+
+  .seniorSignal {
+    left: 32px;
+  }
+
+  .mandateTitle {
+    grid-column: 1 / span 7;
+  }
+
+  .mandateBody {
+    grid-column: 8 / -1;
+    font-size: 1.0625rem;
+  }
+
+  .mandateMovement[data-mandate-position='2'] .mandateTitle {
+    grid-column: 6 / -1;
+  }
+
+  .mandateMovement[data-mandate-position='2'] .mandateBody {
+    grid-column: 1 / span 5;
+  }
+
+  .seniorJudgmentTitle {
+    grid-column: 1 / span 5;
+  }
+
+  .seniorJudgmentCopy {
+    grid-column: 7 / -1;
+  }
+
+  .closingSignalCopy {
+    grid-column: 1 / span 8;
+  }
+
+  .closingSignalAction {
+    grid-column: 10 / -1;
+  }
+}
+
+@media (max-width: 767px) {
+  .mandatesLayout {
+    padding: 88px calc(var(--safe-area-right) + 20px) 72px calc(var(--safe-area-left) + 20px);
+  }
+
+  .mandatesHeader {
+    display: block;
+  }
+
+  .mandatesTitle {
+    font-size: clamp(2.25rem, 11vw, 2.75rem);
+  }
+
+  .mandatesSequence {
+    margin-top: 52px;
+  }
+
+  .mandateMovement {
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 72px 0 84px;
+  }
+
+  .mandateMovement:first-child {
+    padding-top: 46px;
+  }
+
+  .mandateRoute,
+  .mandateMovement[data-mandate-position='2'] .mandateRoute,
+  .mandateMovement[data-mandate-position='3'] .mandateRoute {
+    inset: auto -24px 20px 34px;
+    width: calc(100% + 18px);
+    height: 120px;
+    opacity: 0.34;
+    transform: none;
+  }
+
+  .mandateMovement[data-mandate-position='2'] .mandateRoute {
+    right: 34px;
+    left: -24px;
+    transform: scaleX(-1);
+  }
+
+  .mandateTitle,
+  .mandateMovement[data-mandate-position='2'] .mandateTitle {
+    max-width: 22rem;
+    padding: 0;
+    background: none;
+    font-size: clamp(2rem, 9.5vw, 2.6rem);
+  }
+
+  .mandateBody,
+  .mandateMovement[data-mandate-position='2'] .mandateBody {
+    max-width: 36rem;
+    margin-top: 24px;
+    padding: 0 0 54px;
+    background: none;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .seniorJudgmentLayout {
+    display: block;
+    padding: 80px calc(var(--safe-area-right) + 20px) 92px calc(var(--safe-area-left) + 20px);
+  }
+
+  .seniorSignal {
+    left: calc(var(--safe-area-left) + 20px);
+    width: 120px;
+  }
+
+  .seniorJudgmentTitle {
+    max-width: 22rem;
+    font-size: clamp(2.15rem, 9.5vw, 2.65rem);
+  }
+
+  .seniorJudgmentCopy {
+    max-width: 36rem;
+    margin-top: 32px;
+  }
+
+  .seniorJudgmentBody {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .closingSignal {
+    min-height: 620px;
+  }
+
+  .closingSignalNetwork {
+    inset: auto -42% 34px -58%;
+    width: 200%;
+    height: 310px;
+    opacity: 0.48;
+    transform: none;
+  }
+
+  .closingSignalLayout {
+    display: flex;
+    min-height: inherit;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 96px calc(var(--safe-area-right) + 20px) calc(112px + var(--safe-area-bottom)) calc(var(--safe-area-left) + 20px);
+  }
+
+  .closingSignalCopy {
+    max-width: 35rem;
+    padding: 0 0 36px;
+    background: linear-gradient(180deg, var(--carbon) 0%, rgba(8, 9, 12, 0.96) 80%, rgba(8, 9, 12, 0) 100%);
+  }
+
+  .closingSignalTitle {
+    max-width: 24rem;
+    font-size: clamp(2.5rem, 11.5vw, 3.15rem);
+  }
+
+  .closingSignalBody {
+    max-width: 21rem;
+    margin-top: 20px;
+    font-size: 1rem;
+  }
+
+  .closingSignalAction {
+    min-height: 48px;
+    align-self: flex-end;
+    margin-top: 86px;
+    padding: 12px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seniorJudgmentAction,
+  .closingSignalAction {
+    transition: none;
+  }
+}
