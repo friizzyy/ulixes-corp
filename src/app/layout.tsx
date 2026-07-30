@@ -1,28 +1,51 @@
 import type { Metadata, Viewport } from 'next'
-import { Outfit, JetBrains_Mono, EB_Garamond } from 'next/font/google'
+import localFont from 'next/font/local'
 import { Navigation, Footer, GridBackground } from '@/components/layout'
 import { ErrorBoundary } from '@/components/ui'
 import { siteConfig } from '@/lib/content'
 import { Agentation } from 'agentation'
 import '@/styles/globals.css'
 
-const outfit = Outfit({
-  subsets: ['latin'],
-  variable: '--font-outfit',
+const instrumentSans = localFont({
+  src: '../assets/fonts/InstrumentSans-Variable.woff2',
+  variable: '--font-instrument',
+  weight: '400 700',
   display: 'swap',
 })
 
-const ebGaramond = EB_Garamond({
-  subsets: ['latin'],
-  variable: '--font-serif',
+const plexMono = localFont({
+  src: '../assets/fonts/IBMPlexMono-Medium.woff2',
+  variable: '--font-plex-mono',
+  weight: '500',
   display: 'swap',
 })
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-jetbrains',
-  display: 'swap',
-})
+const metadataTitle = 'Ulixes Corporation | Senior-Led Calypso Advisory'
+const organizationId = `${siteConfig.url}/#organization`
+const presidentId = `${siteConfig.url}/#ulysses-williams`
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': organizationId,
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+    {
+      '@type': 'Person',
+      '@id': presidentId,
+      name: 'Ulysses Williams',
+      jobTitle: 'President',
+      url: siteConfig.linkedIn,
+      sameAs: [siteConfig.linkedIn],
+      worksFor: {
+        '@id': organizationId,
+      },
+    },
+  ],
+}
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -32,11 +55,18 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: `${siteConfig.name} | ${siteConfig.tagline}`,
+    default: metadataTitle,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: ['Calypso', 'trading systems', 'financial technology', 'consulting', 'implementation', 'capital markets', 'hedge accounting'],
+  keywords: [
+    'Calypso advisory',
+    'Calypso implementation',
+    'Calypso migration',
+    'capital markets',
+    'compliance analysis',
+    'software testing',
+  ],
   authors: [{ name: siteConfig.name }],
   icons: {
     icon: '/icon.svg',
@@ -46,12 +76,12 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: siteConfig.url,
     siteName: siteConfig.name,
-    title: siteConfig.name,
+    title: metadataTitle,
     description: siteConfig.description,
   },
   twitter: {
     card: 'summary_large_image',
-    title: siteConfig.name,
+    title: metadataTitle,
     description: siteConfig.description,
   },
   robots: {
@@ -66,7 +96,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${outfit.variable} ${ebGaramond.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`${instrumentSans.variable} ${plexMono.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData).replace(/</g, '\\u003c'),
+          }}
+        />
+      </head>
       <body className="font-sans">
         <ErrorBoundary>
           <a

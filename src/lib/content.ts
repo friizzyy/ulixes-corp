@@ -4,32 +4,27 @@
 export const siteConfig = {
   name: 'Ulixes Corporation',
   shortName: 'Ulixes',
-  tagline: 'Capital Markets Infrastructure. Engineered for Control.',
-  description: 'With 20+ years of proven Calypso delivery, Ulixes helps banks and hedge funds migrate, integrate, and innovate on vendor-hosted platforms.',
+  tagline: 'Senior-Led Calypso Advisory',
+  description: 'Ulixes provides senior-led Calypso advisory for implementation, migration, compliance analysis, and testing across front-to-back capital-markets workflows.',
+  advisoryLine: 'Senior-led Calypso and capital-markets systems advisory.',
   url: 'https://ulixescorp.com',
+  linkedIn: 'https://www.linkedin.com/in/ulysses-williams-2379634/',
   email: 'admin@ulixescorp.com',
   phone: '+1 (415) 283-9983',
 }
 
 export const navigation = {
   main: [
-    { label: 'Philosophy', href: '/philosophy' },
-    { label: 'Services', href: '/services' },
+    { label: 'Expertise', href: '#capabilities' },
+    { label: 'Approach', href: '#system-trace' },
     { label: 'Experience', href: '/institutional-experience' },
-    { label: 'About', href: '/about' },
-    { label: 'Contact', href: '/contact' },
   ],
   footer: {
-    services: [
-      { label: 'Calypso Implementation', href: '/services#implementation' },
-      { label: 'Platform Migration', href: '/services#migration' },
-      { label: 'AI-Driven Compliance', href: '/services#compliance' },
-      { label: 'Intelligent Testing', href: '/services#testing' },
-    ],
-    company: [
-      { label: 'Philosophy', href: '/philosophy' },
+    main: [
+      { label: 'Expertise', href: '#capabilities' },
+      { label: 'Approach', href: '#system-trace' },
       { label: 'Experience', href: '/institutional-experience' },
-      { label: 'About', href: '/about' },
+      { label: 'Services', href: '/services' },
       { label: 'Contact', href: '/contact' },
     ],
     legal: [
