@@ -848,6 +848,7 @@ git commit -m "feat: assemble redesigned Ulixes homepage"
 **Files:**
 - Modify: `package.json`
 - Modify: `package-lock.json`
+- Modify: `scripts/verify-hero-media.mjs` only if the clean install exposes a platform-binary defect in `ffprobe-static`.
 - Modify: `README.md` only if a command or runtime requirement changes.
 
 **Interfaces:**
@@ -860,7 +861,7 @@ Run `npm audit --omit=dev` and `npm audit`. Record the direct and transitive fin
 
 - [ ] **Step 2: Apply the smallest supported security migration**
 
-Upgrade `next` and `eslint-config-next` together to `15.5.21`, retaining React and React DOM 18.3.1. Upgrade `resend` to `6.18.1` and all four Remotion packages to `4.0.501`. Use root npm overrides for `postcss` `8.5.25` and `sharp` `0.35.3` only if the clean install otherwise retains vulnerable transitive copies. Do not migrate Tailwind, React, routing, or application architecture.
+Upgrade `next` and `eslint-config-next` together to `15.5.21`, retaining React and React DOM 18.3.1. Upgrade `resend` to `6.18.1` and all four Remotion packages to `4.0.501`. Use root npm overrides for `postcss` `8.5.25` and `sharp` `0.35.3` only if the clean install otherwise retains vulnerable transitive copies. If a clean arm64 install proves the published `ffprobe-static` binary is the wrong architecture, replace it with the verified cross-platform `@ffprobe-installer/ffprobe` package and adapt only the verifier's path import. Do not rely on a cached binary or migrate Tailwind, React, routing, or application architecture.
 
 - [ ] **Step 3: Validate the migration from a clean install**
 
@@ -882,7 +883,7 @@ Resolve compatibility defects with a failing regression test first. Do not suppr
 - [ ] **Step 4: Commit Task 8A**
 
 ```bash
-git add package.json package-lock.json README.md
+git add package.json package-lock.json scripts/verify-hero-media.mjs README.md
 git commit -m "chore: secure production dependency baseline"
 ```
 
