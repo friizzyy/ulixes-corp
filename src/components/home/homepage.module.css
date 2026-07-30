@@ -276,3 +276,470 @@
     transition: none;
   }
 }
+
+/* One continuous lifecycle field: the route carries the hierarchy, not chrome. */
+.systemTrace {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background: var(--mineral);
+  color: var(--carbon);
+}
+
+.traceLayout {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: clamp(104px, 10vw, 148px) clamp(56px, 4.5vw, 88px) clamp(112px, 10vw, 156px);
+}
+
+.traceHeader {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  align-items: end;
+}
+
+.traceKicker {
+  grid-column: 1 / span 4;
+  margin: 0 0 18px;
+  color: var(--violet-ink);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.traceTitle {
+  grid-column: 1 / span 6;
+  margin: 0;
+  font-size: clamp(2.5rem, 4vw, 3.75rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.traceIntroduction {
+  grid-column: 8 / span 4;
+  margin: 0 0 2px;
+  color: var(--titanium-ink);
+  font-size: clamp(1.0625rem, 1.4vw, 1.1875rem);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.traceCanvas {
+  position: relative;
+  min-height: 650px;
+  margin-top: clamp(72px, 8vw, 112px);
+}
+
+.signalNetwork {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 430px;
+  overflow: visible;
+  color: var(--violet-ink);
+  pointer-events: none;
+}
+
+.signalRoute {
+  fill: none;
+  stroke: rgba(95, 98, 108, 0.36);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+  transition: opacity 220ms ease, stroke 220ms ease;
+}
+
+.signalRoute[data-highlighted='true'] {
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+
+.signalNode {
+  fill: var(--mineral);
+  stroke: rgba(95, 98, 108, 0.7);
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: fill 220ms ease, stroke 220ms ease, transform 220ms ease;
+}
+
+.signalNode[data-highlighted='true'],
+.signalStage[data-active='true'] .signalNode {
+  fill: var(--violet-ink);
+  stroke: var(--mineral);
+  stroke-width: 3;
+  transform: scale(1.4);
+}
+
+.signalNetwork[data-render-mode='checkpoints'] .signalRoute {
+  stroke: rgba(95, 98, 108, 0.34);
+}
+
+.signalNetwork[data-render-mode='closing'] .signalRoute {
+  stroke: var(--violet-ink);
+}
+
+.signalNetwork[data-render-mode='closing'] .signalNode {
+  fill: var(--violet-ink);
+  stroke: var(--violet-ink);
+}
+
+.traceTablist {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-rows: 190px 190px;
+  column-gap: 22px;
+  padding-top: 52px;
+}
+
+.traceStage {
+  display: contents;
+}
+
+.traceStage:nth-child(1) .traceStageButton,
+.traceStage:nth-child(3) .traceStageButton,
+.traceStage:nth-child(5) .traceStageButton {
+  align-self: start;
+}
+
+.traceStage:nth-child(2) .traceStageButton,
+.traceStage:nth-child(4) .traceStageButton,
+.traceStage:nth-child(6) .traceStageButton {
+  grid-row: 2;
+  align-self: start;
+}
+
+.traceStageButton {
+  position: relative;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 8px;
+  min-width: 0;
+  min-height: 48px;
+  align-content: start;
+  padding: 5px 0;
+  border: 0;
+  background: transparent;
+  color: var(--titanium-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.traceStageButton::after {
+  position: absolute;
+  top: -12px;
+  right: 0;
+  left: 30px;
+  height: 1px;
+  background: currentColor;
+  content: '';
+  opacity: 0;
+  transform: scaleX(0.4);
+  transform-origin: left;
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.traceStageButton:hover,
+.traceStageButton[data-preview='true'],
+.traceStageButton[aria-selected='true'] {
+  color: var(--carbon);
+}
+
+.traceStageButton[data-preview='true']::after,
+.traceStageButton[aria-selected='true']::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.traceStageIndex {
+  padding-top: 0.2em;
+  color: var(--violet-ink);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+}
+
+.traceStageLabel {
+  max-width: 160px;
+  font-size: clamp(0.875rem, 1.15vw, 1rem);
+  font-weight: 560;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.traceDetail {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: minmax(150px, 0.75fr) minmax(280px, 1.75fr);
+  gap: clamp(28px, 4vw, 64px);
+  width: min(760px, 66%);
+  padding-top: 28px;
+  border-top: 1px solid rgba(95, 98, 108, 0.45);
+  animation: trace-detail-in 220ms ease both;
+}
+
+.traceDetailLabel {
+  margin: 0;
+  color: var(--violet-ink);
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.025em;
+}
+
+.traceDetailNarrative {
+  max-width: 520px;
+  margin: 0;
+  color: var(--carbon);
+  font-size: clamp(1.125rem, 1.5vw, 1.3125rem);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.traceFallback {
+  width: min(100% - 40px, 880px);
+  margin: 0 auto;
+  padding: 0 0 80px 1.5rem;
+}
+
+.traceFallback li + li {
+  margin-top: 24px;
+}
+
+.traceFallback p {
+  margin: 6px 0 0;
+}
+
+@keyframes trace-detail-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .traceLayout {
+    padding-right: 32px;
+    padding-left: 32px;
+  }
+
+  .traceTitle {
+    grid-column: 1 / span 7;
+  }
+
+  .traceIntroduction {
+    grid-column: 8 / span 5;
+  }
+
+  .traceTablist {
+    column-gap: 14px;
+  }
+
+  .traceStageButton {
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: 5px;
+  }
+
+  .traceStageButton::after {
+    left: 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .traceLayout {
+    padding: 88px calc(var(--safe-area-right) + 20px) 96px calc(var(--safe-area-left) + 20px);
+  }
+
+  .traceHeader {
+    display: block;
+  }
+
+  .traceKicker {
+    margin-bottom: 14px;
+  }
+
+  .traceTitle {
+    font-size: clamp(2.25rem, 11vw, 2.75rem);
+  }
+
+  .traceIntroduction {
+    max-width: 33rem;
+    margin-top: 24px;
+    font-size: 1rem;
+  }
+
+  .traceCanvas {
+    min-height: 0;
+    margin-top: 64px;
+  }
+
+  .signalNetwork {
+    inset: 0 auto 0 0;
+    width: 100%;
+    height: 100%;
+    min-height: 520px;
+  }
+
+  .signalRoute_capture {
+    d: path('M 72 0 L 72 74');
+  }
+
+  .signalRoute_lifecycle {
+    d: path('M 72 74 L 72 178');
+  }
+
+  .signalRoute_risk {
+    d: path('M 72 178 L 72 282');
+  }
+
+  .signalRoute_controls {
+    d: path('M 72 282 L 72 386');
+  }
+
+  .signalRoute_settlement {
+    d: path('M 72 386 L 72 490');
+  }
+
+  .signalRoute_reporting {
+    d: path('M 72 490 L 72 640');
+  }
+
+  .signalNode_capture {
+    cx: 72px;
+    cy: 74px;
+  }
+
+  .signalNode_lifecycle {
+    cx: 72px;
+    cy: 178px;
+  }
+
+  .signalNode_risk {
+    cx: 72px;
+    cy: 282px;
+  }
+
+  .signalNode_controls {
+    cx: 72px;
+    cy: 386px;
+  }
+
+  .signalNode_settlement {
+    cx: 72px;
+    cy: 490px;
+  }
+
+  .signalNode_reporting {
+    cx: 72px;
+    cy: 612px;
+  }
+
+  .traceTablist {
+    position: relative;
+    inset: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+  }
+
+  .traceStage {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 88px;
+    padding-left: 54px;
+  }
+
+  .traceStageButton {
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 8px;
+    min-height: 64px;
+    align-content: center;
+    padding: 10px 0;
+  }
+
+  .traceStageButton::before {
+    position: absolute;
+    top: 50%;
+    left: -38px;
+    width: 11px;
+    height: 11px;
+    border: 2px solid var(--mineral);
+    border-radius: 50%;
+    background: var(--titanium-ink);
+    box-shadow: 0 0 0 1px rgba(95, 98, 108, 0.72);
+    content: '';
+    transform: translateY(-50%);
+    transition: background-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+  }
+
+  .traceStageButton::after {
+    top: auto;
+    right: 0;
+    bottom: 4px;
+    left: 32px;
+  }
+
+  .traceStageButton[data-preview='true']::before,
+  .traceStageButton[aria-selected='true']::before {
+    background: var(--violet-ink);
+    box-shadow: 0 0 0 2px var(--violet-ink);
+    transform: translateY(-50%) scale(1.12);
+  }
+
+  .traceStageLabel {
+    max-width: 270px;
+    font-size: 1rem;
+  }
+
+  .traceDetail {
+    position: static;
+    display: block;
+    width: auto;
+    margin: 4px 0 30px 32px;
+    padding: 18px 0 0;
+  }
+
+  .traceDetailLabel {
+    display: none;
+  }
+
+  .traceDetailNarrative {
+    max-width: 31rem;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signalRoute,
+  .signalNode,
+  .traceStageButton::before,
+  .traceStageButton::after {
+    transition: none;
+  }
+
+  .traceDetail {
+    animation: none;
+  }
+}
