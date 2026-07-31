@@ -17,48 +17,43 @@ const config: Config = {
     },
     extend: {
       colors: {
-        carbon: '#08090C',
-        graphite: '#15171D',
-        mineral: '#E9E9E4',
-        ultraviolet: '#8B5CF6',
-        'violet-ink': '#5B3FC4',
-        'violet-light': '#A78BFA',
-        titanium: '#8A8D96',
-        'titanium-ink': '#5F626C',
-        white: '#F7F7F4',
-        // Legacy aliases keep interior routes compatible with the new system.
+        // Obsidian Theme - Primary backgrounds
         bg: {
-          primary: '#08090C',
-          secondary: '#15171D',
-          tertiary: '#15171D',
+          primary: '#0a0a0b',
+          secondary: '#111113',
+          tertiary: '#18181b',
         },
+        // Surfaces
         surface: {
-          DEFAULT: '#15171D',
-          hover: 'rgba(247, 247, 244, 0.12)',
+          DEFAULT: '#1f1f23',
+          hover: '#27272b',
         },
+        // Borders
         border: {
-          DEFAULT: 'rgba(247, 247, 244, 0.08)',
-          strong: 'rgba(247, 247, 244, 0.18)',
+          DEFAULT: 'rgba(255,255,255,0.06)',
+          accent: 'rgba(255,255,255,0.12)',
         },
+        // Text hierarchy
         text: {
-          primary: '#F7F7F4',
-          secondary: '#8A8D96',
-          muted: '#8A8D96',
+          primary: '#fafafa',
+          secondary: '#a1a1aa',
+          muted: '#71717a',
         },
-        action: {
-          DEFAULT: 'var(--action-fill)',
-          hover: 'var(--action-fill-hover)',
-          ink: 'var(--action-ink)',
+        // Accent colors - Purple/Violet theme
+        accent: {
+          DEFAULT: '#8B5CF6',
+          glow: 'rgba(139,92,246,0.15)',
+          secondary: '#A78BFA',
         },
       },
       fontFamily: {
-        display: ['var(--font-instrument)', 'Arial', 'sans-serif'],
-        sans: ['var(--font-instrument)', 'Arial', 'sans-serif'],
-        mono: ['var(--font-plex-mono)', '"Courier New"', 'monospace'],
+        display: ['var(--font-serif)', 'Georgia', 'Times New Roman', 'serif'],
+        sans: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-jetbrains)', 'monospace'],
       },
       fontSize: {
         // Typography scale
-        'display-xl': ['4rem', { lineHeight: '1.1', letterSpacing: '-0.03em' }],
+        'display-xl': ['4.5rem', { lineHeight: '1.1', letterSpacing: '-0.03em' }],
         'display-lg': ['3.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
         'display-md': ['3rem', { lineHeight: '1.15', letterSpacing: '-0.02em' }],
         'display-sm': ['2rem', { lineHeight: '1.2', letterSpacing: '-0.01em' }],
@@ -125,7 +120,7 @@ const config: Config = {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-signal': 'linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%)',
+        'gradient-accent': 'linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%)',
         'grid-pattern': `
           linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
           linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)

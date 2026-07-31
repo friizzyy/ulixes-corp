@@ -1,12 +1,13 @@
-import { createPageMetadata } from '@/lib/metadata'
+import type { Metadata } from 'next'
 
-export const metadata = createPageMetadata({
-  path: '/about',
+export const metadata: Metadata = {
   title: 'About',
-  description: 'Ulysses Williams has Calypso experience since 2004, spanning front-, middle-, and back-office delivery across North America, Europe, APAC, and Latin America.',
-  socialTitle: 'About | Ulixes Corporation',
-  socialDescription: "Ulysses Williams's product-domain experience covers interest-rate derivatives, FX, fixed income, money markets, commodities, and equity derivatives.",
-})
+  description: 'Senior practitioners with 20+ years of Calypso platform expertise. We came from trading floors, treasury functions, and Big Four advisory practices.',
+  openGraph: {
+    title: 'About | Ulixes Corporation',
+    description: 'Senior practitioners with 20+ years of Calypso platform expertise helping banks and hedge funds with capital markets infrastructure.',
+  },
+}
 
 export default function AboutLayout({
   children,

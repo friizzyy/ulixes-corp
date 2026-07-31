@@ -50,14 +50,14 @@ export function PhilosophySection() {
                 }`}>
                   {/* Number — always left */}
                   <div className="lg:col-span-1">
-                    <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-surface group-hover:text-violet-light/20 transition-colors duration-500 font-mono leading-none">
+                    <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-surface group-hover:text-accent/20 transition-colors duration-500 font-mono leading-none">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                   </div>
 
                   {/* Title — offset on alternating rows for visual rhythm */}
                   <div className={`lg:col-span-4 ${isEven ? 'lg:col-start-2' : 'lg:col-start-3'}`}>
-                    <h3 className="text-heading-md sm:text-heading-lg md:text-display-sm font-semibold text-text-primary group-hover:text-violet-light transition-colors duration-300">
+                    <h3 className="text-heading-md sm:text-heading-lg md:text-display-sm font-semibold text-text-primary group-hover:text-accent transition-colors duration-300">
                       {point.title}
                     </h3>
                   </div>
@@ -84,7 +84,7 @@ export function PhilosophySection() {
         >
           <Link
             href="/philosophy"
-            className="inline-flex items-center gap-2 text-violet-light font-medium hover:underline active:underline underline-offset-4 min-h-[44px]"
+            className="inline-flex items-center gap-2 text-accent font-medium hover:underline active:underline underline-offset-4 min-h-[44px]"
           >
             {philosophy.cta}
             <ArrowUpRight size={16} />

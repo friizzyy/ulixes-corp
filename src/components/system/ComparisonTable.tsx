@@ -65,7 +65,7 @@ export function ComparisonTable({
                 <th className="text-center text-sm font-medium text-text-muted px-6 py-4 bg-red-500/5">
                   {beforeLabel}
                 </th>
-                <th className="text-center text-sm font-medium text-violet-light px-6 py-4 bg-ultraviolet/5">
+                <th className="text-center text-sm font-medium text-accent px-6 py-4 bg-accent/5">
                   {afterLabel}
                 </th>
                 <th className="text-right text-sm font-medium text-text-secondary px-6 py-4">
@@ -88,7 +88,7 @@ export function ComparisonTable({
                   <td className="text-sm text-text-muted px-6 py-4 text-center bg-red-500/5">
                     {renderValue(item.before)}
                   </td>
-                  <td className="text-sm text-text-primary px-6 py-4 text-center bg-ultraviolet/5 font-medium">
+                  <td className="text-sm text-text-primary px-6 py-4 text-center bg-accent/5 font-medium">
                     {renderValue(item.after)}
                   </td>
                   <td className="text-sm text-emerald-400 px-6 py-4 text-right font-mono">
@@ -151,8 +151,8 @@ export function BeforeAfter({ before, after, className }: BeforeAfterProps) {
         transition={{ duration: 0.5, delay: 0.1 }}
       >
         <GlassSurfaceContainer className="h-full" padding="none">
-          <div className="px-4 py-3 border-b border-border bg-ultraviolet/5">
-            <span className="text-sm font-medium text-violet-light">
+          <div className="px-4 py-3 border-b border-border bg-accent/5">
+            <span className="text-sm font-medium text-accent">
               {after.label || 'After'}
             </span>
           </div>

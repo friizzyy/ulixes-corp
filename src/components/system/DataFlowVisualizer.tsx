@@ -99,7 +99,7 @@ export function DataFlowVisualizer({
                   'relative flex flex-col items-center gap-2 p-4 rounded-lg border-2',
                   style.bg,
                   style.border,
-                  isActive && 'ring-2 ring-violet-light ring-offset-2 ring-offset-bg-secondary'
+                  isActive && 'ring-2 ring-accent ring-offset-2 ring-offset-bg-secondary'
                 )}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
@@ -124,7 +124,7 @@ export function DataFlowVisualizer({
                   {/* Animated data packet */}
                   {animate && flows[activeFlow]?.from === node.id && (
                     <motion.div
-                      className="absolute top-1/2 -translate-y-1/2 w-2 h-2 bg-ultraviolet rounded-full"
+                      className="absolute top-1/2 -translate-y-1/2 w-2 h-2 bg-accent rounded-full"
                       initial={{ left: 0, opacity: 0 }}
                       animate={{ left: '100%', opacity: [0, 1, 1, 0] }}
                       transition={{ duration: 1, ease: 'linear' }}
@@ -150,7 +150,7 @@ export function DataFlowVisualizer({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="font-mono text-violet-light"
+              className="font-mono text-accent"
             >
               {flows[activeFlow]?.from} → {flows[activeFlow]?.to}
               {flows[activeFlow]?.throughput && (
@@ -250,7 +250,7 @@ export function PipelineVisualizer({ stages, title, className }: PipelineVisuali
                   <div className="h-px bg-border" />
                   {stage.status === 'complete' && (
                     <motion.div
-                      className="absolute top-0 left-0 h-px bg-ultraviolet"
+                      className="absolute top-0 left-0 h-px bg-accent"
                       initial={{ width: 0 }}
                       animate={isInView ? { width: '100%' } : {}}
                       transition={{ duration: 0.5, delay: index * 0.2 }}

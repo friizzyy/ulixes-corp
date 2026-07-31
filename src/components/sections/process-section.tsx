@@ -84,20 +84,20 @@ export function ProcessSection() {
               {/* Top connector line + phase indicator */}
               <div className="flex items-center gap-4 mb-6 sm:mb-8">
                 {/* Phase dot */}
-                <div className="w-3 h-3 rounded-full bg-ultraviolet flex-shrink-0" />
+                <div className="w-3 h-3 rounded-full bg-accent flex-shrink-0" />
                 {/* Connector line */}
                 {index < phases.length - 1 && (
-                  <div className="hidden md:block flex-1 h-px bg-gradient-to-r from-ultraviolet/40 to-border" />
+                  <div className="hidden md:block flex-1 h-px bg-gradient-to-r from-accent/40 to-border" />
                 )}
                 {index < phases.length - 1 && (
-                  <div className="md:hidden absolute left-[5px] top-8 w-px h-[calc(100%-2rem)] bg-gradient-to-b from-ultraviolet/40 to-border" />
+                  <div className="md:hidden absolute left-[5px] top-8 w-px h-[calc(100%-2rem)] bg-gradient-to-b from-accent/40 to-border" />
                 )}
               </div>
 
               {/* Phase content */}
               <div className={`pb-10 md:pb-0 pl-7 md:pl-0 ${index < phases.length - 1 ? 'md:pr-8 lg:pr-12' : ''}`}>
                 <div className="flex items-baseline gap-3 mb-2">
-                  <span className="text-[11px] font-mono text-violet-light uppercase tracking-widest">
+                  <span className="text-[11px] font-mono text-accent uppercase tracking-widest">
                     Phase {String(index + 1).padStart(2, '0')}
                   </span>
                   <span className="text-[11px] font-mono text-text-muted">
@@ -116,7 +116,7 @@ export function ProcessSection() {
                 <ul className="space-y-2">
                   {phase.deliverables.map((item, i) => (
                     <li key={i} className="flex items-start gap-2 text-body-sm text-text-muted">
-                      <span className="text-violet-light mt-1 flex-shrink-0">
+                      <span className="text-accent/60 mt-1 flex-shrink-0">
                         <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
                           <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>

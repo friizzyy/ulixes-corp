@@ -13,8 +13,8 @@ interface CalloutProps {
 export function Callout({ children, className, variant = 'default' }: CalloutProps) {
   const variantStyles = {
     default: 'bg-surface/50 border-border',
-    accent: 'bg-ultraviolet/5 border-violet-light/20',
-    quote: 'bg-transparent border-l-2 border-violet-light pl-6 md:pl-8',
+    accent: 'bg-accent/5 border-accent/20',
+    quote: 'bg-transparent border-l-2 border-accent pl-6 md:pl-8',
   }
 
   return (

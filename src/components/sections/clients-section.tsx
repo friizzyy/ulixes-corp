@@ -63,7 +63,7 @@ export function ClientsSection() {
                   <div className="text-body-sm text-text-secondary mt-2">
                     {client.detail}
                   </div>
-                  <div className="mt-6 h-px w-full bg-gradient-to-r from-ultraviolet/40 to-transparent" />
+                  <div className="mt-6 h-px w-full bg-gradient-to-r from-accent/40 to-transparent" />
                 </GlassSurfaceContainer>
               </motion.div>
             </ScrollCard>

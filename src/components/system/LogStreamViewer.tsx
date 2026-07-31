@@ -122,7 +122,7 @@ export function LogStreamViewer({
                   className={cn(
                     'px-2 py-1 text-xs font-mono rounded transition-colors',
                     filter === sev
-                      ? 'bg-ultraviolet/20 text-violet-light'
+                      ? 'bg-accent/20 text-accent'
                       : 'text-text-muted hover:text-text-secondary'
                   )}
                 >

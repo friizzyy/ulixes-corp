@@ -62,13 +62,13 @@ function TimelineEntry({ item, index, animated, showLine }: TimelineEntryProps) 
 
   const statusStyles = {
     complete: {
-      dot: 'bg-ultraviolet border-violet-light',
+      dot: 'bg-accent border-accent',
       icon: 'text-bg-primary',
-      line: 'bg-ultraviolet',
+      line: 'bg-accent',
     },
     current: {
-      dot: 'bg-ultraviolet/20 border-violet-light',
-      icon: 'text-violet-light',
+      dot: 'bg-accent/20 border-accent',
+      icon: 'text-accent',
       line: 'bg-border',
     },
     upcoming: {
@@ -119,7 +119,7 @@ function TimelineEntry({ item, index, animated, showLine }: TimelineEntryProps) 
         {/* Connecting line progress for complete items */}
         {showLine && status === 'complete' && (
           <motion.div
-            className="absolute left-1/2 top-10 w-px -translate-x-1/2 bg-ultraviolet"
+            className="absolute left-1/2 top-10 w-px -translate-x-1/2 bg-accent"
             initial={{ height: 0 }}
             animate={isInView ? { height: 'calc(100% + 2rem)' } : {}}
             transition={{ duration: 0.5, delay: 0.3 }}
@@ -160,12 +160,12 @@ function TimelineEntry({ item, index, animated, showLine }: TimelineEntryProps) 
 
         {/* Current indicator */}
         {status === 'current' && (
-          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 bg-ultraviolet/10 border border-violet-light/20 rounded-full">
+          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 bg-accent/10 border border-accent/20 rounded-full">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ultraviolet opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-ultraviolet" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
             </span>
-            <span className="text-xs text-violet-light font-medium">In Progress</span>
+            <span className="text-xs text-accent font-medium">In Progress</span>
           </div>
         )}
       </div>

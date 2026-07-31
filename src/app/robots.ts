@@ -1,5 +1,4 @@
 import { MetadataRoute } from 'next'
-import { siteConfig } from '@/lib/content'
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -8,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/'],
     },
-    sitemap: `${siteConfig.url}/sitemap.xml`,
+    sitemap: 'https://ulixescorp.com/sitemap.xml',
   }
 }

@@ -23,10 +23,10 @@ export function ProgramTags({ tags, className }: ProgramTagsProps) {
           key={tag}
           className={cn(
             'inline-flex items-center px-4 py-2.5',
-            'bg-surface/40 border border-violet-light/20 rounded-full',
-            'text-body-sm text-violet-light font-medium',
+            'bg-surface/40 border border-accent/20 rounded-full',
+            'text-body-sm text-accent font-medium',
             'transition-all duration-300',
-            'hover:bg-ultraviolet/10 hover:border-violet-light/40'
+            'hover:bg-accent/10 hover:border-accent/40'
           )}
           variants={fadeUp}
           custom={index}

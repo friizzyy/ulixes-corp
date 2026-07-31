@@ -1,11 +1,9 @@
-import { createPageMetadata } from '@/lib/metadata'
+import type { Metadata } from 'next'
 
-export const metadata = createPageMetadata({
-  path: '/privacy',
+export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: 'Ulixes Corporation privacy policy. Learn how we collect, use, and protect your information.',
-  socialTitle: 'Privacy Policy | Ulixes Corporation',
-})
+}
 
 export default function PrivacyLayout({
   children,

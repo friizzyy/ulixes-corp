@@ -89,7 +89,7 @@ export function ProcessFlowDiagram({
                 {/* Animated progress fill */}
                 <motion.div
                   className={cn(
-                    'absolute bg-ultraviolet',
+                    'absolute bg-accent',
                     isHorizontal ? 'top-0 left-0 h-full' : 'top-0 left-0 w-full'
                   )}
                   initial={isHorizontal ? { width: 0 } : { height: 0 }}
@@ -113,10 +113,10 @@ export function ProcessFlowDiagram({
               className={cn(
                 'relative z-10 w-10 h-10 rounded-full border-2 flex items-center justify-center',
                 'transition-colors duration-300',
-                status === 'complete' && 'bg-ultraviolet border-violet-light text-bg-primary',
-                status === 'active' && 'bg-ultraviolet/20 border-violet-light text-violet-light',
+                status === 'complete' && 'bg-accent border-accent text-bg-primary',
+                status === 'active' && 'bg-accent/20 border-accent text-accent',
                 status === 'pending' && 'bg-bg-secondary border-border text-text-muted',
-                onStepClick && 'cursor-pointer hover:border-violet-light/60'
+                onStepClick && 'cursor-pointer hover:border-accent/60'
               )}
               whileHover={onStepClick ? { scale: 1.1 } : undefined}
               whileTap={onStepClick ? { scale: 0.95 } : undefined}
@@ -132,7 +132,7 @@ export function ProcessFlowDiagram({
               {/* Active pulse */}
               {status === 'active' && (
                 <motion.div
-                  className="absolute inset-0 rounded-full border-2 border-violet-light"
+                  className="absolute inset-0 rounded-full border-2 border-accent"
                   initial={{ opacity: 0.5, scale: 1 }}
                   animate={{ opacity: 0, scale: 1.5 }}
                   transition={{ duration: 1.5, repeat: Infinity }}

@@ -222,7 +222,7 @@ export function CodeBlockLive({
                   key={lineNum}
                   className={cn(
                     'transition-colors',
-                    isHighlighted && 'bg-ultraviolet/10'
+                    isHighlighted && 'bg-accent/10'
                   )}
                 >
                   {showLineNumbers && (

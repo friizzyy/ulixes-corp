@@ -21,9 +21,9 @@ export function HeroSection() {
         >
           <motion.div
             variants={fadeUp}
-            className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-surface/80 border border-border-strong text-xs font-mono text-text-secondary uppercase tracking-wider mb-6 sm:mb-8"
+            className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-surface/80 border border-border-accent text-xs font-mono text-text-secondary uppercase tracking-wider mb-6 sm:mb-8"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-ultraviolet" />
+            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
             {hero.badge}
           </motion.div>
 
@@ -33,7 +33,7 @@ export function HeroSection() {
             className="font-display text-[2.5rem] xs:text-[3rem] sm:text-[4rem] md:text-[5rem] lg:text-[5.5rem] xl:text-[6.5rem] font-semibold leading-[1.02] tracking-tight mb-0"
           >
             <span className="text-text-primary block">{hero.headline}</span>
-            <span className="text-violet-light block">{hero.headlineAccent}</span>
+            <span className="text-accent block">{hero.headlineAccent}</span>
           </motion.h1>
         </motion.div>
 
@@ -93,7 +93,7 @@ export function HeroSection() {
                 <div className="text-2xl sm:text-3xl md:text-4xl font-bold font-mono text-text-primary leading-none mb-1">20+</div>
                 <div className="text-[11px] sm:text-xs text-text-muted uppercase tracking-wider font-mono">Years Experience</div>
               </div>
-              <div className="w-px h-10 bg-border-strong" />
+              <div className="w-px h-10 bg-border-accent" />
               <div>
                 <div className="text-2xl sm:text-3xl md:text-4xl font-bold font-mono text-text-primary leading-none mb-1">20</div>
                 <div className="text-[11px] sm:text-xs text-text-muted uppercase tracking-wider font-mono">Implementations</div>

@@ -56,13 +56,13 @@ export default function AboutPage() {
         <div className="container-main">
           {/* Lead quote */}
           <motion.blockquote
-            className="border-l-2 border-violet-light pl-6 sm:pl-8 mb-16 sm:mb-20 md:mb-24"
+            className="border-l-2 border-accent pl-6 sm:pl-8 mb-16 sm:mb-20 md:mb-24"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <p className="font-display text-heading-lg sm:text-display-sm md:text-[1.75rem] font-semibold text-text-primary max-w-2xl leading-snug">
-              Calypso experience since 2004, carried across the whole trade lifecycle.
+              We came from trading floors, treasury functions, and Big Four advisory practices.
             </p>
           </motion.blockquote>
 
@@ -85,7 +85,7 @@ export default function AboutPage() {
                   key={idx}
                   className={`text-body-md leading-relaxed ${
                     idx === origin.paragraphs.length - 2
-                      ? 'text-text-primary font-medium border-l-2 border-violet-light pl-6'
+                      ? 'text-text-primary font-medium border-l-2 border-accent pl-6'
                       : 'text-text-secondary'
                   }`}
                 >
@@ -107,7 +107,7 @@ export default function AboutPage() {
             whileInView="visible"
             viewport={viewportOnce}
           >
-            <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
+            <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
               What We Believe
             </motion.h2>
             <motion.p variants={fadeUp} className="font-display text-[1.75rem] sm:text-display-sm md:text-display-md font-semibold max-w-2xl">
@@ -130,12 +130,12 @@ export default function AboutPage() {
                 className="group grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 py-8 sm:py-10 border-b border-border first:border-t"
               >
                 <div className="md:col-span-1">
-                  <span className="text-xs font-mono text-text-muted group-hover:text-violet-light transition-colors">
+                  <span className="text-xs font-mono text-text-muted group-hover:text-accent transition-colors">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                 </div>
                 <div className="md:col-span-4">
-                  <h3 className="font-display text-heading-md sm:text-heading-lg font-semibold text-text-primary group-hover:text-violet-light transition-colors">
+                  <h3 className="font-display text-heading-md sm:text-heading-lg font-semibold text-text-primary group-hover:text-accent transition-colors">
                     {point.title}
                   </h3>
                 </div>
@@ -162,14 +162,14 @@ export default function AboutPage() {
               transition={{ duration: 0.6 }}
             >
               <div className="lg:sticky lg:top-32">
-                <h2 className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
+                <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                   How We Work
                 </h2>
                 <p className="font-display text-[1.75rem] sm:text-display-sm font-semibold mb-4 sm:mb-6">
                   {aboutPageContent.values.title}
                 </p>
                 <p className="text-body-md text-text-secondary leading-relaxed">
-                  Mandates stay senior-led and close to the decision. Ulysses brings experience designing, building, and governing these systems inside institutions.
+                  We are senior practitioners, not staffing leverage. Every engagement is led by partners who have designed, built, and defended these systems inside institutions.
                 </p>
               </div>
             </motion.div>
@@ -188,7 +188,7 @@ export default function AboutPage() {
                     variants={fadeUp}
                     className="relative"
                   >
-                    <span className="text-xs font-mono text-violet-light mb-3 block">
+                    <span className="text-xs font-mono text-accent mb-3 block">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <h3 className="text-heading-sm font-semibold text-text-primary mb-2">
@@ -217,8 +217,8 @@ export default function AboutPage() {
           >
             {/* Team — takes more space */}
             <motion.div variants={fadeUp} className="lg:col-span-7">
-              <h2 className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
-                Leadership
+              <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
+                The Team
               </h2>
               <p className="font-display text-[1.75rem] sm:text-display-sm font-semibold mb-4 sm:mb-6">
                 {team.title}
@@ -227,7 +227,7 @@ export default function AboutPage() {
                 {team.description}
               </p>
               <Link href="/contact" className="cta-primary">
-                Discuss a Mandate
+                Work With Us
                 <ArrowUpRight size={16} />
               </Link>
             </motion.div>
@@ -237,14 +237,14 @@ export default function AboutPage() {
               variants={fadeUp}
               className="lg:col-span-4 lg:col-start-9"
             >
-              <div className="border-l-2 border-violet-light pl-6">
-                <h3 className="text-xs font-mono uppercase tracking-widest text-violet-light mb-4">
+              <div className="border-l-2 border-accent pl-6">
+                <h3 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
                   {aboutPageContent.hiring.title}
                 </h3>
                 <p className="text-body-sm text-text-secondary leading-relaxed mb-6">
                   {aboutPageContent.hiring.description}
                 </p>
-                <Link href={aboutPageContent.hiring.ctaHref} className="cta-outline-violet">
+                <Link href={aboutPageContent.hiring.ctaHref} className="cta-outline-accent">
                   {aboutPageContent.hiring.cta}
                   <ArrowUpRight size={16} />
                 </Link>

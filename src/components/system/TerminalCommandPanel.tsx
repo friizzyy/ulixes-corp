@@ -166,7 +166,7 @@ export function TerminalCommandPanel({
               entry.type === 'input' && 'text-text-primary',
               entry.type === 'output' && 'text-text-secondary pl-4',
               entry.type === 'error' && 'text-red-400 pl-4',
-              entry.type === 'success' && 'text-violet-light pl-4'
+              entry.type === 'success' && 'text-accent pl-4'
             )}
           >
             {entry.content}
@@ -175,7 +175,7 @@ export function TerminalCommandPanel({
 
         {/* Input line */}
         <div className="flex items-center gap-2 mt-1">
-          <span className="text-violet-light">{prompt}</span>
+          <span className="text-accent">{prompt}</span>
           <div className="relative flex-1">
             <input
               ref={inputRef}
@@ -185,7 +185,7 @@ export function TerminalCommandPanel({
               onKeyDown={handleKeyDown}
               disabled={isExecuting}
               className={cn(
-                'w-full bg-transparent outline-none text-text-primary caret-ultraviolet',
+                'w-full bg-transparent outline-none text-text-primary caret-accent',
                 isExecuting && 'opacity-50'
               )}
               aria-label="Terminal input"
@@ -196,7 +196,7 @@ export function TerminalCommandPanel({
             />
             {/* Blinking cursor when empty and focused */}
             {!input && !isExecuting && (
-              <span className="absolute left-0 top-0 w-2 h-5 bg-ultraviolet/80 animate-pulse" />
+              <span className="absolute left-0 top-0 w-2 h-5 bg-accent/80 animate-pulse" />
             )}
           </div>
           {isExecuting && (

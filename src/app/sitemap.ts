@@ -1,8 +1,7 @@
 import { MetadataRoute } from 'next'
-import { siteConfig } from '@/lib/content'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = siteConfig.url
+  const baseUrl = 'https://ulixescorp.com'
 
   return [
     {
@@ -18,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/institutional-experience`,
+      url: `${baseUrl}/work`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,

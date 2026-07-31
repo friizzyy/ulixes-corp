@@ -15,7 +15,7 @@ export function Disclosure({ title, children, meta, defaultOpen = false, classNa
     <details
       className={cn(
         'group rounded-md border border-border bg-bg-secondary/70 px-5 py-4',
-        'transition-colors duration-200 open:border-border-strong',
+        'transition-colors duration-200 open:border-border-accent',
         className
       )}
       open={defaultOpen}

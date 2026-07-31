@@ -58,7 +58,7 @@ export function ServicesSection() {
               >
                 {service.title}
                 <span className={`absolute bottom-0 left-0 right-0 h-0.5 transition-all duration-300 ${
-                  isActive ? 'bg-ultraviolet' : 'bg-transparent'
+                  isActive ? 'bg-accent' : 'bg-transparent'
                 }`} aria-hidden="true" />
               </button>
             )
@@ -77,7 +77,7 @@ export function ServicesSection() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16">
               {/* Left: Service description + deliverables */}
               <div className="lg:col-span-7">
-                <div className="text-[11px] font-mono text-violet-light uppercase tracking-widest mb-3">
+                <div className="text-[11px] font-mono text-accent uppercase tracking-widest mb-3">
                   Service {String(activeIndex + 1).padStart(2, '0')}
                 </div>
                 <h3 className="font-display text-heading-lg sm:text-display-sm font-semibold text-text-primary mb-4 sm:mb-6">
@@ -91,7 +91,7 @@ export function ServicesSection() {
                 <div className="space-y-3 mb-8">
                   {activeService.whatYouGet.slice(0, 4).map((item, i) => (
                     <div key={i} className="flex items-start gap-3 text-body-sm text-text-secondary">
-                      <span className="text-violet-light mt-0.5 flex-shrink-0">
+                      <span className="text-accent mt-0.5 flex-shrink-0">
                         <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                           <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
@@ -103,7 +103,7 @@ export function ServicesSection() {
 
                 <Link
                   href={`/services#${activeService.id}`}
-                  className="inline-flex items-center gap-2 text-violet-light text-body-sm font-medium hover:underline underline-offset-4 min-h-[44px]"
+                  className="inline-flex items-center gap-2 text-accent text-body-sm font-medium hover:underline underline-offset-4 min-h-[44px]"
                 >
                   Full service details
                   <ArrowRight size={14} />
@@ -125,7 +125,7 @@ export function ServicesSection() {
                   <div className="text-[11px] font-mono uppercase tracking-widest text-text-muted mb-3">
                     The outcome
                   </div>
-                  <p className="text-body-md text-text-secondary leading-relaxed border-l-2 border-violet-light/40 pl-4">
+                  <p className="text-body-md text-text-secondary leading-relaxed border-l-2 border-accent/40 pl-4">
                     {activeService.controlCreated}
                   </p>
                 </div>

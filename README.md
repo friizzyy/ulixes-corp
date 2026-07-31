@@ -1,151 +1,246 @@
-# Ulixes Corporation
+# Ulixes Corporation Website
 
-The production website for Ulixes Corporation, a senior-led Calypso advisory
-practice. It is built with the Next.js App Router, React, TypeScript, CSS
-Modules, Tailwind CSS, and narrowly scoped Framer Motion interactions.
+A premium, production-ready website for Ulixes Corporation built with Next.js 14, TypeScript, Tailwind CSS, and Framer Motion.
 
-## Local development
+## 🎨 Design Theme: Obsidian
 
-Requirements:
+Dark, sophisticated, terminal-inspired design featuring:
+- Subtle grid background with emerald glow accents
+- JetBrains Mono + Outfit typography pairing
+- Animated terminal components
+- Service cards with top-border reveal on hover
+- Code block components with syntax highlighting
 
-- Node.js 20 or newer
-- npm
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
 
 ```bash
-npm ci
+# Clone the repository
+git clone <repo-url>
+cd ulixes-corp
+
+# Install dependencies
+npm install
+
+# Copy environment variables
+cp .env.example .env.local
+
+# Start development server
 npm run dev
 ```
 
-The development server is available at
-[http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-`NEXT_PUBLIC_SITE_URL` controls canonical and social metadata. Copy
-`.env.example` to `.env.local` when a local override is needed.
-
-## Design system
-
-Instrument Sans is the primary display and body face. IBM Plex Mono is reserved
-for technical labels and signal annotations. Both fonts are self-hosted through
-Fontsource packages; the site does not depend on a runtime font request.
-
-The core palette is deliberately restrained:
-
-| Token | Value | Role |
-| --- | --- | --- |
-| Carbon | `#08090C` | Primary dark field |
-| Graphite | `#15171D` | Secondary dark field |
-| Mineral | `#E9E9E4` | Light editorial field |
-| White | `#F7F7F4` | Primary text on dark |
-| Titanium | `#8A8D96` | Supporting text |
-| Ultraviolet | `#8B5CF6` | Primary action and system signal |
-| Violet ink | `#5B3FC4` | Accessible signal on light fields |
-| Violet light | `#A78BFA` | Signal and focus treatment on dark fields |
-
-The homepage uses one continuous signal-system composition rather than a stack
-of interchangeable cards. Its six sections are assembled in `src/app/page.tsx`
-and implemented under `src/components/home/`:
-
-1. `HomepageHero` — full-bleed responsive motion with protected copy space
-2. `SystemTrace` — an interactive trade-lifecycle consequence map
-3. `CapabilityStage` — capability narratives mapped to the same shared system
-4. `RepresentativeMandates` — concrete engagement patterns
-5. `SeniorJudgment` — direct attribution to Ulysses Williams
-6. `ClosingSignalCTA` — the system paths converge into one contact action
-
-Editorial content and lifecycle relationships live in
-`src/lib/homepage-content.ts`. Existing components under
-`src/components/sections/` remain available to interior routes.
-
-## Verification
-
-Run the complete static test and build gate before review or deployment:
+### Build for Production
 
 ```bash
-npm run test:run
-npm run media:verify
-npm run verify:links
-npx tsc --noEmit
+# Create production build
 npm run build
-npm run lint
-npm audit --omit=dev
-```
 
-`npm run media:verify` validates video and poster dimensions, duration, audio
-absence, byte budgets, decodability, and seamless-loop similarity. It does not
-require the ignored 4K masters.
-
-## Hero media pipeline
-
-The deployable media is committed under `public/media/hero/`. The source masters
-are intentionally kept outside the deployment bundle at:
-
-```text
-design-assets/hero/ulixes-signal-desktop-master-4k.mp4
-design-assets/hero/ulixes-signal-mobile-master-4k.mp4
-```
-
-The masters were generated as separate six-second, silent 4K loops with
-Higgsfield Seedance 2.0 in standard mode, high bitrate, a locked camera, and the
-approved still supplied as both the start and end image:
-
-| Master | Resolution | Aspect ratio | Duration |
-| --- | ---: | ---: | ---: |
-| Desktop | 3840×2160 | 16:9 | 6 seconds |
-| Mobile | 2160×3840 | 9:16 | 6 seconds |
-
-To regenerate the browser assets after placing both masters at the paths above:
-
-```bash
-npm run media:prepare
-npm run media:verify
-npm run media:inspect
-```
-
-The preparation script creates:
-
-- desktop VP9 WebM at 2560×1440 (`CRF 24`) and H.264 MP4 at 1920×1080
-  (`CRF 19`, slow preset);
-- mobile VP9 WebM at 1080×1920 (`CRF 25`) and H.264 MP4 at 1080×1920
-  (`CRF 20`, slow preset);
-- frame-zero AVIF posters at quality 56 and effort 8.
-
-The mobile delivery applies the same centered, top-anchored `1.16x` crop to both
-videos and the poster so the protected text zone remains clear. All videos are
-silent. Exact generation IDs, FFmpeg parameters, checksums, loop scores, and
-frame-inspection results are preserved in `design-assets/hero/README.md`.
-
-## Production build
-
-```bash
-npm ci
-npm run build
+# Start production server
 npm start
 ```
 
-The optimized Next.js application is produced in `.next/`. Do not commit that
-directory or deploy the ignored 4K master files.
-
-## Vercel deployment
-
-Production deploys must come from a clean, verified Git commit that matches
-GitHub. The normal workflow is:
+### Linting
 
 ```bash
-git push origin main
-npx vercel link
-npx vercel --prod
+npm run lint
 ```
 
-When the repository is connected to Vercel, the push can also create the
-deployment automatically. Before promoting or manually deploying, confirm the
-local commit equals `origin/main`, rerun the verification gate above, and set
-`NEXT_PUBLIC_SITE_URL` in Vercel for the Production environment.
+---
 
-After deployment, verify the production alias on desktop and mobile, including
-hero playback and poster fallback, lifecycle keyboard behavior, capability
-activation, navigation, contact actions, LinkedIn and legal links, console
-errors, failed assets, and canonical/social metadata.
+## 📁 Project Structure
 
-## License
+```
+ulixes-corp/
+├── src/
+│   ├── app/                    # Next.js App Router pages
+│   │   ├── page.tsx            # Home page
+│   │   ├── layout.tsx          # Root layout
+│   │   ├── not-found.tsx       # 404 page
+│   │   ├── about/              # About page
+│   │   ├── services/           # Services page
+│   │   ├── work/               # Case studies page
+│   │   ├── contact/            # Contact page
+│   │   ├── privacy/            # Privacy policy
+│   │   └── terms/              # Terms of service
+│   │
+│   ├── components/
+│   │   ├── ui/                 # Design system primitives
+│   │   │   ├── button.tsx
+│   │   │   ├── card.tsx
+│   │   │   ├── input.tsx
+│   │   │   ├── section.tsx
+│   │   │   ├── terminal.tsx
+│   │   │   ├── badge.tsx
+│   │   │   └── icons.tsx
+│   │   │
+│   │   ├── layout/             # Layout components
+│   │   │   ├── navigation.tsx
+│   │   │   ├── footer.tsx
+│   │   │   └── grid-background.tsx
+│   │   │
+│   │   └── sections/           # Page sections
+│   │       ├── hero-section.tsx
+│   │       ├── services-section.tsx
+│   │       ├── stats-section.tsx
+│   │       ├── expertise-section.tsx
+│   │       └── cta-section.tsx
+│   │
+│   ├── lib/
+│   │   ├── content.ts          # All site content (EDIT THIS)
+│   │   ├── motion.ts           # Framer Motion variants
+│   │   └── utils.ts            # Utility functions
+│   │
+│   └── styles/
+│       └── globals.css         # Global styles & Tailwind
+│
+├── tailwind.config.ts          # Tailwind + design tokens
+├── next.config.js
+├── tsconfig.json
+└── package.json
+```
 
-Proprietary. All rights reserved by Ulixes Corporation.
+---
+
+## ✏️ Editing Content
+
+All site content is centralized in `src/lib/content.ts`. Edit this single file to update:
+
+- **Site metadata**: Company name, tagline, contact info
+- **Navigation**: Menu items and links
+- **Home page**: Hero copy, terminal lines, stats, CTA
+- **Services**: Service titles, descriptions, features
+- **Case studies**: Client stories, metrics, outcomes
+- **About page**: Philosophy, approach, team info
+- **Contact**: Form labels, success/error messages
+- **Legal pages**: Privacy policy, terms of service
+
+### Example: Updating a service
+
+```typescript
+// src/lib/content.ts
+export const services = [
+  {
+    id: 'implementation',
+    icon: '⚡',
+    title: 'Implementation',
+    shortDescription: 'Your new description here...',
+    // ... rest of fields
+  },
+]
+```
+
+---
+
+## 🎨 Design System
+
+### Colors (Tailwind classes)
+
+| Token | Class | Usage |
+|-------|-------|-------|
+| Primary BG | `bg-bg-primary` | Page background |
+| Secondary BG | `bg-bg-secondary` | Cards, sections |
+| Surface | `bg-surface` | Interactive elements |
+| Border | `border-border` | Default borders |
+| Accent | `text-accent` | Primary accent (emerald) |
+| Text Primary | `text-text-primary` | Headings, primary text |
+| Text Secondary | `text-text-secondary` | Body text |
+| Text Muted | `text-text-muted` | Labels, hints |
+
+### Typography
+
+| Class | Usage |
+|-------|-------|
+| `text-display-xl` | Hero headlines |
+| `text-display-lg` | Page titles |
+| `text-display-md` | Section titles |
+| `text-display-sm` | Subsection titles |
+| `text-heading-lg/md/sm` | Card titles, headings |
+| `text-body-lg/md/sm` | Body text |
+| `text-label` | Labels, badges |
+| `font-mono` | Code, technical text |
+
+### Components
+
+All components are in `src/components/ui/`:
+
+- `Button` - Primary, secondary, ghost variants
+- `Card` - With optional hover and highlight effects
+- `Input` / `Textarea` - Form inputs with validation
+- `Section` - Consistent page sections with animation
+- `Terminal` - Animated terminal display
+- `Badge` - Status badges with optional pulse
+
+---
+
+## 🔧 Customization
+
+### Changing Colors
+
+Edit `tailwind.config.ts`:
+
+```typescript
+colors: {
+  accent: {
+    DEFAULT: '#10b981', // Change primary accent
+    secondary: '#06b6d4', // Secondary accent
+  },
+}
+```
+
+### Changing Animations
+
+Edit `src/lib/motion.ts` to adjust animation variants, durations, and easing.
+
+### Adding New Pages
+
+1. Create folder in `src/app/[page-name]/`
+2. Add `page.tsx` (client component with 'use client')
+3. Add `layout.tsx` (server component with metadata)
+4. Add route to `navigation` in `src/lib/content.ts`
+
+---
+
+## 🚢 Deployment
+
+### Vercel (Recommended)
+
+1. Push to GitHub
+2. Import project in Vercel
+3. Deploy automatically
+
+### Environment Variables
+
+Set these in your deployment platform:
+
+- `NEXT_PUBLIC_SITE_URL` - Your production URL
+
+---
+
+## 📋 QA Checklist
+
+Before deployment, verify:
+
+- [ ] All navigation links work
+- [ ] All CTAs route correctly
+- [ ] Contact form validates and shows success/error states
+- [ ] Mobile menu opens/closes cleanly
+- [ ] Animations don't cause jank
+- [ ] `prefers-reduced-motion` is respected
+- [ ] 404 page displays correctly
+- [ ] All images have alt text
+- [ ] Keyboard navigation works
+
+---
+
+## 📄 License
+
+Proprietary - Ulixes Corporation

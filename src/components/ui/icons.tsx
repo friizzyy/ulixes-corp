@@ -122,14 +122,14 @@ export function CheckCircle({ className, size = 20 }: IconProps) {
       fill="none"
       className={className}
     >
-      <circle cx="10" cy="10" r="10" className="fill-ultraviolet/20" />
+      <circle cx="10" cy="10" r="10" className="fill-accent/20" />
       <path
         d="M6 10l2.5 2.5L14 7"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="text-violet-light"
+        className="text-accent"
       />
     </svg>
   )

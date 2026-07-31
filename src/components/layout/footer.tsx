@@ -1,79 +1,78 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { navigation, siteConfig } from '@/lib/content'
-
-function resolveHref(href: string, isHomepage: boolean) {
-  return href.startsWith('#') && !isHomepage ? `/${href}` : href
-}
+import { motion } from 'framer-motion'
+import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion'
+import { siteConfig, navigation } from '@/lib/content'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
-  const isHomepage = usePathname() === '/'
 
   return (
-    <footer className="relative z-10 border-t border-border bg-bg-primary text-text-primary">
-      <div
-        className="container-main py-12 sm:py-16"
-        style={{ paddingBottom: 'calc(var(--safe-area-bottom) + 3rem)' }}
-      >
-        <div className="grid gap-10 border-b border-border pb-10 md:grid-cols-[minmax(16rem,1fr)_2fr] md:gap-16">
-          <div>
-            <Link
-              href="/"
-              className="inline-flex min-h-[44px] items-center text-sm font-semibold tracking-[0.2em]"
-            >
-              ULIXES
-            </Link>
-            <p className="mt-3 max-w-sm text-body-sm text-text-secondary">
-              {siteConfig.advisoryLine}
-            </p>
-          </div>
+    <motion.footer
+      className="relative z-10 border-t border-border"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportOnce}
+    >
+      <div className="container-main py-12 sm:py-16 md:py-20" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 2.5rem)' }}>
+        {/* Top row: Logo + Nav links */}
+        <motion.div
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8 sm:gap-6 mb-10 sm:mb-12"
+          variants={fadeUp}
+        >
+          {/* Logo */}
+          <Link href="/" className="flex items-center">
+            <span className="font-mono text-lg tracking-tight">
+              <span className="text-accent font-semibold">[</span>
+              <span className="text-text-primary font-medium mx-1">ulixes</span>
+              <span className="text-accent font-semibold">]</span>
+            </span>
+          </Link>
 
-          <nav
-            aria-label="Footer navigation"
-            className="grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3"
-          >
-            {navigation.footer.main.map((item) => (
+          {/* Main nav — same links as header */}
+          <nav className="flex flex-wrap items-center gap-x-6 sm:gap-x-8 gap-y-2">
+            {navigation.main.map((item) => (
               <Link
-                key={item.label}
-                href={resolveHref(item.href, isHomepage)}
-                className="inline-flex min-h-[44px] items-center text-body-sm text-text-secondary transition-colors hover:text-text-primary"
+                key={item.href}
+                href={item.href}
+                className="text-body-sm text-text-muted hover:text-text-primary transition-colors"
               >
                 {item.label}
               </Link>
             ))}
-            <a
-              href={siteConfig.linkedIn}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="LinkedIn (opens in a new tab)"
-              className="inline-flex min-h-[44px] items-center text-body-sm text-text-secondary transition-colors hover:text-text-primary"
-            >
-              LinkedIn
-            </a>
           </nav>
-        </div>
+        </motion.div>
 
-        <div className="flex flex-col gap-4 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        {/* Bottom row: Copyright + Legal + Email */}
+        <motion.div
+          className="pt-6 sm:pt-8 border-t border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+          variants={fadeUp}
+        >
           <p className="text-body-sm text-text-muted">
             &copy; {currentYear} {siteConfig.name}
           </p>
 
-          <nav aria-label="Legal" className="flex flex-wrap items-center gap-x-6">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <a
+              href={`mailto:${siteConfig.email}`}
+              className="text-body-sm text-text-muted hover:text-accent transition-colors"
+            >
+              {siteConfig.email}
+            </a>
             {navigation.footer.legal.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-body-sm text-text-muted transition-colors hover:text-text-primary"
+                className="text-body-sm text-text-muted hover:text-text-secondary transition-colors"
               >
                 {item.label}
               </Link>
             ))}
-          </nav>
-        </div>
+          </div>
+        </motion.div>
       </div>
-    </footer>
+    </motion.footer>
   )
 }
