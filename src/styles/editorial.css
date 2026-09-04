@@ -13,11 +13,17 @@
  */
 
 :root {
-  --mobile-gutter: 1.25rem;
+  --mobile-gutter: 20px;
   --mobile-section-y: clamp(3.5rem, 12vw, 4.5rem);
   --mobile-stack-gap: 1.25rem;
   --mobile-control-height: 3.5rem;
-  --mobile-header-height: 4rem;
+  --mobile-header-height: 60px;
+}
+
+@media (max-width: 359px) {
+  :root {
+    --mobile-gutter: 16px;
+  }
 }
 
 [data-surface='editorial'] {

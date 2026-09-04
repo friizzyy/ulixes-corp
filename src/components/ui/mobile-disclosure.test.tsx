@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { MobileDisclosure } from './mobile-disclosure'
 
 const items = [
@@ -21,7 +21,19 @@ const items = [
   },
 ]
 
+const originalScrollIntoView = HTMLElement.prototype.scrollIntoView
+
 describe('MobileDisclosure', () => {
+  afterEach(() => {
+    window.history.replaceState(null, '', '/')
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+      configurable: true,
+      writable: true,
+      value: originalScrollIntoView,
+    })
+    vi.restoreAllMocks()
+  })
+
   it('opens the requested item by default and keeps the other panel unavailable', () => {
     render(
       <MobileDisclosure
@@ -71,6 +83,66 @@ describe('MobileDisclosure', () => {
     expect(
       screen.getByRole('link', { name: /discuss migration assurance/i }),
     ).toBeInTheDocument()
+  })
+
+  it('keeps one disclosure selected when collapse is disabled', async () => {
+    const user = userEvent.setup()
+    render(
+      <MobileDisclosure
+        ariaLabel="Phases"
+        items={items}
+        allowCollapse={false}
+      />,
+    )
+    const first = screen.getByRole('button', { name: /implementation oversight/i })
+    await user.click(first)
+    expect(first).toHaveAttribute('aria-expanded', 'true')
+
+    first.focus()
+    await user.keyboard('{Escape}')
+    expect(first).toHaveAttribute('aria-expanded', 'true')
+  })
+
+  it('selects an item when strict mode is enabled after every item was collapsed', async () => {
+    const user = userEvent.setup()
+    const { rerender } = render(
+      <MobileDisclosure ariaLabel="Phases" items={items} />,
+    )
+    const first = screen.getByRole('button', { name: /implementation oversight/i })
+    await user.click(first)
+    expect(first).toHaveAttribute('aria-expanded', 'false')
+
+    rerender(
+      <MobileDisclosure
+        ariaLabel="Phases"
+        items={items}
+        allowCollapse={false}
+      />,
+    )
+    expect(first).toHaveAttribute('aria-expanded', 'true')
+  })
+
+  it('selects the first remaining item when the strict selection is removed', () => {
+    const { rerender } = render(
+      <MobileDisclosure
+        ariaLabel="Phases"
+        items={items}
+        allowCollapse={false}
+      />,
+    )
+
+    rerender(
+      <MobileDisclosure
+        ariaLabel="Phases"
+        items={items.slice(1)}
+        allowCollapse={false}
+      />,
+    )
+
+    expect(screen.getByRole('button', { name: /migration assurance/i })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    )
   })
 
   it('collapses the open panel with Escape only while its control has focus', async () => {
@@ -142,5 +214,41 @@ describe('MobileDisclosure', () => {
     ).toHaveFocus()
     await user.tab()
     expect(screen.getByRole('button', { name: /migration assurance/i })).toHaveFocus()
+  })
+
+  it('uses the mobile hash behavior through the 895px ceiling', async () => {
+    window.history.replaceState(null, '', '/#migration')
+    vi.spyOn(window, 'matchMedia').mockImplementation((query) => ({
+      matches: query === '(max-width: 895px)',
+      media: query,
+      onchange: null,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: () => false,
+    }))
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+      callback(0)
+      return 1
+    })
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+      configurable: true,
+      writable: true,
+      value: vi.fn(),
+    })
+
+    render(
+      <MobileDisclosure
+        ariaLabel="Services capabilities"
+        items={items}
+        syncWithLocationHash
+      />,
+    )
+
+    expect(await screen.findByRole('button', { name: /migration assurance/i })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    )
   })
 })

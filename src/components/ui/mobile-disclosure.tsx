@@ -20,6 +20,7 @@ export type MobileDisclosureProps = {
   tone?: 'light' | 'dark'
   className?: string
   syncWithLocationHash?: boolean
+  allowCollapse?: boolean
 }
 
 export function MobileDisclosure({
@@ -29,6 +30,7 @@ export function MobileDisclosure({
   tone = 'light',
   className,
   syncWithLocationHash = false,
+  allowCollapse = true,
 }: MobileDisclosureProps) {
   const instanceId = useId().replace(/:/g, '')
   const controlRefs = useRef(new Map<string, HTMLButtonElement>())
@@ -37,6 +39,11 @@ export function MobileDisclosure({
     items.some((item) => item.id === defaultOpenId) ? defaultOpenId : items[0]?.id,
   )
   const [hashTargetId, setHashTargetId] = useState<string | undefined>()
+  const selectedOpenId = items.some((item) => item.id === openId)
+    ? openId
+    : allowCollapse
+      ? undefined
+      : items[0]?.id
 
   useEffect(() => {
     if (!syncWithLocationHash || typeof window === 'undefined') return
@@ -51,7 +58,7 @@ export function MobileDisclosure({
       if (!items.some((item) => item.id === targetId)) return
 
       setHashTargetId(targetId)
-      if (window.matchMedia('(max-width: 767px)').matches) {
+      if (window.matchMedia('(max-width: 895px)').matches) {
         setOpenId(targetId)
       }
     }
@@ -66,8 +73,8 @@ export function MobileDisclosure({
   useEffect(() => {
     if (!syncWithLocationHash || !hashTargetId) return
 
-    const phone = window.matchMedia('(max-width: 767px)').matches
-    if (phone && openId !== hashTargetId) return
+    const phone = window.matchMedia('(max-width: 895px)').matches
+    if (phone && selectedOpenId !== hashTargetId) return
 
     if (scrollFrameRef.current !== null) {
       window.cancelAnimationFrame(scrollFrameRef.current)
@@ -98,7 +105,7 @@ export function MobileDisclosure({
         scrollFrameRef.current = null
       }
     }
-  }, [hashTargetId, openId, syncWithLocationHash])
+  }, [hashTargetId, selectedOpenId, syncWithLocationHash])
 
   return (
     <section
@@ -109,7 +116,7 @@ export function MobileDisclosure({
         const itemId = encodeURIComponent(item.id)
         const controlId = `mobile-disclosure-${instanceId}-${itemId}-control`
         const panelId = `mobile-disclosure-${instanceId}-${itemId}-panel`
-        const isOpen = openId === item.id
+        const isOpen = selectedOpenId === item.id
 
         return (
           <div className={styles.item} key={item.id}>
@@ -124,10 +131,12 @@ export function MobileDisclosure({
               aria-expanded={isOpen}
               aria-controls={panelId}
               onClick={() => {
-                setOpenId((currentId) => (currentId === item.id ? undefined : item.id))
+                setOpenId((currentId) =>
+                  currentId === item.id && allowCollapse ? undefined : item.id,
+                )
               }}
               onKeyDown={(event) => {
-                if (event.key === 'Escape' && isOpen) {
+                if (event.key === 'Escape' && isOpen && allowCollapse) {
                   event.preventDefault()
                   setOpenId(undefined)
                 }
