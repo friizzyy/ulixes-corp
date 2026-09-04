@@ -1,11 +1,12 @@
-import { LegalPage, toLegalSections } from '@/components/legal'
+import { toLegalSections } from '@/components/legal'
 import { siteConfig, termsContent } from '@/lib/content'
+import { TermsDocument } from './terms-document'
 
 /* Metadata for this segment lives in ./layout.tsx. */
 
 export default function TermsPage() {
   return (
-    <LegalPage
+    <TermsDocument
       eyebrow="Legal"
       title={termsContent.title}
       updated={termsContent.lastUpdated}
