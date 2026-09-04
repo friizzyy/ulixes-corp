@@ -21,7 +21,9 @@
   --copy-primary: #f6f5f1;
   --copy-secondary: #a8b4b9;
   --copy-muted: rgba(246, 245, 241, 0.5);
-  --copy-ghost: rgba(246, 245, 241, 0.34);
+  /* Was 0.34, which measured 2.96:1 on the dark card. 0.52 clears 4.5 at 5.1
+     while staying clearly subordinate to the row titles. */
+  --copy-ghost: rgba(246, 245, 241, 0.52);
   --mono: var(--font-jetbrains), ui-monospace, monospace;
   --display: var(--font-home-display), var(--font-outfit), sans-serif;
   --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);

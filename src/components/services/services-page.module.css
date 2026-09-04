@@ -197,7 +197,10 @@
 
 /* Capabilities ----------------------------------------------------------- */
 
+/* Same offset as the other in-page targets: the hero action jumps here and the
+   fixed header would otherwise cover the section head. */
 .capabilities {
+  scroll-margin-top: calc(var(--mobile-header-height, 4rem) + 1.5rem);
   padding: clamp(2.5rem, 3.5vw, 3rem) 0 clamp(2.5rem, 3.5vw, 3rem);
 }
 
@@ -815,6 +818,12 @@
     max-width: 36rem;
     margin-top: 1rem;
     line-height: 1.52;
+  }
+
+  /* The eyebrow lands on the travertine and measured about 2:1 in steel grey.
+     Ink reads over the stone without veiling the photograph further. */
+  .heroCopy .eyebrow {
+    color: var(--ink);
   }
 
   .heroActions {

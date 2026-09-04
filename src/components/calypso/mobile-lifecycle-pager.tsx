@@ -277,7 +277,8 @@ export function MobileLifecyclePager({
         </button>
       </div>
 
-      <div className={styles.navigation} aria-label="Browse lifecycle stages">
+      <div className={styles.navigation} role="group"
+        aria-label="Browse lifecycle stages">
         <button
           type="button"
           className={styles.navigationControl}

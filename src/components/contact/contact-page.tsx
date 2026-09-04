@@ -306,6 +306,7 @@ export function ContactPage() {
                     <label htmlFor="name">{form.nameLabel}</label>
                     <input
                       id="name"
+                      aria-required="true"
                       name="name"
                       type="text"
                       autoComplete="name"
@@ -326,6 +327,7 @@ export function ContactPage() {
                     <label htmlFor="email">{form.emailLabel}</label>
                     <input
                       id="email"
+                      aria-required="true"
                       name="email"
                       type="email"
                       autoComplete="email"
@@ -364,6 +366,7 @@ export function ContactPage() {
                     <label htmlFor="message">{form.messageLabel}</label>
                     <textarea
                       id="message"
+                      aria-required="true"
                       name="message"
                       rows={4}
                       value={formData.message}

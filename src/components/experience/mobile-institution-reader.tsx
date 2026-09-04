@@ -93,7 +93,8 @@ export function MobileInstitutionReader({ categories }: MobileInstitutionReaderP
             {String(activeIndex + 1).padStart(2, '0')} /{' '}
             {String(categories.length).padStart(2, '0')}
           </p>
-          <div className={styles.pager} aria-label="Browse institutions">
+          <div className={styles.pager} role="group"
+        aria-label="Browse institutions">
             <button
               type="button"
               className={styles.pagerControl}

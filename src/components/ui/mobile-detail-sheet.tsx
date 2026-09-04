@@ -143,7 +143,10 @@ export function MobileDetailSheet({
         aria-labelledby={titleId}
         tabIndex={-1}
       >
-        <header className={styles.header}>
+        {/* Plain elements: a header or footer here maps to the banner and
+            contentinfo landmarks and duplicates the page's own while the sheet
+            is open. Inside a dialog they are structure, not landmarks. */}
+        <div className={styles.header}>
           <div className={styles.heading}>
             {eyebrow && <p className={styles.eyebrow}>{eyebrow}</p>}
             <h2 className={styles.title} id={titleId}>
@@ -159,9 +162,9 @@ export function MobileDetailSheet({
           >
             <X aria-hidden="true" />
           </button>
-        </header>
+        </div>
         <div className={styles.body}>{children}</div>
-        {footer && <footer className={styles.footer}>{footer}</footer>}
+        {footer && <div className={styles.footer}>{footer}</div>}
       </div>
     </div>,
     document.body,

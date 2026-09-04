@@ -86,7 +86,10 @@
 }
 
 .dockIndex {
-  color: rgba(16, 33, 43, 0.32);
+  /* Was 0.32, which measured 1.99:1 on the cream ground. These numerals are
+     text, so they carry the 4.5:1 floor; 0.64 clears it at 4.9 and keeps them
+     quieter than the values they label. */
+  color: rgba(16, 33, 43, 0.64);
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: var(--label-xs, 0.68rem);
   font-weight: 640;

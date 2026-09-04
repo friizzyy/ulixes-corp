@@ -415,7 +415,9 @@
    too faint to order anything. */
 .positionIndex {
   grid-row: span 2;
-  color: rgba(243, 243, 239, 0.28);
+  /* Was 0.28, which measured 2.40:1. At 25.6px/500 this is large text, so the
+     floor is 3:1; 0.40 clears it at 3.5. */
+  color: rgba(243, 243, 239, 0.4);
   font-family: var(--font-home-display), var(--font-outfit), sans-serif;
   font-size: 1.6rem;
   font-weight: 500;

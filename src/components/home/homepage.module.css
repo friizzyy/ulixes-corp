@@ -442,7 +442,14 @@
   margin-inline: auto;
 }
 
+/*
+ * The hero's "Review the capabilities" jumps here, and with no scroll margin
+ * the section landed under the fixed header. The legal pages and the Calypso
+ * section nav already offset their targets; this brings the two marketing
+ * anchors onto the same footing.
+ */
 .services {
+  scroll-margin-top: calc(var(--mobile-header-height, 4rem) + 1.5rem);
   padding: 12.75rem 0 5.25rem;
 }
 

@@ -758,3 +758,31 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/*
+ * The form was the only place on the site without a real focus ring. The rule
+ * above sets `outline: none` on :focus, leaving a 1px border shift measuring
+ * about 1.8:1 against the field, which fails WCAG 2.4.11 on both thickness and
+ * contrast. These selectors match its specificity and come later, so keyboard
+ * focus gets the same 2px ring every other control on the site uses while a
+ * pointer focus stays quiet.
+ */
+.field input:focus-visible,
+.field textarea:focus-visible {
+  outline: 2px solid #607985;
+  outline-offset: 2px;
+}
+
+/*
+ * The invalid border has to survive focus. On an empty submit the first
+ * invalid field is focused, and the focus rule above repainted its border to
+ * the resting colour, so the one field the reader was sent to was the only one
+ * not visibly marked.
+ */
+.field input[aria-invalid='true']:focus,
+.field textarea[aria-invalid='true']:focus,
+.field input[aria-invalid='true']:focus-visible,
+.field textarea[aria-invalid='true']:focus-visible {
+  border-color: #8a6a52;
+  background: rgba(150, 83, 75, 0.05);
+}
