@@ -131,7 +131,7 @@ describe('MobileLifecyclePager', () => {
     expect(controls).toHaveLength(7)
     expect(controls.filter((control) => control.getAttribute('aria-pressed') === 'true'))
       .toHaveLength(1)
-    expect(controls[0]).toHaveAccessibleName('Stage 1: Capture — 01')
+    expect(controls[0]).toHaveAccessibleName('Stage 1: Capture, 01')
     expect(summary).toHaveTextContent('01 / 07')
     expect(summary).toHaveTextContent('Capture')
     expect(summary).toHaveTextContent('Front office')

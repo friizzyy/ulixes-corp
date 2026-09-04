@@ -1,18 +1,34 @@
 .reader {
   display: grid;
   gap: 1rem;
+  min-width: 0;
 }
 
 .index {
   display: flex;
   gap: 0.5rem;
-  width: calc(100% + var(--mobile-gutter-right, 20px));
-  padding: 0 var(--mobile-gutter-right, 20px) 0.25rem 0;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25rem 1rem 0.5rem;
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
-  scroll-padding-inline: 0 var(--mobile-gutter-right, 20px);
+  scroll-padding-inline: 1rem;
   scroll-snap-type: x proximity;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 1rem,
+    #000 calc(100% - 1rem),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 1rem,
+    #000 calc(100% - 1rem),
+    transparent 100%
+  );
 }
 
 .index::-webkit-scrollbar {
@@ -176,6 +192,8 @@
     padding: 0;
     overflow: visible;
     border-top: 1px solid rgba(16, 33, 43, 0.14);
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .indexControl {

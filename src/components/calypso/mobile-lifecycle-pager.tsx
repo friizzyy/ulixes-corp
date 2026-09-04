@@ -222,7 +222,7 @@ export function MobileLifecyclePager({
                 }}
                 type="button"
                 className={styles.segment}
-                aria-label={`Stage ${index + 1}: ${stage.label} — ${pad(index + 1)}`}
+                aria-label={`Stage ${index + 1}: ${stage.label}, ${pad(index + 1)}`}
                 aria-pressed={isActive}
                 aria-controls={summaryId}
                 data-material={material}

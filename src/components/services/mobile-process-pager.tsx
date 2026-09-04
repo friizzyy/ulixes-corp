@@ -69,7 +69,7 @@ export function MobileProcessPager({ steps }: MobileProcessPagerProps) {
               type="button"
               id={controlId}
               className={styles.phaseControl}
-              aria-label={`Phase ${index + 1}: ${step.title} — ${pad(index)}`}
+              aria-label={`Phase ${index + 1}: ${step.title}, ${pad(index)}`}
               aria-expanded={isActive}
               aria-controls={detailId}
               onClick={() => selectPhase(index)}
