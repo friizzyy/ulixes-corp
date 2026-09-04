@@ -811,3 +811,17 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/*
+ * The partial underline is a hover affordance that completes on pointer-over.
+ * A coarse pointer never delivers that hover, so the stub rested permanently
+ * at roughly a quarter width and read as an unfinished rule rather than as a
+ * link. It rests drawn and quiet on touch instead.
+ */
+@media (hover: none) {
+  .textLink::after {
+    transform: scaleX(1);
+    opacity: 0.32;
+  }
+}
