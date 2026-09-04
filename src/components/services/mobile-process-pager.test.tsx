@@ -12,6 +12,8 @@ describe('MobileProcessPager', () => {
     render(<MobileProcessPager steps={steps} />)
 
     expect(screen.getAllByRole('button', { expanded: true })).toHaveLength(1)
+    expect(screen.getAllByRole('button', { expanded: true })[0])
+      .toHaveAccessibleName('Phase 1: Architecture definition — 01')
     expect(screen.getByText(steps[0].description)).toBeVisible()
 
     await user.click(screen.getByRole('button', { name: 'Next phase' }))

@@ -200,7 +200,7 @@ describe('LifecycleBlotter', () => {
     ) as HTMLElement
 
     fireEvent.click(
-      within(mobilePager).getByRole('button', { name: 'Stage 5: Settlement' }),
+      within(mobilePager).getByRole('button', { name: /Stage 5: Settlement/ }),
     )
     expect(
       within(desktopWorkbench).getByRole('tab', { name: /settlement/i }),
@@ -210,7 +210,7 @@ describe('LifecycleBlotter', () => {
       within(desktopWorkbench).getByRole('tab', { name: /collateral/i }),
     )
     expect(
-      within(mobilePager).getByRole('button', { name: 'Stage 4: Collateral' }),
+      within(mobilePager).getByRole('button', { name: /Stage 4: Collateral/ }),
     ).toHaveAttribute('aria-pressed', 'true')
   })
 
@@ -319,7 +319,7 @@ describe('LifecycleBlotter', () => {
       expect(tab).toHaveAttribute('aria-controls', 'lifecycle-stage-detail')
       expect(tab).toHaveTextContent(String(index + 1).padStart(2, '0'))
       expect(tab).toHaveAccessibleName(
-        `${String(index + 1).padStart(2, '0')}. ${stage.label}. ${officeBands[index]}. ${detail.breaks}`,
+        `${String(index + 1).padStart(2, '0')} ${stage.label} ${officeBands[index]}. ${detail.breaks}`,
       )
     })
   })

@@ -253,9 +253,9 @@ export function LifecycleBlotter() {
                     id={'lifecycle-stage-tab-' + stage.id}
                     aria-label={
                       pad(index + 1) +
-                      '. ' +
+                      ' ' +
                       stage.label +
-                      '. ' +
+                      ' ' +
                       office +
                       '. ' +
                       detail.breaks

@@ -131,7 +131,7 @@ describe('MobileLifecyclePager', () => {
     expect(controls).toHaveLength(7)
     expect(controls.filter((control) => control.getAttribute('aria-pressed') === 'true'))
       .toHaveLength(1)
-    expect(controls[0]).toHaveAccessibleName('Stage 1: Capture')
+    expect(controls[0]).toHaveAccessibleName('Stage 1: Capture — 01')
     expect(summary).toHaveTextContent('01 / 07')
     expect(summary).toHaveTextContent('Capture')
     expect(summary).toHaveTextContent('Front office')
@@ -150,7 +150,7 @@ describe('MobileLifecyclePager', () => {
     const user = userEvent.setup()
     renderPager()
 
-    await user.click(screen.getByRole('button', { name: 'Stage 4: Collateral' }))
+    await user.click(screen.getByRole('button', { name: /Stage 4: Collateral/ }))
 
     const summary = screen.getByRole('region', {
       name: 'Active lifecycle stage',
@@ -162,7 +162,7 @@ describe('MobileLifecyclePager', () => {
       calypsoContent.schematic.stageDetail.collateral.breaks,
     )
     expect(
-      screen.getByRole('button', { name: 'Stage 4: Collateral' }),
+      screen.getByRole('button', { name: /Stage 4: Collateral/ }),
     ).toHaveAttribute('aria-pressed', 'true')
   })
 
@@ -178,7 +178,7 @@ describe('MobileLifecyclePager', () => {
     expect(screen.getByText('02 / 07')).toBeVisible()
     expect(previous).toBeEnabled()
 
-    await user.click(screen.getByRole('button', { name: 'Stage 7: Regulatory reporting' }))
+    await user.click(screen.getByRole('button', { name: /Stage 7: Regulatory reporting/ }))
     expect(next).toBeDisabled()
   })
 
@@ -216,7 +216,7 @@ describe('MobileLifecyclePager', () => {
 
     expect(screen.getByText('07 / 07')).toBeVisible()
     expect(
-      screen.getByRole('button', { name: 'Stage 7: Regulatory reporting' }),
+      screen.getByRole('button', { name: /Stage 7: Regulatory reporting/ }),
     ).toHaveAttribute('aria-pressed', 'true')
 
     unmount()
@@ -227,7 +227,7 @@ describe('MobileLifecyclePager', () => {
     )
     renderPager()
     expect(screen.getByText('01 / 07')).toBeVisible()
-    expect(screen.getByRole('button', { name: 'Stage 1: Capture' }))
+    expect(screen.getByRole('button', { name: /Stage 1: Capture/ }))
       .toHaveAttribute('aria-pressed', 'true')
   })
 
@@ -270,7 +270,7 @@ describe('MobileLifecyclePager', () => {
       }).parentElement as HTMLElement
 
       await user.click(
-        screen.getByRole('button', { name: 'Stage 7: Regulatory reporting' }),
+        screen.getByRole('button', { name: /Stage 7: Regulatory reporting/ }),
       )
       expect(viewport.scrollLeft).toBe(208)
       expect(rail.scrollTo).toHaveBeenLastCalledWith({
@@ -321,7 +321,7 @@ describe('MobileLifecyclePager', () => {
     try {
       renderPager()
       await user.click(
-        screen.getByRole('button', { name: 'Stage 7: Regulatory reporting' }),
+        screen.getByRole('button', { name: /Stage 7: Regulatory reporting/ }),
       )
 
       expect(rail.scrollTo).toHaveBeenLastCalledWith({
@@ -343,20 +343,20 @@ describe('MobileLifecyclePager', () => {
     const pushState = vi.spyOn(window.history, 'pushState')
     renderPager()
 
-    await user.click(screen.getByRole('button', { name: 'Stage 5: Settlement' }))
+    await user.click(screen.getByRole('button', { name: /Stage 5: Settlement/ }))
 
     expect(window.location.search).toBe('?view=compact&stage=settlement')
     expect(window.location.hash).toBe('#lifecycle')
     expect(pushState).toHaveBeenCalledTimes(1)
 
-    await user.click(screen.getByRole('button', { name: 'Stage 5: Settlement' }))
+    await user.click(screen.getByRole('button', { name: /Stage 5: Settlement/ }))
     expect(pushState).toHaveBeenCalledTimes(1)
   })
 
   it('restores the selected stage when browser history changes', () => {
     renderPager()
     const target = screen.getByRole('button', {
-      name: 'Stage 6: Ledger',
+      name: /Stage 6: Ledger/,
     })
     target.focus()
 
@@ -369,14 +369,14 @@ describe('MobileLifecyclePager', () => {
 
     expect(screen.getByText('04 / 07')).toBeVisible()
     expect(
-      screen.getByRole('button', { name: 'Stage 4: Collateral' }),
+      screen.getByRole('button', { name: /Stage 4: Collateral/ }),
     ).toHaveFocus()
   })
 
   it('keeps deep evidence out of the page until the active stage sheet opens', async () => {
     const user = userEvent.setup()
     renderPager()
-    await user.click(screen.getByRole('button', { name: 'Stage 4: Collateral' }))
+    await user.click(screen.getByRole('button', { name: /Stage 4: Collateral/ }))
 
     expect(screen.queryByText('Built from')).not.toBeInTheDocument()
     expect(screen.queryByText('Depends on')).not.toBeInTheDocument()

@@ -273,8 +273,9 @@ describe('CalypsoPrograms', () => {
       name: 'Mobile Calypso programs',
     })
     const trigger = within(mobile).getByRole('button', {
-      name: 'View product domains',
+      name: /View product domains/,
     })
+    expect(trigger).toHaveAccessibleName('Applied across View product domains')
 
     calypsoDomains.forEach((domain) => {
       expect(within(mobile).queryByText(domain.name)).not.toBeInTheDocument()

@@ -297,7 +297,7 @@ export function CalypsoPrograms() {
         <button
           type="button"
           className={styles.mobileDomainsTrigger}
-          aria-label="View product domains"
+          aria-label={`${calypsoContent.domains.label} View product domains`}
           onClick={() => setDomainsOpen(true)}
         >
           <span>
