@@ -184,6 +184,67 @@
   transform: translate(1px, -1px);
 }
 
+/*
+ * The subordinate partner to .ed-primary. Same chassis, same chamber, same
+ * touch height: a real button rather than a text link wearing an underline.
+ * It exists because "View Ulysses on LinkedIn" leaves the site, and an action
+ * that hands the reader to a third party should look like something you press,
+ * not like a word that happens to be blue. Weight is carried by the border and
+ * the ground, never by fill, so it stays clearly second to the dark primary
+ * sitting next to it.
+ */
+.ed-secondary {
+  display: inline-grid;
+  grid-template-columns: auto 2.85rem;
+  min-height: 3.25rem;
+  overflow: hidden;
+  border: 1px solid rgba(16, 33, 43, 0.16);
+  border-radius: 4px;
+  background: rgba(250, 249, 246, 0.72);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 620;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.ed-secondary > span:first-child {
+  display: flex;
+  align-items: center;
+  padding: 0 1.15rem;
+}
+
+/* The chamber reads as the external-link indication. Its rule matches the
+   button's own border rather than the primary's light-on-dark divider. */
+.ed-secondary .ed-chamber {
+  border-left: 1px solid rgba(16, 33, 43, 0.14);
+}
+
+.ed-secondary:hover {
+  transform: translateY(-2px);
+  border-color: rgba(16, 33, 43, 0.28);
+  background: rgba(250, 249, 246, 0.95);
+}
+
+.ed-secondary:hover .ed-chamber {
+  transform: translate(1px, -1px);
+}
+
+.ed-secondary:active {
+  transform: translateY(0);
+}
+
+.ed-secondary:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
 .ed-textlink {
   position: relative;
   display: inline-flex;
@@ -211,6 +272,19 @@
 .ed-textlink:focus-visible::after {
   transform: scaleX(1);
 }
+
+/*
+ * Same correction as the page modules: the partial underline is a hover
+ * affordance, and a coarse pointer never completes it. Resting it drawn and
+ * quiet stops it reading as an unfinished rule on touch.
+ */
+@media (hover: none) {
+  .ed-textlink::after {
+    transform: scaleX(1);
+    opacity: 0.32;
+  }
+}
+
 
 .ed-textlink svg {
   transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);

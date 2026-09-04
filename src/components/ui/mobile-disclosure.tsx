@@ -15,6 +15,9 @@ export type MobileDisclosureItem = {
 
 export type MobileDisclosureProps = {
   ariaLabel: string
+  /* A short instruction above the list. A bare chevron on a flat row does not
+     read as operable, so each register says what it wants you to do. */
+  hint?: string
   items: MobileDisclosureItem[]
   defaultOpenId?: string
   tone?: 'light' | 'dark'
@@ -25,6 +28,7 @@ export type MobileDisclosureProps = {
 
 export function MobileDisclosure({
   ariaLabel,
+  hint,
   items,
   defaultOpenId,
   tone = 'light',
@@ -112,6 +116,11 @@ export function MobileDisclosure({
       className={cn(styles.disclosure, tone === 'dark' && styles.dark, className)}
       aria-label={ariaLabel}
     >
+      {hint && (
+        <p className={styles.hint} aria-hidden="true">
+          {hint}
+        </p>
+      )}
       {items.map((item) => {
         const itemId = encodeURIComponent(item.id)
         const controlId = `mobile-disclosure-${instanceId}-${itemId}-control`
@@ -148,7 +157,9 @@ export function MobileDisclosure({
                 <span className={styles.title}>{item.title}</span>
                 {item.summary && <span className={styles.summary}>{item.summary}</span>}
               </span>
-              <span className={styles.indicator} aria-hidden="true" />
+              <span className={styles.chamber} aria-hidden="true">
+                <span className={styles.indicator} />
+              </span>
             </button>
             <div
               id={panelId}

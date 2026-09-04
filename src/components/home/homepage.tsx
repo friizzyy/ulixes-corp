@@ -259,12 +259,14 @@ export function Homepage() {
             </Cascade>
             <a
               href={homepageContent.credibility.linkedinUrl}
-              className={styles.textLink}
+              className={`ed-secondary ${styles.linkedinAction}`}
               target="_blank"
               rel="noreferrer"
             >
-              {homepageContent.credibility.cta}
-              <ArrowUpRight size={16} />
+              <span>{homepageContent.credibility.cta}</span>
+              <span className="ed-chamber" aria-hidden="true">
+                <ArrowUpRight size={16} />
+              </span>
               <span className="sr-only">(opens in a new tab)</span>
             </a>
           </div>

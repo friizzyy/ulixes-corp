@@ -73,19 +73,11 @@
 
 
 
-/* The link is the 44px hit area; the label inside it carries the underline
-   so the extra height never pushes the rule away from the type. */
-.textLink {
+/* The LinkedIn action is a real secondary button (.ed-secondary) rather than a
+   text link, because it hands the reader to a third party. Only the label's
+   wrapping behaviour is page-specific. */
+.linkedinAction {
   white-space: nowrap;
-}
-
-.textLinkLabel {
-  display: inline;
-}
-
-
-.textLink:hover .textLinkLabel {
-  border-bottom-color: var(--ink);
 }
 
 /* Hero ------------------------------------------------------------------ */
@@ -735,34 +727,22 @@
     padding-inline: 0.5rem;
   }
 
-  .heroActions .textLink {
-    justify-content: center;
+  /* The secondary matches the primary's mobile chassis so the declared hero
+     pair stays on one row and both halves keep the same optical weight. */
+  .heroActions .linkedinAction {
+    grid-template-columns: minmax(0, 1fr) 2.5rem;
     min-width: 0;
-    padding: 0.45rem 0.65rem;
-    border: 1px solid rgba(16, 33, 43, 0.22);
-    border-radius: 4px;
-    background: rgba(250, 249, 246, 0.72);
+    font-size: clamp(0.72rem, 3.1vw, 0.82rem);
+    white-space: normal;
     box-shadow:
       inset 0 1px rgba(255, 255, 255, 0.86),
       0 12px 24px -22px rgba(16, 33, 43, 0.5);
-    font-size: clamp(0.72rem, 3.1vw, 0.82rem);
+  }
+
+  .heroActions .linkedinAction > span:first-child {
+    min-width: 0;
+    padding-inline: 0.5rem;
     line-height: 1.25;
-    text-align: center;
-    white-space: normal;
-  }
-
-  .heroActions .textLink::after {
-    display: none;
-  }
-
-  .heroActions .textLinkLabel {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-  }
-
-  .heroActions .textLinkLabel svg {
-    flex: none;
   }
 
   .heroPortrait {

@@ -769,13 +769,26 @@
     margin: 0;
   }
 
+  /*
+   * The veil opens with ground under the header, then gets out of the way.
+   * It used to start at 4% opacity, which left the fixed header sitting on
+   * raw travertine: the menu control and the Mandate link measured under 4.5:1
+   * across most of their pixels, and axe cannot see it because text over a
+   * photograph is reported as incomplete rather than failing. The top stop
+   * matches the tonal shape the other image-led heroes already use, so the
+   * photograph still opens the page and the treatment reads as part of the
+   * image rather than as a bar laid over it.
+   */
   .heroBand::after {
     inset: 0;
     height: auto;
     background: linear-gradient(
       180deg,
-      rgba(243, 241, 236, 0.04) 0%,
-      rgba(243, 241, 236, 0.18) 25%,
+      rgba(243, 241, 236, 0.95) 0%,
+      rgba(243, 241, 236, 0.78) 7%,
+      rgba(243, 241, 236, 0.38) 14%,
+      rgba(243, 241, 236, 0.11) 22%,
+      rgba(243, 241, 236, 0.16) 30%,
       rgba(243, 241, 236, 0.9) 53%,
       rgba(243, 241, 236, 0.98) 100%
     );
@@ -812,21 +825,25 @@
     margin-top: 1.1rem;
   }
 
-  .primaryAction {
+  /* Scoped to the row so it outranks the global .ed-primary size. As a bare
+     single class it merely tied and lost on source order, which left the hero
+     actions at 0.9rem and wrapped "Discuss a mandate" onto three lines at
+     320px. */
+  .heroActions .primaryAction {
     width: auto;
     min-width: 0;
     grid-template-columns: minmax(0, 1fr) 2.5rem;
     font-size: clamp(0.7rem, 3.1vw, 0.82rem);
   }
 
-  .primaryAction > span:first-child {
+  .heroActions .primaryAction > span:first-child {
     min-width: 0;
     justify-content: center;
     padding-inline: 0.45rem;
     text-align: center;
   }
 
-  .secondaryAction {
+  .heroActions .secondaryAction {
     min-width: 0;
     min-height: var(--mobile-control-height);
     justify-content: center;
@@ -842,7 +859,7 @@
     text-align: center;
   }
 
-  .secondaryAction::after {
+  .heroActions .secondaryAction::after {
     display: none;
   }
 }

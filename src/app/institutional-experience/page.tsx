@@ -129,13 +129,13 @@ export default function InstitutionalExperiencePage() {
                 </span>
               </Link>
               <a
-                className={`ed-textlink ${styles.textLink}`}
+                className={`ed-secondary ${styles.linkedinAction}`}
                 href={practitioner.linkedinUrl}
                 target="_blank"
                 rel="noreferrer"
               >
-                <span className={styles.textLinkLabel}>
-                  {practitioner.cta}
+                <span>{practitioner.cta}</span>
+                <span className="ed-chamber" aria-hidden="true">
                   <ArrowUpRight size={16} />
                 </span>
                 <span className="sr-only">(opens in a new tab)</span>
@@ -237,6 +237,7 @@ export default function InstitutionalExperiencePage() {
           >
             <MobileDisclosure
               ariaLabel="Working positions"
+              hint="Select a position"
               tone="dark"
               defaultOpenId="working-position-1"
               allowCollapse={false}

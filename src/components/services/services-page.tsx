@@ -151,6 +151,7 @@ export function ServicesPage() {
           >
             <MobileDisclosure
               ariaLabel="Services capabilities"
+              hint="Select a capability"
               items={serviceCapabilities.map((capability, index) => ({
                 id: capability.id,
                 index: pad(index),

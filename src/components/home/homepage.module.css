@@ -225,6 +225,13 @@
   transform: translateY(1px);
 }
 
+/* The LinkedIn action leaves the site, so it is a real secondary button
+   (.ed-secondary) rather than a text link. It only needs its own separation
+   from the checkpoints above it. */
+.linkedinAction {
+  margin-top: 1.6rem;
+}
+
 .secondaryAction,
 .textLink,
 .contactEmail {
@@ -2043,5 +2050,20 @@
   .servicesTitleLine {
     display: block;
     white-space: nowrap;
+  }
+}
+
+/*
+ * The partial underline is a hover affordance: it rests at 26% and completes
+ * on pointer-over. A touch device never delivers that hover, so the stub sat
+ * there permanently and read as a rendering fault rather than as a link. On a
+ * coarse pointer it rests drawn and quiet instead.
+ */
+@media (hover: none) {
+  .secondaryAction::after,
+  .textLink::after,
+  .contactEmail::after {
+    transform: scaleX(1);
+    opacity: 0.32;
   }
 }
