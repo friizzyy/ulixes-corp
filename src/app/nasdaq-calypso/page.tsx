@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { CalypsoHero } from '@/components/calypso/calypso-hero'
 import { Curtain } from '@/components/calypso/calypso-motion'
 import { LifecycleBlotter } from '@/components/calypso/lifecycle-blotter'
+import { MobileMandateSelector } from '@/components/calypso/mobile-mandate-selector'
 import { CalypsoSectionNav } from '@/components/calypso/calypso-section-nav'
 import { CalypsoPrograms } from '@/components/calypso/calypso-programs'
 import { ArrowUpRight } from '@/components/ui/icons'
@@ -55,7 +56,7 @@ export default function NasdaqCalypsoPage() {
               src="/media/calypso/ulixes-calypso-atrium-stair.jpg"
               alt=""
               fill
-              sizes="(max-width: 767px) calc(100vw - 40px), 1248px"
+              sizes="(max-width: 895px) calc(100vw - 40px), 1248px"
               className={styles.chapterMediaImage}
             />
           </div>
@@ -108,9 +109,11 @@ export default function NasdaqCalypsoPage() {
             <p className={styles.mandateLede}>{delivery.body}</p>
           </header>
 
+          <MobileMandateSelector mandates={calypsoDelivery} />
+
           <ol
-            className={styles.mandateLedger}
-            data-mobile-layout="stacked"
+            className={`${styles.mandateLedger} ${styles.desktopMandateLedger}`}
+            data-visible-from="896px"
             aria-label="Calypso mandate shapes"
           >
             {calypsoDelivery.map((mandate, index) => (

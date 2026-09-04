@@ -364,6 +364,12 @@
   list-style: none;
 }
 
+@media (max-width: 895px) {
+  .desktopMandateLedger {
+    display: none;
+  }
+}
+
 .mandateRow {
   display: grid;
   grid-template-columns: minmax(3rem, 0.24fr) minmax(13rem, 0.9fr) minmax(22rem, 1.6fr);
@@ -572,7 +578,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 895px) {
   .shell {
     width: auto;
     margin-left: max(var(--mobile-gutter), var(--safe-area-left, 0px));
@@ -586,7 +592,7 @@
   }
 
   .programChapter {
-    padding: var(--mobile-section-y) 0;
+    padding: clamp(3rem, 8vw, 3.5rem) 0;
   }
 
   .programBook {
@@ -594,7 +600,7 @@
   }
 
   .chapterMedia {
-    height: 160px;
+    height: 136px;
   }
 
   .chapterMediaImage {
@@ -602,26 +608,26 @@
   }
 
   .programBookContent {
-    padding: 1rem 1rem 1.25rem;
+    padding: 0.9rem 1rem 1.1rem;
   }
 
   .chapterHeader {
-    gap: 0.75rem;
-    padding-bottom: 1rem;
+    gap: 0.65rem;
+    padding-bottom: 0.85rem;
   }
 
   .chapterHeader > p,
   .mandateLede {
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.52;
   }
 
   .mandateSection {
-    padding: var(--mobile-section-y) 0;
+    padding: clamp(3rem, 8vw, 3.5rem) 0;
   }
 
   .mandateHeader {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
   }
 
   .mandateLedger::before {
@@ -677,7 +683,29 @@
   }
 
   .closePanel {
-    padding: 1.5rem;
+    gap: 1.5rem;
+    padding: 1.25rem;
+  }
+
+  .closeSection {
+    padding: 1.25rem 0 2.5rem;
+  }
+
+  .closeTitle {
+    font-size: clamp(2rem, 8.5vw, 2.4rem);
+  }
+
+  .closeBody {
+    margin-top: 0.85rem;
+    line-height: 1.55;
+  }
+
+  .closeAction {
+    gap: 1rem;
+  }
+
+  .closeAction > div {
+    padding-top: 1rem;
   }
 
   .closeCta {

@@ -1,0 +1,171 @@
+.selector {
+  overflow: hidden;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--panel-radius, 8px);
+  background: var(--mineral-light);
+  box-shadow: var(--shadow-raised);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list li + li {
+  border-top: 1px solid var(--rule);
+}
+
+.control {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) 1.75rem;
+  gap: 0.7rem;
+  align-items: center;
+  width: 100%;
+  min-height: var(--mobile-control-height, 44px);
+  padding: 0.7rem 0.8rem 0.7rem 1rem;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.control[aria-pressed='true'] {
+  background: color-mix(in srgb, var(--material-tint) 66%, var(--mineral-light));
+  box-shadow: inset 3px 0 0 var(--material-line);
+}
+
+.control:focus-visible {
+  outline: 2px solid var(--material-line);
+  outline-offset: -3px;
+}
+
+.index {
+  color: var(--steel);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--label-xs, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.identity {
+  display: grid;
+  min-width: 0;
+  gap: 0.25rem;
+}
+
+.identity strong {
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-size: 1.05rem;
+  font-weight: 570;
+  letter-spacing: -0.027em;
+  line-height: 1.15;
+  text-wrap: pretty;
+}
+
+.identity > span {
+  color: var(--steel);
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.075em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.mark {
+  display: grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  place-items: center;
+  border: 1px solid var(--rule-strong);
+  border-radius: 50%;
+  color: var(--steel);
+  line-height: 1;
+}
+
+.risk {
+  min-height: 9.75rem;
+  padding: 1rem;
+  border-top: 1px solid var(--rule-strong);
+  background: color-mix(in srgb, var(--material-tint) 22%, var(--mineral-light));
+  box-shadow: inset 3px 0 0 var(--material-line);
+  animation: risk-enter-forward 200ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.risk[data-direction='backward'] {
+  animation-name: risk-enter-backward;
+}
+
+.riskLabel {
+  margin: 0 0 0.4rem;
+  color: var(--steel);
+  font-size: var(--label-xs, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.riskCopy {
+  max-width: 44rem;
+  margin: 0;
+  color: var(--graphite);
+  font-size: 1rem;
+  line-height: 1.52;
+  text-wrap: pretty;
+}
+
+@keyframes risk-enter-forward {
+  from {
+    opacity: 0;
+    transform: translateX(5px);
+  }
+}
+
+@keyframes risk-enter-backward {
+  from {
+    opacity: 0;
+    transform: translateX(-5px);
+  }
+}
+
+@media (min-width: 600px) and (max-width: 895px) {
+  .list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .list li:nth-child(even) {
+    border-left: 1px solid var(--rule);
+  }
+
+  .list li:nth-child(2) {
+    border-top: 0;
+  }
+
+  .risk {
+    min-height: 7.75rem;
+  }
+}
+
+@media (min-width: 896px) {
+  .selector {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .risk {
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .control[aria-pressed='true'],
+  .control:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: -3px;
+  }
+}

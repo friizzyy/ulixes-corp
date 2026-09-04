@@ -9,7 +9,8 @@ import {
 } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, LayoutGroup, motion, type Variants } from 'framer-motion'
-import { ArrowUpRight } from '@/components/ui/icons'
+import { MobileDetailSheet } from '@/components/ui/mobile-detail-sheet'
+import { ArrowRight, ArrowUpRight } from '@/components/ui/icons'
 import {
   calypsoContent,
   calypsoDomains,
@@ -164,6 +165,7 @@ export function CalypsoPrograms() {
     calypsoProgramFamilies[0].id,
   )
   const [mobileActive, setMobileActive] = useState(0)
+  const [domainsOpen, setDomainsOpen] = useState(false)
   const refs = useRef<Array<HTMLButtonElement | null>>([])
   const reduced = usePrefersReducedMotion()
   const variants = reduced ? still : curtain
@@ -210,7 +212,7 @@ export function CalypsoPrograms() {
         role="region"
         aria-label="Mobile Calypso programs"
         data-mobile-layout="family-disclosure"
-        data-visible-through="767px"
+        data-visible-through="895px"
       >
         <div className={styles.mobileFamilySelector} role="group" aria-label="Program families">
           {calypsoProgramFamilies.map((family) => (
@@ -272,7 +274,12 @@ export function CalypsoPrograms() {
                     role="region"
                     aria-labelledby={controlId}
                   >
-                    <p className={styles.mobileProgramNote}>{program.note}</p>
+                    <p
+                      className={styles.mobileProgramNote}
+                      data-testid="mobile-program-note"
+                    >
+                      {program.note}
+                    </p>
                     <Link
                       href={`/contact?program=${encodeURIComponent(program.name)}`}
                       className={styles.mobileDiscuss}
@@ -286,9 +293,48 @@ export function CalypsoPrograms() {
             )
           })}
         </ul>
+
+        <button
+          type="button"
+          className={styles.mobileDomainsTrigger}
+          aria-label="View product domains"
+          onClick={() => setDomainsOpen(true)}
+        >
+          <span>
+            <small>{calypsoContent.domains.label}</small>
+            <strong>View product domains</strong>
+          </span>
+          <ArrowRight size={17} aria-hidden="true" />
+        </button>
+
+        <MobileDetailSheet
+          open={domainsOpen}
+          onClose={() => setDomainsOpen(false)}
+          eyebrow={calypsoContent.domains.label}
+          title="Product domains"
+          className={styles.domainSheet}
+        >
+          <ul className={styles.mobileDomainList} role="list">
+            {calypsoDomains.map((domain, index) => (
+              <li key={domain.name} className={styles.mobileDomain}>
+                <span className={styles.mobileDomainIndex}>
+                  {pad(index + 1)}
+                </span>
+                <div>
+                  <strong>{domain.name}</strong>
+                  <p>{domain.note}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </MobileDetailSheet>
       </section>
       <LayoutGroup id="calypso-programs">
-        <div className={styles.index}>
+        <div
+          className={styles.index}
+          data-program-composition="desktop"
+          data-visible-from="896px"
+        >
           {calypsoProgramFamilies.map((family) => {
             const members = readingOrder
               .map((program, index) => ({ program, index }))
@@ -350,7 +396,7 @@ export function CalypsoPrograms() {
         </div>
       </LayoutGroup>
 
-      <div className={styles.detailColumn} data-visible-from="768px">
+      <div className={styles.detailColumn} data-visible-from="896px">
         {/*
           The region never remounts. It used to take the program name as its
           key, which replaced the live region on every selection, and a live
@@ -417,7 +463,12 @@ export function CalypsoPrograms() {
 
       </div>
 
-      <div className={styles.domains}>
+      <section
+        className={styles.domains}
+        role="region"
+        aria-label="Desktop product domains"
+        data-visible-from="896px"
+      >
         <p className={styles.domainsHead}>
           <span>{calypsoContent.domains.label}</span>
           <strong>Six product domains</strong>
@@ -433,7 +484,7 @@ export function CalypsoPrograms() {
             </li>
           ))}
         </ul>
-      </div>
+      </section>
     </div>
   )
 }

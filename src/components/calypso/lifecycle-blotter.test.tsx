@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { act } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { calypsoContent } from '@/lib/calypso-content'
@@ -178,6 +178,42 @@ describe('LifecycleBlotter', () => {
     window.history.replaceState({}, '', '/nasdaq-calypso#lifecycle')
   })
 
+  it('assigns the compact pager and rich workbench to opposite sides of 895/896', () => {
+    const { container } = render(<LifecycleBlotter />)
+    const mobilePager = screen.getByTestId('mobile-lifecycle-pager')
+    const desktopWorkbench = container.querySelector(
+      '[data-lifecycle-composition="desktop"]',
+    )
+
+    expect(mobilePager).toHaveAttribute('data-visible-through', '895px')
+    expect(desktopWorkbench).toHaveAttribute('data-visible-from', '896px')
+    expect(within(desktopWorkbench as HTMLElement).getByText('Built from'))
+      .toBeInTheDocument()
+    expect(within(mobilePager).queryByText('Built from')).not.toBeInTheDocument()
+  })
+
+  it('keeps mobile and desktop stage state aligned across the breakpoint', () => {
+    const { container } = render(<LifecycleBlotter />)
+    const mobilePager = screen.getByTestId('mobile-lifecycle-pager')
+    const desktopWorkbench = container.querySelector(
+      '[data-lifecycle-composition="desktop"]',
+    ) as HTMLElement
+
+    fireEvent.click(
+      within(mobilePager).getByRole('button', { name: 'Stage 5: Settlement' }),
+    )
+    expect(
+      within(desktopWorkbench).getByRole('tab', { name: /settlement/i }),
+    ).toHaveAttribute('aria-selected', 'true')
+
+    fireEvent.click(
+      within(desktopWorkbench).getByRole('tab', { name: /collateral/i }),
+    )
+    expect(
+      within(mobilePager).getByRole('button', { name: 'Stage 4: Collateral' }),
+    ).toHaveAttribute('aria-pressed', 'true')
+  })
+
   it('selects and locally reveals a valid stage from the URL after mount', () => {
     const rail = installRailLayout()
     window.history.replaceState(
@@ -355,9 +391,16 @@ describe('LifecycleBlotter', () => {
   })
 
   it('stops previous and next controls at the lifecycle boundaries', () => {
-    render(<LifecycleBlotter />)
-    const previous = screen.getByRole('button', { name: /previous stage/i })
-    const next = screen.getByRole('button', { name: /next stage/i })
+    const { container } = render(<LifecycleBlotter />)
+    const desktopWorkbench = container.querySelector(
+      '[data-lifecycle-composition="desktop"]',
+    ) as HTMLElement
+    const previous = within(desktopWorkbench).getByRole('button', {
+      name: /previous stage/i,
+    })
+    const next = within(desktopWorkbench).getByRole('button', {
+      name: /next stage/i,
+    })
 
     expect(previous).toBeDisabled()
     fireEvent.click(next)
@@ -367,7 +410,7 @@ describe('LifecycleBlotter', () => {
   })
 
   it('changes the single tablist orientation without replacing selected focus', () => {
-    const media = installMatchMedia({ '(min-width: 48rem)': false })
+    const media = installMatchMedia({ '(min-width: 896px)': false })
 
     try {
       render(<LifecycleBlotter />)
@@ -378,7 +421,7 @@ describe('LifecycleBlotter', () => {
       fireEvent.click(tabs[3])
       expect(tablist).toHaveAttribute('aria-orientation', 'horizontal')
 
-      act(() => media.report('(min-width: 48rem)', true))
+      act(() => media.report('(min-width: 896px)', true))
 
       expect(screen.getAllByRole('tablist')).toHaveLength(1)
       expect(tablist).toHaveAttribute('aria-orientation', 'vertical')
@@ -390,7 +433,7 @@ describe('LifecycleBlotter', () => {
   })
 
   it('reveals the active stage when the rail changes from vertical to horizontal', () => {
-    const media = installMatchMedia({ '(min-width: 48rem)': true })
+    const media = installMatchMedia({ '(min-width: 896px)': true })
     const rail = installRailLayout()
 
     try {
@@ -402,7 +445,7 @@ describe('LifecycleBlotter', () => {
       expect(tablist).toHaveAttribute('aria-orientation', 'vertical')
       expect(rail.scrollTo).not.toHaveBeenCalled()
 
-      act(() => media.report('(min-width: 48rem)', false))
+      act(() => media.report('(min-width: 896px)', false))
 
       expect(tablist).toHaveAttribute('aria-orientation', 'horizontal')
       expect(reporting).toHaveAttribute('aria-selected', 'true')
@@ -420,7 +463,7 @@ describe('LifecycleBlotter', () => {
 
   it('scrolls only the mobile rail and respects reduced motion', () => {
     const media = installMatchMedia({
-      '(min-width: 48rem)': false,
+      '(min-width: 896px)': false,
       '(prefers-reduced-motion: reduce)': false,
     })
     const rail = installRailLayout()

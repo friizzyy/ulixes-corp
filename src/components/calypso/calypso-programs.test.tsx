@@ -117,6 +117,49 @@ describe('CalypsoPrograms', () => {
       )
   })
 
+  it('keeps all eight programs reachable while mounting one selected mobile note', async () => {
+    const user = userEvent.setup()
+    render(<CalypsoPrograms />)
+
+    const mobile = screen.getByRole('region', {
+      name: 'Mobile Calypso programs',
+    })
+    const familySelector = within(mobile).getByRole('group', {
+      name: 'Program families',
+    })
+    const reachablePrograms = new Set<string>()
+
+    for (const family of calypsoProgramFamilies) {
+      await user.click(
+        within(familySelector).getByRole('button', { name: family.label }),
+      )
+      const list = within(mobile).getByRole('list', {
+        name: `${family.label} programs`,
+      })
+      for (const row of within(list).getAllByRole('listitem')) {
+        const program = readingOrder.find(({ name }) =>
+          row.textContent?.includes(name),
+        )
+        if (program) reachablePrograms.add(program.name)
+      }
+      expect(within(mobile).getAllByTestId('mobile-program-note'))
+        .toHaveLength(1)
+    }
+
+    expect([...reachablePrograms].sort()).toEqual(
+      calypsoPrograms.map((program) => program.name).sort(),
+    )
+  })
+
+  it('uses the compact program book through 895px and the rich index from 896px', () => {
+    const { container } = render(<CalypsoPrograms />)
+
+    expect(screen.getByRole('region', { name: 'Mobile Calypso programs' }))
+      .toHaveAttribute('data-visible-through', '895px')
+    expect(container.querySelector('[data-program-composition="desktop"]'))
+      .toHaveAttribute('data-visible-from', '896px')
+  })
+
   it('opens on the first program with the indicator on its row', () => {
     render(<CalypsoPrograms />)
 
@@ -207,20 +250,52 @@ describe('CalypsoPrograms', () => {
     })
   })
 
-  it('renders the six domains as numbered rows with their notes in view', () => {
+  it('keeps the six product domains in the desktop register', () => {
     render(<CalypsoPrograms />)
 
     const rows = within(
-      screen.getByRole('list', { name: 'Product domains' }),
+      screen.getByRole('region', { name: 'Desktop product domains' }),
     ).getAllByRole('listitem')
     expect(rows).toHaveLength(calypsoDomains.length)
 
     calypsoDomains.forEach((domain, index) => {
       expect(rows[index]).toHaveTextContent(pad(index + 1))
       expect(within(rows[index]).getByText(domain.name)).toBeVisible()
-      // Nothing waits behind a hover.
       expect(within(rows[index]).getByText(domain.note)).toBeVisible()
     })
+  })
+
+  it('keeps product domains out of the mobile flow until its detail sheet opens', async () => {
+    const user = userEvent.setup()
+    render(<CalypsoPrograms />)
+
+    const mobile = screen.getByRole('region', {
+      name: 'Mobile Calypso programs',
+    })
+    const trigger = within(mobile).getByRole('button', {
+      name: 'View product domains',
+    })
+
+    calypsoDomains.forEach((domain) => {
+      expect(within(mobile).queryByText(domain.name)).not.toBeInTheDocument()
+    })
+
+    await user.click(trigger)
+    const dialog = screen.getByRole('dialog', { name: 'Product domains' })
+    const rows = within(
+      dialog,
+    ).getAllByRole('listitem')
+    expect(rows).toHaveLength(calypsoDomains.length)
+
+    calypsoDomains.forEach((domain, index) => {
+      expect(rows[index]).toHaveTextContent(pad(index + 1))
+      expect(within(rows[index]).getByText(domain.name)).toBeVisible()
+      expect(within(rows[index]).getByText(domain.note)).toBeVisible()
+    })
+
+    await user.keyboard('{Escape}')
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(trigger).toHaveFocus()
   })
 
   it('walks the reading order with arrows, Home and End, and wraps', () => {

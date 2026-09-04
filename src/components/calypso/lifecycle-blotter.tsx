@@ -12,8 +12,12 @@ import { usePrefersReducedMotion } from '@/hooks'
 import { calypsoContent } from '@/lib/calypso-content'
 import { chainStages, type ChainStageId } from '@/lib/expertise-content'
 import styles from './lifecycle-blotter.module.css'
+import {
+  lifecycleStageChangeEvent,
+  MobileLifecyclePager,
+} from './mobile-lifecycle-pager'
 
-const lifecycleWideQuery = '(min-width: 48rem)'
+const lifecycleWideQuery = '(min-width: 896px)'
 const { schematic } = calypsoContent
 
 type Band = (typeof schematic.bands)[number]
@@ -132,9 +136,14 @@ export function LifecycleBlotter() {
     }
 
     const onPopState = () => restoreFromUrl(true)
+    const onStageChange = () => restoreFromUrl(true)
     restoreFromUrl()
     window.addEventListener('popstate', onPopState)
-    return () => window.removeEventListener('popstate', onPopState)
+    window.addEventListener(lifecycleStageChangeEvent, onStageChange)
+    return () => {
+      window.removeEventListener('popstate', onPopState)
+      window.removeEventListener(lifecycleStageChangeEvent, onStageChange)
+    }
   }, [])
 
   useEffect(() => {
@@ -156,6 +165,7 @@ export function LifecycleBlotter() {
           '',
           url.pathname + url.search + url.hash,
         )
+        window.dispatchEvent(new Event(lifecycleStageChangeEvent))
       }
     }
 
@@ -207,7 +217,14 @@ export function LifecycleBlotter() {
           <p className={styles.lede}>{lede}</p>
         </header>
 
-        <div className={styles.workbench} data-direction={direction}>
+        <MobileLifecyclePager stages={chainStages} schematic={schematic} />
+
+        <div
+          className={`${styles.workbench} ${styles.desktopWorkbench}`}
+          data-direction={direction}
+          data-lifecycle-composition="desktop"
+          data-visible-from="896px"
+        >
           <div ref={railViewportRef} className={styles.railViewport}>
             <div
               className={styles.stageRail}

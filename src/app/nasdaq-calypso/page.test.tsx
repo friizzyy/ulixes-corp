@@ -84,7 +84,7 @@ describe('Nasdaq Calypso page', () => {
       expect(screen.getByText(domain.name)).toBeInTheDocument()
     }
     for (const mandate of calypsoDelivery) {
-      expect(screen.getByText(mandate.title)).toBeInTheDocument()
+      expect(screen.getAllByText(mandate.title).length).toBeGreaterThan(0)
     }
   })
 
@@ -97,17 +97,30 @@ describe('Nasdaq Calypso page', () => {
     const media = within(book).getByTestId('calypso-program-book-media')
     const content = within(book).getByTestId('calypso-program-book-content')
     expect(media).toHaveTextContent('')
+    expect(media.querySelector('img')).toHaveAttribute(
+      'sizes',
+      '(max-width: 895px) calc(100vw - 40px), 1248px',
+    )
     expect(media.compareDocumentPosition(content) & Node.DOCUMENT_POSITION_FOLLOWING)
       .toBeTruthy()
   })
 
   it('renders four mandates as one stacked ledger without a content rail', () => {
-    render(<NasdaqCalypsoPage />)
+    const { container } = render(<NasdaqCalypsoPage />)
 
     const ledger = screen.getByRole('list', { name: 'Calypso mandate shapes' })
-    expect(ledger).toHaveAttribute('data-mobile-layout', 'stacked')
+    expect(ledger).toHaveAttribute('data-visible-from', '896px')
     expect(within(ledger).getAllByRole('listitem')).toHaveLength(
       calypsoDelivery.length,
     )
+
+    const mobile = screen.getByRole('region', {
+      name: 'Mobile Calypso mandates',
+    })
+    expect(mobile).toHaveAttribute('data-visible-through', '895px')
+    expect(within(mobile).getAllByRole('button')).toHaveLength(
+      calypsoDelivery.length,
+    )
+    expect(container.querySelectorAll('[data-mandate-risk]')).toHaveLength(1)
   })
 })

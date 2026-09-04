@@ -370,7 +370,11 @@
   cursor: default;
 }
 
-@media (max-width: 47.999rem) {
+@media (max-width: 895px) {
+  .desktopWorkbench {
+    display: none;
+  }
+
   .section {
     padding: var(--mobile-section-y) 0;
     scroll-margin-top: calc(
@@ -408,7 +412,7 @@
   }
 }
 
-@media (min-width: 30rem) and (max-width: 47.999rem) {
+@media (min-width: 30rem) and (max-width: 895px) {
   .evidence {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -422,9 +426,9 @@
   }
 }
 
-/* The same controls become a vertical master-detail instrument at 768px. */
+/* The richer controls become a vertical master-detail instrument at 896px. */
 
-@media (min-width: 48rem) {
+@media (min-width: 896px) {
   .workbench {
     grid-template-columns: clamp(13rem, 27%, 18rem) minmax(0, 1fr);
     grid-template-rows: minmax(28rem, auto);
@@ -616,7 +620,7 @@
   }
 }
 
-@media (forced-colors: active) and (min-width: 48rem) {
+@media (forced-colors: active) and (min-width: 896px) {
   .activeBridge {
     background: Canvas;
   }
