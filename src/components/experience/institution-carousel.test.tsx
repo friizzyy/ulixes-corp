@@ -3,16 +3,14 @@ import { describe, expect, it } from 'vitest'
 import { InstitutionCarousel } from './institution-carousel'
 
 describe('InstitutionCarousel', () => {
-  it('publishes one seven-item institution rail with explicit phone progress', () => {
-    const { container } = render(<InstitutionCarousel />)
+  it('preserves the complete seven-card desktop rail', () => {
+    render(<InstitutionCarousel />)
     const rail = screen.getByRole('list', { name: 'Institution types' })
 
     expect(rail).toHaveAttribute('id', 'experience-institutions-rail')
     expect(within(rail).getAllByRole('listitem')).toHaveLength(7)
-    expect(container.querySelector('[aria-live="polite"]')).toHaveTextContent(
-      '01 / 07',
-    )
-    expect(screen.getByText('Swipe')).toBeInTheDocument()
+    expect(within(rail).getAllByRole('heading', { level: 3 })).toHaveLength(7)
+    expect(within(rail).getAllByText(/./, { selector: 'p' })).toHaveLength(7)
   })
 
   it('keeps every card stable while the native track scrolls', () => {

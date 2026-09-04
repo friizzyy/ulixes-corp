@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight, MobileDisclosure } from '@/components/ui'
 import { InstitutionCarousel } from '@/components/experience/institution-carousel'
+import { MobileInstitutionReader } from '@/components/experience/mobile-institution-reader'
 import {
   institutionalExperienceContent,
   institutionsMedia,
@@ -51,7 +52,7 @@ export default function InstitutionalExperiencePage() {
               alt=""
               fill
               priority
-              sizes="(max-width: 767px) 320px, 60vw"
+              sizes="(max-width: 895px) 320px, 60vw"
               className={styles.heroMediaImage}
             />
           </div>
@@ -108,7 +109,7 @@ export default function InstitutionalExperiencePage() {
                 alt={practitionerPortrait.alt}
                 fill
                 priority
-                sizes="(max-width: 767px) 250px, (max-width: 899px) 304px, 38vw"
+                sizes="(max-width: 895px) 250px, 38vw"
                 className={styles.heroPortraitImage}
               />
             </div>
@@ -149,13 +150,12 @@ export default function InstitutionalExperiencePage() {
             <p className={styles.plateLead}>{institutions.body}</p>
           </div>
 
-          {/*
-            One line, drifting slowly, arrows to step through. Seven cards
-            across the measure would have been 154px each and 24 characters a
-            line; at this width they hold ~46, which is inside the range that
-            reads. The trade is that three of the seven start off-screen.
-          */}
-          <InstitutionCarousel />
+          {/* The wide layout keeps the drifting evidence rail. Touch layouts
+              use a separate reader so only the selected brief is mounted. */}
+          <div className={styles.desktopInstitutions} data-visible-from="896px">
+            <InstitutionCarousel />
+          </div>
+          <MobileInstitutionReader categories={institutions.categories} />
         </div>
       </section>
 
@@ -201,6 +201,7 @@ export default function InstitutionalExperiencePage() {
               ariaLabel="Working positions"
               tone="dark"
               defaultOpenId="working-position-1"
+              allowCollapse={false}
               items={principles.items.map((item, index) => ({
                 id: `working-position-${index + 1}`,
                 index: String(index + 1).padStart(2, '0'),

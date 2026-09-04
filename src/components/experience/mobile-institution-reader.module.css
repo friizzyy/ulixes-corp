@@ -1,0 +1,219 @@
+.reader {
+  display: grid;
+  gap: 1rem;
+}
+
+.index {
+  display: flex;
+  gap: 0.5rem;
+  width: calc(100% + var(--mobile-gutter-right, 20px));
+  padding: 0 var(--mobile-gutter-right, 20px) 0.25rem 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  scroll-padding-inline: 0 var(--mobile-gutter-right, 20px);
+  scroll-snap-type: x proximity;
+}
+
+.index::-webkit-scrollbar {
+  display: none;
+}
+
+.indexControl {
+  display: grid;
+  flex: 0 0 min(72vw, 16rem);
+  grid-template-columns: 2rem minmax(0, 1fr);
+  align-items: center;
+  min-height: 3.5rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid rgba(16, 33, 43, 0.14);
+  border-radius: 3px;
+  background: rgba(250, 249, 246, 0.6);
+  color: #3f5058;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition:
+    background 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.indexControl[aria-pressed='true'] {
+  border-color: #607985;
+  background: #f9f8f4;
+  box-shadow: inset 3px 0 0 #607985;
+  color: var(--ink, #10212b);
+}
+
+.indexControl:focus-visible,
+.pagerControl:focus-visible {
+  outline: 2px solid var(--ink, #10212b);
+  outline-offset: 2px;
+}
+
+.controlIndex,
+.position {
+  color: var(--steel, #5d6e75);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.activePane {
+  border-top: 1px solid rgba(16, 33, 43, 0.14);
+  background: rgba(250, 249, 246, 0.82);
+}
+
+.positionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 3.5rem;
+  padding: 0.35rem 0 0.35rem 1rem;
+  border-bottom: 1px solid rgba(16, 33, 43, 0.1);
+}
+
+.position {
+  margin: 0;
+}
+
+.pager {
+  display: flex;
+  align-self: stretch;
+}
+
+.pagerControl {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  min-height: 3.5rem;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid rgba(16, 33, 43, 0.1);
+  background: transparent;
+  color: var(--ink, #10212b);
+  cursor: pointer;
+}
+
+.pagerControl:disabled {
+  color: rgba(16, 33, 43, 0.28);
+  cursor: default;
+}
+
+.brief {
+  min-height: 12rem;
+  padding: 1.25rem 1rem 1.5rem;
+  animation: brief-enter-forward 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.brief[data-direction='backward'] {
+  animation-name: brief-enter-backward;
+}
+
+.brief h3 {
+  max-width: 24ch;
+  margin: 0;
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.034em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.description {
+  max-width: 50ch;
+  margin: 0.8rem 0 0;
+  color: #4b5d65;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@keyframes brief-enter-forward {
+  from {
+    opacity: 0;
+    transform: translateX(0.35rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes brief-enter-backward {
+  from {
+    opacity: 0;
+    transform: translateX(-0.35rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (min-width: 600px) and (max-width: 895px) {
+  .reader {
+    grid-template-columns: minmax(12rem, 0.72fr) minmax(0, 1.28fr);
+    gap: 1.25rem;
+  }
+
+  .index {
+    display: grid;
+    align-content: start;
+    gap: 0;
+    width: auto;
+    padding: 0;
+    overflow: visible;
+    border-top: 1px solid rgba(16, 33, 43, 0.14);
+  }
+
+  .indexControl {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    width: 100%;
+    min-height: 3.5rem;
+    padding: 0.65rem 0.75rem;
+    border: 0;
+    border-bottom: 1px solid rgba(16, 33, 43, 0.12);
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .indexControl[aria-pressed='true'] {
+    background: rgba(250, 249, 246, 0.82);
+  }
+
+  .activePane {
+    align-self: start;
+  }
+
+  .brief {
+    min-height: 16rem;
+    padding-inline: 1.25rem;
+  }
+}
+
+@media (min-width: 896px) {
+  .reader {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indexControl {
+    transition: none;
+  }
+
+  .brief {
+    animation: none;
+  }
+}

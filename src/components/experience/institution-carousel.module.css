@@ -167,58 +167,6 @@
   }
 }
 
-.phoneCue {
-  display: none;
-}
-
-@media (max-width: 767px) {
-  .carousel {
-    --card-width: 86vw;
-    --card-gap: 14px;
-  }
-
-  /* The controls would sit on top of the cards at this width; the track is
-     swipeable, so they step aside rather than overlap the reading. */
-  .arrow {
-    display: none;
-  }
-
-  .track {
-    --edge: 0;
-    box-sizing: border-box;
-    width: calc(100% + var(--mobile-gutter-right, 20px));
-    gap: var(--card-gap);
-    padding: 0 var(--mobile-gutter-right, 20px) 1rem 0;
-    scroll-padding-inline: 0 var(--mobile-gutter-right, 20px);
-    scroll-snap-type: x mandatory;
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-
-  .card {
-    flex-basis: var(--card-width);
-    width: var(--card-width);
-    padding: 1.25rem;
-    border-color: rgba(16, 33, 43, 0.12);
-    background: #faf9f6;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.9),
-      0 2px 4px rgba(16, 33, 43, 0.06),
-      0 18px 32px -24px rgba(31, 50, 59, 0.42);
-    scroll-snap-align: start;
-  }
-
-  .card p {
-    font-size: 1rem;
-    line-height: 1.58;
-  }
-
-  .phoneCue {
-    display: block;
-    margin-top: 0;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .track {
     scroll-behavior: auto;

@@ -246,6 +246,10 @@
   min-width: 0;
 }
 
+.desktopInstitutions {
+  display: block;
+}
+
 /* Registers -------------------------------------------------------------- */
 
 /*
@@ -518,7 +522,7 @@
 
 /* Responsive ------------------------------------------------------------- */
 
-@media (min-width: 768px) {
+@media (min-width: 896px) {
   .mobilePositions {
     display: none;
   }
@@ -562,7 +566,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 895px) {
   .page {
     --mobile-gutter-left: calc(20px + env(safe-area-inset-left));
     --mobile-gutter-right: calc(20px + env(safe-area-inset-right));
@@ -572,6 +576,10 @@
     width: auto;
     margin-left: var(--mobile-gutter-left);
     margin-right: var(--mobile-gutter-right);
+  }
+
+  .desktopInstitutions {
+    display: none;
   }
 
   .hero {
@@ -736,6 +744,13 @@
     width: 100%;
     min-height: 44px;
     justify-content: space-between;
+  }
+}
+
+@media (max-width: 359px) {
+  .page {
+    --mobile-gutter-left: calc(16px + env(safe-area-inset-left));
+    --mobile-gutter-right: calc(16px + env(safe-area-inset-right));
   }
 }
 

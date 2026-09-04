@@ -16,10 +16,10 @@ const experienceStyles = readFileSync(
   ),
   'utf8',
 )
-const carouselStyles = readFileSync(
+const mobileReaderStyles = readFileSync(
   resolve(
     process.cwd(),
-    'src/components/experience/institution-carousel.module.css',
+    'src/components/experience/mobile-institution-reader.module.css',
   ),
   'utf8',
 )
@@ -218,21 +218,34 @@ describe('institutional experience route', () => {
     expect(
       within(disclosure).queryByText(principles.items[0].description),
     ).not.toBeInTheDocument()
+
+    fireEvent.click(controls[1])
+    expect(controls[1]).toHaveAttribute('aria-expanded', 'true')
+    expect(within(disclosure).getByText(principles.items[1].description)).toBeVisible()
+  })
+
+  it('separates the touch reader from the desktop carousel at 895/896', () => {
+    render(<ExperiencePage />)
+    const reader = screen.getByRole('region', { name: 'Institution reader' })
+    const carousel = screen.getByRole('list', { name: 'Institution types' })
+
+    expect(reader).toHaveAttribute('data-visible-through', '895px')
+    expect(carousel.closest('[data-visible-from]')).toHaveAttribute(
+      'data-visible-from',
+      '896px',
+    )
   })
 
   it('keeps phone institution and closing prose at the 16px reading floor', () => {
     const experiencePhoneStyles = experienceStyles.slice(
-      experienceStyles.lastIndexOf('@media (max-width: 767px)'),
-    )
-    const carouselPhoneStyles = carouselStyles.slice(
-      carouselStyles.indexOf('@media (max-width: 767px)'),
+      experienceStyles.lastIndexOf('@media (max-width: 895px)'),
     )
 
     expect(experiencePhoneStyles).toMatch(
       /\.closeBody,\s*\.closeResponse\s*\{[^}]*font-size:\s*1rem/,
     )
-    expect(carouselPhoneStyles).toMatch(
-      /\.card p\s*\{[^}]*font-size:\s*1rem/,
+    expect(mobileReaderStyles).toMatch(
+      /\.description\s*\{[^}]*font-size:\s*1rem/,
     )
   })
 

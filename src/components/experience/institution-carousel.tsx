@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ArrowLeft, ArrowRight, MobileRailProgress } from '@/components/ui'
+import { ArrowLeft, ArrowRight } from '@/components/ui'
 import { institutionalExperienceContent } from '@/lib/institutional-experience-content'
 import styles from './institution-carousel.module.css'
 
@@ -199,14 +199,6 @@ export function InstitutionCarousel() {
           </li>
         ))}
       </ol>
-      <div className={styles.phoneCue}>
-        <MobileRailProgress
-          trackId="experience-institutions-rail"
-          count={categories.length}
-          label="Swipe"
-        />
-      </div>
-
       <button
         type="button"
         className={`${styles.arrow} ${styles.arrowNext}`}
