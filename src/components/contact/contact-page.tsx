@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useCallback, useEffect, useState, useRef } from 'react'
 import {
   AlertCircle,
@@ -11,8 +12,10 @@ import {
   CascadeItem,
   Curtain,
   Lift,
+  Rule,
 } from '@/components/motion/editorial-motion'
 import { contactPageContent } from '@/lib/contact-content'
+import { practitionerPortrait } from '@/lib/institutional-experience-content'
 import styles from './contact.module.css'
 
 /*
@@ -218,7 +221,22 @@ export function ContactPage() {
             <Lift delay={0.28} amount={0}>
               <div className={styles.who}>
                 <p className={styles.microLabel}>{practitioner.label}</p>
-                <p className={styles.whoName}>{practitioner.name}</p>
+                {/* The wrapper is a plain block above 895px, so the desktop
+                    column is unchanged; the portrait is a phone and tablet
+                    register only and is never fetched on desktop, because a
+                    lazy image inside a display:none frame never intersects. */}
+                <div className={styles.whoIdentity}>
+                  <span className={styles.whoPortrait}>
+                    <Image
+                      src={practitionerPortrait.src}
+                      alt={practitionerPortrait.alt}
+                      fill
+                      sizes="56px"
+                      className={styles.whoPortraitImage}
+                    />
+                  </span>
+                  <p className={styles.whoName}>{practitioner.name}</p>
+                </div>
                 <p className={styles.whoNote}>{practitioner.note}</p>
               </div>
             </Lift>
@@ -264,110 +282,130 @@ export function ContactPage() {
                 </button>
               </div>
             ) : (
-              <form className={styles.form} onSubmit={handleSubmit} noValidate>
-                <div className={styles.field}>
-                  <label htmlFor="name">{form.nameLabel}</label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    autoComplete="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    placeholder={form.namePlaceholder}
-                    aria-invalid={errors.name ? 'true' : undefined}
-                    aria-describedby={errors.name ? 'name-error' : undefined}
-                  />
-                  {errors.name ? (
-                    <p id="name-error" className={styles.fieldError}>
-                      {errors.name}
+              <>
+                {/*
+                  Phone and tablet only, and only while the form is showing.
+                  Stacked, the form used to begin at a bare "Name" with nothing
+                  saying what the fields were for, so the primary action of the
+                  page arrived unannounced. The success state replaces this
+                  branch entirely, which keeps a single h2 on screen.
+                */}
+                <div className={styles.formHead}>
+                  <p className={styles.microLabel}>{form.headLabel}</p>
+                  <Curtain className="ed-curtain" inView delay={0.05}>
+                    <h2 className={styles.formTitle}>{form.headTitle}</h2>
+                  </Curtain>
+                  {/* The hairline that separates the heading from the fields
+                      draws itself, so the fourth gesture in the vocabulary has
+                      a real job here rather than being decoration. Above 895px
+                      it is display:none and never renders a line. */}
+                  <Rule className={styles.formRule} delay={0.12} />
+                </div>
+                <form className={styles.form} onSubmit={handleSubmit} noValidate>
+                  <div className={styles.field}>
+                    <label htmlFor="name">{form.nameLabel}</label>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      autoComplete="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      placeholder={form.namePlaceholder}
+                      aria-invalid={errors.name ? 'true' : undefined}
+                      aria-describedby={errors.name ? 'name-error' : undefined}
+                    />
+                    {errors.name ? (
+                      <p id="name-error" className={styles.fieldError}>
+                        {errors.name}
+                      </p>
+                    ) : null}
+                  </div>
+
+                  <div className={styles.field}>
+                    <label htmlFor="email">{form.emailLabel}</label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder={form.emailPlaceholder}
+                      aria-invalid={errors.email ? 'true' : undefined}
+                      aria-describedby={errors.email ? 'email-error' : undefined}
+                    />
+                    {errors.email ? (
+                      <p id="email-error" className={styles.fieldError}>
+                        {errors.email}
+                      </p>
+                    ) : null}
+                  </div>
+
+                  <div className={styles.field}>
+                    <label htmlFor="company">
+                      {form.companyLabel}{' '}
+                      <span className={styles.optional}>
+                        {form.companyOptional}
+                      </span>
+                    </label>
+                    <input
+                      id="company"
+                      name="company"
+                      type="text"
+                      autoComplete="organization"
+                      value={formData.company}
+                      onChange={handleInputChange}
+                      placeholder={form.companyPlaceholder}
+                    />
+                  </div>
+
+                  <div className={styles.field}>
+                    <label htmlFor="message">{form.messageLabel}</label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={4}
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      placeholder={form.messagePlaceholder}
+                      aria-invalid={errors.message ? 'true' : undefined}
+                      aria-describedby={errors.message ? 'message-error' : undefined}
+                    />
+                    {errors.message ? (
+                      <p id="message-error" className={styles.fieldError}>
+                        {errors.message}
+                      </p>
+                    ) : null}
+                  </div>
+
+                  {formState === 'error' ? (
+                    <p className={styles.formError} role="alert">
+                      <span aria-hidden="true">
+                        <AlertCircle size={17} />
+                      </span>
+                      <span>
+                        <strong>{error.title}</strong> {error.description}
+                      </span>
                     </p>
                   ) : null}
-                </div>
 
-                <div className={styles.field}>
-                  <label htmlFor="email">{form.emailLabel}</label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    placeholder={form.emailPlaceholder}
-                    aria-invalid={errors.email ? 'true' : undefined}
-                    aria-describedby={errors.email ? 'email-error' : undefined}
-                  />
-                  {errors.email ? (
-                    <p id="email-error" className={styles.fieldError}>
-                      {errors.email}
-                    </p>
-                  ) : null}
-                </div>
-
-                <div className={styles.field}>
-                  <label htmlFor="company">
-                    {form.companyLabel}{' '}
-                    <span className={styles.optional}>
-                      {form.companyOptional}
-                    </span>
-                  </label>
-                  <input
-                    id="company"
-                    name="company"
-                    type="text"
-                    autoComplete="organization"
-                    value={formData.company}
-                    onChange={handleInputChange}
-                    placeholder={form.companyPlaceholder}
-                  />
-                </div>
-
-                <div className={styles.field}>
-                  <label htmlFor="message">{form.messageLabel}</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    placeholder={form.messagePlaceholder}
-                    aria-invalid={errors.message ? 'true' : undefined}
-                    aria-describedby={errors.message ? 'message-error' : undefined}
-                  />
-                  {errors.message ? (
-                    <p id="message-error" className={styles.fieldError}>
-                      {errors.message}
-                    </p>
-                  ) : null}
-                </div>
-
-                {formState === 'error' ? (
-                  <p className={styles.formError} role="alert">
-                    <span aria-hidden="true">
-                      <AlertCircle size={17} />
-                    </span>
+                  <button
+                    type="submit"
+                    className={`ed-primary ${styles.submit}`}
+                    disabled={formState === 'submitting'}
+                  >
                     <span>
-                      <strong>{error.title}</strong> {error.description}
+                      {formState === 'submitting'
+                        ? form.submittingLabel
+                        : form.submitLabel}
                     </span>
-                  </p>
-                ) : null}
-
-                <button
-                  type="submit"
-                  className={`ed-primary ${styles.submit}`}
-                  disabled={formState === 'submitting'}
-                >
-                  <span>
-                    {formState === 'submitting'
-                      ? form.submittingLabel
-                      : form.submitLabel}
-                  </span>
-                  <span className={styles.actionChamber} aria-hidden="true">
-                    <ArrowUpRight size={17} />
-                  </span>
-                </button>
-              </form>
+                    <span className={styles.actionChamber} aria-hidden="true">
+                      <ArrowUpRight size={17} />
+                    </span>
+                  </button>
+                </form>
+              </>
             )}
           </div>
         </div>

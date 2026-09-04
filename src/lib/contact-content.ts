@@ -29,6 +29,11 @@ export const contactPageContent = {
     phone: siteConfig.phone,
   },
   form: {
+    /* The phone composition gives the form its own register, so it needs a
+       title of its own. It names the reader introduced directly above, which
+       is the whole argument of this page: the note goes to one person. */
+    headLabel: 'Inquiry',
+    headTitle: 'Write to Ulysses.',
     nameLabel: 'Name',
     namePlaceholder: 'Your name',
     emailLabel: 'Work email',
