@@ -109,7 +109,7 @@ export default function InstitutionalExperiencePage() {
                 alt={practitionerPortrait.alt}
                 fill
                 priority
-                sizes="(max-width: 895px) 250px, 38vw"
+                sizes="(max-width: 359px) calc(100vw - 32px), (max-width: 895px) calc(100vw - 40px), 38vw"
                 className={styles.heroPortraitImage}
               />
             </div>
