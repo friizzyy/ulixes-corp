@@ -91,10 +91,13 @@
   border-top: 1px solid var(--rule-strong);
   background: color-mix(in srgb, var(--material-tint) 22%, var(--mineral-light));
   box-shadow: inset 3px 0 0 var(--material-line);
+}
+
+.riskChange {
   animation: risk-enter-forward 200ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
-.risk[data-direction='backward'] {
+.riskChange[data-direction='backward'] {
   animation-name: risk-enter-backward;
 }
 
@@ -157,7 +160,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .risk {
+  .riskChange {
     animation: none;
   }
 }

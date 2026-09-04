@@ -103,17 +103,21 @@ export function MobileMandateSelector({
       </ol>
 
       <div
-        key={activeMandate.id}
         id={riskId}
         className={styles.risk}
         role="region"
         aria-label="Selected mandate risk"
         aria-live="polite"
         data-mandate-risk
-        data-direction={direction}
       >
-        <p className={styles.riskLabel}>Risk concentration</p>
-        <p className={styles.riskCopy}>{activeMandate.risk}</p>
+        <div
+          key={activeMandate.id}
+          className={styles.riskChange}
+          data-direction={direction}
+        >
+          <p className={styles.riskLabel}>Risk concentration</p>
+          <p className={styles.riskCopy}>{activeMandate.risk}</p>
+        </div>
       </div>
     </section>
   )

@@ -262,7 +262,6 @@ export function MobileLifecyclePager({
         onClose={() => setSheetOpen(false)}
         eyebrow={`${activeBand?.label ?? 'Lifecycle'} control evidence`}
         title={`${activeStage.label} control detail`}
-        className={styles.sheet}
       >
         <div className={styles.sheetField}>
           <h3>Built from</h3>

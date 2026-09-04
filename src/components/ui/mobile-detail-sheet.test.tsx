@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { renderToString } from 'react-dom/server'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -58,6 +59,27 @@ describe('MobileDetailSheet', () => {
     expect(within(dialog).getByText('Control evidence')).toBeInTheDocument()
     expect(within(dialog).getByText('Confirmed source systems and hand-offs.')).toBeInTheDocument()
     expect(within(dialog).getByRole('link', { name: 'Discuss this control' })).toBeInTheDocument()
+  })
+
+  it('renders the open sheet as a direct body-level layer', async () => {
+    const user = userEvent.setup()
+    const { container } = render(<SheetHarness />)
+
+    await user.click(screen.getByRole('button', { name: 'View control detail' }))
+
+    const dialog = screen.getByRole('dialog', { name: 'Settlement dependencies' })
+    expect(container).not.toContainElement(dialog)
+    expect(dialog.parentElement?.parentElement).toBe(document.body)
+  })
+
+  it('defers an initially open sheet until client mount', () => {
+    const markup = renderToString(
+      <MobileDetailSheet open onClose={() => {}} title="Server-safe detail">
+        <p>Deferred detail.</p>
+      </MobileDetailSheet>,
+    )
+
+    expect(markup).toBe('')
   })
 
   it('contains forward and reverse Tab navigation within the sheet controls', async () => {

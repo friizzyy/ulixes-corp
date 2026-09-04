@@ -55,6 +55,30 @@ describe('MobileMandateSelector', () => {
     expect(selector.querySelectorAll('[data-mandate-risk]')).toHaveLength(1)
   })
 
+  it('keeps the polite live-region node stable while its risk changes', async () => {
+    const user = userEvent.setup()
+    render(<MobileMandateSelector mandates={calypsoDelivery} />)
+    const selector = screen.getByRole('region', {
+      name: 'Mobile Calypso mandates',
+    })
+    const liveRegion = within(selector).getByRole('region', {
+      name: 'Selected mandate risk',
+    })
+
+    await user.click(
+      within(selector).getByRole('button', {
+        name: new RegExp(calypsoDelivery[1].title, 'i'),
+      }),
+    )
+
+    expect(
+      within(selector).getByRole('region', {
+        name: 'Selected mandate risk',
+      }),
+    ).toBe(liveRegion)
+    expect(liveRegion).toHaveTextContent(calypsoDelivery[1].risk)
+  })
+
   it('moves selected focus with arrow keys and respects the boundaries', () => {
     render(<MobileMandateSelector mandates={calypsoDelivery} />)
     const controls = within(

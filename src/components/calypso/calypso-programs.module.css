@@ -741,7 +741,6 @@
   font: inherit;
   text-align: left;
   cursor: pointer;
-  transition: background-color 180ms ease;
 }
 
 .mobileDomainsTrigger:hover {
@@ -838,8 +837,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mobileDiscuss::after,
-  .mobileDomainsTrigger {
+  .mobileDiscuss::after {
     transition: none;
   }
 

@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useId, useRef, type ReactNode } from 'react'
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { cn } from '@/lib/utils'
 import { X } from './icons'
 import styles from './mobile-detail-sheet.module.css'
@@ -33,6 +34,7 @@ export function MobileDetailSheet({
   footer,
   className,
 }: MobileDetailSheetProps) {
+  const [mounted, setMounted] = useState(false)
   const titleId = `mobile-detail-sheet-${useId().replace(/:/g, '')}-title`
   const dialogRef = useRef<HTMLDivElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
@@ -43,7 +45,11 @@ export function MobileDetailSheet({
   }, [onClose])
 
   useEffect(() => {
-    if (!open) return
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!open || !mounted) return
 
     const desktopQuery = window.matchMedia('(min-width: 896px)')
     if (desktopQuery.matches) {
@@ -116,11 +122,11 @@ export function MobileDetailSheet({
       window.scrollTo({ top: lockedScrollY, behavior: 'instant' })
       if (openingElement?.isConnected) openingElement.focus()
     }
-  }, [open])
+  }, [mounted, open])
 
-  if (!open) return null
+  if (!open || !mounted) return null
 
-  return (
+  return createPortal(
     <div className={styles.root}>
       <button
         type="button"
@@ -157,6 +163,7 @@ export function MobileDetailSheet({
         <div className={styles.body}>{children}</div>
         {footer && <footer className={styles.footer}>{footer}</footer>}
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

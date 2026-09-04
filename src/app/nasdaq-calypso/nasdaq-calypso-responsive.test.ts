@@ -172,10 +172,15 @@ describe('Nasdaq Calypso responsive layout', () => {
       programStylesheet.indexOf('.mobileFamilyControl {'),
       programStylesheet.indexOf(".mobileFamilyControl[aria-pressed='true']"),
     )
+    const mobileDomainTrigger = programStylesheet.slice(
+      programStylesheet.indexOf('.mobileDomainsTrigger {'),
+      programStylesheet.indexOf('.mobileDomainsTrigger:hover'),
+    )
 
     expect(lifecycleStylesheet).not.toMatch(/\btransition\s*:/)
     expect(mandateStylesheet).not.toMatch(/\btransition\s*:/)
     expect(mobileFamilyControl).not.toMatch(/\btransition\s*:/)
+    expect(mobileDomainTrigger).not.toMatch(/\btransition\s*:/)
     for (const keyframes of [lifecycleKeyframes, mandateKeyframes]) {
       expect(keyframes).toMatch(/opacity:/)
       expect(keyframes).toMatch(/transform:/)
