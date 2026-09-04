@@ -13,6 +13,7 @@ export default function PrivacyPage() {
       closing="Questions about our privacy practices? Contact us directly."
       email={siteConfig.email}
       cross={{ label: 'View Terms of Service', href: '/terms' }}
+      reader
     />
   )
 }
