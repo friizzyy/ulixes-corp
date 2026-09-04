@@ -31,7 +31,7 @@ export function CalypsoHero() {
       className={styles.hero}
       data-testid="calypso-hero"
       data-layout="open-masthead"
-      data-mobile-flow="message-first"
+      data-mobile-flow="editorial-poster"
       aria-labelledby="calypso-title"
     >
       <div className={`${styles.shell} ${styles.copyShell}`}>
@@ -44,6 +44,7 @@ export function CalypsoHero() {
             id="calypso-title"
             className={styles.title}
             aria-label={`${hero.headlineLead} ${hero.headlineTurn}`}
+            data-mobile-title="two-lines"
           >
             <Curtain delay={0.12}>
               <span data-line="lead">
@@ -59,18 +60,23 @@ export function CalypsoHero() {
             <p className={styles.body}>{hero.body}</p>
           </Curtain>
 
-          <Lift className={styles.actions} delay={0.4} amount={0}>
-            <Link href="/contact" className={styles.primaryAction}>
-              <span>{hero.primaryCta}</span>
-              <span className={styles.actionChamber} aria-hidden="true">
-                <ArrowUpRight size={17} />
-              </span>
-            </Link>
-            <Link href="#lifecycle" className={styles.secondaryAction}>
-              {hero.secondaryCta}
-              <ArrowRight size={16} />
-            </Link>
-          </Lift>
+          <div
+            data-testid="calypso-hero-actions"
+            data-mobile-layout="paired-actions"
+          >
+            <Lift className={styles.actions} delay={0.4} amount={0}>
+              <Link href="/contact" className={styles.primaryAction}>
+                <span>{hero.primaryCta}</span>
+                <span className={styles.actionChamber} aria-hidden="true">
+                  <ArrowUpRight size={17} />
+                </span>
+              </Link>
+              <Link href="#lifecycle" className={styles.secondaryAction}>
+                {hero.secondaryCta}
+                <ArrowRight size={16} />
+              </Link>
+            </Lift>
+          </div>
         </div>
       </div>
 
@@ -88,6 +94,7 @@ export function CalypsoHero() {
       <div
         className={`${styles.shell} ${styles.authorityShell}`}
         data-mobile-layout="two-by-two"
+        data-mobile-alignment="centered-cells"
       >
         <Cascade
           className={styles.authorityDock}

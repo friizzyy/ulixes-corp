@@ -17,15 +17,21 @@ export function Homepage() {
       <section
         className={styles.hero}
         aria-labelledby="home-hero-title"
-        data-mobile-flow="message-first"
+        data-mobile-flow="image-led"
       >
         <div
           className={styles.heroScene}
           data-depth-composition="city-threshold"
+          data-mobile-layout="image-background"
         >
           <div className={styles.heroCopy} data-depth-plane="raised-message">
             <p className={styles.eyebrow}>{homepageContent.hero.eyebrow}</p>
-            <h1 id="home-hero-title" className={styles.heroTitle}>
+            <h1
+              id="home-hero-title"
+              className={styles.heroTitle}
+              aria-label={homepageContent.hero.headline}
+              data-mobile-title="two-lines"
+            >
               {homepageContent.hero.headlineLines.map((line, index) => (
                 <span
                   key={line}
@@ -40,7 +46,7 @@ export function Homepage() {
               ))}
             </h1>
             <p className={styles.heroBody}>{homepageContent.hero.body}</p>
-            <div className={styles.heroActions}>
+            <div className={styles.heroActions} data-mobile-layout="paired-actions">
               <Link href="/contact" className={styles.primaryAction}>
                 <span>{homepageContent.hero.primaryCta}</span>
                 <span className={styles.actionChamber} aria-hidden="true">
@@ -99,8 +105,16 @@ export function Homepage() {
               data-heading-composition="centered-command"
             >
               <p className={styles.eyebrow}>{homepageContent.services.eyebrow}</p>
-              <h2 id="services-title" className={styles.sectionTitle}>
-                {homepageContent.services.headline}
+              <h2
+                id="services-title"
+                className={styles.sectionTitle}
+                aria-label={homepageContent.services.headline}
+                data-mobile-title="two-lines"
+              >
+                <span className={styles.servicesTitleLine}>Four points where</span>{' '}
+                <span className={styles.servicesTitleLine}>
+                  delivery risk concentrates.
+                </span>
               </h2>
             </div>
             <div className={styles.sectionLead}>

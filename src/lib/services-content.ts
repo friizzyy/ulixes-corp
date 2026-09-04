@@ -135,7 +135,7 @@ export const servicesContent = {
     headlineLines: ['Architecture.', 'Not configuration.'],
     body: expertiseContent.hero.body,
     primaryCta: 'Discuss a mandate',
-    secondaryCta: 'See the four capabilities',
+    secondaryCta: 'View capabilities',
     secondaryHref: '#capabilities',
   },
   capabilities: {

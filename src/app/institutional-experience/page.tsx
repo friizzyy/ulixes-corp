@@ -34,7 +34,7 @@ export default function InstitutionalExperiencePage() {
       <section
         className={styles.hero}
         aria-labelledby="experience-title"
-        data-mobile-flow="copy-first"
+        data-mobile-flow="editorial-split"
       >
         <div
           className={styles.heroStage}
@@ -58,14 +58,31 @@ export default function InstitutionalExperiencePage() {
           </div>
           <div className={styles.heroTone} aria-hidden="true" />
 
-          <div className={`${styles.shell} ${styles.heroGrid}`}>
+          <div
+            className={`${styles.shell} ${styles.heroGrid}`}
+            data-mobile-layout="split-portrait"
+          >
             <div className={styles.heroCopy}>
               <p className={`ed-eyebrow ${styles.badge}`}>{introduction.eyebrow}</p>
-              <h1 id="experience-title" className={styles.heroTitle}>
-                {introduction.headlineLead}{' '}
+              <h1
+                id="experience-title"
+                className={styles.heroTitle}
+                aria-label={`${introduction.headlineLead} ${introduction.headlineTurn}`}
+                data-mobile-title="two-lines"
+              >
+                <span className={styles.heroTitleLead}>
+                  Inside <span className={styles.heroTitleArticle}>the </span>
+                  institutions,
+                </span>{' '}
                 <em className={styles.turn}>{introduction.headlineTurn}</em>
               </h1>
-              <p className={styles.heroBody}>{introduction.body}</p>
+              <p className={`${styles.heroBody} ${styles.desktopHeroBody}`}>
+                {introduction.body}
+              </p>
+              <p className={`${styles.heroBody} ${styles.mobileHeroBody}`}>
+                Calypso experience since 2004, inside the teams and systems
+                where critical decisions are made.
+              </p>
 
               <p className={styles.roleLine}>
                 <span>{practitioner.name}</span>
@@ -75,26 +92,6 @@ export default function InstitutionalExperiencePage() {
                 <span>{practitioner.specialism}</span>
               </p>
 
-              <div className={styles.heroActions}>
-                <Link href="/contact" className={`ed-primary ${styles.action}`}>
-                  <span>{introduction.cta}</span>
-                  <span className="ed-chamber" aria-hidden="true">
-                    <ArrowUpRight size={17} />
-                  </span>
-                </Link>
-                <a
-                  className={`ed-textlink ${styles.textLink}`}
-                  href={practitioner.linkedinUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <span className={styles.textLinkLabel}>
-                    {practitioner.cta}
-                    <ArrowUpRight size={16} />
-                  </span>
-                  <span className="sr-only">(opens in a new tab)</span>
-                </a>
-              </div>
             </div>
 
             {/* Framed rather than masked. A portrait dissolving into the page
@@ -109,9 +106,30 @@ export default function InstitutionalExperiencePage() {
                 alt={practitionerPortrait.alt}
                 fill
                 priority
-                sizes="(max-width: 359px) calc(100vw - 32px), (max-width: 895px) calc(100vw - 40px), 38vw"
+                sizes="(max-width: 895px) 38vw, 38vw"
                 className={styles.heroPortraitImage}
               />
+            </div>
+
+            <div className={styles.heroActions} data-mobile-layout="paired-actions">
+              <Link href="/contact" className={`ed-primary ${styles.action}`}>
+                <span>{introduction.cta}</span>
+                <span className="ed-chamber" aria-hidden="true">
+                  <ArrowUpRight size={17} />
+                </span>
+              </Link>
+              <a
+                className={`ed-textlink ${styles.textLink}`}
+                href={practitioner.linkedinUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span className={styles.textLinkLabel}>
+                  {practitioner.cta}
+                  <ArrowUpRight size={16} />
+                </span>
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
             </div>
           </div>
         </div>
@@ -176,7 +194,9 @@ export default function InstitutionalExperiencePage() {
           >
             <p className={`ed-eyebrow ${styles.marginLabel}`}>{principles.eyebrow}</p>
             <h2 id="principles-title" className={styles.chapterTitle}>
-              {principles.headlineLead}{' '}
+              <span className={styles.chapterTitleLead}>
+                {principles.headlineLead}
+              </span>{' '}
               <em className={styles.turn}>{principles.headlineTurn}</em>
             </h2>
           </div>

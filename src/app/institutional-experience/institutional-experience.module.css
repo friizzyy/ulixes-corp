@@ -169,8 +169,11 @@
   z-index: 2;
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  grid-template-areas:
+    'copy portrait'
+    'actions portrait';
   align-items: center;
-  gap: clamp(2.5rem, 5vw, 4.5rem);
+  gap: 0.9rem clamp(2.5rem, 5vw, 4.5rem);
   padding-bottom: clamp(3.5rem, 6vw, 5rem);
   border-bottom: 1px solid var(--rule);
 }
@@ -178,7 +181,16 @@
 /* Carries no styles of its own; the hero grid places it. Declared so the
    markup has no class without a rule behind it. */
 .heroCopy {
+  grid-area: copy;
   min-width: 0;
+}
+
+.desktopHeroBody {
+  display: block;
+}
+
+.mobileHeroBody {
+  display: none;
 }
 
 .heroTitle {
@@ -201,6 +213,7 @@
 }
 
 .heroActions {
+  grid-area: actions;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -209,6 +222,7 @@
 }
 
 .heroPortrait {
+  grid-area: portrait;
   position: relative;
   aspect-ratio: 4 / 5;
   overflow: hidden;
@@ -601,7 +615,9 @@
   }
 
   .hero {
-    padding: 5.75rem 0 3.25rem;
+    min-height: 0;
+    padding: calc(var(--mobile-header-height) + 1.15rem) 0 2.75rem;
+    background: #d9dedf;
   }
 
   .heroStage {
@@ -610,7 +626,11 @@
   }
 
   .heroMedia {
-    display: none;
+    display: block;
+    inset: 0;
+    width: 100%;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .heroMediaImage {
@@ -619,34 +639,71 @@
   }
 
   .heroTone {
-    display: none;
+    display: block;
+    background:
+      linear-gradient(
+        90deg,
+        rgba(243, 241, 236, 0.97) 0%,
+        rgba(243, 241, 236, 0.9) 55%,
+        rgba(243, 241, 236, 0.48) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(243, 241, 236, 0.22),
+        rgba(243, 241, 236, 0.72) 72%,
+        var(--mineral) 100%
+      );
   }
 
   .heroGrid {
-    gap: 1.5rem;
+    grid-template-columns: minmax(0, 1.62fr) minmax(6.5rem, 0.72fr);
+    grid-template-areas:
+      'copy portrait'
+      'actions actions';
+    column-gap: clamp(0.7rem, 3vw, 1.25rem);
+    row-gap: 1.1rem;
+    align-items: stretch;
     padding-bottom: 0;
     border-bottom: 0;
   }
 
   .heroTitle {
     max-width: none;
-    font-size: clamp(1.85rem, 6.6vw, 2.5rem);
-    line-height: 1;
+    font-size: clamp(1.125rem, 5.5vw, 1.75rem);
+    line-height: 1.04;
+  }
+
+  .heroTitleLead,
+  .heroTitle .turn {
+    display: block;
     white-space: nowrap;
   }
 
-  .heroTitle .turn {
-    display: block;
+  .heroTitleArticle {
+    display: none;
   }
 
   .heroBody {
-    margin-top: 1.25rem;
+    margin-top: 0.75rem;
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.48;
+  }
+
+  .desktopHeroBody {
+    display: none;
+  }
+
+  .mobileHeroBody {
+    display: block;
   }
 
   .roleLine {
-    font-size: 0.75rem;
+    margin-top: 0.8rem;
+    font-size: 0.72rem;
+  }
+
+  .roleLine span:nth-child(n + 4) {
+    display: none;
   }
 
   .heroActions {
@@ -701,10 +758,13 @@
 
   .heroPortrait {
     z-index: 3;
-    width: 100%;
-    height: clamp(14.5rem, 60vw, 20rem);
+    width: min(100%, 12rem);
+    height: auto;
+    min-height: 0;
     margin: 0;
-    aspect-ratio: auto;
+    aspect-ratio: 4 / 5;
+    align-self: start;
+    justify-self: end;
     border: 1px solid rgba(255, 255, 255, 0.82);
     border-radius: 10px;
     box-shadow:
@@ -714,7 +774,7 @@
   }
 
   .heroPortraitImage {
-    object-position: 50% 24%;
+    object-position: 50% 22%;
   }
 
   .institutionsSection {
@@ -750,6 +810,15 @@
     line-height: 1.08;
   }
 
+  .plateTitle {
+    font-size: clamp(1.42rem, 6.8vw, 1.875rem);
+  }
+
+  .plateTitle .turn {
+    display: block;
+    white-space: nowrap;
+  }
+
   .plateLead {
     font-size: 1rem;
     line-height: 1.6;
@@ -771,6 +840,16 @@
     grid-row: auto;
     justify-self: center;
     text-align: center;
+  }
+
+  .chapterTitle {
+    font-size: clamp(1.6rem, 6.6vw, 1.875rem);
+  }
+
+  .chapterTitleLead,
+  .chapterTitle .turn {
+    display: block;
+    white-space: nowrap;
   }
 
   .positions {

@@ -34,11 +34,17 @@ describe('Nasdaq Calypso page', () => {
     )
     expect(screen.getByTestId('calypso-hero')).toHaveAttribute(
       'data-mobile-flow',
-      'message-first',
+      'editorial-poster',
+    )
+    expect(heading).toHaveAttribute('data-mobile-title', 'two-lines')
+    expect(screen.getByTestId('calypso-hero-actions')).toHaveAttribute(
+      'data-mobile-layout',
+      'paired-actions',
     )
     expect(screen.getByTestId('lifecycle-blotter')).toBeInTheDocument()
     const authority = screen.getByLabelText('Calypso authority')
     expect(authority.closest('[data-mobile-layout="two-by-two"]')).not.toBeNull()
+    expect(authority.closest('[data-mobile-alignment="centered-cells"]')).not.toBeNull()
     expect(authority).toHaveTextContent('Banks and hedge funds')
 
     const copy = screen.getByTestId('calypso-hero-copy')

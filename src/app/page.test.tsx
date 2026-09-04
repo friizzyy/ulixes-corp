@@ -10,7 +10,7 @@ describe('homepage route', () => {
     render(<HomePage />)
 
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+    expect(screen.getByRole('heading', { level: 1 })).toHaveAccessibleName(
       homepageContent.hero.headline,
     )
     expect(screen.queryByText('Infrastructure Is')).not.toBeInTheDocument()

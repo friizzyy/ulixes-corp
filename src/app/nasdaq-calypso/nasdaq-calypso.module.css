@@ -378,6 +378,30 @@
   }
 }
 
+/* Bridge tablet and wide desktop without squeezing the centered chapter
+   statement into a three-column header before it has enough measure. */
+@media (min-width: 896px) and (max-width: 1100px) {
+  .programBookContent {
+    padding: 2rem;
+  }
+
+  .chapterHeader {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .chapterTitleGroup,
+  .chapterHeader > p {
+    grid-column: 1;
+  }
+
+  .chapterHeader > p {
+    max-width: 42rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+}
+
 /* The four mandate shapes as one ledger, the grammar the homepage sells sets with. */
 .mandateLedger {
   position: relative;
@@ -615,8 +639,15 @@
 
   .sectionTitle,
   .chapterTitle {
-    font-size: clamp(1.875rem, 9vw, 2rem);
+    max-width: none;
+    font-size: clamp(1.5rem, 7.2vw, 2rem);
     line-height: 1;
+  }
+
+  .sectionTitle .turn,
+  .chapterTitle .turn {
+    display: block;
+    white-space: nowrap;
   }
 
   .programChapter {
@@ -763,6 +794,12 @@
 
   .closeCta {
     width: 100%;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 895px) {
+  .programChapter .programBookContent {
+    padding-inline: 1.75rem;
   }
 }
 

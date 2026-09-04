@@ -28,9 +28,14 @@ describe('Homepage', () => {
       level: 1,
       name: homepageContent.hero.headline,
     })
-    expect(container.querySelectorAll('[data-hero-line]')).toHaveLength(3)
-    const hero = screen.getByRole('region', { name: heading.textContent ?? '' })
-    expect(hero).toHaveAttribute('data-mobile-flow', 'message-first')
+    expect(container.querySelectorAll('[data-hero-line]')).toHaveLength(2)
+    const hero = screen.getByRole('region', {
+      name: homepageContent.hero.headline,
+    })
+    expect(hero).toHaveAttribute('data-mobile-flow', 'image-led')
+    expect(heading).toHaveAttribute('data-mobile-title', 'two-lines')
+    expect(hero.querySelector('[data-mobile-layout="image-background"]')).not.toBeNull()
+    expect(hero.querySelector('[data-mobile-layout="paired-actions"]')).not.toBeNull()
 
     const heroImage = within(hero).getByRole('img', {
       name: homepageContent.hero.imageAlt,

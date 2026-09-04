@@ -30,7 +30,7 @@ describe('homepage brand and icon primitives', () => {
       'utf8',
     )
 
-    expect(css).toMatch(/\.descriptor\s*\{[\s\S]*?color:\s*#56666d/i)
+    expect(css).toMatch(/\.descriptor\s*\{[\s\S]*?color:\s*#526168/i)
   })
 
   it('keeps the local hero poster present with or without an ambient video', () => {

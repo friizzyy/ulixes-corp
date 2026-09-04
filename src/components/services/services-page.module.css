@@ -748,6 +748,105 @@
   }
 }
 
+/* Image-led phone masthead: the atrium begins at the top of the route and the
+   claim occupies the quiet lower field of the same photograph. */
+@media (max-width: 895px) {
+  .hero {
+    position: relative;
+    isolation: isolate;
+    min-height: 0;
+    overflow: hidden;
+    padding: var(--mobile-header-height) 0 0;
+    background: #c8c5bd;
+  }
+
+  .heroBand {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+
+  .heroBand::after {
+    inset: 0;
+    height: auto;
+    background: linear-gradient(
+      180deg,
+      rgba(243, 241, 236, 0.04) 0%,
+      rgba(243, 241, 236, 0.18) 25%,
+      rgba(243, 241, 236, 0.9) 53%,
+      rgba(243, 241, 236, 0.98) 100%
+    );
+  }
+
+  .heroImage {
+    object-position: 54% 58%;
+  }
+
+  .heroBelow {
+    position: relative;
+    z-index: 2;
+    order: 1;
+    padding-top: clamp(8.5rem, 38vw, 13.5rem);
+    padding-bottom: 1.75rem;
+  }
+
+  .heroTitle {
+    max-width: none;
+    font-size: clamp(2rem, 8.8vw, 2.625rem);
+  }
+
+  .heroBody {
+    max-width: 36rem;
+    margin-top: 1rem;
+    line-height: 1.52;
+  }
+
+  .heroActions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+    gap: 0.5rem;
+    margin-top: 1.1rem;
+  }
+
+  .primaryAction {
+    width: auto;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr) 2.5rem;
+    font-size: clamp(0.7rem, 3.1vw, 0.82rem);
+  }
+
+  .primaryAction > span:first-child {
+    min-width: 0;
+    justify-content: center;
+    padding-inline: 0.45rem;
+    text-align: center;
+  }
+
+  .secondaryAction {
+    min-width: 0;
+    min-height: var(--mobile-control-height);
+    justify-content: center;
+    padding-inline: 0.55rem;
+    border: 1px solid rgba(16, 33, 43, 0.22);
+    border-radius: 4px;
+    background: rgba(250, 249, 246, 0.78);
+    box-shadow:
+      inset 0 1px rgba(255, 255, 255, 0.86),
+      0 12px 24px -22px rgba(16, 33, 43, 0.5);
+    font-size: clamp(0.7rem, 3.1vw, 0.82rem);
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .secondaryAction::after {
+    display: none;
+  }
+}
+
 
 /* Phone: the ledger yields to the disclosure and the media bands compress. */
 @media (max-width: 895px) {
@@ -876,5 +975,25 @@
     border-radius: var(--panel-radius);
     background: var(--mineral-light);
     box-shadow: var(--shadow-raised);
+  }
+}
+
+@media (max-width: 895px) {
+  .heroBand {
+    height: 100%;
+  }
+
+  .heroTitle {
+    font-size: clamp(2rem, 8.8vw, 2.625rem);
+  }
+
+  .heroActions {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    gap: 0.5rem;
+  }
+
+  .primaryAction {
+    width: auto;
   }
 }

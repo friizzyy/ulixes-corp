@@ -25,7 +25,7 @@ const mobileReaderStyles = readFileSync(
 )
 
 describe('institutional experience route', () => {
-  it('orders the phone hero as proposition, actions, then portrait', () => {
+  it('composes the phone hero as a split portrait with actions below', () => {
     render(<ExperiencePage />)
     const hero = screen.getByRole('region', {
       name: 'Inside the institutions. Not alongside them.',
@@ -36,9 +36,12 @@ describe('institutional experience route', () => {
     const portrait = within(hero).getByRole('img', {
       name: practitionerPortrait.alt,
     })
+    const split = hero.querySelector('[data-mobile-layout="split-portrait"]')
 
-    expect(hero).toHaveAttribute('data-mobile-flow', 'copy-first')
-    expect(primaryAction.compareDocumentPosition(portrait)).toBe(
+    expect(hero).toHaveAttribute('data-mobile-flow', 'editorial-split')
+    expect(split).not.toBeNull()
+    expect(split).toContainElement(portrait)
+    expect(portrait.compareDocumentPosition(primaryAction)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     )
   })
@@ -60,7 +63,7 @@ describe('institutional experience route', () => {
     })
 
     expect(threshold.querySelectorAll('img')).toHaveLength(2)
-    expect(primaryAction.compareDocumentPosition(portrait)).toBe(
+    expect(portrait.compareDocumentPosition(primaryAction)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     )
     expect(
@@ -80,7 +83,7 @@ describe('institutional experience route', () => {
       name: 'Inside the institutions. Not alongside them.',
     })
     const introduction = screen.getByRole('region', {
-      name: heading.textContent ?? '',
+      name: 'Inside the institutions. Not alongside them.',
     })
 
     /*

@@ -32,12 +32,17 @@ export function ServicesPage() {
       <section
         className={styles.hero}
         aria-labelledby="services-hero-title"
-        data-mobile-flow="message-first"
+        data-mobile-flow="image-led"
+        data-mobile-layout="image-background"
       >
         <div className={`${styles.contentShell} ${styles.heroBelow}`}>
           <div className={styles.heroCopy}>
             <p className={`ed-eyebrow ${styles.eyebrow}`}>{hero.eyebrow}</p>
-            <h1 id="services-hero-title" className={styles.heroTitle}>
+            <h1
+              id="services-hero-title"
+              className={styles.heroTitle}
+              data-mobile-title="two-lines"
+            >
               {hero.headlineLines.map((line, index) => (
                 <span key={line} className={styles.heroTitleLine}>
                   {line}
@@ -46,14 +51,17 @@ export function ServicesPage() {
               ))}
             </h1>
             <p className={styles.heroBody}>{hero.body}</p>
-            <div className={styles.heroActions}>
+            <div className={styles.heroActions} data-mobile-layout="paired-actions">
               <Link href="/contact" className={`ed-primary ${styles.primaryAction}`}>
                 <span>{hero.primaryCta}</span>
                 <span className="ed-chamber" aria-hidden="true">
                   <ArrowUpRight size={17} />
                 </span>
               </Link>
-              <a href={hero.secondaryHref} className="ed-textlink">
+              <a
+                href={hero.secondaryHref}
+                className={`ed-textlink ${styles.secondaryAction}`}
+              >
                 {hero.secondaryCta}
                 <ArrowRight size={16} />
               </a>

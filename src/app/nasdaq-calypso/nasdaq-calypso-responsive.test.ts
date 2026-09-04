@@ -133,7 +133,7 @@ describe('Nasdaq Calypso responsive layout', () => {
       /\.mobileProgramControl\s*\{[^}]*text-align:\s*left/,
     )
     expect(programStylesheet).toMatch(
-      /\.mobileFamilyControl\s*\{[^}]*text-align:\s*left/,
+      /\.mobileFamilyControl\s*\{[^}]*text-align:\s*center/,
     )
     expect(programStylesheet).toMatch(
       /\.row\s*\{[^}]*text-align:\s*left/,
@@ -150,19 +150,28 @@ describe('Nasdaq Calypso responsive layout', () => {
     )
   })
 
-  it('keeps the phone hero image short and bridges it with the authority ledger', () => {
+  it('keeps the phone hero compact and bridges it with a centered authority ledger', () => {
     const phoneRules = heroStylesheet.slice(
       heroStylesheet.indexOf('@media (max-width: 895px)'),
     )
 
     expect(phoneRules).toMatch(
-      /\.media\s*\{[\s\S]*?height:\s*clamp\([^;]*168px[^;]*196px[^;]*\)/,
+      /\.media\s*\{[\s\S]*?position:\s*absolute[\s\S]*?height:\s*100%/,
     )
     expect(phoneRules).toMatch(
-      /\.authorityShell\s*\{[\s\S]*?margin-top:\s*-(?:1\.5|1\.6|1\.7|1\.75|1\.8|1\.9|2)rem/,
+      /\.authorityShell\s*\{[\s\S]*?margin-top:\s*1\.35rem/,
     )
     expect(phoneRules).toMatch(
       /\.body\s*\{[\s\S]*?font-size:\s*(?:1rem|16px)/,
+    )
+    expect(phoneRules).toMatch(
+      /\.title\s+span\s*\{[\s\S]*?white-space:\s*nowrap/,
+    )
+    expect(phoneRules).toMatch(
+      /\.actions\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)\s+minmax\(0,\s*1fr\)/,
+    )
+    expect(phoneRules).toMatch(
+      /\.authorityDock li,[\s\S]*?align-content:\s*center[\s\S]*?text-align:\s*center/,
     )
   })
 
@@ -175,10 +184,10 @@ describe('Nasdaq Calypso responsive layout', () => {
     )
 
     expect(heroTouchRules).toMatch(
-      /\.hero\s*\{[\s\S]*?padding:\s*calc\(var\(--mobile-header-height\) \+ 1\.25rem\) 0 0/,
+      /\.hero\s*\{[\s\S]*?padding:\s*calc\(var\(--mobile-header-height\) \+ 1\.25rem\) 0 1\.75rem/,
     )
     expect(heroTouchRules).toMatch(
-      /\.authorityDock li,[\s\S]*?min-height:\s*6\.25rem/,
+      /\.authorityDock li,[\s\S]*?min-height:\s*(?:5|5\.25|5\.5)rem/,
     )
     expect(routeTouchRules).toMatch(
       /@media \(max-width:\s*895px\)[\s\S]*?\.programChapter\s*\{[\s\S]*?padding:\s*clamp\(3rem,[^;]*3\.5rem\) 0/,
@@ -206,6 +215,25 @@ describe('Nasdaq Calypso responsive layout', () => {
     )
     expect(touchRules).toMatch(
       /\.index\s*,\s*\n?\s*\.detailColumn\s*,\s*\n?\s*\.domains\s*\{[\s\S]*?display:\s*none/,
+    )
+  })
+
+  it('centers compact controls while keeping explanatory copy on its reading edge', () => {
+    const programPhoneRules = programStylesheet.slice(
+      programStylesheet.indexOf('@media (max-width: 895px)'),
+    )
+
+    expect(programPhoneRules).toMatch(
+      /\.mobileFamilyControl\s*\{[\s\S]*?text-align:\s*center/,
+    )
+    expect(programPhoneRules).toMatch(
+      /\.mobileProgramControl\s*\{[\s\S]*?align-items:\s*center[\s\S]*?text-align:\s*left/,
+    )
+    expect(mandateStylesheet).toMatch(
+      /\.risk\s*\{[\s\S]*?align-content:\s*center/,
+    )
+    expect(lifecycleStylesheet).toMatch(
+      /\.field\s*\{[\s\S]*?align-content:\s*center[\s\S]*?text-align:\s*left/,
     )
   })
 

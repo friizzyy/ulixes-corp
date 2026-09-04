@@ -86,7 +86,9 @@
 }
 
 .risk {
+  display: grid;
   min-height: 9.75rem;
+  align-content: center;
   padding: 1rem;
   border-top: 1px solid var(--rule-strong);
   background: color-mix(in srgb, var(--material-tint) 22%, var(--mineral-light));

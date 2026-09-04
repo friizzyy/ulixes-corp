@@ -1346,6 +1346,16 @@
     font-size: clamp(2.35rem, 10vw, 2.9rem);
   }
 
+  .services .sectionTitle {
+    max-width: none;
+    font-size: clamp(1.28rem, 5.8vw, 1.8rem);
+  }
+
+  .servicesTitleLine {
+    display: block;
+    white-space: nowrap;
+  }
+
   .sectionLead p,
   .credibilityBody {
     font-size: 0.95rem;
@@ -1862,5 +1872,176 @@
   .calypsoTitle,
   .contactCopy h2 {
     font-size: clamp(1.75rem, 7vw, 2rem);
+  }
+}
+
+/* Image-led phone masthead. The skyline begins the page and the copy settles
+   into its calm lower field instead of preceding the photograph as a separate
+   document block. */
+@media (max-width: 895px) {
+  .hero {
+    padding: var(--mobile-header-height) 0 0;
+  }
+
+  .heroScene {
+    position: relative;
+    display: block;
+    min-height: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0;
+    background: #81939c;
+  }
+
+  .heroMedia {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .heroPoster,
+  .heroVideo {
+    object-position: 62% center;
+  }
+
+  .heroTone {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    height: auto;
+    border-radius: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(250, 249, 246, 0.08) 0%,
+      rgba(250, 249, 246, 0.18) 24%,
+      rgba(250, 249, 246, 0.9) 51%,
+      rgba(250, 249, 246, 0.98) 77%,
+      rgba(250, 249, 246, 0.9) 100%
+    );
+  }
+
+  .heroCopy {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    padding: clamp(8.5rem, 38vw, 13.5rem) var(--home-safe-right) 1.4rem
+      var(--home-safe-left);
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .heroCopy .eyebrow {
+    margin-bottom: 0.7rem;
+  }
+
+  .heroTitle {
+    max-width: none;
+    font-size: clamp(1.3rem, 6.6vw, 1.875rem);
+    line-height: 1;
+  }
+
+  .heroTitleLine,
+  .heroTitleLine:first-child,
+  .heroTitleLine:last-child {
+    white-space: nowrap;
+  }
+
+  .heroBody {
+    max-width: 35rem;
+    margin-top: 0.9rem;
+    color: #33454e;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .heroActions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .primaryAction {
+    width: auto;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr) 2.5rem;
+    font-size: clamp(0.7rem, 3.1vw, 0.82rem);
+  }
+
+  .primaryAction > span:first-child {
+    min-width: 0;
+    justify-content: center;
+    padding-inline: 0.45rem;
+    text-align: center;
+  }
+
+  .secondaryAction {
+    display: flex;
+    min-width: 0;
+    min-height: var(--mobile-control-height);
+    justify-content: center;
+    padding-inline: 0.55rem;
+    border: 1px solid rgba(16, 33, 43, 0.22);
+    border-radius: 4px;
+    background: rgba(250, 249, 246, 0.74);
+    box-shadow:
+      inset 0 1px rgba(255, 255, 255, 0.86),
+      0 12px 24px -22px rgba(16, 33, 43, 0.5);
+    font-size: clamp(0.7rem, 3.1vw, 0.82rem);
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .secondaryAction::after {
+    display: none;
+  }
+
+  .heroControls {
+    position: absolute;
+    inset: 1rem var(--home-safe-right) auto auto;
+    z-index: 4;
+    margin: 0;
+  }
+
+  .authorityDock {
+    position: relative;
+    inset: auto;
+    z-index: 4;
+    min-height: 0;
+    margin: 0 var(--home-safe-right) 1.25rem var(--home-safe-left);
+    border-radius: var(--panel-radius);
+    background: rgba(244, 246, 245, 0.84);
+  }
+
+  .authorityItem {
+    min-height: 5.25rem;
+    align-content: center;
+    text-align: center;
+  }
+
+  .authoritySignal,
+  .authorityCopy {
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Keep this compact chapter heading deliberately composed at every phone
+     and tablet width, not only on the narrow-phone override above. */
+  .services .sectionTitle {
+    max-width: none;
+    font-size: clamp(1.28rem, 5.8vw, 1.8rem);
+  }
+
+  .servicesTitleLine {
+    display: block;
+    white-space: nowrap;
   }
 }

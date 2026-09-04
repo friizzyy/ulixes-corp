@@ -16,8 +16,7 @@ describe('homepage content contract', () => {
     )
     expect(homepageContent.hero.headlineLines).toEqual([
       'Capital markets',
-      'transformation',
-      'and architecture.',
+      'transformation & architecture.',
     ])
     expect(homepageContent.hero.primaryCta).toBe('Discuss a mandate')
     expect(authorityItems).toHaveLength(4)

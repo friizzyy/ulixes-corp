@@ -90,8 +90,7 @@ export const homepageContent = {
     headline: 'Capital markets transformation and architecture.',
     headlineLines: [
       'Capital markets',
-      'transformation',
-      'and architecture.',
+      'transformation & architecture.',
     ],
     body: 'Deep expertise in Nasdaq Calypso and complex front-to-back transformation: trading platforms, accounting and controls, risk, data, and intelligent automation.',
     primaryCta: 'Discuss a mandate',

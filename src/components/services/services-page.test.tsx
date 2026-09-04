@@ -53,7 +53,10 @@ describe('ServicesPage', () => {
     const heroImage = within(hero).getByRole('img', {
       name: /Travertine atrium/i,
     })
-    expect(hero).toHaveAttribute('data-mobile-flow', 'message-first')
+    expect(hero).toHaveAttribute('data-mobile-flow', 'image-led')
+    expect(hero).toHaveAttribute('data-mobile-layout', 'image-background')
+    expect(hero.querySelector('[data-mobile-layout="paired-actions"]')).not.toBeNull()
+    expect(headings[0]).toHaveAttribute('data-mobile-title', 'two-lines')
     expect(
       headings[0].compareDocumentPosition(heroImage) &
         Node.DOCUMENT_POSITION_FOLLOWING,
