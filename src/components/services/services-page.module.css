@@ -207,6 +207,7 @@
 
 /* The homepage ledger: one raised surface, hairline rows, a material rule. */
 .capabilityLedger {
+  display: none;
   overflow: hidden;
   border: 1px solid rgba(16, 33, 43, 0.1);
   border-radius: var(--panel-radius);
@@ -215,6 +216,14 @@
 }
 
 .mobileCapabilities {
+  display: block;
+}
+
+.desktopApproach {
+  display: none;
+}
+
+.mobileApproach {
   display: block;
 }
 
@@ -520,14 +529,7 @@
   }
 }
 
-@media (max-width: 767px) {
-  .capabilityLedger {
-    display: none;
-  }
-
-  .mobileCapabilities {
-    display: block;
-  }
+@media (max-width: 895px) {
 
   .contentShell {
     width: auto;
@@ -550,13 +552,28 @@
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 896px) {
   .capabilityLedger {
     display: block;
   }
 
   .mobileCapabilities {
     display: none;
+  }
+
+  .desktopApproach {
+    display: block;
+  }
+
+  .mobileApproach {
+    display: none;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 895px) {
+  .capabilityPanel {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
   }
 }
 
@@ -730,7 +747,7 @@
 
 
 /* Phone: the ledger yields to the disclosure and the media bands compress. */
-@media (max-width: 767px) {
+@media (max-width: 895px) {
   .heroBand {
     height: clamp(11rem, 30vh, 15rem);
   }
@@ -819,7 +836,7 @@
 
 /* Phone: the evidence photograph runs edge to edge and the copy sits on a
    raised surface over its lower edge, with the year plate on the seam. */
-@media (max-width: 767px) {
+@media (max-width: 895px) {
   .evidenceGrid {
     gap: 0;
   }

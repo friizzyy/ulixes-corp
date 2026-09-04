@@ -1,4 +1,5 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { serviceCapabilities, servicesContent } from '@/lib/services-content'
 import { ServicesPage } from './services-page'
@@ -53,6 +54,24 @@ describe('ServicesPage', () => {
     })
   })
 
+  it('always keeps exactly one mobile capability selected', async () => {
+    const user = userEvent.setup()
+    render(<ServicesPage />)
+    const disclosure = screen.getByRole('region', { name: 'Services capabilities' })
+    const controls = within(disclosure).getAllByRole('button')
+
+    await user.click(controls[0])
+    expect(
+      within(disclosure).getAllByRole('button', { expanded: true }),
+    ).toHaveLength(1)
+
+    await user.click(controls[2])
+    expect(
+      within(disclosure).getAllByRole('button', { expanded: true }),
+    ).toHaveLength(1)
+    expect(controls[2]).toHaveAttribute('aria-expanded', 'true')
+  })
+
   it('links every mobile capability panel to its mandate target', () => {
     render(<ServicesPage />)
     const disclosure = screen.getByRole('region', { name: 'Services capabilities' })
@@ -80,7 +99,7 @@ describe('ServicesPage', () => {
     window.history.replaceState(null, '', '/services#trading')
     window.matchMedia = (query: string) =>
       ({
-        matches: query === '(max-width: 767px)',
+        matches: query === '(max-width: 895px)',
         media: query,
         onchange: null,
         addEventListener: () => {},
@@ -121,7 +140,7 @@ describe('ServicesPage', () => {
     }
   })
 
-  it('assigns capability variants to opposite sides of the 767/768 breakpoint', () => {
+  it('assigns capability variants to opposite sides of the 895/896 breakpoint', () => {
     const { container } = render(<ServicesPage />)
     const desktopLedger = container.querySelector(
       '[data-services-capabilities="desktop"]',
@@ -129,19 +148,27 @@ describe('ServicesPage', () => {
     const disclosure = screen.getByRole('region', { name: 'Services capabilities' })
     const mobileDisclosure = disclosure.closest('[data-services-capabilities="mobile"]')
 
-    expect(desktopLedger).toHaveAttribute('data-visible-from', '768px')
-    expect(mobileDisclosure).toHaveAttribute('data-visible-through', '767px')
+    expect(desktopLedger).toHaveAttribute('data-visible-from', '896px')
+    expect(mobileDisclosure).toHaveAttribute('data-visible-through', '895px')
   })
 
-  it('carries the approach steps, the automation note and the Calypso evidence', () => {
+  it('makes the desktop approach and mobile process pager breakpoint-exclusive', () => {
     const { container } = render(<ServicesPage />)
     expect(screen.getByText(servicesContent.negation.statement)).toBeInTheDocument()
-    for (const step of servicesContent.approach.steps) {
-      expect(screen.getByText(step.title)).toBeInTheDocument()
-    }
-    const timeline = container.querySelector('[data-mobile-layout="vertical-timeline"]')
-    expect(timeline).not.toBeNull()
-    expect(timeline?.querySelectorAll('[data-step="true"]')).toHaveLength(4)
+    const desktopApproach = container.querySelector('[data-services-process="desktop"]')
+    const mobileApproach = container.querySelector('[data-services-process="mobile"]')
+
+    expect(desktopApproach).toHaveAttribute('data-visible-from', '896px')
+    expect(mobileApproach).toHaveAttribute('data-visible-through', '895px')
+    expect(
+      within(mobileApproach as HTMLElement).getAllByRole('button', {
+        expanded: true,
+      }),
+    ).toHaveLength(1)
+  })
+
+  it('carries the automation note and the Calypso evidence', () => {
+    render(<ServicesPage />)
     expect(screen.getByText(servicesContent.automation.headline)).toBeInTheDocument()
     expect(screen.getByText(servicesContent.automation.body)).toBeInTheDocument()
     expect(screen.getByText(servicesContent.calypso.headline)).toBeInTheDocument()

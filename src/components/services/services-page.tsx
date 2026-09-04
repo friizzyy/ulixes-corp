@@ -6,6 +6,7 @@ import {
   servicesContent,
 } from '@/lib/services-content'
 import { ApproachLine } from './approach-line'
+import { MobileProcessPager } from './mobile-process-pager'
 import { pad } from './motion'
 import styles from './services-page.module.css'
 
@@ -97,7 +98,7 @@ export function ServicesPage() {
             id="services-capabilities-rail"
             className={styles.capabilityLedger}
             data-services-capabilities="desktop"
-            data-visible-from="768px"
+            data-visible-from="896px"
           >
             {serviceCapabilities.map((capability, index) => (
               <Link
@@ -122,7 +123,7 @@ export function ServicesPage() {
           <div
             className={styles.mobileCapabilities}
             data-services-capabilities="mobile"
-            data-visible-through="767px"
+            data-visible-through="895px"
           >
             <MobileDisclosure
               ariaLabel="Services capabilities"
@@ -143,6 +144,7 @@ export function ServicesPage() {
               }))}
               defaultOpenId={serviceCapabilities[0]?.id}
               syncWithLocationHash
+              allowCollapse={false}
             />
           </div>
         </div>
@@ -163,7 +165,20 @@ export function ServicesPage() {
           </div>
           <div className={styles.chapterRegister}>
             <p className={`ed-eyebrow ed-eyebrow--dark ${styles.chapterLabel}`}>{approach.eyebrow}</p>
-            <ApproachLine />
+            <div
+              className={styles.desktopApproach}
+              data-services-process="desktop"
+              data-visible-from="896px"
+            >
+              <ApproachLine />
+            </div>
+            <div
+              className={styles.mobileApproach}
+              data-services-process="mobile"
+              data-visible-through="895px"
+            >
+              <MobileProcessPager steps={approach.steps} />
+            </div>
           </div>
         </div>
       </section>
