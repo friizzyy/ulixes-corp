@@ -1,6 +1,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight, MobileDisclosure } from '@/components/ui'
+import {
+  Cascade,
+  CascadeItem,
+  Curtain,
+  Lift,
+} from '@/components/motion/editorial-motion'
 import { InstitutionCarousel } from '@/components/experience/institution-carousel'
 import { MobileInstitutionReader } from '@/components/experience/mobile-institution-reader'
 import {
@@ -64,18 +70,20 @@ export default function InstitutionalExperiencePage() {
           >
             <div className={styles.heroCopy}>
               <p className={`ed-eyebrow ${styles.badge}`}>{introduction.eyebrow}</p>
-              <h1
-                id="experience-title"
-                className={styles.heroTitle}
-                aria-label={`${introduction.headlineLead} ${introduction.headlineTurn}`}
-                data-mobile-title="two-lines"
-              >
-                <span className={styles.heroTitleLead}>
-                  Inside <span className={styles.heroTitleArticle}>the </span>
-                  institutions,
-                </span>{' '}
-                <em className={styles.turn}>{introduction.headlineTurn}</em>
-              </h1>
+              <Curtain className="ed-curtain" delay={0.05}>
+                <h1
+                  id="experience-title"
+                  className={styles.heroTitle}
+                  aria-label={`${introduction.headlineLead} ${introduction.headlineTurn}`}
+                  data-mobile-title="two-lines"
+                >
+                  <span className={styles.heroTitleLead}>
+                    Inside <span className={styles.heroTitleArticle}>the </span>
+                    institutions,
+                  </span>{' '}
+                  <em className={styles.turn}>{introduction.headlineTurn}</em>
+                </h1>
+              </Curtain>
               <p className={`${styles.heroBody} ${styles.desktopHeroBody}`}>
                 {introduction.body}
               </p>
@@ -84,13 +92,15 @@ export default function InstitutionalExperiencePage() {
                 where critical decisions are made.
               </p>
 
-              <p className={styles.roleLine}>
-                <span>{practitioner.name}</span>
-                <span aria-hidden="true">·</span>
-                <span>{practitioner.role}</span>
-                <span aria-hidden="true">·</span>
-                <span>{practitioner.specialism}</span>
-              </p>
+              <Lift delay={0.34} amount={0}>
+                <p className={styles.roleLine}>
+                  <span>{practitioner.name}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>{practitioner.role}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>{practitioner.specialism}</span>
+                </p>
+              </Lift>
 
             </div>
 
@@ -160,10 +170,12 @@ export default function InstitutionalExperiencePage() {
           <div className={styles.plateHead}>
             <div>
               <p className={`ed-eyebrow ${styles.marginLabel}`}>{institutions.eyebrow}</p>
-              <h2 id="institutions-title" className={styles.plateTitle}>
-                {institutions.headlineLead}{' '}
-                <em className={styles.turn}>{institutions.headlineTurn}</em>
-              </h2>
+              <Curtain className="ed-curtain" inView>
+                <h2 id="institutions-title" className={styles.plateTitle}>
+                  {institutions.headlineLead}{' '}
+                  <em className={styles.turn}>{institutions.headlineTurn}</em>
+                </h2>
+              </Curtain>
             </div>
             <p className={styles.plateLead}>{institutions.body}</p>
           </div>
@@ -193,29 +205,32 @@ export default function InstitutionalExperiencePage() {
             data-heading-composition="centered"
           >
             <p className={`ed-eyebrow ${styles.marginLabel}`}>{principles.eyebrow}</p>
-            <h2 id="principles-title" className={styles.chapterTitle}>
-              <span className={styles.chapterTitleLead}>
-                {principles.headlineLead}
-              </span>{' '}
-              <em className={styles.turn}>{principles.headlineTurn}</em>
-            </h2>
+            <Curtain className="ed-curtain" inView>
+              <h2 id="principles-title" className={styles.chapterTitle}>
+                <span className={styles.chapterTitleLead}>
+                  {principles.headlineLead}
+                </span>{' '}
+                <em className={styles.turn}>{principles.headlineTurn}</em>
+              </h2>
+            </Curtain>
           </div>
 
-          <ol
+          <Cascade
+            as="ol"
             className={styles.positions}
-            aria-label="Ulixes delivery principles"
+            label="Ulixes delivery principles"
             data-visible-from="896px"
           >
             {principles.items.map((item, index) => (
-              <li key={item.title}>
+              <CascadeItem key={item.title}>
                 <span className={styles.positionIndex} aria-hidden="true">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
-              </li>
+              </CascadeItem>
             ))}
-          </ol>
+          </Cascade>
           <div
             className={styles.mobilePositions}
             data-visible-through="895px"
@@ -238,29 +253,36 @@ export default function InstitutionalExperiencePage() {
 
       {/* Continuous with the chapter above rather than a fourth full section. */}
       <section className={styles.closeSection} aria-labelledby="inquiry-title">
-        <div className={`${styles.shell} ${styles.closeCard}`}>
-          <div>
-            <p className={`ed-eyebrow ${styles.marginLabel}`}>{contact.eyebrow}</p>
-            <h2 id="inquiry-title" className={styles.closeTitle}>
-              {contact.headlineLead}{' '}
-              <em className={styles.turn}>{contact.headlineTurn}</em>
-            </h2>
-            <p className={styles.closeBody}>{contact.body}</p>
-          </div>
+        <Lift>
+          <div className={`${styles.shell} ${styles.closeCard}`}>
+            <div>
+              <p className={`ed-eyebrow ${styles.marginLabel}`}>
+                {contact.eyebrow}
+              </p>
+              <h2 id="inquiry-title" className={styles.closeTitle}>
+                {contact.headlineLead}{' '}
+                <em className={styles.turn}>{contact.headlineTurn}</em>
+              </h2>
+              <p className={styles.closeBody}>{contact.body}</p>
+            </div>
 
-          <div className={styles.closeAction}>
-            <Link href="/contact" className={`ed-primary ${styles.closeCta}`}>
-              <span>{contact.cta}</span>
-              <span className="ed-chamber" aria-hidden="true">
-                <ArrowUpRight size={17} />
-              </span>
-            </Link>
-            <a className={`ed-textlink ${styles.closeEmail}`} href={`mailto:${contact.email}`}>
-              {contact.email}
-            </a>
-            <p className={styles.closeResponse}>{contact.response}</p>
+            <div className={styles.closeAction}>
+              <Link href="/contact" className={`ed-primary ${styles.closeCta}`}>
+                <span>{contact.cta}</span>
+                <span className="ed-chamber" aria-hidden="true">
+                  <ArrowUpRight size={17} />
+                </span>
+              </Link>
+              <a
+                className={`ed-textlink ${styles.closeEmail}`}
+                href={`mailto:${contact.email}`}
+              >
+                {contact.email}
+              </a>
+              <p className={styles.closeResponse}>{contact.response}</p>
+            </div>
           </div>
-        </div>
+        </Lift>
       </section>
     </div>
   )

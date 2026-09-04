@@ -6,6 +6,12 @@ import {
   ArrowUpRight,
   CheckCircle,
 } from '@/components/ui/icons'
+import {
+  Cascade,
+  CascadeItem,
+  Curtain,
+  Lift,
+} from '@/components/motion/editorial-motion'
 import { contactPageContent } from '@/lib/contact-content'
 import styles from './contact.module.css'
 
@@ -190,16 +196,18 @@ export function ContactPage() {
         <div className={styles.panel} data-mobile-layout="flat">
           <div className={styles.introHead}>
             <p className={`ed-eyebrow ${styles.eyebrow}`}>{header.eyebrow}</p>
-            <h1
-              id="contact-title"
-              className={styles.title}
-              aria-label={`${header.headlineLead} ${header.headlineRest}`}
-            >
-              <strong>
-                {header.headlineLead}{' '}
-              </strong>
-              {header.headlineRest}
-            </h1>
+            <Curtain className="ed-curtain" delay={0.05}>
+              <h1
+                id="contact-title"
+                className={styles.title}
+                aria-label={`${header.headlineLead} ${header.headlineRest}`}
+              >
+                <strong>
+                  {header.headlineLead}{' '}
+                </strong>
+                {header.headlineRest}
+              </h1>
+            </Curtain>
             <p className={styles.lead}>{header.body}</p>
           </div>
 
@@ -207,22 +215,24 @@ export function ContactPage() {
             className={styles.introDetails}
             aria-label="Direct contact options"
           >
-            <div className={styles.who}>
-              <p className={styles.microLabel}>{practitioner.label}</p>
-              <p className={styles.whoName}>{practitioner.name}</p>
-              <p className={styles.whoNote}>{practitioner.note}</p>
-            </div>
+            <Lift delay={0.28} amount={0}>
+              <div className={styles.who}>
+                <p className={styles.microLabel}>{practitioner.label}</p>
+                <p className={styles.whoName}>{practitioner.name}</p>
+                <p className={styles.whoNote}>{practitioner.note}</p>
+              </div>
+            </Lift>
 
-            <ul className={styles.channels}>
-              <li>
+            <Cascade className={styles.channels} amount={0}>
+              <CascadeItem>
                 <span className={styles.channelText}>
                   <span className={styles.channelLabel}>
                     {direct.emailLabel}
                   </span>
                   <a href={`mailto:${direct.email}`}>{direct.email}</a>
                 </span>
-              </li>
-              <li>
+              </CascadeItem>
+              <CascadeItem>
                 <span className={styles.channelText}>
                   <span className={styles.channelLabel}>
                     {direct.phoneLabel}
@@ -231,8 +241,8 @@ export function ContactPage() {
                     {direct.phone}
                   </a>
                 </span>
-              </li>
-            </ul>
+              </CascadeItem>
+            </Cascade>
           </section>
 
           <div className={styles.card}>

@@ -7,6 +7,7 @@ import {
 } from '@/lib/services-content'
 import { ApproachLine } from './approach-line'
 import { MobileProcessPager } from './mobile-process-pager'
+import { Curtain, Lift } from '@/components/motion/editorial-motion'
 import { pad } from './motion'
 import styles from './services-page.module.css'
 
@@ -38,34 +39,44 @@ export function ServicesPage() {
         <div className={`${styles.contentShell} ${styles.heroBelow}`}>
           <div className={styles.heroCopy}>
             <p className={`ed-eyebrow ${styles.eyebrow}`}>{hero.eyebrow}</p>
-            <h1
-              id="services-hero-title"
-              className={styles.heroTitle}
-              data-mobile-title="two-lines"
-            >
-              {hero.headlineLines.map((line, index) => (
-                <span key={line} className={styles.heroTitleLine}>
-                  {line}
-                  {index < hero.headlineLines.length - 1 ? ' ' : null}
-                </span>
-              ))}
-            </h1>
-            <p className={styles.heroBody}>{hero.body}</p>
-            <div className={styles.heroActions} data-mobile-layout="paired-actions">
-              <Link href="/contact" className={`ed-primary ${styles.primaryAction}`}>
-                <span>{hero.primaryCta}</span>
-                <span className="ed-chamber" aria-hidden="true">
-                  <ArrowUpRight size={17} />
-                </span>
-              </Link>
-              <a
-                href={hero.secondaryHref}
-                className={`ed-textlink ${styles.secondaryAction}`}
+            <Curtain className="ed-curtain" delay={0.05}>
+              <h1
+                id="services-hero-title"
+                className={styles.heroTitle}
+                data-mobile-title="two-lines"
               >
-                {hero.secondaryCta}
-                <ArrowRight size={16} />
-              </a>
-            </div>
+                {hero.headlineLines.map((line, index) => (
+                  <span key={line} className={styles.heroTitleLine}>
+                    {line}
+                    {index < hero.headlineLines.length - 1 ? ' ' : null}
+                  </span>
+                ))}
+              </h1>
+            </Curtain>
+            <p className={styles.heroBody}>{hero.body}</p>
+            <Lift delay={0.34} amount={0}>
+              <div
+                className={styles.heroActions}
+                data-mobile-layout="paired-actions"
+              >
+                <Link
+                  href="/contact"
+                  className={`ed-primary ${styles.primaryAction}`}
+                >
+                  <span>{hero.primaryCta}</span>
+                  <span className="ed-chamber" aria-hidden="true">
+                    <ArrowUpRight size={17} />
+                  </span>
+                </Link>
+                <a
+                  href={hero.secondaryHref}
+                  className={`ed-textlink ${styles.secondaryAction}`}
+                >
+                  {hero.secondaryCta}
+                  <ArrowRight size={16} />
+                </a>
+              </div>
+            </Lift>
           </div>
         </div>
         <div className={styles.heroBand}>
@@ -93,9 +104,14 @@ export function ServicesPage() {
           <div className={styles.sectionIntro}>
             <div className={styles.sectionHeading}>
               <p className={`ed-eyebrow ${styles.eyebrow}`}>{capabilities.eyebrow}</p>
-              <h2 id="services-capabilities-title" className={styles.sectionTitle}>
-                {capabilities.headline}
-              </h2>
+              <Curtain className="ed-curtain" inView>
+                <h2
+                  id="services-capabilities-title"
+                  className={styles.sectionTitle}
+                >
+                  {capabilities.headline}
+                </h2>
+              </Curtain>
             </div>
             <div className={styles.sectionLead}>
               <p>{capabilities.body}</p>
@@ -169,9 +185,11 @@ export function ServicesPage() {
             className={styles.chapterLead}
             data-heading-composition="centered-thesis"
           >
-            <h2 id="path-negation-title" className={styles.chapterStatement}>
-              {negation.statement}
-            </h2>
+            <Curtain className="ed-curtain" inView>
+              <h2 id="path-negation-title" className={styles.chapterStatement}>
+                {negation.statement}
+              </h2>
+            </Curtain>
             <p className={styles.chapterBody}>{negation.body}</p>
           </div>
           <div className={styles.chapterRegister}>
@@ -203,15 +221,17 @@ export function ServicesPage() {
       <section className={styles.evidence} aria-labelledby="services-calypso-title">
         <div className={`${styles.contentShell} ${styles.evidenceGrid}`}>
           <div className={styles.evidenceMedia}>
-            <div className={styles.evidenceFrame}>
-              <Image
-                src="/media/services/ulixes-services-floor.jpg"
-                alt="A capital markets trading floor after hours, rows of desks under linear lights."
-                fill
-                sizes="(max-width: 895px) 100vw, 46vw"
-                className={styles.evidenceImage}
-              />
-            </div>
+            <Lift>
+              <div className={styles.evidenceFrame}>
+                <Image
+                  src="/media/services/ulixes-services-floor.jpg"
+                  alt="A capital markets trading floor after hours, rows of desks under linear lights."
+                  fill
+                  sizes="(max-width: 895px) 100vw, 46vw"
+                  className={styles.evidenceImage}
+                />
+              </div>
+            </Lift>
             <aside className={styles.evidencePlate} aria-label="Calypso work since 2004">
               <span className={styles.evidencePlateLabel}>{calypso.sinceLabel}</span>
               <strong className={styles.evidenceYear}>{calypso.since}</strong>
@@ -219,9 +239,11 @@ export function ServicesPage() {
           </div>
           <div className={styles.evidenceCopy}>
             <p className={`ed-eyebrow ${styles.eyebrow}`}>{calypso.eyebrow}</p>
-            <h2 id="services-calypso-title" className={styles.evidenceTitle}>
-              {calypso.headline}
-            </h2>
+            <Curtain className="ed-curtain" inView>
+              <h2 id="services-calypso-title" className={styles.evidenceTitle}>
+                {calypso.headline}
+              </h2>
+            </Curtain>
             <p className={styles.evidenceBody}>{calypso.body}</p>
             <Link href={calypso.href} className={`ed-textlink ${styles.textLink}`}>
               {calypso.cta}
@@ -240,28 +262,37 @@ export function ServicesPage() {
         className={styles.contactSection}
         aria-labelledby="path-contact-title"
       >
-        <div className={`${styles.contentShell} ${styles.contactPanel}`}>
-          <div className={styles.contactCopy}>
-            <p className={`ed-eyebrow ${styles.contactEyebrow}`}>{contact.eyebrow}</p>
-            <h2 id="path-contact-title">{contact.headline}</h2>
-            <p className={styles.contactBody}>{contact.body}</p>
-            <p className={styles.contactInstruction}>{contact.instruction}</p>
-          </div>
-          <div className={styles.contactActionArea}>
-            <Link href="/contact" className={`ed-primary ${styles.contactAction}`}>
-              <span>{contact.cta}</span>
-              <span className="ed-chamber" aria-hidden="true">
-                <ArrowUpRight size={17} />
-              </span>
-            </Link>
-            <div className={styles.contactDirect}>
-              <span className={`ed-close-label ${styles.contactDirectLabel}`}>Or write directly</span>
-              <a className={`ed-textlink ${styles.contactEmail}`} href={`mailto:${contact.email}`}>
-                {contact.email}
-              </a>
+        <Lift>
+          <div className={`${styles.contentShell} ${styles.contactPanel}`}>
+            <div className={styles.contactCopy}>
+              <p className={`ed-eyebrow ${styles.contactEyebrow}`}>
+                {contact.eyebrow}
+              </p>
+              <h2 id="path-contact-title">{contact.headline}</h2>
+              <p className={styles.contactBody}>{contact.body}</p>
+              <p className={styles.contactInstruction}>{contact.instruction}</p>
+            </div>
+            <div className={styles.contactActionArea}>
+              <Link href="/contact" className={`ed-primary ${styles.contactAction}`}>
+                <span>{contact.cta}</span>
+                <span className="ed-chamber" aria-hidden="true">
+                  <ArrowUpRight size={17} />
+                </span>
+              </Link>
+              <div className={styles.contactDirect}>
+                <span className={`ed-close-label ${styles.contactDirectLabel}`}>
+                  Or write directly
+                </span>
+                <a
+                  className={`ed-textlink ${styles.contactEmail}`}
+                  href={`mailto:${contact.email}`}
+                >
+                  {contact.email}
+                </a>
+              </div>
             </div>
           </div>
-        </div>
+        </Lift>
       </section>
     </div>
   )

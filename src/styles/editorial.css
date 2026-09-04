@@ -233,3 +233,39 @@
   line-height: 1.3;
   text-transform: uppercase;
 }
+
+/*
+ * Curtain reveals a heading by clipping its wrapper, which needs two
+ * corrections before it is safe on display type.
+ *
+ * The faces here run tighter than a 1.0 line-height, so descenders sit below
+ * the line box and the clip would shave them. The padding gives the mask that
+ * room; the matching negative margin puts the heading back on the baseline it
+ * had before it was wrapped, so nothing below it moves. It is set in rem
+ * rather than em because the wrapper inherits the body size, not the display
+ * size it is masking.
+ */
+.ed-curtain {
+  padding-bottom: 0.85rem;
+  margin-bottom: -0.85rem;
+}
+
+/*
+ * The mask itself. A class rather than an inline style so the variant below
+ * can override it in source order instead of fighting specificity.
+ */
+.ed-curtain-mask {
+  overflow: hidden;
+}
+
+/*
+ * Some hero lines are set nowrap and intentionally run past their heading's
+ * max-width box, and a rectangular mask cuts them mid-word. Sizing the mask to
+ * the content does not help, because the heading's own max-width caps it. So
+ * this variant clips on one edge only: everything below the padded bottom is
+ * hidden, which is all the reveal needs, and the sides stay open.
+ */
+.ed-curtain--line {
+  overflow: visible;
+  clip-path: inset(-100vh -100vw 0 -100vw);
+}

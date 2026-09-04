@@ -616,7 +616,10 @@
 
   .hero {
     min-height: 0;
-    padding: calc(var(--mobile-header-height) + 1.15rem) 0 2.75rem;
+    /* No bottom padding. The section's own ground showed below the stage as a
+       flat band between the hero and the next section; the closing space now
+       sits inside the stage instead, where the photograph covers it. */
+    padding: calc(var(--mobile-header-height) + 1.15rem) 0 0;
     background: #d9dedf;
   }
 
@@ -663,7 +666,13 @@
     column-gap: clamp(0.7rem, 3vw, 1.25rem);
     row-gap: 1.1rem;
     align-items: stretch;
-    padding-bottom: 0;
+    /* The eyebrow and the portrait were both landing within a few pixels of
+       the header, and the action row was sitting on the stage's bottom edge.
+       Both insets go on the grid rather than the section so the photograph,
+       which is pinned to the stage, fills the space around the copy and the
+       hero stays image-led. */
+    padding-top: 2.9rem;
+    padding-bottom: 2.5rem;
     border-bottom: 0;
   }
 
