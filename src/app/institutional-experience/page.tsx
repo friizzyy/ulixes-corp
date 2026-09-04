@@ -181,7 +181,7 @@ export default function InstitutionalExperiencePage() {
           <ol
             className={styles.positions}
             aria-label="Ulixes delivery principles"
-            data-visible-from="768px"
+            data-visible-from="896px"
           >
             {principles.items.map((item, index) => (
               <li key={item.title}>
@@ -195,7 +195,7 @@ export default function InstitutionalExperiencePage() {
           </ol>
           <div
             className={styles.mobilePositions}
-            data-visible-through="767px"
+            data-visible-through="895px"
           >
             <MobileDisclosure
               ariaLabel="Working positions"

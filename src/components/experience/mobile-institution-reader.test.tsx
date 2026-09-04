@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
@@ -5,6 +7,13 @@ import { institutionalExperienceContent } from '@/lib/institutional-experience-c
 import { MobileInstitutionReader } from './mobile-institution-reader'
 
 const { categories } = institutionalExperienceContent.institutions
+const readerStyles = readFileSync(
+  resolve(
+    process.cwd(),
+    'src/components/experience/mobile-institution-reader.module.css',
+  ),
+  'utf8',
+)
 
 describe('MobileInstitutionReader', () => {
   it('keeps the institution index complete while mounting one brief', async () => {
@@ -59,5 +68,44 @@ describe('MobileInstitutionReader', () => {
     expect(screen.getByTestId('institution-description')).toHaveTextContent(
       categories[1].description,
     )
+  })
+
+  it('limits reader motion to opacity and transform', () => {
+    const keyframes = readerStyles.slice(
+      readerStyles.indexOf('@keyframes brief-enter-forward'),
+      readerStyles.indexOf('@media (min-width: 600px)'),
+    )
+
+    expect(readerStyles).not.toMatch(/\btransition\s*:/)
+    expect(keyframes).toMatch(/opacity:/)
+    expect(keyframes).toMatch(/transform:/)
+    expect(keyframes).not.toMatch(
+      /(?:background|border|color|height|width|top|right|bottom|left):/,
+    )
+  })
+
+  it('removes the brief animation when reduced motion is requested', () => {
+    const reducedMotionStyles = readerStyles.slice(
+      readerStyles.indexOf('@media (prefers-reduced-motion: reduce)'),
+    )
+
+    expect(reducedMotionStyles).toMatch(
+      /\.brief\s*\{[^}]*animation:\s*none/,
+    )
+  })
+
+  it('keeps every selector and pager control above the 44px target floor', () => {
+    const indexControlStyles = readerStyles.slice(
+      readerStyles.indexOf('.indexControl {'),
+      readerStyles.indexOf(".indexControl[aria-pressed='true']"),
+    )
+    const pagerControlStyles = readerStyles.slice(
+      readerStyles.indexOf('.pagerControl {'),
+      readerStyles.indexOf('.pagerControl:disabled'),
+    )
+
+    expect(indexControlStyles).toMatch(/min-height:\s*3\.5rem/)
+    expect(pagerControlStyles).toMatch(/width:\s*3\.5rem/)
+    expect(pagerControlStyles).toMatch(/min-height:\s*3\.5rem/)
   })
 })

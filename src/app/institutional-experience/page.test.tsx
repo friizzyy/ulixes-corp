@@ -206,7 +206,15 @@ describe('institutional experience route', () => {
     render(<ExperiencePage />)
     const disclosure = screen.getByRole('region', { name: 'Working positions' })
     const controls = within(disclosure).getAllByRole('button')
+    const desktopPositions = screen.getByRole('list', {
+      name: 'Ulixes delivery principles',
+    })
 
+    expect(desktopPositions).toHaveAttribute('data-visible-from', '896px')
+    expect(disclosure.closest('[data-visible-through]')).toHaveAttribute(
+      'data-visible-through',
+      '895px',
+    )
     expect(controls).toHaveLength(6)
     expect(controls[0]).toHaveAttribute('aria-expanded', 'true')
     expect(within(disclosure).getByText(principles.items[0].description)).toBeVisible()
