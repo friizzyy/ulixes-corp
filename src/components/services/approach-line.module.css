@@ -10,7 +10,7 @@
   --chapter-text: #f1f3ef;
   --chapter-rule: rgba(241, 243, 239, 0.2);
   --chapter-muted: rgba(241, 243, 239, 0.66);
-  --chapter-faint: rgba(241, 243, 239, 0.42);
+  --chapter-faint: rgba(241, 243, 239, 0.5);
   --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
   --gutter: 2.4rem;
   position: relative;

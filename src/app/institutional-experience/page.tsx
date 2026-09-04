@@ -170,7 +170,10 @@ export default function InstitutionalExperiencePage() {
         aria-labelledby="principles-title"
       >
         <div className={styles.shell}>
-          <div className={styles.chapterHead}>
+          <div
+            className={styles.chapterHead}
+            data-heading-composition="centered"
+          >
             <p className={`ed-eyebrow ${styles.marginLabel}`}>{principles.eyebrow}</p>
             <h2 id="principles-title" className={styles.chapterTitle}>
               {principles.headlineLead}{' '}

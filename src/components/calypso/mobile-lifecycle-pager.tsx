@@ -3,6 +3,7 @@
 import {
   type CSSProperties,
   type KeyboardEvent,
+  useCallback,
   useEffect,
   useId,
   useMemo,
@@ -56,14 +57,47 @@ export function MobileLifecyclePager({
   const [activeIndex, setActiveIndex] = useState(0)
   const [direction, setDirection] = useState<'forward' | 'backward'>('forward')
   const [sheetOpen, setSheetOpen] = useState(false)
+  const segmentViewportRef = useRef<HTMLDivElement | null>(null)
   const controlRefs = useRef<Array<HTMLButtonElement | null>>([])
   const reducedMotion = usePrefersReducedMotion() === true
   const activeStage = stages[activeIndex] ?? stages[0]
   const lastIndex = stages.length - 1
   const summaryId = `mobile-lifecycle-${instanceId}-summary`
 
+  const revealStage = useCallback(
+    (index: number, requestedBehavior: ScrollBehavior = 'smooth') => {
+      const viewport = segmentViewportRef.current
+      const control = controlRefs.current[index]
+      if (!viewport || !control) return
+
+      const viewportRect = viewport.getBoundingClientRect()
+      const controlRect = control.getBoundingClientRect()
+      let delta = 0
+
+      if (controlRect.left < viewportRect.left) {
+        delta = controlRect.left - viewportRect.left
+      } else if (controlRect.right > viewportRect.right) {
+        delta = controlRect.right - viewportRect.right
+      }
+
+      if (Math.abs(delta) < 0.5) return
+
+      const left = Math.max(0, viewport.scrollLeft + delta)
+      const behavior = reducedMotion ? 'auto' : requestedBehavior
+      if (typeof viewport.scrollTo === 'function') {
+        viewport.scrollTo({ behavior, left })
+      } else {
+        viewport.scrollLeft = left
+      }
+    },
+    [reducedMotion],
+  )
+
   useEffect(() => {
-    const restoreFromUrl = (restoreFocus = false) => {
+    const restoreFromUrl = (
+      restoreFocus = false,
+      revealBehavior: ScrollBehavior = 'auto',
+    ) => {
       const requestedStage = new URLSearchParams(window.location.search).get(
         'stage',
       )
@@ -83,22 +117,29 @@ export function MobileLifecyclePager({
         }
         return nextIndex
       })
+      revealStage(nextIndex, revealBehavior)
 
       if (restoreFocus && focusWasInSelector) {
         controlRefs.current[nextIndex]?.focus()
       }
     }
 
-    const handlePopState = () => restoreFromUrl(true)
-    const handleStageChange = () => restoreFromUrl(true)
-    restoreFromUrl()
+    const handlePopState = () => restoreFromUrl(true, 'auto')
+    const handleStageChange = () => restoreFromUrl(true, 'smooth')
+    restoreFromUrl(false, 'auto')
     window.addEventListener('popstate', handlePopState)
     window.addEventListener(lifecycleStageChangeEvent, handleStageChange)
     return () => {
       window.removeEventListener('popstate', handlePopState)
       window.removeEventListener(lifecycleStageChangeEvent, handleStageChange)
     }
-  }, [stageOrder])
+  }, [revealStage, stageOrder])
+
+  useEffect(() => {
+    const handleResize = () => revealStage(activeIndex, 'auto')
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [activeIndex, revealStage])
 
   if (!activeStage) return null
 
@@ -111,6 +152,8 @@ export function MobileLifecyclePager({
 
   const selectStage = (nextIndex: number, moveFocus = false) => {
     const boundedIndex = Math.min(Math.max(nextIndex, 0), lastIndex)
+
+    revealStage(boundedIndex, 'smooth')
 
     if (boundedIndex !== activeIndex) {
       setDirection(boundedIndex < activeIndex ? 'backward' : 'forward')
@@ -159,7 +202,7 @@ export function MobileLifecyclePager({
       data-motion={reducedMotion ? 'reduced' : 'standard'}
       style={{ '--active-index': activeIndex } as CSSProperties}
     >
-      <div className={styles.segmentViewport}>
+      <div ref={segmentViewportRef} className={styles.segmentViewport}>
         <div
           className={styles.segments}
           role="group"

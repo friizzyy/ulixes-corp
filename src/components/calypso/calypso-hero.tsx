@@ -80,7 +80,7 @@ export function CalypsoHero() {
           alt=""
           fill
           priority
-          sizes="(max-width: 767px) 100vw, (max-width: 899px) 100vw, 60vw"
+          sizes="(max-width: 767px) 100vw, (max-width: 895px) 100vw, 60vw"
           className={styles.mediaImage}
         />
       </div>

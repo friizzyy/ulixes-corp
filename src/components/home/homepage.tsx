@@ -94,7 +94,10 @@ export function Homepage() {
       >
         <div className={styles.contentShell}>
           <div className={styles.sectionIntro}>
-            <div className={styles.sectionHeading}>
+            <div
+              className={styles.sectionHeading}
+              data-heading-composition="centered-command"
+            >
               <p className={styles.eyebrow}>{homepageContent.services.eyebrow}</p>
               <h2 id="services-title" className={styles.sectionTitle}>
                 {homepageContent.services.headline}

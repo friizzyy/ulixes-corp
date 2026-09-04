@@ -105,6 +105,36 @@ describe('Nasdaq Calypso page', () => {
       .toBeTruthy()
   })
 
+  it('exposes stable hooks for the centered program title and mirrored mandate header', () => {
+    render(<NasdaqCalypsoPage />)
+
+    const programHeader = screen.getByTestId('calypso-program-header')
+    const programTitle = within(programHeader).getByTestId(
+      'calypso-program-title-group',
+    )
+    const programLede = within(programHeader).getByTestId(
+      'calypso-program-lede',
+    )
+    const mandateHeader = screen.getByTestId('calypso-mandate-header')
+    const mandateTitle = within(mandateHeader).getByTestId(
+      'calypso-mandate-title-group',
+    )
+    const mandateLede = within(mandateHeader).getByTestId(
+      'calypso-mandate-lede',
+    )
+
+    expect(programTitle).toContainElement(
+      screen.getByRole('heading', { level: 2, name: /eight programs/i }),
+    )
+    expect(programTitle.compareDocumentPosition(programLede))
+      .toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(mandateTitle).toContainElement(
+      screen.getByRole('heading', { level: 2, name: /four shapes/i }),
+    )
+    expect(mandateTitle.compareDocumentPosition(mandateLede))
+      .toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+  })
+
   it('renders four mandates as one stacked ledger without a content rail', () => {
     const { container } = render(<NasdaqCalypsoPage />)
 

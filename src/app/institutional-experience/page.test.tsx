@@ -257,6 +257,63 @@ describe('institutional experience route', () => {
     )
   })
 
+  it('centers the Working Positions title group without centering its scan content', () => {
+    const { container } = render(<ExperiencePage />)
+    const centeredIntros = container.querySelectorAll(
+      '[data-heading-composition="centered"]',
+    )
+    const principlesRegion = screen.getByRole('region', {
+      name: 'Six positions the work is built on.',
+    })
+    const desktopPositions = within(principlesRegion).getByRole('list', {
+      name: 'Ulixes delivery principles',
+    })
+    const mobilePositions = within(principlesRegion).getByRole('region', {
+      name: 'Working positions',
+    })
+    const desktopHeader = experienceStyles.slice(
+      experienceStyles.indexOf('.chapterHead {'),
+      experienceStyles.indexOf('/*\n * Two columns, three rows.'),
+    )
+    const touchRules = experienceStyles.slice(
+      experienceStyles.lastIndexOf('@media (max-width: 895px)'),
+    )
+
+    expect(centeredIntros).toHaveLength(1)
+    expect(centeredIntros[0]).toContainElement(
+      within(principlesRegion).getByText('Working perspective', {
+        selector: 'p',
+      }),
+    )
+    expect(centeredIntros[0]).toContainElement(
+      within(principlesRegion).getByRole('heading', {
+        level: 2,
+        name: 'Six positions the work is built on.',
+      }),
+    )
+    expect(centeredIntros[0]).not.toContainElement(desktopPositions)
+    expect(centeredIntros[0]).not.toContainElement(mobilePositions)
+    expect(experienceStyles).not.toContain('@media (max-width: 899px)')
+    expect(desktopHeader).toMatch(
+      /\.chapterHead\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)\s+minmax\(0,\s*2fr\)\s+minmax\(0,\s*1fr\)/,
+    )
+    expect(desktopHeader).toMatch(
+      /\.chapterHead\s+\.marginLabel\s*\{[\s\S]*?grid-column:\s*2[\s\S]*?text-align:\s*center/,
+    )
+    expect(desktopHeader).toMatch(
+      /\.chapterTitle\s*\{[\s\S]*?grid-column:\s*2[\s\S]*?text-align:\s*center/,
+    )
+    expect(touchRules).toMatch(
+      /\.chapterHead\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)/,
+    )
+    expect(touchRules).toMatch(
+      /\.chapterHead\s+\.marginLabel,[\s\S]*?\.chapterTitle\s*\{[\s\S]*?text-align:\s*center/,
+    )
+    expect(experienceStyles).toMatch(
+      /\.positions,\s*\.mobilePositions\s*\{[^}]*text-align:\s*left/,
+    )
+  })
+
   it('carries two distinct images and no invented portrait', () => {
     const { container } = render(<ExperiencePage />)
 

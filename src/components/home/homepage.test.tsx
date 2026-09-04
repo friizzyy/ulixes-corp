@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
@@ -6,6 +8,11 @@ import {
   serviceModules,
 } from '@/lib/homepage-content'
 import { Homepage } from './homepage'
+
+const homepageStylesheet = readFileSync(
+  resolve(process.cwd(), 'src/components/home/homepage.module.css'),
+  'utf8',
+)
 
 describe('Homepage', () => {
   afterEach(() => {
@@ -159,6 +166,63 @@ describe('Homepage', () => {
         within(mobileIndex!).queryByText(service.description),
       ).not.toBeInTheDocument()
     }
+  })
+
+  it('centers only the capability heading as an all-width composition pause', () => {
+    const { container } = render(<Homepage />)
+    const services = screen.getByRole('region', {
+      name: homepageContent.services.headline,
+    })
+    const heading = within(services).getByRole('heading', {
+      level: 2,
+      name: homepageContent.services.headline,
+    })
+    const headingComposition = services.querySelector(
+      '[data-heading-composition="centered-command"]',
+    )
+
+    expect(headingComposition).not.toBeNull()
+    expect(headingComposition).toContainElement(heading)
+    expect(headingComposition).not.toContainElement(
+      within(services).getByText(homepageContent.services.body),
+    )
+    expect(headingComposition).not.toContainElement(
+      within(services).getByRole('link', {
+        name: homepageContent.services.cta,
+      }),
+    )
+
+    const centeredHeadingRule = homepageStylesheet.match(
+      /\.services\s+\.sectionHeading\s*\{([^}]*)\}/,
+    )
+    expect(centeredHeadingRule?.[1]).toMatch(/justify-self:\s*center/)
+    expect(centeredHeadingRule?.[1]).toMatch(/text-align:\s*center/)
+    expect(homepageStylesheet).toMatch(
+      /\.services\s+\.sectionHeading\s+\.sectionTitle\s*\{[^}]*margin-inline:\s*auto/,
+    )
+
+    // The base rule reaches both sides of the 895/896 composition boundary.
+    expect(homepageStylesheet.indexOf('.services .sectionHeading')).toBeLessThan(
+      homepageStylesheet.indexOf('@media'),
+    )
+    expect(homepageStylesheet.match(/\.services\s+\.sectionHeading\s*\{/g)).toHaveLength(1)
+
+    // Body copy, action, and both capability scans retain their reading edge.
+    const centeredSelectors = Array.from(
+      homepageStylesheet.matchAll(
+        /([^{}]+)\{[^{}]*text-align:\s*center[^{}]*\}/g,
+      ),
+      (match) => match[1],
+    ).join('\n')
+    for (const selector of [
+      '.sectionLead',
+      '.serviceLedger',
+      '.mobileCapabilityIndex',
+    ]) {
+      expect(homepageStylesheet).toContain(selector)
+      expect(centeredSelectors).not.toContain(selector)
+    }
+    expect(container.querySelectorAll('[data-heading-composition]')).toHaveLength(1)
   })
 
   it('centers named practitioner authority and one direct inquiry close', () => {

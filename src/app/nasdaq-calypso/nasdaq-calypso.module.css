@@ -207,16 +207,24 @@
 
 .chapterHeader {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(17rem, 0.62fr);
-  gap: clamp(2.5rem, 5.5vw, 5.5rem);
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr) minmax(13rem, 1.35fr) minmax(0, 1fr);
+  gap: clamp(1rem, 2.8vw, 2.75rem);
+  align-items: end;
   padding-bottom: clamp(2rem, 3.2vw, 2.75rem);
   border-bottom: 1px solid rgba(246, 245, 241, 0.17);
 }
 
+.chapterTitleGroup {
+  grid-column: 2;
+  justify-self: center;
+  width: 100%;
+  min-width: 0;
+  text-align: center;
+}
+
 .chapterTitle {
   max-width: 17ch;
-  margin: 0;
+  margin: 0 auto;
   color: #f6f5f1;
   font-size: clamp(2.75rem, 4vw, 3.75rem);
   font-weight: 550;
@@ -226,11 +234,13 @@
 }
 
 .chapterHeader > p {
+  grid-column: 3;
   margin: 0.65rem 0 0;
   max-width: 30rem;
   color: #9eabb0;
   font-size: clamp(0.91rem, 1.1vw, 1rem);
   line-height: 1.64;
+  text-align: left;
   text-wrap: pretty;
 }
 
@@ -326,26 +336,43 @@
  * Two by two rather than four stacked full-width rows. Same content, roughly
  * half the scroll, and the pairing gives the four shapes a shape of their own.
  */
-/* Section head: heading left, lede right, the page's two-column header. */
+/* A mirrored close to the centered program chapter: evidence left, title right. */
 .mandateHeader {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  grid-template-areas: 'lede title';
   align-items: end;
   gap: clamp(2rem, 4vw, 4rem);
   margin-bottom: 1.5rem;
 }
 
+.mandateTitleGroup {
+  grid-area: title;
+  justify-self: end;
+  text-align: right;
+}
+
+.mandateTitleGroup .sectionTitle {
+  margin-left: auto;
+}
+
 .mandateLede {
+  grid-area: lede;
+  justify-self: start;
   max-width: 34rem;
   margin: 0;
   color: var(--steel);
   font-size: clamp(0.92rem, 1.05vw, 1.02rem);
   line-height: 1.62;
+  text-align: left;
 }
 
-@media (max-width: 899px) {
+@media (max-width: 895px) {
   .mandateHeader {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'title'
+      'lede';
     gap: 1rem;
     align-items: start;
   }
@@ -430,7 +457,7 @@
   text-wrap: pretty;
 }
 
-@media (max-width: 899px) {
+@media (max-width: 895px) {
   .mandateRow {
     grid-template-columns: 2.5rem minmax(0, 1fr);
     grid-template-areas:
@@ -525,7 +552,7 @@
 
 
 
-@media (max-width: 899px) {
+@media (max-width: 895px) {
   .closePanel {
     grid-template-columns: minmax(0, 1fr);
     gap: 1.75rem;
@@ -555,13 +582,14 @@
  * squeezed "Eight programs" into a column of syllables and set the close copy
  * one word per line under the CTA.
  */
-@media (max-width: 899px) {
+@media (max-width: 895px) {
   .chapterHeader {
     grid-template-columns: minmax(0, 1fr);
     gap: 1.25rem;
   }
 
   .chapterHeader > p {
+    grid-column: 1;
     margin-top: 0;
   }
 
@@ -612,8 +640,21 @@
   }
 
   .chapterHeader {
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.65rem;
     padding-bottom: 0.85rem;
+  }
+
+  .chapterTitleGroup {
+    grid-column: 1;
+    justify-self: center;
+    text-align: center;
+  }
+
+  .chapterHeader > p {
+    grid-column: 1;
+    max-width: none;
+    text-align: left;
   }
 
   .chapterHeader > p,
@@ -627,7 +668,19 @@
   }
 
   .mandateHeader {
+    grid-template-areas:
+      'title'
+      'lede';
     margin-bottom: 1rem;
+  }
+
+  .mandateTitleGroup {
+    justify-self: start;
+    text-align: left;
+  }
+
+  .mandateTitleGroup .sectionTitle {
+    margin-left: 0;
   }
 
   .mandateLedger::before {

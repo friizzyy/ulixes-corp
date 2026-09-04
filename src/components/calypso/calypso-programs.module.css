@@ -519,7 +519,7 @@
     font-weight: 650;
     letter-spacing: -0.015em;
     line-height: 1.2;
-    text-align: center;
+    text-align: left;
     cursor: pointer;
   }
 
@@ -699,17 +699,6 @@
 @media (min-width: 896px) {
   .mobile {
     display: none;
-  }
-}
-
-@media (min-width: 896px) and (max-width: 899px) {
-  .programs {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      'index'
-      'detail'
-      'domains';
-    gap: 1.75rem;
   }
 }
 

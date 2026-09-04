@@ -157,7 +157,10 @@ export function ServicesPage() {
           blue slate and reads unmistakably blue across a whole section. */}
       <section className={styles.chapter} aria-labelledby="path-negation-title">
         <div className={`${styles.contentShell} ${styles.chapterGrid}`}>
-          <div className={styles.chapterLead}>
+          <div
+            className={styles.chapterLead}
+            data-heading-composition="centered-thesis"
+          >
             <h2 id="path-negation-title" className={styles.chapterStatement}>
               {negation.statement}
             </h2>
@@ -197,7 +200,7 @@ export function ServicesPage() {
                 src="/media/services/ulixes-services-floor.jpg"
                 alt="A capital markets trading floor after hours, rows of desks under linear lights."
                 fill
-                sizes="(max-width: 899px) 100vw, 46vw"
+                sizes="(max-width: 895px) 100vw, 46vw"
                 className={styles.evidenceImage}
               />
             </div>

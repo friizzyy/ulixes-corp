@@ -423,6 +423,57 @@
 
 ---
 
+### Task 6.5: Editorial heading rhythm and first-pass verification fixes
+
+**Files:**
+- Modify: `src/components/home/homepage.tsx`
+- Modify: `src/components/home/homepage.module.css`
+- Modify: `src/components/home/homepage.test.tsx`
+- Modify: `src/components/services/services-page.tsx`
+- Modify: `src/components/services/services-page.module.css`
+- Modify: `src/components/services/services-page.test.tsx`
+- Modify: `src/components/services/approach-line.module.css`
+- Modify: `src/app/institutional-experience/page.tsx`
+- Modify: `src/app/institutional-experience/institutional-experience.module.css`
+- Modify: `src/app/institutional-experience/page.test.tsx`
+- Modify: `src/components/experience/mobile-institution-reader.module.css`
+- Modify: `src/components/experience/mobile-institution-reader.test.tsx`
+- Modify: `src/app/nasdaq-calypso/page.tsx`
+- Modify: `src/app/nasdaq-calypso/nasdaq-calypso.module.css`
+- Modify: `src/app/nasdaq-calypso/nasdaq-calypso-responsive.test.ts`
+- Modify: `src/components/calypso/mobile-lifecycle-pager.tsx`
+- Modify: `src/components/calypso/mobile-lifecycle-pager.module.css`
+- Modify: `src/components/calypso/mobile-lifecycle-pager.test.tsx`
+- Modify: `src/components/calypso/calypso-programs.module.css`
+
+**Interfaces:**
+- Centered editorial title groups are explicitly marked while nearby long-form copy and operational controls retain a left reading edge.
+- The mobile and desktop composition boundary remains `895/896px`.
+- URL-selected lifecycle segments reveal horizontally without changing vertical page position.
+
+- [ ] **Step 1: Add red regression coverage**
+
+  Cover the approved heading-composition map, forbid stale `899px` seams, require compliant dark-surface contrast, require URL-selected lifecycle visibility at `320px`, and require the Experience reader to remain height-stable across every category.
+
+- [ ] **Step 2: Implement the composition map**
+
+  Center the Home Capabilities title group, Services dark-chapter thesis, Experience Working Positions title group, and Calypso Programs title group. Keep adjacent ledes, ledgers, selectors, and long-form copy left-aligned. Mirror the Calypso Mandates introduction only on desktop.
+
+- [ ] **Step 3: Resolve first-pass browser findings**
+
+  Raise only the failing Services and Calypso text colors to WCAG AA, reveal selected lifecycle segments within their horizontal rail, stabilize the Experience reader, and normalize route seams to `895px`.
+
+- [ ] **Step 4: Verify and commit**
+
+  Run focused tests, the full suite, TypeScript, lint, link verification, build, diff checks, axe, and rendered checks at `320`, `375`, `768`, `895`, `896`, and `1440`. Confirm no horizontal overflow and no meaningful mobile page-height increase.
+
+  ```bash
+  git add docs/superpowers src/components/home src/components/services src/components/experience src/components/calypso src/app/institutional-experience src/app/nasdaq-calypso
+  git commit -m "fix: vary editorial heading compositions"
+  ```
+
+---
+
 ### Task 7: Automated, visual, accessibility, and performance verification
 
 **Files:**

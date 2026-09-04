@@ -324,7 +324,7 @@
   padding: clamp(2rem, 3vw, 2.75rem) 0;
 }
 
-@media (max-width: 899px) {
+@media (max-width: 895px) {
   .heroBelow {
     grid-template-columns: minmax(0, 1fr);
     gap: 1.75rem;
@@ -363,11 +363,13 @@
 
 .chapterLead {
   min-width: 0;
+  justify-self: center;
+  text-align: center;
 }
 
 .chapterStatement {
   max-width: 12ch;
-  margin: 0;
+  margin: 0 auto;
   color: #f1f3ef;
   font-size: clamp(2.3rem, 3.35vw, 3rem);
   font-weight: 560;
@@ -378,7 +380,7 @@
 
 .chapterBody {
   max-width: 28rem;
-  margin: 1.3rem 0 0;
+  margin: 1.3rem auto 0;
   color: rgba(241, 243, 239, 0.68);
   font-size: 1rem;
   line-height: 1.7;
@@ -386,6 +388,7 @@
 
 .chapterRegister {
   min-width: 0;
+  text-align: left;
 }
 
 .chapterLabel {
@@ -484,13 +487,13 @@
 
 /* Responsive ------------------------------------------------------------- */
 
-@media (max-width: 1120px) and (min-width: 900px) {
+@media (max-width: 1120px) and (min-width: 896px) {
   .sectionIntro {
     gap: 3rem;
   }
 }
 
-@media (max-width: 899px) {
+@media (max-width: 895px) {
   .contentShell {
     width: min(calc(100% - 2rem), 760px);
   }
@@ -730,7 +733,7 @@
   line-height: 1.62;
 }
 
-@media (max-width: 899px) {
+@media (max-width: 895px) {
   .evidenceGrid {
     grid-template-columns: minmax(0, 1fr);
     gap: 2.25rem;

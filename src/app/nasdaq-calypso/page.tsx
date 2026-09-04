@@ -65,8 +65,14 @@ export default function NasdaqCalypsoPage() {
             className={styles.programBookContent}
             data-testid="calypso-program-book-content"
           >
-            <header className={styles.chapterHeader}>
-              <div>
+            <header
+              className={styles.chapterHeader}
+              data-testid="calypso-program-header"
+            >
+              <div
+                className={styles.chapterTitleGroup}
+                data-testid="calypso-program-title-group"
+              >
                 <p className={`ed-eyebrow ${styles.eyebrow}`}>{programs.eyebrow}</p>
                 <Curtain>
                   <h2 id="programs-title" className={styles.chapterTitle}>
@@ -75,7 +81,7 @@ export default function NasdaqCalypsoPage() {
                   </h2>
                 </Curtain>
               </div>
-              <p>{programs.body}</p>
+              <p data-testid="calypso-program-lede">{programs.body}</p>
             </header>
 
             <CalypsoPrograms />
@@ -89,15 +95,20 @@ export default function NasdaqCalypsoPage() {
         data-section="mandates"
         aria-labelledby="mandates-title"
       >
-        <div className={styles.shell}>
-          {/*
-            The eyebrow, headline and lede used to be three siblings in a
-            two-column grid, so the lede fell into the narrow first column and
-            rendered as a 185px, nine-line ribbon of text. Grouping the first
-            two puts the lede in the wide column where it belongs.
+          <div className={styles.shell}>
+            {/*
+            The title group stays one editorial unit while the lede occupies
+            the opposing track. Touch layouts return them to title-first
+            reading order without changing the document order.
           */}
-          <header className={styles.mandateHeader}>
-            <div>
+          <header
+            className={styles.mandateHeader}
+            data-testid="calypso-mandate-header"
+          >
+            <div
+              className={styles.mandateTitleGroup}
+              data-testid="calypso-mandate-title-group"
+            >
               <p className={`ed-eyebrow ${styles.eyebrow}`}>{delivery.eyebrow}</p>
               <Curtain>
                 <h2 id="mandates-title" className={styles.sectionTitle}>
@@ -106,7 +117,12 @@ export default function NasdaqCalypsoPage() {
                 </h2>
               </Curtain>
             </div>
-            <p className={styles.mandateLede}>{delivery.body}</p>
+            <p
+              className={styles.mandateLede}
+              data-testid="calypso-mandate-lede"
+            >
+              {delivery.body}
+            </p>
           </header>
 
           <MobileMandateSelector mandates={calypsoDelivery} />

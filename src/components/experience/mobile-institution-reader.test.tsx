@@ -73,7 +73,7 @@ describe('MobileInstitutionReader', () => {
   it('limits reader motion to opacity and transform', () => {
     const keyframes = readerStyles.slice(
       readerStyles.indexOf('@keyframes brief-enter-forward'),
-      readerStyles.indexOf('@media (min-width: 600px)'),
+      readerStyles.indexOf('@media (max-width: 382px)'),
     )
 
     expect(readerStyles).not.toMatch(/\btransition\s*:/)
@@ -107,5 +107,26 @@ describe('MobileInstitutionReader', () => {
     expect(indexControlStyles).toMatch(/min-height:\s*3\.5rem/)
     expect(pagerControlStyles).toMatch(/width:\s*3\.5rem/)
     expect(pagerControlStyles).toMatch(/min-height:\s*3\.5rem/)
+  })
+
+  it('reserves only the measured tallest brief height at phone widths', () => {
+    const baseBrief = readerStyles.slice(
+      readerStyles.indexOf('.brief {'),
+      readerStyles.indexOf('.brief[data-direction'),
+    )
+    const narrowPhoneRules = readerStyles.slice(
+      readerStyles.indexOf('@media (max-width: 382px)'),
+      readerStyles.indexOf('@media (min-width: 600px)'),
+    )
+    const tabletRules = readerStyles.slice(
+      readerStyles.indexOf('@media (min-width: 600px)'),
+      readerStyles.indexOf('@media (min-width: 896px)'),
+    )
+
+    expect(baseBrief).toMatch(/min-height:\s*13rem/)
+    expect(narrowPhoneRules).toMatch(
+      /@media \(max-width: 382px\)[\s\S]*?\.brief\s*\{[^}]*min-height:\s*14\.55rem/,
+    )
+    expect(tabletRules).toMatch(/\.brief\s*\{[^}]*min-height:\s*16rem/)
   })
 })

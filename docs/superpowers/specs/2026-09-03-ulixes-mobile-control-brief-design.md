@@ -1,8 +1,8 @@
 # Ulixes Mobile Control Brief Design
 
-Date: 2026-09-03  
-Branch: `codex/institutional-experience-premium`  
-Reference build: `http://localhost:3100`  
+Date: 2026-09-03
+Branch: `codex/institutional-experience-premium`
+Reference build: `http://localhost:3100`
 Approved direction: Control Brief, approved by the user on 2026-09-03
 
 ## Objective
@@ -155,6 +155,20 @@ Replace the current mobile master-detail workbench with a fixed-height `MobileLi
 - Reduce excessive mobile top and bottom space.
 - Do not add sales bars, carousels, decorative cards, or modal detail sheets.
 
+## Composition rhythm amendment
+
+The user identified a repeated left-rail heading pattern after the first implementation pass. The finished site must vary section-title composition deliberately on both desktop and mobile without mechanically alternating alignment or centering scan-heavy content.
+
+- Home keeps its hero, practitioner, Calypso signal, and close left-aligned. The Capabilities title group becomes a centered editorial pause while its explanatory copy and capability controls stay left-aligned.
+- Services keeps its hero, capability register, platform proof, and close left-aligned or split. The dark engagement thesis becomes centered while the phase controls and descriptions remain left-aligned.
+- Institutional Experience keeps its hero, institution reader, and close left-aligned or split. The Working Positions title group becomes centered while the positions remain left-aligned.
+- Nasdaq Calypso keeps its hero, lifecycle workbench, and close left-aligned or split. The Programs title group becomes the centered editorial centerpiece while its lede and controls remain left-aligned. The Mandates introduction may use a mirrored split on desktop, but returns to left alignment through 895px.
+- Contact, Privacy, and Terms remain left-aligned because uninterrupted task and reading flow is more important than decorative variation.
+
+Centering must not increase collapsed mobile page height, weaken information hierarchy, or place long-form body copy in a centered measure. The 895px mobile and 896px desktop compositions remain mutually exclusive.
+
+The first production-mode verification pass also established four release-blocking corrections: compliant contrast in Services indices and Calypso detail sheets, horizontal reveal of a URL-selected Calypso stage at 320px, and a stable Institutional Experience reader height across selections. These are part of the release scope and require regression coverage.
+
 ## Visual system
 
 Use the existing project tokens and imagery. The mobile redesign changes their role and rhythm:
@@ -164,7 +178,7 @@ Use the existing project tokens and imagery. The mobile redesign changes their r
 - Rules, controlled overlap, and tonal recession create depth. Large rounded card stacks, glow effects, and generic floating panels are prohibited.
 - Use at least three surface levels on Home, Experience, and Calypso: page ground, recessed visual or chapter plane, and raised active information plane.
 - Use exactly one memorable depth or interaction composition per route.
-- Typography remains left aligned with short line lengths and no tiny desktop labels carrying essential meaning.
+- Long-form copy and operational controls keep a stable left reading edge. Selected editorial title groups may be centered or mirrored according to the composition map above.
 
 ## Motion
 

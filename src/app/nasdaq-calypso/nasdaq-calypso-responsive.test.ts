@@ -44,8 +44,102 @@ const mandateStylesheet = readFileSync(
   ),
   'utf8',
 )
+const sheetStylesheet = readFileSync(
+  resolve(
+    process.cwd(),
+    'src/components/ui/mobile-detail-sheet.module.css',
+  ),
+  'utf8',
+)
+const heroSource = readFileSync(
+  resolve(process.cwd(), 'src/components/calypso/calypso-hero.tsx'),
+  'utf8',
+)
+
+const channel = (value: string) => {
+  const component = Number.parseInt(value, 16) / 255
+  return component <= 0.04045
+    ? component / 12.92
+    : ((component + 0.055) / 1.055) ** 2.4
+}
+
+const luminance = (hex: string) => {
+  const match = hex.match(/^#([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i)
+  if (!match) throw new Error(`Expected a six-digit hex color, received ${hex}`)
+  return (
+    0.2126 * channel(match[1]) +
+    0.7152 * channel(match[2]) +
+    0.0722 * channel(match[3])
+  )
+}
+
+const contrast = (foreground: string, background: string) => {
+  const light = Math.max(luminance(foreground), luminance(background))
+  const dark = Math.min(luminance(foreground), luminance(background))
+  return (light + 0.05) / (dark + 0.05)
+}
+
+const token = (rule: string, name: string) => {
+  const match = rule.match(new RegExp(`--${name}:\\s*(#[\\da-f]{6})`, 'i'))
+  if (!match) throw new Error(`Missing --${name} token in sheet rule`)
+  return match[1]
+}
 
 describe('Nasdaq Calypso responsive layout', () => {
+  it('uses one intentional title rhythm across the Programs and Mandates chapters', () => {
+    const touchRules = stylesheet.slice(
+      stylesheet.lastIndexOf('@media (max-width: 895px)'),
+    )
+
+    for (const source of [
+      stylesheet,
+      heroStylesheet,
+      heroSource,
+      programStylesheet,
+      lifecycleStylesheet,
+      lifecycleWorkbenchStylesheet,
+      mandateStylesheet,
+    ]) {
+      expect(source).not.toMatch(/(?:min|max)-width:\s*899px/)
+    }
+    expect(stylesheet).toMatch(
+      /\.chapterHeader\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)\s+minmax\([^,]+,\s*1\.35fr\)\s+minmax\(0,\s*1fr\)/,
+    )
+    expect(stylesheet).toMatch(
+      /\.chapterTitleGroup\s*\{[^}]*grid-column:\s*2[^}]*text-align:\s*center/,
+    )
+    expect(stylesheet).toMatch(
+      /\.chapterHeader\s*>\s*p\s*\{[^}]*grid-column:\s*3[^}]*text-align:\s*left/,
+    )
+    expect(stylesheet).toMatch(
+      /\.mandateHeader\s*\{[^}]*grid-template-areas:\s*'lede title'/,
+    )
+    expect(stylesheet).toMatch(
+      /\.mandateTitleGroup\s*\{[^}]*grid-area:\s*title[^}]*text-align:\s*right/,
+    )
+    expect(stylesheet).toMatch(
+      /\.mandateLede\s*\{[^}]*grid-area:\s*lede[^}]*text-align:\s*left/,
+    )
+    expect(touchRules).toMatch(
+      /\.chapterTitleGroup\s*\{[^}]*grid-column:\s*1[^}]*text-align:\s*center/,
+    )
+    expect(touchRules).toMatch(
+      /\.mandateHeader\s*\{[^}]*grid-template-areas:\s*'title'\s*'lede'/,
+    )
+    expect(touchRules).toMatch(
+      /\.mandateTitleGroup\s*\{[^}]*text-align:\s*left/,
+    )
+    expect(programStylesheet).toMatch(
+      /\.mobileProgramControl\s*\{[^}]*text-align:\s*left/,
+    )
+    expect(programStylesheet).toMatch(
+      /\.mobileFamilyControl\s*\{[^}]*text-align:\s*left/,
+    )
+    expect(programStylesheet).toMatch(
+      /\.row\s*\{[^}]*text-align:\s*left/,
+    )
+  })
+
   it('collapses the chapter header before its fixed copy column can squeeze the title', () => {
     const responsiveRules = stylesheet.slice(
       stylesheet.indexOf('Every phone-width collapse'),
@@ -151,6 +245,39 @@ describe('Nasdaq Calypso responsive layout', () => {
     )
     expect(mandateStylesheet).toMatch(
       /\.riskCopy\s*\{[\s\S]*?font-size:\s*(?:1rem|16px)/,
+    )
+  })
+
+  it('keeps portalled Calypso sheet copy opaque and on AA text tokens', () => {
+    const sheetRule = sheetStylesheet.slice(
+      sheetStylesheet.indexOf('.sheet {'),
+      sheetStylesheet.indexOf('.sheet:focus'),
+    )
+    const entrance = sheetStylesheet.slice(
+      sheetStylesheet.indexOf('@keyframes sheet-enter'),
+      sheetStylesheet.indexOf('@media (min-width: 896px)'),
+    )
+
+    const surface = token(sheetRule, 'mineral-light')
+    for (const name of ['ink', 'graphite', 'steel']) {
+      expect(contrast(token(sheetRule, name), surface)).toBeGreaterThanOrEqual(4.5)
+    }
+    expect(entrance).toMatch(/transform:/)
+    expect(entrance).not.toMatch(/opacity:/)
+    expect(lifecycleStylesheet).toMatch(
+      /\.sheetField h3\s*\{[^}]*color:\s*var\(--steel\)/,
+    )
+    expect(lifecycleStylesheet).toMatch(
+      /\.sheetField li\s*\{[^}]*color:\s*var\(--graphite\)/,
+    )
+    expect(programStylesheet).toMatch(
+      /\.mobileDomain p\s*\{[^}]*color:\s*var\(--graphite\)/,
+    )
+    expect(programStylesheet).toMatch(
+      /\.mobileDomainIndex\s*\{[^}]*color:\s*var\(--steel\)/,
+    )
+    expect(programStylesheet).toMatch(
+      /\.mobileDomain strong\s*\{[^}]*color:\s*var\(--ink\)/,
     )
   })
 

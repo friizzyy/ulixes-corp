@@ -13,6 +13,100 @@ const renderPager = () =>
     />,
   )
 
+function installStageRailLayout({
+  controlWidth = 44,
+  viewportWidth = 100,
+}: {
+  controlWidth?: number
+  viewportWidth?: number
+} = {}) {
+  const originalGetBoundingClientRect =
+    HTMLElement.prototype.getBoundingClientRect
+  const originalScrollTo = Object.getOwnPropertyDescriptor(
+    HTMLElement.prototype,
+    'scrollTo',
+  )
+  const originalScrollIntoView = Object.getOwnPropertyDescriptor(
+    HTMLElement.prototype,
+    'scrollIntoView',
+  )
+  const scrollIntoView = vi.fn()
+  const scrollTo = vi.fn(function (
+    this: HTMLElement,
+    optionsOrX?: ScrollToOptions | number,
+  ) {
+    const left =
+      typeof optionsOrX === 'number'
+        ? optionsOrX
+        : (optionsOrX?.left ?? this.scrollLeft)
+    this.scrollLeft = left
+  })
+  const rect = (left: number, width: number): DOMRect =>
+    ({
+      x: left,
+      y: 0,
+      left,
+      top: 0,
+      width,
+      height: 48,
+      right: left + width,
+      bottom: 48,
+      toJSON: () => ({}),
+    }) as DOMRect
+
+  Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
+    configurable: true,
+    writable: true,
+    value: scrollTo,
+  })
+  Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+    configurable: true,
+    writable: true,
+    value: scrollIntoView,
+  })
+  HTMLElement.prototype.getBoundingClientRect = function () {
+    const group = this.parentElement?.getAttribute('role') === 'group'
+      ? this.parentElement
+      : null
+    const viewport = group?.parentElement
+
+    if (this.tagName === 'BUTTON' && group && viewport) {
+      const controls = Array.from(group.querySelectorAll('button'))
+      const index = controls.indexOf(this as HTMLButtonElement)
+      return rect(index * controlWidth - viewport.scrollLeft, controlWidth)
+    }
+
+    if (this.firstElementChild?.getAttribute('role') === 'group') {
+      return rect(0, viewportWidth)
+    }
+
+    return originalGetBoundingClientRect.call(this)
+  }
+
+  return {
+    scrollIntoView,
+    scrollTo,
+    restore() {
+      HTMLElement.prototype.getBoundingClientRect =
+        originalGetBoundingClientRect
+      if (originalScrollTo) {
+        Object.defineProperty(HTMLElement.prototype, 'scrollTo', originalScrollTo)
+      } else {
+        delete (HTMLElement.prototype as Partial<HTMLElement>).scrollTo
+      }
+      if (originalScrollIntoView) {
+        Object.defineProperty(
+          HTMLElement.prototype,
+          'scrollIntoView',
+          originalScrollIntoView,
+        )
+      } else {
+        delete (HTMLElement.prototype as Partial<HTMLElement>).scrollIntoView
+      }
+    },
+  }
+}
+
 describe('MobileLifecyclePager', () => {
   beforeEach(() => {
     window.history.replaceState({}, '', '/nasdaq-calypso#lifecycle')
@@ -135,6 +229,108 @@ describe('MobileLifecyclePager', () => {
     expect(screen.getByText('01 / 07')).toBeVisible()
     expect(screen.getByRole('button', { name: 'Stage 1: Capture' }))
       .toHaveAttribute('aria-pressed', 'true')
+  })
+
+  it('locally reveals a direct URL stage without moving the page', () => {
+    const rail = installStageRailLayout()
+    const pageScroll = vi.spyOn(window, 'scrollTo')
+    window.history.replaceState(
+      {},
+      '',
+      '/nasdaq-calypso?stage=reporting#lifecycle',
+    )
+
+    try {
+      renderPager()
+      const viewport = screen.getByRole('group', {
+        name: 'Select lifecycle stage',
+      }).parentElement
+
+      expect(viewport?.scrollLeft).toBe(208)
+      expect(rail.scrollTo).toHaveBeenLastCalledWith({
+        behavior: 'auto',
+        left: 208,
+      })
+      expect(rail.scrollIntoView).not.toHaveBeenCalled()
+      expect(pageScroll).not.toHaveBeenCalled()
+    } finally {
+      rail.restore()
+    }
+  })
+
+  it('reveals direct selection, popstate, and a returning mobile viewport', async () => {
+    const user = userEvent.setup()
+    const rail = installStageRailLayout()
+    const pageScroll = vi.spyOn(window, 'scrollTo')
+
+    try {
+      renderPager()
+      const viewport = screen.getByRole('group', {
+        name: 'Select lifecycle stage',
+      }).parentElement as HTMLElement
+
+      await user.click(
+        screen.getByRole('button', { name: 'Stage 7: Regulatory reporting' }),
+      )
+      expect(viewport.scrollLeft).toBe(208)
+      expect(rail.scrollTo).toHaveBeenLastCalledWith({
+        behavior: 'smooth',
+        left: 208,
+      })
+
+      viewport.scrollLeft = 0
+      window.history.pushState(
+        {},
+        '',
+        '/nasdaq-calypso?stage=reporting#lifecycle',
+      )
+      fireEvent.popState(window)
+      expect(viewport.scrollLeft).toBe(208)
+      expect(rail.scrollTo).toHaveBeenLastCalledWith({
+        behavior: 'auto',
+        left: 208,
+      })
+
+      viewport.scrollLeft = 0
+      fireEvent.resize(window)
+      expect(viewport.scrollLeft).toBe(208)
+      expect(rail.scrollIntoView).not.toHaveBeenCalled()
+      expect(pageScroll).not.toHaveBeenCalled()
+    } finally {
+      rail.restore()
+    }
+  })
+
+  it('cuts horizontal reveal motion when reduced motion is requested', async () => {
+    const user = userEvent.setup()
+    const rail = installStageRailLayout()
+    vi.spyOn(window, 'matchMedia').mockImplementation(
+      (query) =>
+        ({
+          matches: query === '(prefers-reduced-motion: reduce)',
+          media: query,
+          onchange: null,
+          addEventListener: () => {},
+          removeEventListener: () => {},
+          addListener: () => {},
+          removeListener: () => {},
+          dispatchEvent: () => false,
+        }) as MediaQueryList,
+    )
+
+    try {
+      renderPager()
+      await user.click(
+        screen.getByRole('button', { name: 'Stage 7: Regulatory reporting' }),
+      )
+
+      expect(rail.scrollTo).toHaveBeenLastCalledWith({
+        behavior: 'auto',
+        left: 208,
+      })
+    } finally {
+      rail.restore()
+    }
   })
 
   it('writes selection to history while preserving other query and hash state', async () => {

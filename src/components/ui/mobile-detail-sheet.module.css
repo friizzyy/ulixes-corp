@@ -21,6 +21,13 @@
 }
 
 .sheet {
+  --ink: #10212b;
+  --graphite: #34434b;
+  --steel: #5d6e75;
+  --mineral-light: #faf9f6;
+  --rule: rgba(16, 33, 43, 0.12);
+  --rule-strong: rgba(16, 33, 43, 0.2);
+
   position: relative;
   display: flex;
   width: 100%;
@@ -119,12 +126,10 @@
 
 @keyframes sheet-enter {
   from {
-    opacity: 0;
     transform: translateY(1.25rem);
   }
 
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }

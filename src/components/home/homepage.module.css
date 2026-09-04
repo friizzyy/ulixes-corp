@@ -451,6 +451,15 @@
   max-width: 48rem;
 }
 
+.services .sectionHeading {
+  justify-self: center;
+  text-align: center;
+}
+
+.services .sectionHeading .sectionTitle {
+  margin-inline: auto;
+}
+
 .sectionTitle {
   max-width: 17ch;
   margin: 0;

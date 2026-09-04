@@ -264,7 +264,7 @@
   }
 }
 
-@media (max-width: 899px) {
+@media (max-width: 895px) {
   /* The photograph moves behind the whole hero and the mask turns upright. */
   .hero {
     min-height: 0;
