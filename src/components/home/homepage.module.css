@@ -605,6 +605,129 @@
   transform: translate(2px, -2px);
 }
 
+.mobileCapabilityIndex,
+.mobileCalypsoBody {
+  display: none;
+}
+
+.mobileCapabilityList {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+  list-style: none;
+}
+
+.mobileCapabilityList > li {
+  --capability-line: #8ba0a9;
+  border-bottom: 1px solid var(--rule);
+}
+
+.mobileCapabilityList > li[data-material='sage'] {
+  --capability-line: #91a393;
+}
+
+.mobileCapabilityList > li[data-material='clay'] {
+  --capability-line: #ad9884;
+}
+
+.mobileCapabilityList > li[data-material='platinum'] {
+  --capability-line: #979e9e;
+}
+
+.mobileCapabilityTrigger {
+  display: grid;
+  width: 100%;
+  min-height: 6.5rem;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 0;
+  border: 0;
+  border-left: 2px solid var(--capability-line);
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.mobileCapabilityNumber {
+  align-self: start;
+  padding-top: 0.2rem;
+  color: var(--steel);
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.mobileCapabilityCopy {
+  display: grid;
+  min-width: 0;
+  gap: 0.45rem;
+}
+
+.mobileCapabilityCopy strong {
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-size: 1.08rem;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  line-height: 1.16;
+}
+
+.mobileCapabilityCopy > span {
+  color: var(--steel);
+  font-size: var(--label-sm);
+  font-weight: 620;
+  line-height: 1.4;
+}
+
+.mobileCapabilityAffordance {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.3rem;
+  padding-inline: 0.3rem 0.1rem;
+  color: #4f6873;
+  font-size: 0.66rem;
+  font-weight: 720;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mobileCapabilityAffordance svg,
+.mobileCapabilitySheetAction svg {
+  flex: 0 0 auto;
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.mobileCapabilityTrigger:hover .mobileCapabilityAffordance svg,
+.mobileCapabilityTrigger:focus-visible .mobileCapabilityAffordance svg,
+.mobileCapabilitySheetAction:hover svg {
+  transform: translateX(3px);
+}
+
+.mobileCapabilityDescription {
+  margin: 0;
+  color: var(--graphite);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.mobileCapabilitySheetAction {
+  display: flex;
+  min-height: var(--mobile-control-height);
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 1rem;
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  background: var(--ink);
+  color: var(--mineral-light);
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
 /* One ruled statement band on the rail: hairline above and below, no panel.
    The section carries no outer padding, so its box is the row itself and the
    neighbours' own padding sets the air on either side. */
@@ -892,7 +1015,7 @@
   }
 }
 
-@media (max-width: 1120px) and (min-width: 900px) {
+@media (max-width: 1120px) and (min-width: 896px) {
   .heroCopy {
     width: 60%;
     /* padding-left intentionally omitted: inherits --page-rail so the hero
@@ -921,7 +1044,7 @@
   }
 }
 
-@media (max-width: 899px) {
+@media (max-width: 895px) {
   .hero {
     padding: 68px 0.75rem 0;
   }
@@ -1093,7 +1216,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 895px) {
   .page {
     --home-safe-left: max(var(--mobile-gutter), var(--safe-area-left));
     --home-safe-right: max(var(--mobile-gutter), var(--safe-area-right));
@@ -1430,8 +1553,8 @@
 }
 
 
-/* Phone: the practitioner image sits as a short band above the copy, and the
-   hero card gives its height to the copy rather than the skyline. */
+/* The phone crop remains short if the practitioner media is reintroduced in a
+   deeper composition; Home itself removes that duplicate visual below. */
 @media (max-width: 599px) {
   .credibilityImageFrame {
     min-height: 13rem;
@@ -1447,15 +1570,12 @@
 }
 
 /*
- * Phone: two sections that were stacked text become layered objects.
+ * Touch composition: a short skyline threshold leads into a capability index.
  *
- * The Calypso credential is one dark plate with the year set large: a tonal
- * layer on a page that otherwise has none, and one object instead of four
- * stacked text blocks. The practitioner is the pattern premium apps use for a
- * profile: the photograph runs edge to edge, the copy sits on a raised surface
- * that overlaps its lower edge, and the footprint plate straddles the seam.
+ * Calypso becomes one three-office signal, and practitioner proof becomes copy
+ * with two checkpoints. The skyline remains the route's only depth moment.
  */
-@media (max-width: 767px) {
+@media (max-width: 895px) {
   .hero {
     padding: var(--mobile-header-height) 0 0;
     background: var(--mineral);
@@ -1474,7 +1594,7 @@
     z-index: 3;
     order: 1;
     width: 100%;
-    padding: 2rem var(--home-safe-right) 2rem var(--home-safe-left);
+    padding: 1.5rem var(--home-safe-right) 1.5rem var(--home-safe-left);
     border-bottom: 1px solid rgba(16, 33, 43, 0.08);
     background: var(--mineral-light);
     box-shadow:
@@ -1504,7 +1624,7 @@
     align-items: stretch;
     flex-direction: column;
     gap: 0.5rem;
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
   }
 
   .primaryAction,
@@ -1521,14 +1641,14 @@
   }
 
   .secondaryAction {
-    align-self: flex-start;
+    display: none;
   }
 
   .heroMedia {
     position: relative;
     order: 2;
     width: 100%;
-    height: clamp(13.125rem, 60vw, 15rem);
+    height: clamp(10rem, 34vw, 14rem);
     border-radius: 0;
     background: #9daab0;
     box-shadow:
@@ -1581,9 +1701,9 @@
   }
 
   .authorityItem {
-    min-height: 7rem;
-    gap: 0.6rem;
-    padding: 1rem;
+    min-height: 5.75rem;
+    gap: 0.45rem;
+    padding: 0.75rem 1rem;
   }
 
   .authorityContext {
@@ -1603,12 +1723,12 @@
   }
 
   .services {
-    padding: calc(var(--mobile-section-y) + 0.5rem) 0 var(--mobile-section-y);
+    padding: 3rem 0 var(--mobile-section-y);
   }
 
   .sectionIntro {
     gap: var(--mobile-stack-gap);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
   .sectionTitle {
@@ -1621,105 +1741,12 @@
     line-height: 1.65;
   }
 
-  .serviceLedger[data-mobile-layout='action-list'] {
-    position: relative;
-    padding-block: 0.4rem;
-    overflow: hidden;
-    border-right: 0;
-    border-left: 0;
-    border-radius: 0;
-    background: #ecece8;
-    box-shadow:
-      inset 0 18px 28px -30px rgba(16, 33, 43, 0.5),
-      inset 0 -18px 28px -30px rgba(16, 33, 43, 0.44);
-  }
-
-  .serviceLedger[data-mobile-layout='action-list']::before {
-    content: '';
-    position: absolute;
-    top: 0.75rem;
-    bottom: 0.75rem;
-    left: 2.025rem;
-    z-index: 1;
-    width: 1px;
-    background: rgba(83, 109, 121, 0.42);
-  }
-
-  .serviceLedger[data-mobile-layout='action-list'] > li {
-    position: relative;
-    z-index: 2;
-    background: transparent;
-    box-shadow: none;
-  }
-
-  .serviceLink {
-    grid-template-columns: 2.25rem minmax(0, 1fr) 2.75rem;
-    grid-template-rows: auto auto;
-    min-height: 0;
-    align-items: start;
-    gap: 0.6rem 0.75rem;
-    padding: 1.15rem 0.9rem;
-  }
-
-  .serviceMarker {
-    grid-column: 1;
-    grid-row: 1 / 3;
-    position: relative;
-    z-index: 2;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 0.05rem;
-  }
-
-  .serviceGlyph {
+  .desktopCapabilityLedger {
     display: none;
   }
 
-  .serviceIndex {
-    min-width: 1.75rem;
-    padding-block: 0.35rem;
-    background: #ecece8;
-    color: #526d79;
-    text-align: center;
-  }
-
-  .serviceCore {
-    grid-column: 2;
-    grid-row: 1;
-    margin: 0;
-  }
-
-  .serviceCore strong {
-    max-width: none;
-    font-size: 1.15rem;
-    line-height: 1.2;
-  }
-
-  .serviceDetail {
-    grid-column: 2;
-    grid-row: 2;
-    gap: 0.45rem;
-    margin: 0;
-  }
-
-  .serviceScope {
-    font-size: var(--label-sm);
-    line-height: 1.45;
-  }
-
-  .serviceDescription {
-    font-size: 1rem;
-    line-height: 1.55;
-  }
-
-  .serviceAction {
-    grid-column: 3;
-    grid-row: 1 / 3;
-    align-self: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    margin: 0;
-    border-left: 1px solid var(--rule);
+  .mobileCapabilityIndex {
+    display: block;
   }
 
   .calypsoBand {
@@ -1729,8 +1756,8 @@
   .calypsoRow {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 0.9rem;
-    padding: 1.5rem 1.4rem 1.6rem;
+    gap: 0.75rem;
+    padding: 1.35rem 1.4rem 1.45rem;
     border-radius: var(--panel-radius);
     background: #191b1d;
     box-shadow: var(--shadow-floating);
@@ -1742,9 +1769,7 @@
   }
 
   .calypsoFigure {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
+    display: none;
   }
 
   .calypsoSince {
@@ -1776,12 +1801,30 @@
     font-size: 1rem;
   }
 
+  .calypsoCopy {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+  }
+
+  .desktopCalypsoBody {
+    display: none;
+  }
+
+  .mobileCalypsoBody {
+    display: block;
+    max-width: 31rem;
+    margin: 0;
+  }
+
   .calypsoLink {
+    grid-column: 1;
+    justify-self: start;
+    margin-top: 0.1rem;
     color: #f6f5f1;
   }
 
-  /* The hero owns the page's overlap. The practitioner remains layered, but
-     its surfaces meet quietly so a second signature does not compete. */
+  /* The hero owns the page's depth. Practitioner proof stays on the ground. */
   .credibility {
     padding-block: 0 var(--mobile-section-y);
   }
@@ -1793,12 +1836,7 @@
   }
 
   .credibilityMedia {
-    order: -1;
-    position: relative;
-    /* Exact full bleed: the shell is centred, so this reaches the viewport
-       edges whatever padding the page uses. */
-    margin-inline: calc(50% - 50vw);
-    padding: 0;
+    display: none;
   }
 
   .credibilityImageFrame {
@@ -1823,12 +1861,14 @@
     position: relative;
     z-index: 2;
     margin-top: 0;
-    padding: 1.5rem 1.4rem 1.6rem;
-    border: 1px solid rgba(16, 33, 43, 0.1);
-    border-top: 0;
-    border-radius: var(--panel-radius);
-    background: var(--mineral-light);
-    box-shadow: var(--shadow-raised);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .credibilityCopy > .eyebrow {
+    display: none;
   }
 
   /* Two facts, as ruled rows rather than a ticked list. */
@@ -1852,15 +1892,19 @@
 
   .contactPanel {
     width: auto;
-    gap: 2rem;
+    gap: 1.5rem;
     margin-top: 0;
-    padding: 2rem var(--mobile-gutter);
+    padding: 1.75rem var(--mobile-gutter);
   }
 
   .contactBody,
   .contactInstruction {
     font-size: 1rem;
     line-height: 1.62;
+  }
+
+  .contactInstruction {
+    display: none;
   }
 
   /* Shared phone type scale: h1 is 38–42px and every h2 is 28–32px. */

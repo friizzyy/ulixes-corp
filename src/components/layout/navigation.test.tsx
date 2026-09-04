@@ -60,6 +60,21 @@ describe("Navigation", () => {
       "aria-expanded",
       "false",
     );
+    expect(screen.getByRole("link", { name: "Mandate" })).toHaveAttribute(
+      "href",
+      "/contact",
+    );
+  });
+
+  it("keeps the concise mandate action and menu available through 895px", () => {
+    render(<Navigation />);
+
+    const mobileAction = screen.getByRole("link", { name: "Mandate" });
+    expect(mobileAction).toHaveAttribute("href", "/contact");
+    expect(mobileAction).toHaveClass("min-[896px]:hidden");
+    expect(screen.getByRole("button", { name: "Open menu" })).toHaveClass(
+      "min-[896px]:hidden",
+    );
   });
 
   it.each(["/", "/privacy", "/this-does-not-exist"])(
@@ -88,6 +103,7 @@ describe("Navigation", () => {
         "/services",
         "/institutional-experience",
         "/nasdaq-calypso",
+        "/contact",
         "/contact",
       ]);
       expect(
@@ -145,8 +161,8 @@ describe("Navigation", () => {
     expect(
       screen.getByRole("navigation", { name: "Primary navigation" }),
     ).toHaveClass(
-      "max-[899px]:bg-[#f3f1ec]/95",
-      "max-[899px]:backdrop-blur-xl",
+      "max-[895px]:bg-[#f3f1ec]/95",
+      "max-[895px]:backdrop-blur-xl",
     );
   });
 
@@ -180,7 +196,7 @@ describe("Navigation", () => {
       get matches() {
         return desktop;
       },
-      media: "(min-width: 768px)",
+      media: "(min-width: 896px)",
       onchange: null,
       addEventListener: (_: "change", listener: (event: MediaQueryListEvent) => void) => {
         listeners.add(listener);

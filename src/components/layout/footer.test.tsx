@@ -67,6 +67,17 @@ describe("Footer", () => {
     ).toContainElement(screen.getByRole("link", { name: "Privacy" }));
   });
 
+  it("keeps the compact route grid through the 895px touch breakpoint", () => {
+    render(<Footer />);
+
+    const routeList = within(
+      screen.getByRole("navigation", { name: "Footer navigation" }),
+    ).getByRole("list");
+    expect(routeList).toHaveClass("min-[896px]:flex");
+    expect(routeList).toHaveClass("min-[896px]:border-0");
+    expect(routeList).not.toHaveClass("sm:flex");
+  });
+
   it.each(["/", "/privacy", "/this-does-not-exist"])(
     "renders the one editorial footer on %s",
     (pathname) => {

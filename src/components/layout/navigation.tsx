@@ -38,7 +38,7 @@ export function Navigation() {
   }, [pathname])
 
   useEffect(() => {
-    const query = window.matchMedia('(min-width: 768px)')
+    const query = window.matchMedia('(min-width: 896px)')
     const closeAtDesktop = () => {
       if (query.matches) setIsOpen(false)
     }
@@ -135,11 +135,11 @@ export function Navigation() {
            * the gutters. The editorial page roots carry the same top inset
            * (see editorial.css) so their 64px offsets still clear the nav.
            */
-          'h-[calc(var(--mobile-header-height)+var(--safe-area-top))] md:h-[calc(76px+var(--safe-area-top))]',
+          'h-[calc(var(--mobile-header-height)+var(--safe-area-top))] min-[896px]:h-[calc(76px+var(--safe-area-top))]',
           'pt-[var(--safe-area-top)]',
           'pl-[max(1.25rem,var(--safe-area-left))] pr-[max(1.25rem,var(--safe-area-right))]',
           'sm:pl-[max(1.5rem,var(--safe-area-left))] sm:pr-[max(1.5rem,var(--safe-area-right))]',
-          'md:pl-[max(2.5rem,var(--safe-area-left))] md:pr-[max(2.5rem,var(--safe-area-right))]',
+          'min-[896px]:pl-[max(2.5rem,var(--safe-area-left))] min-[896px]:pr-[max(2.5rem,var(--safe-area-right))]',
           isOpen ? 'z-[70]' : 'z-50',
           'border-b transition-[background-color,border-color,box-shadow] duration-200',
           isScrolled
@@ -147,7 +147,7 @@ export function Navigation() {
             : cn(
                 'border-transparent bg-transparent',
                 hasImageBackedMasthead &&
-                  'max-[899px]:border-[#d7dcde] max-[899px]:bg-[#f3f1ec]/95 max-[899px]:shadow-[0_12px_30px_-25px_rgba(16,33,43,0.5)] max-[899px]:backdrop-blur-xl',
+                  'max-[895px]:border-[#d7dcde] max-[895px]:bg-[#f3f1ec]/95 max-[895px]:shadow-[0_12px_30px_-25px_rgba(16,33,43,0.5)] max-[895px]:backdrop-blur-xl',
               ),
         )}
       >
@@ -159,7 +159,7 @@ export function Navigation() {
             <HomeBrand />
           </Link>
 
-          <ul className="hidden items-center gap-8 md:flex lg:gap-10">
+          <ul className="hidden items-center gap-8 min-[896px]:flex lg:gap-10">
             {editorialNavigation.map((item) => {
               const isActive = pathname === item.href
               return (
@@ -181,7 +181,7 @@ export function Navigation() {
             })}
           </ul>
 
-          <div className="hidden md:block">
+          <div className="hidden min-[896px]:block">
             <Link
               href="/contact"
               className="group inline-grid min-h-[46px] grid-cols-[auto_44px] overflow-hidden rounded-[4px] border border-[#10212b] bg-[#10212b] text-[0.82rem] font-semibold text-[#faf9f6] shadow-[0_16px_28px_-23px_rgba(16,33,43,0.8)] transition-[transform,background-color] duration-200 hover:-translate-y-px hover:bg-[#182c37] active:translate-y-px"
@@ -196,11 +196,18 @@ export function Navigation() {
             </Link>
           </div>
 
+          <Link
+            href="/contact"
+            className="ml-auto mr-1 inline-flex min-h-[44px] items-center px-2.5 text-[0.72rem] font-semibold tracking-[0.04em] text-[#30434c] transition-colors hover:text-[#10212b] min-[896px]:hidden"
+          >
+            Mandate
+          </Link>
+
           <button
             ref={menuButtonRef}
             type="button"
             onClick={() => (isOpen ? closeMenu(false) : setIsOpen(true))}
-            className="relative -mr-2 flex min-h-[44px] min-w-[44px] items-center justify-center text-[#10212b] md:hidden"
+            className="relative -mr-2 flex min-h-[44px] min-w-[44px] items-center justify-center text-[#10212b] min-[896px]:hidden"
             aria-label={isOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isOpen}
             aria-controls={isOpen ? 'mobile-navigation-dialog' : undefined}
@@ -213,7 +220,7 @@ export function Navigation() {
       {isOpen && (
         <div
           ref={mobileOverlayRef}
-          className="fixed inset-x-0 bottom-0 top-[calc(var(--mobile-header-height)+var(--safe-area-top))] z-[60] md:hidden"
+          className="fixed inset-x-0 bottom-0 top-[calc(var(--mobile-header-height)+var(--safe-area-top))] z-[60] min-[896px]:hidden"
         >
           <button
             type="button"

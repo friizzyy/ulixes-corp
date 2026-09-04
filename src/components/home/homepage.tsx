@@ -8,6 +8,7 @@ import {
 } from '@/lib/homepage-content'
 import { AuthorityIcon, ServiceIcon } from './home-icons'
 import { HomeHeroMedia } from './home-hero-media'
+import { MobileCapabilityIndex } from './mobile-capability-index'
 import styles from './homepage.module.css'
 
 export function Homepage() {
@@ -109,7 +110,7 @@ export function Homepage() {
           </div>
 
           <ol
-            className={`${styles.engagementField} ${styles.serviceLedger}`}
+            className={`${styles.engagementField} ${styles.serviceLedger} ${styles.desktopCapabilityLedger}`}
             aria-label="Ulixes capabilities"
             data-layout="ledger"
             data-mobile-layout="action-list"
@@ -146,6 +147,10 @@ export function Homepage() {
               </li>
             ))}
           </ol>
+          <MobileCapabilityIndex
+            items={serviceModules}
+            className={styles.mobileCapabilityIndex}
+          />
         </div>
       </section>
 
@@ -172,7 +177,12 @@ export function Homepage() {
             <h2 id="calypso-title" className={styles.calypsoTitle}>
               {homepageContent.calypso.headline}
             </h2>
-            <p className={styles.calypsoBody}>{homepageContent.calypso.body}</p>
+            <p className={`${styles.calypsoBody} ${styles.desktopCalypsoBody}`}>
+              {homepageContent.calypso.body}
+            </p>
+            <p className={`${styles.calypsoBody} ${styles.mobileCalypsoBody}`}>
+              One trade path, continuous across front, middle, and back office.
+            </p>
           </div>
           <Link
             href={homepageContent.calypso.href}
@@ -226,7 +236,7 @@ export function Homepage() {
                 src="/media/home/ulixes-financial-district-day.webp"
                 alt={homepageContent.credibility.imageAlt}
                 fill
-                sizes="(max-width: 899px) 100vw, (max-width: 1120px) 44vw, 640px"
+                sizes="(max-width: 895px) 100vw, (max-width: 1120px) 44vw, 640px"
                 className={styles.credibilityImage}
               />
             </div>

@@ -104,14 +104,23 @@ describe('Homepage', () => {
     )
   })
 
-  it('renders every capability as a linked row in the mobile action list', () => {
+  it('keeps one desktop capability ledger and one mobile progressive index', () => {
     const { container } = render(<Homepage />)
 
     const services = screen.getByRole('region', {
       name: homepageContent.services.headline,
     })
-    expect(within(services).getAllByRole('listitem')).toHaveLength(4)
-    const engagementList = within(services).getByRole('list')
+    const engagementList = within(services).getByRole('list', {
+      name: 'Ulixes capabilities',
+    })
+    const mobileIndex = services.querySelector<HTMLOListElement>(
+      'ol[aria-label="Mobile capability index"]',
+    )
+    expect(mobileIndex).not.toBeNull()
+    expect(within(engagementList).getAllByRole('listitem')).toHaveLength(4)
+    expect(
+      within(mobileIndex!).getAllByRole('listitem', { hidden: true }),
+    ).toHaveLength(4)
     expect(engagementList).toHaveAttribute('aria-label', 'Ulixes capabilities')
     expect(engagementList).toHaveAttribute(
       'data-layout',
@@ -135,7 +144,7 @@ describe('Homepage', () => {
        * scope and description for assistive tech, so the accessible name is
        * now the link's own text and must carry all three.
        */
-      const serviceLink = within(services).getByRole('link', {
+      const serviceLink = within(engagementList).getByRole('link', {
         name: (name) =>
           name.includes(service.title) &&
           name.includes(service.scope) &&
@@ -144,7 +153,11 @@ describe('Homepage', () => {
       expect(serviceLink).not.toHaveAttribute('aria-label')
       expect(serviceLink).toHaveAttribute('href', service.href)
       expect(serviceLink.querySelectorAll('svg')).toHaveLength(2)
-      expect(within(services).getByText(service.scope)).toBeInTheDocument()
+      expect(within(engagementList).getByText(service.scope)).toBeInTheDocument()
+      expect(within(mobileIndex!).getByText(service.scope)).toBeInTheDocument()
+      expect(
+        within(mobileIndex!).queryByText(service.description),
+      ).not.toBeInTheDocument()
     }
   })
 
@@ -175,7 +188,7 @@ describe('Homepage', () => {
       }),
     ).toHaveAttribute(
       'sizes',
-      '(max-width: 899px) 100vw, (max-width: 1120px) 44vw, 640px',
+      '(max-width: 895px) 100vw, (max-width: 1120px) 44vw, 640px',
     )
     expect(within(practitioner).getAllByRole('listitem')).toHaveLength(
       homepageContent.credibility.checkpoints.length,
@@ -279,6 +292,9 @@ describe('Homepage', () => {
     expect(container.querySelectorAll('article')).toHaveLength(0)
     expect(
       screen.getByRole('list', { name: 'Ulixes capabilities' }),
+    ).toBeInTheDocument()
+    expect(
+      container.querySelector('ol[aria-label="Mobile capability index"]'),
     ).toBeInTheDocument()
   })
 })
