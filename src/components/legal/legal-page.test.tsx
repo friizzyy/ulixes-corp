@@ -100,16 +100,28 @@ describe('toLegalSections', () => {
 })
 
 describe('legal mobile reading surface', () => {
-  it('uses shared phone gutters, rhythm, and readable text without card rows', () => {
+  it('uses the shared safe-area-aware gutter through 895px', () => {
+    const touchRules = legalStylesheet.slice(
+      legalStylesheet.indexOf('@media (max-width: 895px)'),
+      legalStylesheet.indexOf('@media (max-width: 767px)'),
+    )
+
+    expect(legalStylesheet).not.toContain('@media (max-width: 899px)')
+    expect(touchRules).toMatch(
+      /\.shell\s*\{[^}]*width:\s*auto[^}]*margin-left:\s*calc\(var\(--mobile-gutter\)\s*\+\s*var\(--safe-area-left,\s*0px\)\)[^}]*margin-right:\s*calc\(var\(--mobile-gutter\)\s*\+\s*var\(--safe-area-right,\s*0px\)\)/,
+    )
+    expect(touchRules).toMatch(
+      /\.clause\s*\{[^}]*grid-template-columns:\s*3rem\s+minmax\(0,\s*1fr\)/,
+    )
+  })
+
+  it('uses shared phone rhythm and readable text without card rows', () => {
     const phoneRules = legalStylesheet.slice(
       legalStylesheet.indexOf('@media (max-width: 599px)'),
     )
 
     expect(phoneRules).toMatch(
       /\.page\s*\{[^}]*padding:\s*calc\(clamp\([^;]*5\.5rem[^;]*6\.5rem[^;]*\)\s*\+\s*var\(--safe-area-top,\s*0px\)\)\s+0\s+clamp\([^;]*3\.5rem[^;]*4\.5rem[^;]*\)/,
-    )
-    expect(phoneRules).toMatch(
-      /\.shell\s*\{[^}]*padding-inline:\s*max\(1\.25rem,\s*env\(safe-area-inset-left\)\)/,
     )
     expect(phoneRules).toMatch(
       /\.title\s*\{[^}]*font-size:\s*clamp\([^;]*2\.375rem[^;]*2\.625rem[^;]*\)/,

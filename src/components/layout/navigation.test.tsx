@@ -1,7 +1,14 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Navigation } from "./navigation";
+
+const globalStylesheet = readFileSync(
+  resolve(process.cwd(), "src/styles/globals.css"),
+  "utf8",
+);
 
 const { mockUsePathname } = vi.hoisted(() => ({
   mockUsePathname: vi.fn(),
@@ -299,9 +306,18 @@ describe("Navigation", () => {
 
     await user.click(screen.getByRole("button", { name: "Open menu" }));
 
-    expect(
-      screen.getByRole("dialog", { name: "Navigation menu" }),
-    ).toHaveAttribute("data-presentation", "sheet");
+    const dialog = screen.getByRole("dialog", { name: "Navigation menu" });
+    expect(dialog).toHaveAttribute("data-presentation", "sheet");
+    expect(dialog).toHaveClass("inset-y-0", "right-0");
+    expect(dialog).not.toHaveClass("inset-0");
+
+    const sheetRules = globalStylesheet.slice(
+      globalStylesheet.indexOf(".mobile-nav-sheet {"),
+      globalStylesheet.indexOf("/* Any element that Framer Motion"),
+    );
+    expect(sheetRules).toMatch(
+      /\.mobile-nav-sheet\s*\{[^}]*width:\s*min\(calc\(100%\s*-\s*44px\),\s*30rem\)/,
+    );
 
     await user.click(
       screen.getByRole("button", { name: "Dismiss navigation" }),

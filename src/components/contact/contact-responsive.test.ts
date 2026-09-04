@@ -8,25 +8,34 @@ const stylesheet = readFileSync(
 )
 
 describe('contact mobile layout', () => {
-  it('keeps the mobile visual order aligned with DOM and keyboard order', () => {
-    const tabletRules = stylesheet.slice(
-      stylesheet.indexOf('@media (max-width: 899px)'),
+  it('keeps the mobile visual order aligned with DOM through 895px only', () => {
+    const touchRules = stylesheet.slice(
+      stylesheet.indexOf('@media (max-width: 895px)'),
       stylesheet.indexOf('@media (max-width: 767px)'),
     )
 
-    expect(tabletRules).toMatch(
+    expect(stylesheet).not.toContain('@media (max-width: 899px)')
+    expect(touchRules).toMatch(
       /grid-template-areas:\s*['"]head['"]\s*['"]details['"]\s*['"]card['"]/,
     )
   })
 
-  it('dissolves nested surfaces and uses safe 20px gutters on narrow phones', () => {
+  it('uses the shared safe-area-aware gutter through 895px', () => {
+    const touchRules = stylesheet.slice(
+      stylesheet.indexOf('@media (max-width: 895px)'),
+      stylesheet.indexOf('@media (max-width: 767px)'),
+    )
+
+    expect(touchRules).toMatch(
+      /\.stage\s*\{[^}]*padding-left:\s*calc\(var\(--mobile-gutter\)\s*\+\s*var\(--safe-area-left,\s*0px\)\)[^}]*padding-right:\s*calc\(var\(--mobile-gutter\)\s*\+\s*var\(--safe-area-right,\s*0px\)\)/,
+    )
+  })
+
+  it('dissolves nested surfaces on narrow phones', () => {
     const narrowPhoneRules = stylesheet.slice(
       stylesheet.indexOf('@media (max-width: 599px)'),
     )
 
-    expect(narrowPhoneRules).toMatch(
-      /\.stage\s*\{[^}]*padding-inline:\s*max\(1\.25rem,\s*env\(safe-area-inset-left\)\)/,
-    )
     expect(narrowPhoneRules).toMatch(
       /\.panel\s*\{[^}]*padding:\s*0[^}]*border:\s*0[^}]*background:\s*transparent[^}]*box-shadow:\s*none/,
     )
@@ -35,7 +44,7 @@ describe('contact mobile layout', () => {
     )
   })
 
-  it('uses phone-scale headings, readable copy, and full-size controls', () => {
+  it('uses phone-scale headings and readable copy', () => {
     const narrowPhoneRules = stylesheet.slice(
       stylesheet.indexOf('@media (max-width: 599px)'),
     )
@@ -49,8 +58,16 @@ describe('contact mobile layout', () => {
     expect(narrowPhoneRules).toMatch(
       /\.lead,\s*\.whoNote,\s*\.stateBody,\s*\.formError\s*\{[^}]*font-size:\s*(?:1rem|16px)/,
     )
-    expect(narrowPhoneRules).toMatch(
-      /\.stateAction\s*\{[^}]*min-height:\s*44px/,
+  })
+
+  it('keeps the success reset target at least 44px at every width', () => {
+    const baseActionRules = stylesheet.slice(
+      stylesheet.indexOf('.stateAction {'),
+      stylesheet.indexOf('/* Responsive'),
+    )
+
+    expect(baseActionRules).toMatch(
+      /\.stateAction\s*\{[^}]*display:\s*inline-flex[^}]*min-height:\s*44px[^}]*align-items:\s*center/,
     )
   })
 })

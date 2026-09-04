@@ -232,7 +232,7 @@ export function Navigation() {
             ref={mobileMenuRef}
             id="mobile-navigation-dialog"
             data-presentation="sheet"
-            className="mobile-nav-sheet absolute inset-0 flex flex-col bg-[#f7f6f2] text-[#10212b] shadow-[0_28px_72px_-38px_rgba(16,33,43,0.72)]"
+            className="mobile-nav-sheet absolute inset-y-0 right-0 flex flex-col bg-[#f7f6f2] text-[#10212b] shadow-[0_28px_72px_-38px_rgba(16,33,43,0.72)]"
             role="dialog"
             aria-modal="true"
             aria-label="Navigation menu"
