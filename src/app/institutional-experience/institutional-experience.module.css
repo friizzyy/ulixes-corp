@@ -809,6 +809,9 @@
   }
 
   .plateLead {
+    /* Same tablet cap as the Calypso chapter lede: unbounded, this reached
+       about 103 characters a line at 895px. Phones sit below the cap. */
+    max-width: 34rem;
     font-size: 1rem;
     line-height: 1.6;
   }

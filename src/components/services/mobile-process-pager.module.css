@@ -137,3 +137,10 @@
     animation: none;
   }
 }
+
+/* Matches the disabled treatment the Calypso lifecycle pager already uses, so
+   the two steppers read the same at their boundaries. */
+.navigationControl:disabled {
+  color: color-mix(in srgb, var(--steel) 55%, transparent);
+  cursor: default;
+}

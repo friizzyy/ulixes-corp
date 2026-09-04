@@ -74,7 +74,7 @@ export default function NasdaqCalypsoPage() {
                 data-testid="calypso-program-title-group"
               >
                 <p className={`ed-eyebrow ${styles.eyebrow}`}>{programs.eyebrow}</p>
-                <Curtain>
+                <Curtain className="ed-curtain" inView>
                   <h2 id="programs-title" className={styles.chapterTitle}>
                     {programs.headlineLead}{' '}
                     <em className={styles.turn}>{programs.headlineTurn}</em>
@@ -110,7 +110,7 @@ export default function NasdaqCalypsoPage() {
               data-testid="calypso-mandate-title-group"
             >
               <p className={`ed-eyebrow ${styles.eyebrow}`}>{delivery.eyebrow}</p>
-              <Curtain>
+              <Curtain className="ed-curtain" inView>
                 <h2 id="mandates-title" className={styles.sectionTitle}>
                   {delivery.headlineLead}{' '}
                   <em className={styles.turn}>{delivery.headlineTurn}</em>

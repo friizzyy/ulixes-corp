@@ -30,8 +30,17 @@ export function MobileProcessPager({ steps }: MobileProcessPagerProps) {
     setActiveIndex(nextIndex)
   }
 
+  /*
+   * Clamped, not wrapped. Previous on phase one used to jump to phase four and
+   * next on phase four back to one, on a page whose subject is sequence, while
+   * the two other pagers on the site clamp and disable at their ends. Arrow-key
+   * roving on the strip below still wraps, which is the expected behaviour for
+   * a keyboard group.
+   */
+  const lastIndex = steps.length - 1
   const selectAdjacentPhase = (offset: -1 | 1) => {
-    const nextIndex = (activeIndex + offset + steps.length) % steps.length
+    const nextIndex = Math.min(Math.max(activeIndex + offset, 0), lastIndex)
+    if (nextIndex === activeIndex) return
     setDirection(offset < 0 ? 'previous' : 'next')
     setActiveIndex(nextIndex)
   }
@@ -100,6 +109,7 @@ export function MobileProcessPager({ steps }: MobileProcessPagerProps) {
           type="button"
           className={styles.navigationControl}
           aria-label="Previous phase"
+          disabled={activeIndex === 0}
           onClick={() => selectAdjacentPhase(-1)}
         >
           <ArrowLeft size={16} />
@@ -109,6 +119,7 @@ export function MobileProcessPager({ steps }: MobileProcessPagerProps) {
           type="button"
           className={styles.navigationControl}
           aria-label="Next phase"
+          disabled={activeIndex === lastIndex}
           onClick={() => selectAdjacentPhase(1)}
         >
           <span>Next</span>

@@ -1944,8 +1944,16 @@
     box-shadow: none;
   }
 
+  /*
+   * The eyebrow is the first line of copy on the site, and on a phone it lands
+   * across the tower's lit glass, where steel grey measured under 2:1 and
+   * "for banks and" was effectively unreadable. Darkening the type fixes it
+   * without washing the skyline, which veiling this band harder would have
+   * done. The headline beside it is already ink and reads cleanly.
+   */
   .heroCopy .eyebrow {
     margin-bottom: 0.7rem;
+    color: var(--ink);
   }
 
   .heroTitle {

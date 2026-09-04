@@ -614,6 +614,11 @@
 
   .chapterHeader > p {
     grid-column: 1;
+    /* Capped for the tablet band. The desktop intermediate composition caps
+       this at 42rem but nothing held it below 896px, so the lede ran the full
+       shell and reached about 100 characters a line at 895px. Phones are
+       narrower than the cap, so they are unaffected. */
+    max-width: 34rem;
     margin-top: 0;
   }
 
