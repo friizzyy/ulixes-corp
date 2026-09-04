@@ -69,11 +69,24 @@ describe("Navigation", () => {
   it("keeps the concise mandate action and menu available through 895px", () => {
     render(<Navigation />);
 
+    const navigation = screen.getByRole("navigation", {
+      name: "Primary navigation",
+    });
     const mobileAction = screen.getByRole("link", { name: "Mandate" });
     expect(mobileAction).toHaveAttribute("href", "/contact");
     expect(mobileAction).toHaveClass("min-[896px]:hidden");
     expect(screen.getByRole("button", { name: "Open menu" })).toHaveClass(
       "min-[896px]:hidden",
+    );
+    expect(navigation).toHaveClass(
+      "pl-[calc(var(--mobile-gutter)+var(--safe-area-left))]",
+      "pr-[calc(var(--mobile-gutter)+var(--safe-area-right))]",
+      "min-[896px]:pl-[max(2.5rem,var(--safe-area-left))]",
+      "min-[896px]:pr-[max(2.5rem,var(--safe-area-right))]",
+    );
+    expect(navigation).not.toHaveClass(
+      "pl-[max(1.25rem,var(--safe-area-left))]",
+      "sm:pl-[max(1.5rem,var(--safe-area-left))]",
     );
   });
 
@@ -308,6 +321,10 @@ describe("Navigation", () => {
     const actionRegion = screen.getByRole("region", {
       name: "Navigation action",
     });
+    expect(actionRegion).toHaveClass(
+      "pl-[calc(var(--mobile-gutter)+var(--safe-area-left))]",
+      "pr-[calc(var(--mobile-gutter)+var(--safe-area-right))]",
+    );
     expect(
       within(actionRegion).getByRole("link", { name: "Discuss a mandate" }),
     ).toHaveAttribute("href", "/contact");

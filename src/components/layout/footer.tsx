@@ -20,7 +20,10 @@ export function Footer() {
   return (
     <footer className="relative z-10 border-t border-[#d7dcde] bg-[#f3f1ec] text-[#10212b]">
       {/* The bottom padding floors on the home-indicator inset. */}
-      <div className="container-main max-w-[78rem] pb-[calc(var(--safe-area-bottom)+1.5rem)] pt-6 min-[896px]:pb-[calc(var(--safe-area-bottom)+2.5rem)] min-[896px]:pt-14">
+      <div
+        data-footer-shell
+        className="mx-auto w-full max-w-[78rem] pb-[calc(var(--safe-area-bottom)+1.5rem)] pl-[calc(var(--mobile-gutter)+var(--safe-area-left))] pr-[calc(var(--mobile-gutter)+var(--safe-area-right))] pt-6 min-[896px]:pb-[calc(var(--safe-area-bottom)+2.5rem)] min-[896px]:pl-[max(2.5rem,var(--safe-area-left))] min-[896px]:pr-[max(2.5rem,var(--safe-area-right))] min-[896px]:pt-14"
+      >
         <div className="flex flex-col gap-5 pb-6 min-[896px]:flex-row min-[896px]:items-start min-[896px]:justify-between min-[896px]:gap-8 min-[896px]:pb-10">
           <div
             role="group"

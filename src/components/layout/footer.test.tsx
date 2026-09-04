@@ -68,8 +68,16 @@ describe("Footer", () => {
   });
 
   it("keeps the compact route grid through the 895px touch breakpoint", () => {
-    render(<Footer />);
+    const { container } = render(<Footer />);
 
+    const shell = container.querySelector("[data-footer-shell]");
+    expect(shell).toHaveClass(
+      "pl-[calc(var(--mobile-gutter)+var(--safe-area-left))]",
+      "pr-[calc(var(--mobile-gutter)+var(--safe-area-right))]",
+      "min-[896px]:pl-[max(2.5rem,var(--safe-area-left))]",
+      "min-[896px]:pr-[max(2.5rem,var(--safe-area-right))]",
+    );
+    expect(shell).not.toHaveClass("container-main");
     const routeList = within(
       screen.getByRole("navigation", { name: "Footer navigation" }),
     ).getByRole("list");

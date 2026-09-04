@@ -137,8 +137,7 @@ export function Navigation() {
            */
           'h-[calc(var(--mobile-header-height)+var(--safe-area-top))] min-[896px]:h-[calc(76px+var(--safe-area-top))]',
           'pt-[var(--safe-area-top)]',
-          'pl-[max(1.25rem,var(--safe-area-left))] pr-[max(1.25rem,var(--safe-area-right))]',
-          'sm:pl-[max(1.5rem,var(--safe-area-left))] sm:pr-[max(1.5rem,var(--safe-area-right))]',
+          'pl-[calc(var(--mobile-gutter)+var(--safe-area-left))] pr-[calc(var(--mobile-gutter)+var(--safe-area-right))]',
           'min-[896px]:pl-[max(2.5rem,var(--safe-area-left))] min-[896px]:pr-[max(2.5rem,var(--safe-area-right))]',
           isOpen ? 'z-[70]' : 'z-50',
           'border-b transition-[background-color,border-color,box-shadow] duration-200',
@@ -238,7 +237,7 @@ export function Navigation() {
             aria-modal="true"
             aria-label="Navigation menu"
           >
-            <div className="flex min-h-0 flex-1 flex-col overflow-y-auto pl-[max(var(--mobile-gutter),var(--safe-area-left))] pr-[max(var(--mobile-gutter),var(--safe-area-right))] pt-4">
+            <div className="flex min-h-0 flex-1 flex-col overflow-y-auto pl-[calc(var(--mobile-gutter)+var(--safe-area-left))] pr-[calc(var(--mobile-gutter)+var(--safe-area-right))] pt-4">
               <nav aria-label="Mobile navigation" className="w-full">
                 <ul className="w-full divide-y divide-current/15 border-y border-current/15">
                   {editorialNavigation.map((item, index) => {
@@ -282,7 +281,7 @@ export function Navigation() {
             <div
               role="region"
               aria-label="Navigation action"
-              className="border-t border-[#d7dcde] pb-[max(1rem,env(safe-area-inset-bottom))] pl-[max(var(--mobile-gutter),var(--safe-area-left))] pr-[max(var(--mobile-gutter),var(--safe-area-right))] pt-4"
+              className="border-t border-[#d7dcde] pb-[max(1rem,env(safe-area-inset-bottom))] pl-[calc(var(--mobile-gutter)+var(--safe-area-left))] pr-[calc(var(--mobile-gutter)+var(--safe-area-right))] pt-4"
             >
               <Link
                 href="/contact"

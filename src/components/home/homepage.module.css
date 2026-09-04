@@ -637,11 +637,11 @@
 .mobileCapabilityTrigger {
   display: grid;
   width: 100%;
-  min-height: 6.5rem;
+  min-height: 6.25rem;
   grid-template-columns: 2rem minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.8rem;
-  padding: 1rem 0;
+  padding: 0.875rem 0;
   border: 0;
   border-left: 2px solid var(--capability-line);
   background: transparent;
@@ -1191,21 +1191,6 @@
     padding: 0;
   }
 
-  .credibilityMedia {
-    order: -1;
-    padding: 0 0 3.5rem;
-  }
-
-  .credibilityImageFrame {
-    min-height: clamp(26rem, 72vw, 36rem);
-  }
-
-  .footprintPlate {
-    right: 1rem;
-    bottom: 0;
-    width: min(22rem, calc(100% - 2rem));
-  }
-
   .contactPanel {
     grid-template-columns: 1fr;
     gap: 2.75rem;
@@ -1230,9 +1215,6 @@
     gap: 3.75rem;
   }
 
-  .credibilityMedia {
-    order: 0;
-  }
 }
 
 @media (max-width: 599px) {
@@ -1420,7 +1402,7 @@
   }
 
   .credibilityBody {
-    margin-top: 1.35rem;
+    margin-top: 1.1rem;
   }
 
   .checkpoints {
@@ -1429,15 +1411,6 @@
 
   .checkpoints li {
     padding-block: 0.85rem;
-  }
-
-  .credibilityImageFrame {
-    min-height: clamp(22rem, 112vw, 27rem);
-  }
-
-  .footprintPlate {
-    min-height: 7.25rem;
-    padding: 1.35rem 1.45rem;
   }
 
   .contactSection {
@@ -1551,24 +1524,6 @@
     background: rgba(250, 249, 246, 0.96);
   }
 }
-
-
-/* The phone crop remains short if the practitioner media is reintroduced in a
-   deeper composition; Home itself removes that duplicate visual below. */
-@media (max-width: 599px) {
-  .credibilityImageFrame {
-    min-height: 13rem;
-  }
-
-  .credibilityMedia {
-    padding: 0 0 1.9rem 1.2rem;
-  }
-
-  .credibilityBody {
-    margin-top: 1.1rem;
-  }
-}
-
 /*
  * Touch composition: a short skyline threshold leads into a capability index.
  *
@@ -1837,24 +1792,6 @@
 
   .credibilityMedia {
     display: none;
-  }
-
-  .credibilityImageFrame {
-    min-height: clamp(15rem, 46vw, 20rem);
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .footprintPlate {
-    position: absolute;
-    inset: auto 1rem 1rem auto;
-    z-index: 3;
-    width: max-content;
-    max-width: 66%;
-    min-width: 0;
-    padding: 0.8rem 1.05rem 0.85rem;
-    border-radius: var(--panel-radius);
   }
 
   .credibilityCopy {
