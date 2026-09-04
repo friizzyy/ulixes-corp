@@ -1,85 +1,121 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
-import { fadeDown } from '@/lib/motion'
-import { Button, Menu, X } from '@/components/ui'
-import { siteConfig, navigation } from '@/lib/content'
+import { ArrowUpRight, Menu, X } from '@/components/ui/icons'
+import { HomeBrand } from '@/components/home/home-brand'
+import { editorialNavigation } from '@/lib/homepage-content'
 
+/*
+ * One chrome for every route. This component used to branch on the pathname
+ * between the editorial navigation and a retired interior variant: a
+ * bracketed mono wordmark, a purple Get Started pill and the link order from
+ * content.ts. Privacy and terms were the last routes on that theme, and with
+ * them, not-found and error rebuilt on the editorial surface, nothing selects
+ * it any more.
+ */
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
+  const hasImageBackedMasthead = pathname === '/nasdaq-calypso'
   const mobileMenuRef = useRef<HTMLDivElement>(null)
+  const mobileOverlayRef = useRef<HTMLDivElement>(null)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
+  const lockedScrollYRef = useRef(0)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-    }
+    const handleScroll = () => setIsScrolled(window.scrollY > 20)
+    handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Close mobile menu on route change
   useEffect(() => {
     setIsOpen(false)
   }, [pathname])
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-      document.body.style.position = 'fixed'
-      document.body.style.width = '100%'
-      document.body.style.top = `-${window.scrollY}px`
-    } else {
-      const scrollY = document.body.style.top
-      document.body.style.overflow = ''
-      document.body.style.position = ''
-      document.body.style.width = ''
-      document.body.style.top = ''
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0') * -1)
-      }
+    const query = window.matchMedia('(min-width: 768px)')
+    const closeAtDesktop = () => {
+      if (query.matches) setIsOpen(false)
     }
+    closeAtDesktop()
+    query.addEventListener('change', closeAtDesktop)
+    return () => query.removeEventListener('change', closeAtDesktop)
+  }, [])
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    lockedScrollYRef.current = window.scrollY
+    document.body.style.overflow = 'hidden'
+    document.body.style.position = 'fixed'
+    document.body.style.width = '100%'
+    document.body.style.top = `-${lockedScrollYRef.current}px`
+    mobileMenuRef.current?.querySelector<HTMLAnchorElement>('a[href]')?.focus()
+
     return () => {
       document.body.style.overflow = ''
       document.body.style.position = ''
       document.body.style.width = ''
       document.body.style.top = ''
+      /*
+       * Instant, because html carries scroll-behavior: smooth and a plain
+       * scrollTo(0, y) would sweep the page back to where the reader was.
+       */
+      window.scrollTo({ top: lockedScrollYRef.current, behavior: 'instant' })
     }
   }, [isOpen])
 
-  // Focus trap and escape key for mobile menu
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape' && isOpen) {
-      setIsOpen(false)
+  const closeMenu = useCallback((restoreFocus = false) => {
+    setIsOpen(false)
+    if (restoreFocus) {
       menuButtonRef.current?.focus()
-      return
     }
+  }, [])
 
-    if (e.key !== 'Tab' || !isOpen || !mobileMenuRef.current) return
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        event.preventDefault()
+        closeMenu(true)
+        return
+      }
 
-    const focusableElements = mobileMenuRef.current.querySelectorAll<HTMLElement>(
-      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
-    )
-    if (focusableElements.length === 0) return
+      if (event.key !== 'Tab' || !isOpen || !mobileOverlayRef.current) return
 
-    const firstEl = focusableElements[0]
-    const lastEl = focusableElements[focusableElements.length - 1]
+      /*
+       * The toggle sits in the fixed nav, outside the overlay, but it is the
+       * dialog's close control, so it leads the cycle: the scrim and the
+       * links follow it in DOM order. Left out, Tab from the last link ran
+       * back to the logo and Escape was the only keyboard way to close.
+       */
+      const focusableElements = [
+        menuButtonRef.current,
+        ...Array.from(
+          mobileOverlayRef.current.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled]):not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])',
+          ),
+        ),
+      ].filter((element): element is HTMLElement => element !== null)
+      if (focusableElements.length === 0) return
 
-    if (e.shiftKey && document.activeElement === firstEl) {
-      e.preventDefault()
-      lastEl.focus()
-    } else if (!e.shiftKey && document.activeElement === lastEl) {
-      e.preventDefault()
-      firstEl.focus()
-    }
-  }, [isOpen])
+      const firstElement = focusableElements[0]
+      const lastElement = focusableElements[focusableElements.length - 1]
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault()
+        lastElement.focus()
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault()
+        firstElement.focus()
+      }
+    },
+    [closeMenu, isOpen],
+  )
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown)
@@ -88,183 +124,173 @@ export function Navigation() {
 
   return (
     <>
-      <motion.nav
+      <nav
+        aria-label="Primary navigation"
+        data-scrolled={isScrolled ? 'true' : 'false'}
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 px-5 sm:px-6 md:px-10 py-4 sm:py-5',
-          'transition-all duration-300',
+          'fixed inset-x-0 top-0 text-[#10212b]',
+          /*
+           * viewportFit is cover, so the chrome pads by the safe-area insets:
+           * the top inset is added to the height and the side insets floor
+           * the gutters. The editorial page roots carry the same top inset
+           * (see editorial.css) so their 64px offsets still clear the nav.
+           */
+          'h-[calc(var(--mobile-header-height)+var(--safe-area-top))] md:h-[calc(76px+var(--safe-area-top))]',
+          'pt-[var(--safe-area-top)]',
+          'pl-[max(1.25rem,var(--safe-area-left))] pr-[max(1.25rem,var(--safe-area-right))]',
+          'sm:pl-[max(1.5rem,var(--safe-area-left))] sm:pr-[max(1.5rem,var(--safe-area-right))]',
+          'md:pl-[max(2.5rem,var(--safe-area-left))] md:pr-[max(2.5rem,var(--safe-area-right))]',
+          isOpen ? 'z-[70]' : 'z-50',
+          'border-b transition-[background-color,border-color,box-shadow] duration-200',
           isScrolled
-            ? 'bg-bg-primary/50 backdrop-blur-2xl border-b border-white/[0.06]'
-            : 'bg-transparent'
+            ? 'border-[#d7dcde] bg-[#f3f1ec]/95 shadow-[0_12px_30px_-25px_rgba(16,33,43,0.5)] backdrop-blur-xl'
+            : cn(
+                'border-transparent bg-transparent',
+                hasImageBackedMasthead &&
+                  'max-[899px]:border-[#d7dcde] max-[899px]:bg-[#f3f1ec]/95 max-[899px]:shadow-[0_12px_30px_-25px_rgba(16,33,43,0.5)] max-[899px]:backdrop-blur-xl',
+              ),
         )}
-        variants={fadeDown}
-        initial="hidden"
-        animate="visible"
       >
-        <div className="max-w-[1400px] mx-auto flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center group">
-            <span className="font-mono text-lg tracking-tight">
-              <span className="text-accent font-semibold">[</span>
-              <span className="text-text-primary font-medium mx-1">ulixes</span>
-              <span className="text-accent font-semibold">]</span>
-            </span>
+        <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between">
+          <Link
+            href="/"
+            className="inline-flex min-h-[44px] items-center transition-opacity duration-200 hover:opacity-70 focus-visible:opacity-100"
+          >
+            <HomeBrand />
           </Link>
 
-          {/* Desktop Navigation */}
-          <ul className="hidden md:flex items-center gap-10">
-            {navigation.main.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={cn(
-                    'relative text-body-sm font-medium transition-colors',
-                    pathname === item.href
-                      ? 'text-text-primary'
-                      : 'text-text-secondary hover:text-text-primary',
-                    'after:absolute after:bottom-[-4px] after:left-0 after:h-0.5 after:bg-accent after:transition-all after:duration-300',
-                    pathname === item.href ? 'after:w-full' : 'after:w-0 hover:after:w-full'
-                  )}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+          <ul className="hidden items-center gap-8 md:flex lg:gap-10">
+            {editorialNavigation.map((item) => {
+              const isActive = pathname === item.href
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={cn(
+                      'relative inline-flex min-h-[44px] items-center text-[0.82rem] font-medium tracking-[0.01em] text-[#56666d] transition-colors hover:text-[#10212b]',
+                      /* The underline reveals on transform, so it never reflows the row. */
+                      'after:absolute after:bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-[#607985] after:transition-transform after:duration-200 hover:after:scale-x-100',
+                      isActive && 'after:scale-x-100',
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              )
+            })}
           </ul>
 
-          {/* Desktop CTA */}
           <div className="hidden md:block">
-            <Button href="/contact" size="sm">
-              Get Started
-            </Button>
+            <Link
+              href="/contact"
+              className="group inline-grid min-h-[46px] grid-cols-[auto_44px] overflow-hidden rounded-[4px] border border-[#10212b] bg-[#10212b] text-[0.82rem] font-semibold text-[#faf9f6] shadow-[0_16px_28px_-23px_rgba(16,33,43,0.8)] transition-[transform,background-color] duration-200 hover:-translate-y-px hover:bg-[#182c37] active:translate-y-px"
+            >
+              <span className="flex items-center px-4">Discuss a mandate</span>
+              <span
+                className="grid place-items-center border-l border-white/20 transition-transform duration-200 group-hover:translate-x-px group-hover:-translate-y-px"
+                aria-hidden="true"
+              >
+                <ArrowUpRight size={16} />
+              </span>
+            </Link>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             ref={menuButtonRef}
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden relative p-2.5 -mr-2 text-text-primary min-h-[44px] min-w-[44px] flex items-center justify-center"
+            type="button"
+            onClick={() => (isOpen ? closeMenu(false) : setIsOpen(true))}
+            className="relative -mr-2 flex min-h-[44px] min-w-[44px] items-center justify-center text-[#10212b] md:hidden"
             aria-label={isOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isOpen}
+            aria-controls={isOpen ? 'mobile-navigation-dialog' : undefined}
           >
-            <AnimatePresence mode="wait" initial={false}>
-              {isOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ opacity: 0, rotate: -90 }}
-                  animate={{ opacity: 1, rotate: 0 }}
-                  exit={{ opacity: 0, rotate: 90 }}
-                  transition={{ duration: 0.15 }}
-                >
-                  <X />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ opacity: 0, rotate: 90 }}
-                  animate={{ opacity: 1, rotate: 0 }}
-                  exit={{ opacity: 0, rotate: -90 }}
-                  transition={{ duration: 0.15 }}
-                >
-                  <Menu />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {isOpen ? <X /> : <Menu />}
           </button>
         </div>
-      </motion.nav>
+      </nav>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
+      {isOpen && (
+        <div
+          ref={mobileOverlayRef}
+          className="fixed inset-x-0 bottom-0 top-[calc(var(--mobile-header-height)+var(--safe-area-top))] z-[60] md:hidden"
+        >
+          <button
+            type="button"
+            tabIndex={-1}
+            aria-label="Dismiss navigation"
+            onClick={() => closeMenu(true)}
+            className="mobile-nav-scrim absolute inset-0 h-full w-full bg-[#10212b]/15 backdrop-blur-[2px]"
+          />
+          <div
             ref={mobileMenuRef}
-            className="fixed inset-0 z-40 md:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            id="mobile-navigation-dialog"
+            data-presentation="sheet"
+            className="mobile-nav-sheet absolute inset-0 flex flex-col bg-[#f7f6f2] text-[#10212b] shadow-[0_28px_72px_-38px_rgba(16,33,43,0.72)]"
             role="dialog"
             aria-modal="true"
             aria-label="Navigation menu"
           >
-            {/* Backdrop with blur */}
-            <motion.div
-              className="absolute inset-0 bg-bg-primary/98 backdrop-blur-2xl"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-              aria-label="Close menu"
-            />
-
-            {/* Menu Content */}
-            <motion.div
-              className="absolute inset-x-0 top-0 pt-24 px-5 sm:px-6 flex flex-col h-full"
-              style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 2rem)' }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25, delay: 0.05 }}
-            >
-              {/* Navigation Links */}
-              <nav className="flex-1 flex flex-col justify-center -mt-16">
-                <ul className="space-y-2">
-                  {navigation.main.map((item, index) => (
-                    <motion.li
-                      key={item.href}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -10 }}
-                      transition={{ delay: 0.08 + index * 0.04, duration: 0.3 }}
-                    >
-                      <Link
-                        href={item.href}
-                        className={cn(
-                          'flex items-center justify-between py-4 px-2 rounded-lg transition-all duration-200 min-h-[52px]',
-                          pathname === item.href
-                            ? 'text-text-primary'
-                            : 'text-text-secondary active:text-text-primary active:bg-surface/50'
-                        )}
-                      >
-                        <span className="flex items-center gap-4">
-                          <span className={cn(
-                            'text-xs font-mono tabular-nums',
-                            pathname === item.href ? 'text-accent' : 'text-text-muted'
-                          )}>
-                            {String(index + 1).padStart(2, '0')}
+            <div className="flex min-h-0 flex-1 flex-col overflow-y-auto pl-[max(var(--mobile-gutter),var(--safe-area-left))] pr-[max(var(--mobile-gutter),var(--safe-area-right))] pt-4">
+              <nav aria-label="Mobile navigation" className="w-full">
+                <ul className="w-full divide-y divide-current/15 border-y border-current/15">
+                  {editorialNavigation.map((item, index) => {
+                    const isActive = pathname === item.href
+                    return (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          aria-current={isActive ? 'page' : undefined}
+                          data-current-route={isActive || undefined}
+                          onClick={() => closeMenu(false)}
+                          className={cn(
+                            'flex min-h-[var(--mobile-control-height)] items-center justify-between py-2 text-[1.05rem] font-medium tracking-[-0.015em]',
+                            isActive && 'bg-[#e9eff1] px-3 -mx-3',
+                          )}
+                        >
+                          <span>{item.label}</span>
+                          <span className="flex items-center gap-2">
+                            {isActive && (
+                              <span
+                                className="text-[0.64rem] font-bold uppercase tracking-[0.12em] text-[#10212b]"
+                                aria-hidden="true"
+                              >
+                                Current
+                              </span>
+                            )}
+                            <span
+                              className="text-[0.68rem] font-semibold tracking-[0.12em] text-[#5d6e75]"
+                              aria-hidden="true"
+                            >
+                              {String(index + 1).padStart(2, '0')}
+                            </span>
                           </span>
-                          <span className="text-xl sm:text-2xl font-semibold">
-                            {item.label}
-                          </span>
-                        </span>
-                        {pathname === item.href && (
-                          <motion.div
-                            layoutId="mobile-nav-active"
-                            className="w-1.5 h-1.5 rounded-full bg-accent"
-                          />
-                        )}
-                      </Link>
-                    </motion.li>
-                  ))}
+                        </Link>
+                      </li>
+                    )
+                  })}
                 </ul>
               </nav>
-
-              {/* Bottom CTA */}
-              <motion.div
-                className="pt-6 border-t border-border"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ delay: 0.3, duration: 0.3 }}
+            </div>
+            <div
+              role="region"
+              aria-label="Navigation action"
+              className="border-t border-[#d7dcde] pb-[max(1rem,env(safe-area-inset-bottom))] pl-[max(var(--mobile-gutter),var(--safe-area-left))] pr-[max(var(--mobile-gutter),var(--safe-area-right))] pt-4"
+            >
+              <Link
+                href="/contact"
+                onClick={() => closeMenu(false)}
+                className="ed-primary w-full"
               >
-                <Button href="/contact" className="w-full min-h-[52px] text-base">
-                  Get Started
-                </Button>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                <span>Discuss a mandate</span>
+                <span className="ed-chamber" aria-hidden="true">
+                  <ArrowUpRight size={17} />
+                </span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }

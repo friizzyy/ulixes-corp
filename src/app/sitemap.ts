@@ -1,54 +1,46 @@
 import { MetadataRoute } from 'next'
+import { siteConfig } from '@/lib/content'
 
+/*
+ * Kept in step with the routes that actually exist. This previously advertised
+ * /work, which was never built and could not be: the verified-claims guardrails
+ * forbid named clients, testimonials, and invented metrics, so there is no
+ * compliant way to fill a case-studies page. It also omitted
+ * /institutional-experience entirely, and listed /about and /philosophy, which
+ * are now retired and permanently redirected.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://ulixescorp.com'
+  const baseUrl = siteConfig.url
 
   return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 1,
-    },
+    { url: baseUrl, changeFrequency: 'monthly', priority: 1 },
     {
       url: `${baseUrl}/services`,
-      lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/work`,
-      lastModified: new Date(),
+      url: `${baseUrl}/nasdaq-calypso`,
       changeFrequency: 'monthly',
-      priority: 0.8,
+      priority: 0.9,
     },
     {
-      url: `${baseUrl}/philosophy`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
+      url: `${baseUrl}/institutional-experience`,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.7,
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.3,
     },

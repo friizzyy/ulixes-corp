@@ -1,0 +1,46 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: currentColor;
+}
+
+.compact {
+  gap: 0.5rem;
+}
+
+.monogram {
+  width: 1.875rem;
+  height: 1.875rem;
+  flex: 0 0 auto;
+}
+
+.compact .monogram {
+  width: 1.625rem;
+  height: 1.625rem;
+}
+
+.wordmark {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.name {
+  color: currentColor;
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.compact .name {
+  font-size: 0.85rem;
+}
+
+.descriptor {
+  margin-top: 0.25rem;
+  color: #56666d;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.135em;
+}

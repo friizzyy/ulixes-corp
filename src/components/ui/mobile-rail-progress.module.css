@@ -1,0 +1,32 @@
+.progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.85rem;
+  color: var(--steel, #5d6e75);
+  font-size: var(--label-xs, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.count {
+  color: var(--ink, #10212b);
+  font-variant-numeric: tabular-nums;
+}
+
+.dark {
+  color: rgba(241, 243, 239, 0.64);
+}
+
+.dark .count {
+  color: #f1f3ef;
+}
+
+@media (min-width: 768px) {
+  .progress {
+    display: none;
+  }
+}

@@ -1,0 +1,1876 @@
+.page {
+  --mineral: #f3f1ec;
+  --mineral-light: #faf9f6;
+  --ink: #10212b;
+  --graphite: #34434b;
+  --steel: #5d6e75;
+  --platinum: #d7dcde;
+  --home-shell: 78rem;
+  --panel-radius: 8px;
+  /* One left rail for the whole page: the hero card is inset from the viewport
+     by --page-gutter, its copy is inset from the card by --page-rail, and
+     .contentShell subtracts both so every heading lands on the same pixel. */
+  --page-gutter: clamp(1.25rem, 2.4vw, 2.5rem);
+  --page-rail: clamp(2.75rem, 5.4vw, 4.75rem);
+  --shadow-raised:
+    0 1px 2px rgba(16, 33, 43, 0.06),
+    0 26px 58px -44px rgba(16, 33, 43, 0.42);
+  --shadow-floating:
+    0 1px 2px rgba(16, 33, 43, 0.07),
+    0 24px 48px -34px rgba(39, 58, 68, 0.3),
+    0 52px 92px -58px rgba(39, 58, 68, 0.48);
+  position: relative;
+  z-index: 1;
+  overflow: clip;
+  background: var(--mineral);
+  color: var(--ink);
+}
+
+.page :focus-visible {
+  outline: 2px solid #607985;
+  outline-offset: 4px;
+  box-shadow: none;
+}
+
+.hero {
+  padding: 76px var(--page-gutter) 0;
+  background: var(--mineral);
+}
+
+.heroScene {
+  --hero-border: 1px;
+  /* The card's own border sits between the page gutter and the copy, so the
+     inner rail is short by exactly that border for the copy to land on
+     --page-rail alongside every .contentShell heading. */
+  --hero-rail: calc(var(--page-rail) - var(--hero-border));
+  position: relative;
+  width: min(100%, 1400px);
+  min-height: clamp(680px, 78svh, 780px);
+  margin-inline: auto;
+  border: var(--hero-border) solid rgba(16, 33, 43, 0.1);
+  border-radius: var(--panel-radius);
+  background: var(--mineral-light);
+  box-shadow: var(--shadow-raised);
+}
+
+.heroMedia {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 79%;
+  overflow: hidden;
+  border-radius: 0 var(--panel-radius) var(--panel-radius) 0;
+  background: #b7c1c6;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.08) 14%,
+    rgba(0, 0, 0, 0.66) 39%,
+    #000 58%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.08) 14%,
+    rgba(0, 0, 0, 0.66) 39%,
+    #000 58%
+  );
+}
+
+.heroPoster,
+.heroVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 52% center;
+}
+
+.heroVideo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.heroTone {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    var(--mineral-light) 0%,
+    rgba(250, 249, 246, 0.97) 23%,
+    rgba(250, 249, 246, 0.68) 39%,
+    transparent 58%
+  );
+}
+
+.heroCopy {
+  position: relative;
+  z-index: 2;
+  width: min(56%, 760px);
+  padding: clamp(7.7rem, 12vh, 9.25rem) 0 11.25rem
+    var(--hero-rail);
+}
+
+.eyebrow,
+.contactEyebrow {
+  margin: 0 0 1.05rem;
+  color: var(--steel);
+  font-size: var(--label-xs, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 0.145em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 1.6rem;
+  height: 1px;
+  margin: 0 0.7rem 0.2rem 0;
+  background: currentColor;
+}
+
+.heroTitle,
+.sectionTitle,
+.contactCopy h2,
+.authorityCopy strong,
+.serviceCore strong,
+.footprintPlate strong,
+.calypsoYear,
+.calypsoTitle {
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+}
+
+.heroTitle {
+  max-width: 14ch;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(3.7rem, 4.5vw, 4.5rem);
+  font-weight: 560;
+  letter-spacing: -0.052em;
+  line-height: 0.97;
+}
+
+.heroTitleLine {
+  display: block;
+  white-space: nowrap;
+}
+
+.heroBody {
+  max-width: 37rem;
+  margin: 1.65rem 0 0;
+  color: #4b5a61;
+  font-size: clamp(1rem, 1.08vw, 1.08rem);
+  line-height: 1.68;
+}
+
+.heroActions {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  margin-top: 2rem;
+}
+
+.primaryAction,
+.contactAction {
+  display: inline-grid;
+  grid-template-columns: auto 3rem;
+  min-height: 3.25rem;
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  background: var(--ink);
+  color: var(--mineral-light);
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1;
+  box-shadow: 0 18px 30px -25px rgba(16, 33, 43, 0.78);
+  transition:
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 180ms ease;
+}
+
+.primaryAction > span:first-child,
+.contactAction > span:first-child {
+  display: flex;
+  align-items: center;
+  padding-inline: 1.3rem;
+}
+
+.actionChamber {
+  display: grid;
+  place-items: center;
+  border-left: 1px solid rgba(250, 249, 246, 0.2);
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.primaryAction:hover,
+.contactAction:hover {
+  transform: translateY(-2px);
+  background: #182c37;
+  box-shadow: 0 22px 36px -25px rgba(16, 33, 43, 0.8);
+}
+
+.primaryAction:hover .actionChamber,
+.contactAction:hover .actionChamber {
+  transform: translate(1px, -1px);
+}
+
+.primaryAction:active,
+.contactAction:active {
+  transform: translateY(1px);
+}
+
+.secondaryAction,
+.textLink,
+.contactEmail {
+  position: relative;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 620;
+  text-decoration: none;
+}
+
+.secondaryAction::after,
+.textLink::after,
+.contactEmail::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 5px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0.26);
+  transform-origin: left;
+  transition: transform 190ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.secondaryAction:hover::after,
+.textLink:hover::after,
+.contactEmail:hover::after {
+  transform: scaleX(1);
+}
+
+.secondaryAction svg,
+.textLink svg {
+  transition: transform 190ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.secondaryAction:hover svg,
+.textLink:hover svg {
+  transform: translateX(3px);
+}
+
+/* The location mark and the playback control share one row, so the pair is
+   placed once per viewport. The row is the control's 44px tall; the mark's
+   text sits at its centre. */
+.heroControls {
+  position: absolute;
+  right: 2.5rem;
+  bottom: 6rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.locationMark {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: rgba(250, 249, 246, 0.88);
+  font-size: 0.68rem;
+  font-weight: 640;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 12px rgba(16, 33, 43, 0.48);
+}
+
+.locationDot {
+  width: 5px;
+  height: 5px;
+  border: 1px solid rgba(250, 249, 246, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(250, 249, 246, 0.12);
+}
+
+.playbackControl {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--rule-strong);
+  border-radius: 50%;
+  background: rgba(250, 249, 246, 0.82);
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(16, 33, 43, 0.08);
+  transition:
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.playbackControl svg {
+  display: block;
+  fill: currentColor;
+}
+
+.playbackControl:hover {
+  transform: translateY(-1px);
+  border-color: rgba(16, 33, 43, 0.34);
+  background: rgba(250, 249, 246, 0.92);
+}
+
+.playbackControl:active {
+  transform: translateY(0);
+  background: rgba(250, 249, 246, 0.96);
+}
+
+.authorityDock,
+.footprintPlate {
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  background: rgba(241, 244, 244, 0.75);
+  -webkit-backdrop-filter: blur(18px) saturate(0.88);
+  backdrop-filter: blur(18px) saturate(0.88);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.86),
+    var(--shadow-floating);
+}
+
+.authorityDock {
+  position: absolute;
+  right: var(--hero-rail);
+  bottom: -4.15rem;
+  left: var(--hero-rail);
+  z-index: 4;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  min-height: 8.3rem;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--panel-radius);
+  color: var(--ink);
+  list-style: none;
+}
+
+.authorityItem {
+  display: grid;
+  min-width: 0;
+  align-content: center;
+  gap: 1rem;
+  padding: 1.4rem clamp(1.15rem, 2vw, 2.15rem);
+  border-left: 1px solid rgba(16, 33, 43, 0.1);
+}
+
+.authorityItem:first-child {
+  border-left: 0;
+}
+
+.authoritySignal {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: #5d6e75;
+}
+
+.authorityIcon {
+  display: grid;
+  width: 1.55rem;
+  height: 1.55rem;
+  place-items: center;
+  color: #536d79;
+}
+
+.authorityIcon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.authorityContext {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.105em;
+  text-transform: uppercase;
+}
+
+.authorityCopy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.authorityCopy strong {
+  font-size: 1.12rem;
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+}
+
+.authorityItem[data-primary='true'] .authorityCopy strong {
+  font-size: clamp(1.55rem, 2vw, 1.9rem);
+}
+
+.authorityCopy span {
+  color: #596970;
+  font-size: 0.76rem;
+  line-height: 1.38;
+}
+
+.contentShell {
+  width: min(
+    calc(100% - 2 * (var(--page-gutter) + var(--page-rail))),
+    var(--home-shell)
+  );
+  margin-inline: auto;
+}
+
+.services {
+  padding: 12.75rem 0 5.25rem;
+}
+
+.sectionIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(19rem, 0.67fr);
+  align-items: end;
+  gap: clamp(3rem, 8vw, 8.5rem);
+  margin-bottom: 2.75rem;
+}
+
+.sectionHeading {
+  max-width: 48rem;
+}
+
+.sectionTitle {
+  max-width: 17ch;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(2.75rem, 3.65vw, 3.65rem);
+  font-weight: 560;
+  letter-spacing: -0.048em;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.sectionLead {
+  max-width: 31rem;
+  padding-bottom: 0.1rem;
+}
+
+.sectionLead p,
+.credibilityBody {
+  margin: 0;
+  color: #536168;
+  font-size: 1rem;
+  line-height: 1.72;
+}
+
+.sectionLead .textLink {
+  margin-top: 1.15rem;
+}
+
+.engagementField,
+.serviceLedger {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(16, 33, 43, 0.11);
+  border-radius: var(--panel-radius);
+  background: var(--mineral-light);
+  box-shadow: var(--shadow-raised);
+  list-style: none;
+  isolation: isolate;
+}
+
+.engagementField > li {
+  --item-tint: #e9eff1;
+  --item-line: #8ba0a9;
+  min-width: 0;
+  border-top: 1px solid rgba(16, 33, 43, 0.11);
+  box-shadow: inset 2px 0 var(--item-line);
+}
+
+.engagementField > li:first-child {
+  border-top: 0;
+}
+
+.engagementField > li[data-material='sage'] {
+  --item-tint: #e8eee8;
+  --item-line: #91a393;
+}
+
+.engagementField > li[data-material='clay'] {
+  --item-tint: #f0e9e1;
+  --item-line: #ad9884;
+}
+
+.engagementField > li[data-material='platinum'] {
+  --item-tint: #e7e8e7;
+  --item-line: #979e9e;
+}
+
+.serviceLink {
+  position: relative;
+  display: grid;
+  grid-template-columns:
+    minmax(3rem, 0.28fr) minmax(13rem, 0.9fr)
+    minmax(22rem, 1.65fr) 2.75rem;
+  min-height: 7.65rem;
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+  padding: 1.5rem clamp(1.4rem, 2.5vw, 2.2rem);
+  color: var(--ink);
+  transition: background-color 180ms ease;
+}
+
+.serviceLink:hover,
+.serviceLink:focus-visible {
+  background: color-mix(in srgb, var(--item-tint) 44%, var(--mineral-light));
+}
+
+.serviceMarker {
+  display: flex;
+  align-items: center;
+}
+
+.serviceGlyph {
+  display: none;
+}
+
+.serviceIndex {
+  color: #56656b;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.serviceCore {
+  display: block;
+  min-width: 0;
+}
+
+.serviceCore strong {
+  display: block;
+  font-size: clamp(1.22rem, 1.48vw, 1.42rem);
+  font-weight: 650;
+  letter-spacing: -0.032em;
+  line-height: 1.15;
+}
+
+.serviceDetail {
+  display: grid;
+  min-width: 0;
+  gap: 0.55rem;
+}
+
+.serviceScope {
+  color: #56656b;
+  font-size: 0.76rem;
+  font-weight: 680;
+  letter-spacing: 0.035em;
+  line-height: 1.45;
+}
+
+.serviceDescription {
+  max-width: 39rem;
+  color: #56656b;
+  font-size: 0.91rem;
+  line-height: 1.58;
+}
+
+.serviceAction {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border-left: 1px solid rgba(16, 33, 43, 0.12);
+  color: var(--steel);
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.serviceLink:hover .serviceAction {
+  transform: translate(2px, -2px);
+}
+
+/* One ruled statement band on the rail: hairline above and below, no panel.
+   The section carries no outer padding, so its box is the row itself and the
+   neighbours' own padding sets the air on either side. */
+.calypsoBand {
+  padding: 0;
+}
+
+.calypsoRow {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.42fr) minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: clamp(2.5rem, 5vw, 5rem);
+  padding: 3.5rem 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.calypsoFigure .eyebrow {
+  margin-bottom: 1.4rem;
+}
+
+.calypsoSince {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+}
+
+.calypsoSinceLabel {
+  color: var(--graphite);
+  font-size: var(--label-xs);
+  font-weight: 640;
+  letter-spacing: 0.1em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.calypsoYear {
+  color: var(--ink);
+  font-size: 3rem;
+  font-weight: 560;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
+.calypsoTitle {
+  max-width: 34ch;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.45rem, 1.7vw, 1.6rem);
+  font-weight: 640;
+  letter-spacing: -0.034em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.calypsoBody {
+  max-width: 48ch;
+  margin: 0.85rem 0 0;
+  color: var(--graphite);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.calypsoLink {
+  justify-self: end;
+  /* Centres the link text on the headline's first line: half the link's
+     44px height less half the headline's 1.84rem line box. */
+  margin-top: -0.45rem;
+  white-space: nowrap;
+}
+
+.credibility {
+  padding: 4.25rem 0 6.75rem;
+}
+
+.credibilityGrid {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.8fr) minmax(0, 1.2fr);
+  align-items: center;
+  gap: clamp(4rem, 8vw, 8rem);
+}
+
+.credibilityBody {
+  max-width: 35rem;
+  margin-top: 1.6rem;
+}
+
+.checkpoints {
+  display: grid;
+  gap: 0;
+  margin: 1.75rem 0 1.1rem;
+  padding: 0;
+  border-top: 1px solid rgba(16, 33, 43, 0.13);
+  list-style: none;
+}
+
+.checkpoints li {
+  position: relative;
+  padding: 0.9rem 0 0.9rem 1.7rem;
+  border-bottom: 1px solid rgba(16, 33, 43, 0.13);
+  color: #425159;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.checkpoints li::before {
+  content: '';
+  position: absolute;
+  top: 1.12rem;
+  left: 0.1rem;
+  width: 0.55rem;
+  height: 0.3rem;
+  border-bottom: 1.5px solid #607985;
+  border-left: 1.5px solid #607985;
+  transform: rotate(-45deg);
+}
+
+.credibilityMedia {
+  position: relative;
+  /* Bottom padding is the plate's overhang below the image. Keep it roughly a
+     third of .footprintPlate's min-height so the overlap stays proportional. */
+  padding: 0 0 2.4rem 2.2rem;
+}
+
+.credibilityImageFrame {
+  position: relative;
+  min-height: clamp(30rem, 42vw, 38rem);
+  overflow: hidden;
+  border: 1px solid rgba(16, 33, 43, 0.11);
+  border-radius: var(--panel-radius);
+  background: #c7d1d5;
+  box-shadow: var(--shadow-raised);
+}
+
+.credibilityImage {
+  object-fit: cover;
+  object-position: 52% center;
+  filter: saturate(0.78) contrast(0.98);
+}
+
+.footprintPlate {
+  position: absolute;
+  /* Flush with the image edge: overhanging here would break the page rail. */
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  width: min(20rem, 45%);
+  min-height: 7.75rem;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.45rem 1.65rem;
+  border-radius: var(--panel-radius);
+  color: var(--ink);
+}
+
+.footprintLabel {
+  margin-bottom: 1rem;
+  color: var(--steel);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.footprintPlate strong {
+  font-size: 1.35rem;
+  font-weight: 650;
+  letter-spacing: -0.032em;
+}
+
+.contactSection {
+  padding: 0 0 6rem;
+}
+
+.contactPanel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.7fr);
+  align-items: end;
+  gap: clamp(3rem, 7vw, 6rem);
+  padding: clamp(3.25rem, 5vw, 4.25rem);
+  overflow: hidden;
+  margin-top: -0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.94);
+  border-radius: var(--panel-radius);
+  background: linear-gradient(
+    135deg,
+    rgba(250, 249, 246, 0.97) 0%,
+    rgba(237, 240, 239, 0.94) 56%,
+    rgba(226, 232, 233, 0.9) 100%
+  );
+  -webkit-backdrop-filter: blur(14px) saturate(0.88);
+  backdrop-filter: blur(14px) saturate(0.88);
+  color: var(--ink);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(16, 33, 43, 0.07),
+    var(--shadow-floating);
+  isolation: isolate;
+}
+
+.contactEyebrow {
+  color: var(--steel);
+}
+
+.contactCopy h2 {
+  max-width: 11ch;
+  margin: 0;
+  font-size: clamp(2.9rem, 4vw, 3.875rem);
+  font-weight: 560;
+  letter-spacing: -0.052em;
+  line-height: 0.98;
+}
+
+.contactBody {
+  max-width: 37rem;
+  margin: 1.55rem 0 0;
+  color: #4f5f66;
+  font-size: 1rem;
+  line-height: 1.68;
+}
+
+.contactInstruction {
+  max-width: 34rem;
+  margin: 1.1rem 0 0;
+  color: var(--steel);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.contactActionArea {
+  display: flex;
+  align-self: end;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.contactAction {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--mineral-light);
+  box-shadow: 0 18px 30px -25px rgba(16, 33, 43, 0.78);
+}
+
+.contactAction .actionChamber {
+  border-left-color: rgba(250, 249, 246, 0.2);
+}
+
+.contactAction:hover {
+  background: #182c37;
+}
+
+.contactDirect {
+  display: grid;
+  width: 100%;
+  gap: 0.25rem;
+  margin-top: 1.55rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(16, 33, 43, 0.14);
+}
+
+.contactDirectLabel {
+  color: var(--steel);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.contactEmail {
+  align-self: start;
+  margin: 0;
+  color: #243841;
+  font-size: 0.86rem;
+  overflow-wrap: anywhere;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .authorityDock,
+  .footprintPlate,
+  .contactPanel {
+    background: #eef1f1;
+  }
+}
+
+@media (max-width: 1120px) and (min-width: 900px) {
+  .heroCopy {
+    width: 60%;
+    /* padding-left intentionally omitted: inherits --page-rail so the hero
+       headline stays on the shared rail at this breakpoint too. */
+  }
+
+  .heroTitle {
+    font-size: clamp(3.35rem, 5.45vw, 3.95rem);
+  }
+
+  .authorityDock {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .authorityItem {
+    padding-inline: 1.25rem;
+  }
+
+  .serviceLink {
+    grid-template-columns: 3rem minmax(11rem, 0.8fr) minmax(18rem, 1.3fr) 2.5rem;
+    gap: 1.35rem;
+  }
+
+  .credibilityGrid {
+    gap: 4.5rem;
+  }
+}
+
+@media (max-width: 899px) {
+  .hero {
+    padding: 68px 0.75rem 0;
+  }
+
+  .heroScene {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border-radius: var(--panel-radius);
+  }
+
+  .heroMedia {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: clamp(18.5rem, 61vw, 31rem);
+    border-radius: var(--panel-radius) var(--panel-radius) 0 0;
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      #000 0%,
+      #000 66%,
+      rgba(0, 0, 0, 0.62) 82%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      180deg,
+      #000 0%,
+      #000 66%,
+      rgba(0, 0, 0, 0.62) 82%,
+      transparent 100%
+    );
+    order: 1;
+  }
+
+  .heroPoster,
+  .heroVideo {
+    object-position: 62% center;
+  }
+
+  .heroTone {
+    inset: 0 0 auto;
+    height: clamp(18.5rem, 61vw, 31rem);
+    border-radius: var(--panel-radius) var(--panel-radius) 0 0;
+    background: linear-gradient(
+      180deg,
+      transparent 55%,
+      rgba(250, 249, 246, 0.24) 72%,
+      var(--mineral-light) 100%
+    );
+  }
+
+  .heroCopy {
+    order: 2;
+    width: auto;
+    padding: 1rem clamp(1.25rem, 5.5vw, 3rem) 9.3rem;
+  }
+
+  .heroTitle {
+    max-width: 14ch;
+    font-size: clamp(3.1rem, 7.2vw, 4rem);
+  }
+
+  .heroBody {
+    max-width: 40rem;
+  }
+
+  .heroControls {
+    top: calc(clamp(15rem, 53vw, 27rem) - 0.875rem);
+    right: 1.5rem;
+    bottom: auto;
+  }
+
+  .authorityDock {
+    right: 1rem;
+    bottom: -7rem;
+    left: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-height: 14rem;
+  }
+
+  .authorityItem {
+    gap: 0.7rem;
+    padding: 1.15rem clamp(1rem, 3.5vw, 1.8rem);
+  }
+
+  .authorityItem:nth-child(3) {
+    border-left: 0;
+  }
+
+  .authorityItem:nth-child(n + 3) {
+    border-top: 1px solid rgba(16, 33, 43, 0.1);
+  }
+
+  .contentShell {
+    width: min(calc(100% - 2rem), 760px);
+  }
+
+  .services {
+    padding: 12.75rem 0 4.75rem;
+  }
+
+  .sectionIntro {
+    grid-template-columns: 1fr;
+    gap: 1.55rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .sectionTitle {
+    font-size: clamp(2.55rem, 6.5vw, 3.45rem);
+  }
+
+  .sectionLead {
+    max-width: 39rem;
+  }
+
+  .serviceLink {
+    grid-template-columns: 3rem minmax(10rem, 0.72fr) minmax(16rem, 1.2fr) 2.5rem;
+    gap: 1.15rem;
+    padding-inline: 1.3rem;
+  }
+
+  .calypsoRow {
+    grid-template-columns: minmax(10rem, 14rem) minmax(0, 1fr);
+    column-gap: 2.5rem;
+    padding: 3.25rem 0;
+  }
+
+  .calypsoLink {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 1.1rem;
+  }
+
+  .credibility {
+    padding: 2.75rem 0 6rem;
+  }
+
+  .credibilityGrid {
+    grid-template-columns: 1fr;
+    gap: 5.25rem;
+  }
+
+  .credibilityCopy {
+    padding: 0;
+  }
+
+  .credibilityMedia {
+    order: -1;
+    padding: 0 0 3.5rem;
+  }
+
+  .credibilityImageFrame {
+    min-height: clamp(26rem, 72vw, 36rem);
+  }
+
+  .footprintPlate {
+    right: 1rem;
+    bottom: 0;
+    width: min(22rem, calc(100% - 2rem));
+  }
+
+  .contactPanel {
+    grid-template-columns: 1fr;
+    gap: 2.75rem;
+  }
+
+  .contactActionArea {
+    width: min(100%, 32rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .page {
+    --home-safe-left: max(var(--mobile-gutter), var(--safe-area-left));
+    --home-safe-right: max(var(--mobile-gutter), var(--safe-area-right));
+  }
+
+  .contentShell {
+    width: calc(100% - 2rem);
+  }
+
+  .credibilityGrid {
+    gap: 3.75rem;
+  }
+
+  .credibilityMedia {
+    order: 0;
+  }
+}
+
+@media (max-width: 599px) {
+  .heroMedia,
+  .heroTone {
+    height: clamp(18.5rem, 88vw, 23rem);
+  }
+
+  .heroCopy {
+    padding: 0.35rem 1.25rem 8.8rem;
+  }
+
+  .heroTitle {
+    max-width: 100%;
+    font-size: clamp(2.5rem, 10.4vw, 3.1rem);
+    line-height: 1;
+  }
+
+  .heroTitleLine,
+  .heroTitleLine:first-child,
+  .heroTitleLine:last-child {
+    white-space: normal;
+  }
+
+  .heroBody {
+    margin-top: 1.35rem;
+    font-size: 0.96rem;
+    line-height: 1.62;
+  }
+
+  .heroActions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin-top: 1.65rem;
+  }
+
+  .primaryAction {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .primaryAction > span:first-child {
+    justify-content: center;
+  }
+
+  .secondaryAction {
+    align-self: flex-start;
+  }
+
+  .heroControls {
+    top: calc(clamp(15rem, 76vw, 19rem) - 0.875rem);
+    right: 1rem;
+    gap: 0.75rem;
+  }
+
+  .locationMark {
+    gap: 0.45rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+  }
+
+  .authorityDock {
+    right: 0.75rem;
+    bottom: -7.25rem;
+    left: 0.75rem;
+    min-height: 14.5rem;
+  }
+
+  .authorityItem {
+    gap: 0.55rem;
+    padding: 0.9rem 1rem;
+  }
+
+  .authoritySignal {
+    gap: 0.4rem;
+  }
+
+  .authorityIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .authorityIcon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .authorityContext {
+    font-size: 0.7rem;
+    letter-spacing: 0.09em;
+  }
+
+  .authorityCopy strong,
+  .authorityItem[data-primary='true'] .authorityCopy strong {
+    font-size: 1.02rem;
+    line-height: 1.1;
+  }
+
+  .authorityCopy span {
+    font-size: 0.71rem;
+    line-height: 1.34;
+  }
+
+  .contentShell {
+    width: calc(100% - 1.5rem);
+  }
+
+  .services {
+    padding-top: 12.65rem;
+    padding-bottom: 4.5rem;
+  }
+
+  .sectionIntro {
+    gap: 1.35rem;
+    margin-bottom: 2rem;
+  }
+
+  .sectionTitle {
+    font-size: clamp(2.35rem, 10vw, 2.9rem);
+  }
+
+  .sectionLead p,
+  .credibilityBody {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .serviceLink {
+    min-height: 19rem;
+    padding: 1.15rem;
+  }
+
+  .serviceCore strong {
+    font-size: 1.48rem;
+    line-height: 1.1;
+  }
+
+  .serviceCore {
+    margin-top: 2.8rem;
+  }
+
+  .serviceScope {
+    font-size: 0.73rem;
+    line-height: 1.4;
+  }
+
+  .serviceDescription {
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .serviceAction {
+    margin-top: 1.25rem;
+  }
+
+  .calypsoRow {
+    grid-template-columns: 1fr;
+    padding: 2.75rem 0;
+  }
+
+  .calypsoFigure .eyebrow {
+    margin-bottom: 1.2rem;
+  }
+
+  .calypsoYear {
+    font-size: 2.6rem;
+  }
+
+  .calypsoCopy {
+    margin-top: 1.9rem;
+  }
+
+  .calypsoLink {
+    grid-column: 1;
+    margin-top: 1rem;
+  }
+
+  .credibility {
+    padding: 2.5rem 0 5rem;
+  }
+
+  .credibilityGrid {
+    gap: 3.4rem;
+  }
+
+  .credibilityBody {
+    margin-top: 1.35rem;
+  }
+
+  .checkpoints {
+    margin-top: 1.45rem;
+  }
+
+  .checkpoints li {
+    padding-block: 0.85rem;
+  }
+
+  .credibilityImageFrame {
+    min-height: clamp(22rem, 112vw, 27rem);
+  }
+
+  .footprintPlate {
+    min-height: 7.25rem;
+    padding: 1.35rem 1.45rem;
+  }
+
+  .contactSection {
+    padding-bottom: 3.5rem;
+  }
+
+  .contactPanel {
+    width: calc(100% - 1.5rem);
+    gap: 2rem;
+    margin-top: 0;
+    padding: 2.2rem 1.25rem 1.4rem;
+    border-radius: var(--panel-radius);
+  }
+
+  .contactCopy h2 {
+    font-size: clamp(2.55rem, 11vw, 3.25rem);
+    line-height: 1;
+  }
+
+  .contactBody {
+    margin-top: 1.25rem;
+    font-size: 0.95rem;
+    line-height: 1.62;
+  }
+
+  .contactInstruction {
+    margin-top: 0.9rem;
+    font-size: 0.86rem;
+  }
+
+  .contactAction {
+    width: 100%;
+  }
+
+  .contactAction > span:first-child {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 350px) {
+  .heroCopy {
+    padding-inline: 1rem;
+    padding-bottom: 8.85rem;
+  }
+
+  .heroCopy .eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+  }
+
+  .heroCopy .eyebrow::before {
+    width: 1rem;
+    margin-right: 0.5rem;
+  }
+
+  .heroTitle {
+    font-size: 2.3rem;
+  }
+
+  .authorityItem {
+    padding-inline: 0.8rem;
+  }
+
+  .authorityContext {
+    font-size: 0.64rem;
+  }
+
+  .authorityCopy span {
+    font-size: 0.67rem;
+  }
+
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .serviceLink:active {
+    background: color-mix(in srgb, var(--item-tint) 54%, var(--mineral-light));
+  }
+
+  .serviceLink:active .serviceAction {
+    transform: translate(1px, -1px);
+  }
+
+  .playbackControl:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page *,
+  .page *::before,
+  .page *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .heroVideo:not([data-motion='opted-in']) {
+    display: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .authorityDock,
+  .footprintPlate,
+  .contactPanel {
+    border-color: rgba(16, 33, 43, 0.35);
+    background: rgba(245, 247, 247, 0.94);
+  }
+
+  .playbackControl {
+    border-color: rgba(16, 33, 43, 0.5);
+    background: rgba(250, 249, 246, 0.96);
+  }
+}
+
+
+/* Phone: the practitioner image sits as a short band above the copy, and the
+   hero card gives its height to the copy rather than the skyline. */
+@media (max-width: 599px) {
+  .credibilityImageFrame {
+    min-height: 13rem;
+  }
+
+  .credibilityMedia {
+    padding: 0 0 1.9rem 1.2rem;
+  }
+
+  .credibilityBody {
+    margin-top: 1.1rem;
+  }
+}
+
+/*
+ * Phone: two sections that were stacked text become layered objects.
+ *
+ * The Calypso credential is one dark plate with the year set large: a tonal
+ * layer on a page that otherwise has none, and one object instead of four
+ * stacked text blocks. The practitioner is the pattern premium apps use for a
+ * profile: the photograph runs edge to edge, the copy sits on a raised surface
+ * that overlaps its lower edge, and the footprint plate straddles the seam.
+ */
+@media (max-width: 767px) {
+  .hero {
+    padding: var(--mobile-header-height) 0 0;
+    background: var(--mineral);
+  }
+
+  .heroScene {
+    overflow: visible;
+    border-inline: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .heroCopy {
+    position: relative;
+    z-index: 3;
+    order: 1;
+    width: 100%;
+    padding: 2rem var(--home-safe-right) 2rem var(--home-safe-left);
+    border-bottom: 1px solid rgba(16, 33, 43, 0.08);
+    background: var(--mineral-light);
+    box-shadow:
+      inset 0 -1px 0 rgba(255, 255, 255, 0.72),
+      0 24px 48px -42px rgba(39, 58, 68, 0.46);
+  }
+
+  .heroTitle {
+    max-width: 14ch;
+    font-size: clamp(2.5rem, 10.4vw, 3.1rem);
+    line-height: 1;
+  }
+
+  .heroTitleLine,
+  .heroTitleLine:first-child,
+  .heroTitleLine:last-child {
+    white-space: normal;
+  }
+
+  .heroBody {
+    margin-top: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.62;
+  }
+
+  .heroActions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .primaryAction,
+  .contactAction {
+    min-height: var(--mobile-control-height);
+  }
+
+  .primaryAction {
+    width: 100%;
+  }
+
+  .primaryAction > span:first-child {
+    justify-content: center;
+  }
+
+  .secondaryAction {
+    align-self: flex-start;
+  }
+
+  .heroMedia {
+    position: relative;
+    order: 2;
+    width: 100%;
+    height: clamp(13.125rem, 60vw, 15rem);
+    border-radius: 0;
+    background: #9daab0;
+    box-shadow:
+      inset 0 1px 0 rgba(16, 33, 43, 0.18),
+      inset 0 -18px 32px -28px rgba(16, 33, 43, 0.72);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .heroMedia::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    box-shadow:
+      inset 0 1px 0 rgba(250, 249, 246, 0.2),
+      inset 0 -22px 34px -28px rgba(16, 33, 43, 0.74);
+  }
+
+  .heroTone {
+    display: none;
+  }
+
+  .heroControls {
+    position: relative;
+    inset: auto;
+    order: 3;
+    align-self: flex-end;
+    margin: -3.5rem var(--home-safe-right) 0.75rem 0;
+  }
+
+  .authorityDock {
+    position: relative;
+    inset: auto;
+    z-index: 4;
+    order: 4;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-height: 0;
+    margin: -2.625rem var(--home-safe-right) 0 var(--home-safe-left);
+    border-color: rgba(255, 255, 255, 0.8);
+    border-radius: var(--panel-radius);
+    background: rgba(244, 246, 245, 0.84);
+    -webkit-backdrop-filter: blur(18px) saturate(0.86);
+    backdrop-filter: blur(18px) saturate(0.86);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(16, 33, 43, 0.06),
+      0 24px 42px -28px rgba(39, 58, 68, 0.46);
+  }
+
+  .authorityItem {
+    min-height: 7rem;
+    gap: 0.6rem;
+    padding: 1rem;
+  }
+
+  .authorityContext {
+    font-size: var(--label-xs);
+  }
+
+  .authorityCopy strong,
+  .authorityItem[data-primary='true'] .authorityCopy strong {
+    font-size: 1.05rem;
+    line-height: 1.1;
+  }
+
+  .contentShell {
+    width: auto;
+    margin-right: var(--home-safe-right);
+    margin-left: var(--home-safe-left);
+  }
+
+  .services {
+    padding: calc(var(--mobile-section-y) + 0.5rem) 0 var(--mobile-section-y);
+  }
+
+  .sectionIntro {
+    gap: var(--mobile-stack-gap);
+    margin-bottom: 2rem;
+  }
+
+  .sectionTitle {
+    font-size: clamp(2.35rem, 10vw, 2.9rem);
+  }
+
+  .sectionLead p,
+  .credibilityBody {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .serviceLedger[data-mobile-layout='action-list'] {
+    position: relative;
+    padding-block: 0.4rem;
+    overflow: hidden;
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+    background: #ecece8;
+    box-shadow:
+      inset 0 18px 28px -30px rgba(16, 33, 43, 0.5),
+      inset 0 -18px 28px -30px rgba(16, 33, 43, 0.44);
+  }
+
+  .serviceLedger[data-mobile-layout='action-list']::before {
+    content: '';
+    position: absolute;
+    top: 0.75rem;
+    bottom: 0.75rem;
+    left: 2.025rem;
+    z-index: 1;
+    width: 1px;
+    background: rgba(83, 109, 121, 0.42);
+  }
+
+  .serviceLedger[data-mobile-layout='action-list'] > li {
+    position: relative;
+    z-index: 2;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .serviceLink {
+    grid-template-columns: 2.25rem minmax(0, 1fr) 2.75rem;
+    grid-template-rows: auto auto;
+    min-height: 0;
+    align-items: start;
+    gap: 0.6rem 0.75rem;
+    padding: 1.15rem 0.9rem;
+  }
+
+  .serviceMarker {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    position: relative;
+    z-index: 2;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 0.05rem;
+  }
+
+  .serviceGlyph {
+    display: none;
+  }
+
+  .serviceIndex {
+    min-width: 1.75rem;
+    padding-block: 0.35rem;
+    background: #ecece8;
+    color: #526d79;
+    text-align: center;
+  }
+
+  .serviceCore {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+  }
+
+  .serviceCore strong {
+    max-width: none;
+    font-size: 1.15rem;
+    line-height: 1.2;
+  }
+
+  .serviceDetail {
+    grid-column: 2;
+    grid-row: 2;
+    gap: 0.45rem;
+    margin: 0;
+  }
+
+  .serviceScope {
+    font-size: var(--label-sm);
+    line-height: 1.45;
+  }
+
+  .serviceDescription {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .serviceAction {
+    grid-column: 3;
+    grid-row: 1 / 3;
+    align-self: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin: 0;
+    border-left: 1px solid var(--rule);
+  }
+
+  .calypsoBand {
+    padding-block: 0 var(--mobile-section-y);
+  }
+
+  .calypsoRow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.9rem;
+    padding: 1.5rem 1.4rem 1.6rem;
+    border-radius: var(--panel-radius);
+    background: #191b1d;
+    box-shadow: var(--shadow-floating);
+  }
+
+  .calypsoBand .eyebrow {
+    margin-bottom: 0.9rem;
+    color: rgba(246, 245, 241, 0.58);
+  }
+
+  .calypsoFigure {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .calypsoSince {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin: 0;
+  }
+
+  .calypsoSinceLabel {
+    color: rgba(246, 245, 241, 0.5);
+  }
+
+  .calypsoYear {
+    color: #f6f5f1;
+    font-size: 3.4rem;
+    letter-spacing: -0.055em;
+    line-height: 0.9;
+  }
+
+  .calypsoTitle {
+    max-width: 18ch;
+    color: #f6f5f1;
+    font-size: 1.5rem;
+  }
+
+  .calypsoBody {
+    color: rgba(246, 245, 241, 0.72);
+    font-size: 1rem;
+  }
+
+  .calypsoLink {
+    color: #f6f5f1;
+  }
+
+  /* The hero owns the page's overlap. The practitioner remains layered, but
+     its surfaces meet quietly so a second signature does not compete. */
+  .credibility {
+    padding-block: 0 var(--mobile-section-y);
+  }
+
+  .credibilityGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .credibilityMedia {
+    order: -1;
+    position: relative;
+    /* Exact full bleed: the shell is centred, so this reaches the viewport
+       edges whatever padding the page uses. */
+    margin-inline: calc(50% - 50vw);
+    padding: 0;
+  }
+
+  .credibilityImageFrame {
+    min-height: clamp(15rem, 46vw, 20rem);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .footprintPlate {
+    position: absolute;
+    inset: auto 1rem 1rem auto;
+    z-index: 3;
+    width: max-content;
+    max-width: 66%;
+    min-width: 0;
+    padding: 0.8rem 1.05rem 0.85rem;
+    border-radius: var(--panel-radius);
+  }
+
+  .credibilityCopy {
+    position: relative;
+    z-index: 2;
+    margin-top: 0;
+    padding: 1.5rem 1.4rem 1.6rem;
+    border: 1px solid rgba(16, 33, 43, 0.1);
+    border-top: 0;
+    border-radius: var(--panel-radius);
+    background: var(--mineral-light);
+    box-shadow: var(--shadow-raised);
+  }
+
+  /* Two facts, as ruled rows rather than a ticked list. */
+  .checkpoints {
+    margin-top: 1.1rem;
+  }
+
+  .checkpoints li {
+    padding: 0.7rem 0;
+    border-top: 1px solid var(--rule);
+    font-size: 1rem;
+  }
+
+  .checkpoints li::before {
+    display: none;
+  }
+
+  .contactSection {
+    padding: 0 0 var(--mobile-section-y);
+  }
+
+  .contactPanel {
+    width: auto;
+    gap: 2rem;
+    margin-top: 0;
+    padding: 2rem var(--mobile-gutter);
+  }
+
+  .contactBody,
+  .contactInstruction {
+    font-size: 1rem;
+    line-height: 1.62;
+  }
+
+  /* Shared phone type scale: h1 is 38–42px and every h2 is 28–32px. */
+  .heroTitle {
+    font-size: clamp(2.375rem, 10vw, 2.625rem);
+  }
+
+  .sectionTitle,
+  .calypsoTitle,
+  .contactCopy h2 {
+    font-size: clamp(1.75rem, 7vw, 2rem);
+  }
+}

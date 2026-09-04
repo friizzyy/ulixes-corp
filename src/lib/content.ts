@@ -4,32 +4,40 @@
 export const siteConfig = {
   name: 'Ulixes Corporation',
   shortName: 'Ulixes',
-  tagline: 'Capital Markets Infrastructure. Engineered for Control.',
-  description: 'With 20+ years of proven Calypso delivery, Ulixes helps banks and hedge funds migrate, integrate, and innovate on vendor-hosted platforms.',
-  url: 'https://ulixescorp.com',
+  tagline: 'Capital Markets Transformation & Architecture',
+  /*
+   * Capability-first, Calypso retained. Leading on Calypso is what made the
+   * site read as an implementation shop; removing it entirely would give away
+   * the term the practice actually ranks for.
+   */
+  description: 'Capital markets transformation and architecture for banks and hedge funds, with deep expertise in Nasdaq Calypso and complex front-to-back change: trading platforms, accounting and controls, risk, data, and intelligent automation.',
+  url: 'https://www.ulixescorp.com',
   email: 'admin@ulixescorp.com',
   phone: '+1 (415) 283-9983',
 }
 
 export const navigation = {
   main: [
-    { label: 'Philosophy', href: '/philosophy' },
+    /* /about and /philosophy are retired and redirected; see next.config.js. */
     { label: 'Services', href: '/services' },
+    { label: 'Nasdaq Calypso', href: '/nasdaq-calypso' },
     { label: 'Experience', href: '/institutional-experience' },
-    { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
   ],
   footer: {
+    /*
+     * Matches the four engagement areas actually published on /services.
+     * The previous list advertised "AI-Driven Compliance", which the brief
+     * bans, and pointed at #compliance, an anchor that does not exist.
+     */
     services: [
-      { label: 'Calypso Implementation', href: '/services#implementation' },
-      { label: 'Platform Migration', href: '/services#migration' },
-      { label: 'AI-Driven Compliance', href: '/services#compliance' },
-      { label: 'Intelligent Testing', href: '/services#testing' },
+      { label: 'Calypso implementation', href: '/services#implementation' },
+      { label: 'Platform migration', href: '/services#migration' },
+      { label: 'Lifecycle-led testing', href: '/services#testing' },
+      { label: 'Operational readiness', href: '/services#readiness' },
     ],
     company: [
-      { label: 'Philosophy', href: '/philosophy' },
       { label: 'Experience', href: '/institutional-experience' },
-      { label: 'About', href: '/about' },
       { label: 'Contact', href: '/contact' },
     ],
     legal: [

@@ -3,6 +3,18 @@
 @tailwind utilities;
 
 @layer base {
+  /*
+   * Retired. The colour tokens below belong to the dark interior theme, the
+   * near-black grounds and the purple accent, and no route renders it any
+   * more: privacy and terms were the last, and they moved onto the editorial
+   * surface with not-found and error. Only the unused legacy components and
+   * the .card, .btn, .cta-* and .terminal classes further down still read
+   * them, along with their tailwind.config twins. Nothing in the editorial
+   * system depends on them.
+   *
+   * The safe-area insets at the end of the block are live: the navigation
+   * and the editorial page roots share them.
+   */
   :root {
     --bg-primary: #0a0a0b;
     --bg-secondary: #111113;
@@ -30,46 +42,74 @@
     -webkit-text-size-adjust: 100%;
   }
 
+  /*
+   * The editorial ground on every route: mineral under ink, the values the
+   * page roots set on [data-surface='editorial'] in editorial.css. Written
+   * out here because those tokens are scoped to the roots and the body sits
+   * outside them.
+   */
   body {
-    @apply bg-bg-primary text-text-primary antialiased;
+    @apply antialiased;
+    background-color: #f3f1ec;
+    color: #10212b;
     font-feature-settings: 'rlig' 1, 'calt' 1;
-    overflow-x: hidden;
+    /*
+     * clip, not hidden. `overflow-x: hidden` makes the body its own scroll
+     * container, which moves scrolling off the window: scroll events stop
+     * reaching window listeners and anything scroll-driven silently never
+     * runs. `clip` suppresses the same horizontal overflow without creating a
+     * scrollport, so the document stays the scroller.
+     */
+    overflow-x: clip;
   }
 
-  /* Custom selection */
+  /*
+   * Safari before 16 has no `clip`, where the declaration above is discarded
+   * and horizontal overflow would scroll. Fall back to the old behaviour
+   * there; scroll-driven components attach in the capture phase and work
+   * against either scroller.
+   */
+  @supports not (overflow: clip) {
+    body {
+      overflow-x: hidden;
+    }
+  }
+
+  /* Ink on platinum, on every route. */
   ::selection {
-    background: var(--accent);
-    color: var(--bg-primary);
+    background: #d7dcde;
+    color: #10212b;
   }
 
-  /* Focus styles with delay to prevent flash during keyboard navigation */
+  /*
+   * The editorial focus ring on every route: a slate outline held off the
+   * control, never a box-shadow. The page modules draw the same ring under
+   * their own roots (every .page :focus-visible rule), so a control inside a
+   * page still shows one ring, and the chrome outside them now matches it.
+   */
   :focus-visible {
-    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-bg-primary;
-    animation: focus-ring-appear 0.1s ease-out;
+    outline: 2px solid #607985;
+    outline-offset: 4px;
+    box-shadow: none;
   }
 
-  @keyframes focus-ring-appear {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+  /* The skip link's target. Focus lands here programmatically, and a ring
+     around the whole page would only say so. */
+  #main-content:focus,
+  #main-content:focus-visible {
+    outline: none;
+    box-shadow: none;
   }
 
-  /* Scrollbar styling */
+  /* Scrollbar: the site standard, a 4px thumb on an unpainted track. */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: var(--bg-secondary);
+    width: 4px;
+    height: 4px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--surface);
-    border-radius: 4px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--surface-hover);
+    background: rgba(16, 33, 43, 0.2);
+    border-radius: 2px;
   }
 
   /* Disclosure summary marker reset */
@@ -83,25 +123,6 @@
 }
 
 @layer components {
-  /* Grid background pattern */
-  .grid-bg {
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .grid-bg::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 80% 50% at 50% 0%, var(--accent-glow), transparent);
-  }
-
   /* Section surface treatments - subtle depth layers */
   .section-surface-elevated {
     position: relative;
@@ -145,7 +166,7 @@
 
   /* Card base */
   .card {
-    @apply bg-bg-secondary border border-border rounded-md p-6 md:p-8 transition-all duration-300;
+    @apply bg-bg-secondary border border-border rounded-md p-6 md:p-8 transition-[border-color,box-shadow] duration-300;
   }
 
   .card:hover {
@@ -154,7 +175,7 @@
 
   /* Button base styles */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-sm font-medium text-body-sm transition-all duration-200 min-h-[44px];
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-sm font-medium text-body-sm transition-[background-color,border-color,color] duration-200 min-h-[44px];
   }
 
   .btn-primary {
@@ -169,13 +190,13 @@
     @apply bg-transparent text-text-secondary hover:text-text-primary hover:bg-surface;
   }
 
-  /* Standardized CTA link — use on all primary action links */
+  /* Standardized CTA link, for all primary action links */
   .cta-primary {
-    @apply inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-7 sm:py-3.5 min-h-[44px] sm:min-h-[48px] bg-accent text-bg-primary font-medium text-body-sm sm:text-base rounded-[3px] hover:bg-accent/90 active:scale-[0.98] transition-all duration-200;
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-7 sm:py-3.5 min-h-[44px] sm:min-h-[48px] bg-accent text-bg-primary font-medium text-body-sm sm:text-base rounded-[3px] hover:bg-accent/90 active:scale-[0.98] transition-[background-color,transform] duration-200;
   }
 
   .cta-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-7 sm:py-3.5 min-h-[44px] sm:min-h-[48px] bg-transparent text-text-primary border border-border-accent font-medium text-body-sm sm:text-base rounded-[3px] hover:bg-surface hover:border-text-muted active:bg-surface transition-all duration-200;
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-7 sm:py-3.5 min-h-[44px] sm:min-h-[48px] bg-transparent text-text-primary border border-border-accent font-medium text-body-sm sm:text-base rounded-[3px] hover:bg-surface hover:border-text-muted active:bg-surface transition-[background-color,border-color] duration-200;
   }
 
   .cta-outline-accent {
@@ -189,7 +210,7 @@
 
   .link-underline::after {
     content: '';
-    @apply absolute bottom-0 left-1/2 w-0 h-px bg-accent transition-all duration-300;
+    @apply absolute bottom-0 left-1/2 w-0 h-px bg-accent transition-[width] duration-300;
     transform: translateX(-50%);
   }
 
@@ -204,7 +225,7 @@
 
   .link-underline-ltr::after {
     content: '';
-    @apply absolute bottom-0 left-0 w-0 h-px bg-accent transition-all duration-300;
+    @apply absolute bottom-0 left-0 w-0 h-px bg-accent transition-[width] duration-300;
   }
 
   .link-underline-ltr:hover::after {
@@ -272,6 +293,27 @@
   to { opacity: 1; transform: none; }
 }
 
+@keyframes mobile-nav-scrim-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes mobile-nav-sheet-in {
+  from { opacity: 0; transform: translateY(-0.35rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mobile-nav-scrim {
+  animation: mobile-nav-scrim-in 160ms ease-out both;
+}
+
+.mobile-nav-sheet {
+  --ink: #10212b;
+  --ink-hover: #182c37;
+  --mineral-light: #faf9f6;
+  animation: mobile-nav-sheet-in 190ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 /* Any element that Framer Motion sets to opacity 0 gets a CSS fallback
    that makes it visible after 1.5s regardless of JS state */
 [style*="opacity: 0"][style*="transform"] {
@@ -290,7 +332,7 @@
   }
 }
 
-/* Mobile touch states — replace hover with active on touch devices */
+/* Mobile touch states: replace hover with active on touch devices */
 @media (hover: none) and (pointer: coarse) {
   .card:hover {
     border-color: rgba(255,255,255,0.06);
@@ -301,7 +343,7 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   }
 
-  /* Ensure tap targets are accessible — scoped to standalone controls, not inline links */
+  /* Ensure tap targets are accessible, scoped to standalone controls, not inline links */
   button, [role="button"], input, select, textarea {
     min-height: 44px;
   }

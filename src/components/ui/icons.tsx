@@ -260,3 +260,40 @@ export function IconShield({ className, size = 24 }: IconProps) {
     </svg>
   )
 }
+
+export function Mail({ className, size = 16 }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <rect x="1.75" y="3.25" width="12.5" height="9.5" rx="1.5" />
+      <path d="M2.25 4.5 8 8.75l5.75-4.25" />
+    </svg>
+  )
+}
+
+export function Phone({ className, size = 16 }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M5.6 2.5H3.4c-.8 0-1.5.7-1.4 1.5.4 5 3.9 8.6 9 9 .8.1 1.5-.6 1.5-1.4V9.4c0-.6-.5-1.2-1.1-1.3l-1.6-.3c-.5-.1-1 .1-1.3.5l-.5.7A8.6 8.6 0 0 1 5 5.4l.7-.5c.4-.3.6-.8.5-1.3l-.3-1.5c-.1-.6-.6-1-1.2-1" />
+    </svg>
+  )
+}

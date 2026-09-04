@@ -1,0 +1,860 @@
+/*
+ * /services.
+ *
+ * Tokens come from [data-surface='editorial'] in src/styles/editorial.css;
+ * this file only composes them. The homepage's action, link, eyebrow,
+ * section-intro, Calypso band, ledger and contact-panel grammar is copied
+ * here by value because a CSS Module cannot be imported across pages.
+ */
+
+.page {
+  position: relative;
+  z-index: 1;
+  overflow: clip;
+  background: var(--mineral);
+  color: var(--ink);
+  font-family: var(--font-outfit), sans-serif;
+}
+
+.page :focus-visible {
+  outline: 2px solid #607985;
+  outline-offset: 4px;
+  box-shadow: none;
+}
+
+.contentShell {
+  width: min(
+    calc(100% - 2 * (var(--page-gutter) + var(--page-rail))),
+    var(--page-shell)
+  );
+  margin-inline: auto;
+}
+
+/* Type roles ------------------------------------------------------------- */
+
+/* The display face on every heading role. */
+.heroTitle,
+.sectionTitle,
+.rowTitle,
+.chapterStatement,
+.evidenceTitle,
+.evidenceYear {
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-weight: 560;
+  text-wrap: balance;
+}
+
+/* One label register at 0.68rem, never smaller. */
+.rowIndex,
+.rowScope,
+.chapterLabel,
+.calypsoSinceLabel,
+
+/* The rule-and-caps eyebrow, on every section including the close. */
+.eyebrow,
+.contactEyebrow {
+
+
+  margin: 0 0 1rem;
+}
+
+.eyebrow::before,
+
+/* Actions ---------------------------------------------------------------- */
+
+.primaryAction,
+.contactAction {
+}
+
+
+
+
+
+
+.secondaryAction,
+.textLink,
+.contactEmail {
+}
+
+
+
+
+
+/* Hero ------------------------------------------------------------------- */
+
+/* Nothing but the photograph under the nav, then the claim on the rail. */
+.hero {
+  display: flex;
+  flex-direction: column;
+  padding: 76px 0 clamp(2.5rem, 3.5vw, 3rem);
+}
+
+.heroBand {
+  position: relative;
+  order: 1;
+  height: clamp(16rem, 40vh, 27rem);
+  overflow: hidden;
+  background: var(--mineral-light);
+}
+
+.heroBand::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 30%;
+  background: linear-gradient(180deg, rgba(243, 241, 236, 0) 0%, var(--mineral) 100%);
+  pointer-events: none;
+}
+
+.heroImage {
+  object-fit: cover;
+  object-position: center 58%;
+  filter: saturate(0.82);
+}
+
+.heroBelow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(2.5rem, 5vw, 5.5rem);
+  padding-top: clamp(1.75rem, 2.6vw, 2.5rem);
+  order: 2;
+}
+
+.heroCopy {
+  min-width: 0;
+}
+
+/* The homepage's h1: 64.8px at 1440. */
+.heroTitle {
+  max-width: 14ch;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(3.4rem, 4.5vw, 4.5rem);
+  font-weight: 560;
+  letter-spacing: -0.052em;
+  line-height: 0.97;
+}
+
+.heroTitleLine {
+  display: block;
+}
+
+.heroBody {
+  max-width: 34rem;
+  margin: 1.4rem 0 0;
+  color: var(--graphite);
+  font-size: clamp(1rem, 1.08vw, 1.08rem);
+  line-height: 1.68;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.4rem;
+  margin-top: 1.8rem;
+  gap: 1.4rem;
+}
+
+/* Section intro ---------------------------------------------------------- */
+
+.sectionIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(19rem, 0.67fr);
+  align-items: end;
+  gap: clamp(3rem, 8vw, 8.5rem);
+  margin-bottom: 2rem;
+}
+
+.sectionHeading {
+  max-width: 48rem;
+}
+
+/* The homepage's h2 clamp. */
+.sectionTitle {
+  max-width: 26ch;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(2.75rem, 3.65vw, 3.65rem);
+  font-weight: 560;
+  letter-spacing: -0.048em;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.sectionLead {
+  max-width: 31rem;
+  padding-bottom: 0.1rem;
+}
+
+.sectionLead p {
+  margin: 0;
+  color: var(--graphite);
+  font-size: 1rem;
+  line-height: 1.72;
+}
+
+/* Capabilities ----------------------------------------------------------- */
+
+.capabilities {
+  padding: clamp(2.5rem, 3.5vw, 3rem) 0 clamp(2.5rem, 3.5vw, 3rem);
+}
+
+.capabilities .sectionIntro {
+  margin-bottom: 1.5rem;
+}
+
+/* The homepage ledger: one raised surface, hairline rows, a material rule. */
+.capabilityLedger {
+  overflow: hidden;
+  border: 1px solid rgba(16, 33, 43, 0.1);
+  border-radius: var(--panel-radius);
+  background: var(--mineral-light);
+  box-shadow: var(--shadow-raised);
+}
+
+.mobileCapabilities {
+  display: block;
+}
+
+.capabilityPanel {
+  display: grid;
+  gap: 1rem;
+}
+
+.capabilityPanel p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.capabilityRow {
+  position: relative;
+  display: grid;
+  grid-template-columns:
+    minmax(3rem, 0.24fr) minmax(13rem, 0.9fr)
+    minmax(22rem, 1.6fr) 2.75rem;
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+  min-height: 7.4rem;
+  padding: 1.4rem clamp(1.4rem, 2.5vw, 2.2rem);
+  border-top: 1px solid var(--rule);
+  box-shadow: inset 2px 0 0 var(--material-line);
+  color: var(--ink);
+  text-decoration: none;
+  scroll-margin-top: 96px;
+  transition: background-color 180ms ease;
+}
+
+.capabilityRow:first-child {
+  border-top: 0;
+}
+
+.capabilityRow:hover,
+.capabilityRow:focus-visible {
+  background: color-mix(in srgb, var(--material-tint) 55%, var(--mineral-light));
+}
+
+.rowIndex {
+  color: var(--steel);
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.rowCore {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.rowTitle {
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-size: clamp(1.15rem, 1.35vw, 1.35rem);
+  font-weight: 560;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+
+.rowScope {
+  color: #607178;
+  font-size: 0.76rem;
+  font-weight: 680;
+  letter-spacing: 0.035em;
+  line-height: 1.45;
+}
+
+.rowRisk {
+  color: var(--graphite);
+  font-size: 0.96rem;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.rowAction {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border-left: 1px solid rgba(16, 33, 43, 0.12);
+  color: var(--steel);
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.capabilityRow:hover .rowAction,
+.capabilityRow:focus-visible .rowAction {
+  transform: translate(2px, -2px);
+}
+
+/* Automation, one statement ---------------------------------------------- */
+
+.automationBand {
+  padding: clamp(2rem, 3vw, 2.75rem) 0;
+}
+
+@media (max-width: 899px) {
+  .heroBelow {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+  }
+
+  .capabilityRow {
+    grid-template-columns: 2.5rem minmax(0, 1fr) 2.75rem;
+    grid-template-areas:
+      'index core action'
+      'index risk action';
+    row-gap: 0.6rem;
+    min-height: 0;
+    padding: 1.2rem 1.2rem;
+  }
+
+  .rowIndex { grid-area: index; align-self: start; padding-top: 0.35rem; }
+  .rowCore { grid-area: core; }
+  .rowRisk { grid-area: risk; }
+  .rowAction { grid-area: action; align-self: start; }
+}
+
+/* Dark chapter ----------------------------------------------------------- */
+
+.chapter {
+  padding: var(--chapter-y) 0;
+  background: #191b1d;
+  color: #f1f3ef;
+}
+
+.chapterGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: start;
+  gap: clamp(3rem, 6vw, 6rem);
+}
+
+.chapterLead {
+  min-width: 0;
+}
+
+.chapterStatement {
+  max-width: 12ch;
+  margin: 0;
+  color: #f1f3ef;
+  font-size: clamp(2.3rem, 3.35vw, 3rem);
+  font-weight: 560;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.chapterBody {
+  max-width: 28rem;
+  margin: 1.3rem 0 0;
+  color: rgba(241, 243, 239, 0.68);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.chapterRegister {
+  min-width: 0;
+}
+
+.chapterLabel {
+
+  margin: 0 0 1.1rem;
+}
+
+/* Automation ledger ------------------------------------------------------ */
+
+.contactSection {
+  padding: 0 0 4.5rem;
+}
+
+.contactPanel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.7fr);
+  align-items: end;
+  gap: clamp(3rem, 7vw, 6rem);
+  padding: clamp(3rem, 4.5vw, 3.75rem);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.94);
+  border-radius: var(--panel-radius);
+  background: linear-gradient(
+    135deg,
+    rgba(250, 249, 246, 0.97) 0%,
+    rgba(237, 240, 239, 0.94) 56%,
+    rgba(226, 232, 233, 0.9) 100%
+  );
+  -webkit-backdrop-filter: blur(14px) saturate(0.88);
+  backdrop-filter: blur(14px) saturate(0.88);
+  color: var(--ink);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(16, 33, 43, 0.07),
+    var(--shadow-floating);
+  isolation: isolate;
+}
+
+.contactCopy h2 {
+  max-width: 11ch;
+  margin: 0;
+  font-size: clamp(2.9rem, 4vw, 3.875rem);
+  font-weight: 560;
+  letter-spacing: -0.052em;
+  line-height: 0.98;
+}
+
+.contactBody {
+  max-width: 37rem;
+  margin: 1.55rem 0 0;
+  color: var(--graphite);
+  font-size: 1rem;
+  line-height: 1.68;
+}
+
+.contactInstruction {
+  max-width: 34rem;
+  margin: 1.1rem 0 0;
+  color: var(--steel);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.contactActionArea {
+  display: flex;
+  flex-direction: column;
+  align-self: end;
+  align-items: flex-start;
+}
+
+.contactDirect {
+  display: grid;
+  width: 100%;
+  gap: 0.25rem;
+  margin-top: 1.55rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(16, 33, 43, 0.14);
+}
+
+.contactDirectLabel {
+}
+
+.contactEmail {
+
+  align-self: start;
+
+  margin: 0;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .contactPanel {
+    background: #eef1f1;
+  }
+}
+
+/* Responsive ------------------------------------------------------------- */
+
+@media (max-width: 1120px) and (min-width: 900px) {
+  .sectionIntro {
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 899px) {
+  .contentShell {
+    width: min(calc(100% - 2rem), 760px);
+  }
+
+  .hero {
+    padding: calc(76px + 2.25rem) 0 2.75rem;
+  }
+
+  .heroImage {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .sectionIntro {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .sectionTitle {
+    font-size: clamp(2.55rem, 6.5vw, 3.45rem);
+  }
+
+  .chapterGrid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .contactPanel {
+    grid-template-columns: 1fr;
+    gap: 2.75rem;
+  }
+
+  .contactActionArea {
+    width: min(100%, 32rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .capabilityLedger {
+    display: none;
+  }
+
+  .mobileCapabilities {
+    display: block;
+  }
+
+  .contentShell {
+    width: auto;
+    margin-left: max(var(--mobile-gutter), var(--safe-area-left));
+    margin-right: max(var(--mobile-gutter), var(--safe-area-right));
+  }
+
+  .hero {
+    padding: calc(var(--mobile-header-height) + 2rem) 0 var(--mobile-section-y);
+  }
+
+  .heroBelow {
+    order: 1;
+    padding-top: 0;
+  }
+
+  .heroBand {
+    order: 2;
+    margin-top: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .capabilityLedger {
+    display: block;
+  }
+
+  .mobileCapabilities {
+    display: none;
+  }
+}
+
+@media (max-width: 599px) {
+  .heroBody {
+    margin-top: 1.35rem;
+    line-height: 1.62;
+  }
+
+  .heroActions {
+    margin-top: 1.65rem;
+  }
+
+  .contactBody {
+    margin-top: 1.25rem;
+    line-height: 1.62;
+  }
+
+  .contactInstruction {
+    margin-top: 0.9rem;
+  }
+}
+
+/* Reduced motion: the line fully drawn, the span swapped instantly, every
+   row visible at rest with no transform. */
+@media (prefers-reduced-motion: reduce) {
+  .page *,
+  .page *::before,
+  .page *::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
+}
+
+/* Evidence: photograph plate, floating year, copy, automation note --------- */
+
+.evidence {
+  padding: clamp(2.5rem, 4vw, 3.75rem) 0 clamp(1.5rem, 2.5vw, 2.25rem);
+}
+
+.evidenceGrid {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.92fr) minmax(0, 1.08fr);
+  align-items: center;
+  gap: clamp(3rem, 6vw, 6rem);
+}
+
+.evidenceMedia {
+  position: relative;
+  padding: 0 2.2rem 2.4rem 0;
+}
+
+.evidenceFrame {
+  position: relative;
+  min-height: clamp(22rem, 30vw, 27rem);
+  overflow: hidden;
+  border: 1px solid rgba(16, 33, 43, 0.11);
+  border-radius: var(--panel-radius);
+  background: #c7d1d5;
+  box-shadow: var(--shadow-raised);
+}
+
+.evidenceImage {
+  object-fit: cover;
+  object-position: 50% 55%;
+  filter: saturate(0.72) contrast(0.98);
+}
+
+/* The year, floating off the frame's corner: the homepage footprint plate. */
+.evidencePlate {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 11.5rem;
+  padding: 1.15rem 1.4rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  border-radius: var(--panel-radius);
+  background: rgba(241, 244, 244, 0.78);
+  -webkit-backdrop-filter: blur(18px) saturate(0.88);
+  backdrop-filter: blur(18px) saturate(0.88);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.86),
+    var(--shadow-floating);
+}
+
+.evidencePlateLabel {
+  color: var(--steel);
+  font-size: var(--label-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.evidenceYear {
+  color: var(--ink);
+  font-size: clamp(2.4rem, 3vw, 3rem);
+  font-weight: 560;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.evidenceCopy {
+  min-width: 0;
+}
+
+.evidenceTitle {
+  max-width: 16ch;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(2rem, 2.7vw, 2.6rem);
+  font-weight: 560;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+}
+
+.evidenceBody {
+  max-width: 34rem;
+  margin: 1.2rem 0 1.4rem;
+  color: var(--graphite);
+  font-size: 1.02rem;
+  line-height: 1.68;
+}
+
+.evidenceNote {
+  max-width: 36rem;
+  margin-top: 2.2rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--rule-strong);
+}
+
+.evidenceNote .eyebrow {
+  margin-bottom: 0.6rem;
+}
+
+.evidenceNoteTitle {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-size: 1.25rem;
+  font-weight: 560;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.evidenceNoteBody {
+  margin: 0.55rem 0 0;
+  color: var(--graphite);
+  font-size: 0.96rem;
+  line-height: 1.62;
+}
+
+@media (max-width: 899px) {
+  .evidenceGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.25rem;
+  }
+
+  .evidenceMedia {
+    padding: 0 1.2rem 2rem 0;
+  }
+
+  .evidenceFrame {
+    min-height: clamp(16rem, 52vw, 22rem);
+  }
+}
+
+
+/* Phone: the ledger yields to the disclosure and the media bands compress. */
+@media (max-width: 767px) {
+  .heroBand {
+    height: clamp(11rem, 30vh, 15rem);
+  }
+
+  .heroTitle {
+    font-size: clamp(2.375rem, 10.4vw, 2.625rem);
+  }
+
+  .heroActions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .primaryAction {
+    width: 100%;
+  }
+
+  .primaryAction > span:first-child {
+    justify-content: center;
+  }
+
+  .capabilities,
+  .evidence {
+    padding: var(--mobile-section-y) 0;
+  }
+
+  .sectionTitle,
+  .chapterStatement,
+  .evidenceTitle,
+  .contactCopy h2 {
+    font-size: clamp(1.75rem, 8vw, 2rem);
+  }
+
+  .heroBody,
+  .sectionLead p,
+  .chapterBody,
+  .evidenceBody,
+  .evidenceNoteBody,
+  .contactBody,
+  .contactInstruction {
+    font-size: 1rem;
+  }
+
+  .evidenceFrame {
+    min-height: 13rem;
+  }
+
+  .evidenceMedia {
+    padding: 0 1rem 1.9rem 0;
+  }
+
+  .evidenceGrid {
+    gap: 1.75rem;
+  }
+
+  .chapterGrid {
+    gap: 1.75rem;
+  }
+
+  .chapter {
+    padding: var(--mobile-section-y) 0;
+  }
+
+  .contactSection {
+    padding-bottom: var(--mobile-section-y);
+  }
+
+  .contactPanel {
+    gap: 2rem;
+    padding: 2.2rem 1.25rem 1.4rem;
+  }
+
+  .contactAction {
+    width: 100%;
+  }
+
+  .contactAction > span:first-child {
+    justify-content: center;
+  }
+
+  .capabilityPanel a {
+    min-height: 2.75rem;
+  }
+}
+
+/* Phone: the evidence photograph runs edge to edge and the copy sits on a
+   raised surface over its lower edge, with the year plate on the seam. */
+@media (max-width: 767px) {
+  .evidenceGrid {
+    gap: 0;
+  }
+
+  .evidenceMedia {
+    position: relative;
+    /* Exact full bleed: the shell is centred, so this reaches the viewport
+       edges whatever padding the page uses. */
+    margin-inline: calc(50% - 50vw);
+    padding: 0;
+  }
+
+  .evidenceFrame {
+    min-height: clamp(14rem, 44vw, 19rem);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .evidencePlate {
+    inset: auto 1rem 3rem auto;
+    z-index: 3;
+    width: max-content;
+    max-width: 66%;
+    min-width: 0;
+  }
+
+  .evidenceCopy {
+    position: relative;
+    z-index: 2;
+    margin-top: -2.25rem;
+    padding: 1.5rem 1.4rem 1.6rem;
+    border: 1px solid rgba(16, 33, 43, 0.1);
+    border-radius: var(--panel-radius);
+    background: var(--mineral-light);
+    box-shadow: var(--shadow-raised);
+  }
+}

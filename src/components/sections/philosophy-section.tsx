@@ -83,7 +83,7 @@ export function PhilosophySection() {
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           <Link
-            href="/philosophy"
+            href="/institutional-experience"
             className="inline-flex items-center gap-2 text-accent font-medium hover:underline active:underline underline-offset-4 min-h-[44px]"
           >
             {philosophy.cta}

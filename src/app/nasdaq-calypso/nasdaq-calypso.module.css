@@ -1,0 +1,689 @@
+.page {
+  font-feature-settings: 'tnum' 1;
+  /* Shared vertical rhythm. The five sections had drifted to five different
+     clamps, so the page read as unevenly spaced rather than as a system. */
+  --section-y: clamp(4.5rem, 7vw, 6.75rem);
+  --section-y-loose: clamp(5.5rem, 8.5vw, 8rem);
+
+  position: relative;
+  z-index: 1;
+  overflow: clip;
+  background: var(--mineral);
+  color: var(--ink);
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 0;
+  height: 80rem;
+  pointer-events: none;
+  background: radial-gradient(
+    110% 65% at 50% 0%,
+    rgba(255, 255, 255, 0.6),
+    transparent 68%
+  );
+}
+
+.page > * {
+  position: relative;
+  z-index: 1;
+}
+
+.page :focus-visible {
+  outline: 2px solid #607985;
+  outline-offset: 4px;
+}
+
+.shell {
+  width: min(
+    calc(100% - 2 * (var(--page-gutter) + var(--page-rail))),
+    var(--page-shell)
+  );
+  margin-inline: auto;
+}
+
+.eyebrow {
+
+  margin: 0 0 1rem;
+}
+
+
+.turn {
+  font-family: var(--font-serif), 'EB Garamond', Georgia, serif;
+  font-size: 1.08em;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.012em;
+}
+
+.sectionTitle,
+.chapterTitle,
+.closeTitle {
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+}
+
+.sectionTitle {
+  max-width: 15ch;
+  margin: 0;
+  font-size: clamp(2.7rem, 4vw, 3.7rem);
+  font-weight: 555;
+  letter-spacing: -0.052em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.sectionBody {
+  max-width: 33rem;
+  margin: 1.35rem 0 0;
+  color: #526168;
+  font-size: 0.96rem;
+  line-height: 1.66;
+}
+
+/* Practice map --------------------------------------------------------- */
+
+/* Lifecycle chapter ------------------------------------------------------ */
+
+/*
+ * The console's section. It bleeds wider than the reading shell because the
+ * surface is a working console and wants the room, while its introduction
+ * stays on the same rail as every other heading on the page.
+ */
+.lifecycleSection {
+  padding: var(--section-y) 0 var(--section-y);
+}
+
+.lifecycleHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: end;
+  margin-bottom: clamp(2rem, 3.5vw, 3rem);
+}
+
+.lifecycleLede {
+  margin: 0;
+  text-wrap: pretty;
+  color: var(--steel);
+  font-size: clamp(0.92rem, 1.05vw, 1.02rem);
+  line-height: 1.62;
+}
+
+.lifecycleSurface {
+  width: min(100% - (var(--page-gutter) * 2), 1520px);
+  margin-inline: auto;
+}
+
+.consequenceList li {
+  display: grid;
+  grid-template-columns: 2.2rem minmax(0, 1fr);
+  gap: 0.7rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.consequenceList span {
+  padding-top: 0.16rem;
+  color: var(--steel);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--label-xs, 0.68rem);
+  letter-spacing: 0.05em;
+}
+
+.consequenceList p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 560;
+  letter-spacing: -0.015em;
+  line-height: 1.45;
+}
+
+.acrossHeading i {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(96, 121, 133, 0.52), rgba(96, 121, 133, 0.08));
+}
+
+.acrossHeading strong {
+  font-size: var(--label-xs, 0.68rem);
+  font-weight: 650;
+}
+
+/* Programs ------------------------------------------------------------- */
+
+.programChapter {
+  position: relative;
+  padding: var(--section-y-loose) 0 var(--section-y);
+  background: var(--mineral);
+}
+
+.programBook {
+  overflow: hidden;
+  border: 1px solid rgba(16, 33, 43, 0.16);
+  border-radius: var(--panel-radius);
+  background: #191b1d;
+  color: #f6f5f1;
+  box-shadow:
+    0 1px 2px rgba(16, 33, 43, 0.16),
+    0 34px 72px -54px rgba(16, 33, 43, 0.72);
+}
+
+.chapterMedia {
+  position: relative;
+  height: clamp(13rem, 24vw, 19rem);
+  overflow: hidden;
+  border-bottom: 1px solid rgba(246, 245, 241, 0.16);
+  background: #292d2f;
+}
+
+.chapterMedia::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(25, 27, 29, 0.2),
+    transparent 48%,
+    rgba(25, 27, 29, 0.18)
+  );
+  pointer-events: none;
+}
+
+.chapterMediaImage {
+  object-fit: cover;
+  object-position: 62% 36%;
+  filter: saturate(0.72) contrast(1.04);
+}
+
+.programBookContent {
+  padding: clamp(2.4rem, 5vw, 4.5rem);
+}
+
+.programChapter .eyebrow {
+  color: rgba(246, 245, 241, 0.5);
+}
+
+.chapterHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(17rem, 0.62fr);
+  gap: clamp(2.5rem, 5.5vw, 5.5rem);
+  align-items: start;
+  padding-bottom: clamp(2rem, 3.2vw, 2.75rem);
+  border-bottom: 1px solid rgba(246, 245, 241, 0.17);
+}
+
+.chapterTitle {
+  max-width: 17ch;
+  margin: 0;
+  color: #f6f5f1;
+  font-size: clamp(2.75rem, 4vw, 3.75rem);
+  font-weight: 550;
+  letter-spacing: -0.052em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.chapterHeader > p {
+  margin: 0.65rem 0 0;
+  max-width: 30rem;
+  color: #9eabb0;
+  font-size: clamp(0.91rem, 1.1vw, 1rem);
+  line-height: 1.64;
+  text-wrap: pretty;
+}
+
+/*
+ * Full-width rows: index, title and scope on the left, the description on the
+ * right. The two-column grid of equal cells gave eight items identical weight
+ * and no room for the copy to say anything, which is what made the chapter
+ * read as a spec sheet.
+ */
+
+@keyframes entryReveal {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+}
+
+/* Now the wide right column, so the second sentence has room to land. */
+
+/* Areas ------------------------------------------------------------------ */
+
+/*
+ * Eight tiles on a six-column grid. The three that run the whole lifecycle
+ * take two columns each and lead; the five filed under a desk take three, so
+ * the grid breaks rhythm twice instead of marching in equal cells.
+ */
+
+/* Three wide tiles plus five at half that leaves one cell short of closing
+   the grid, so the last area runs the full width and shuts the block. */
+
+/* Consequence band -------------------------------------------------------- */
+
+/*
+ * Two sentences, given the room a whole section used to take. They are the
+ * page's thesis, so they are set at display size rather than as list items.
+ */
+.consequenceSection {
+  padding: var(--section-y) 0 var(--section-y);
+}
+
+.consequenceList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 5vw, 5rem);
+  margin: clamp(1.75rem, 3vw, 2.5rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.consequenceList li {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr);
+  gap: 0.75rem;
+  padding-top: clamp(1.1rem, 2vw, 1.5rem);
+  border-top: 1px solid var(--rule-strong);
+}
+
+.consequenceList li > span {
+  padding-top: 0.55rem;
+  color: rgba(16, 33, 43, 0.32);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  font-weight: 640;
+  letter-spacing: 0.06em;
+}
+
+.consequenceList p {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-size: clamp(1.3rem, 2.3vw, 1.95rem);
+  font-weight: 520;
+  letter-spacing: -0.036em;
+  line-height: 1.16;
+  text-wrap: balance;
+}
+
+@media (max-width: 760px) {
+  .consequenceList {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Mandates ------------------------------------------------------------- */
+
+/* One shared ledger after the lifecycle signature, kept quiet and structural. */
+.mandateSection {
+  padding: var(--section-y-loose) 0 var(--section-y);
+}
+
+/*
+ * Two by two rather than four stacked full-width rows. Same content, roughly
+ * half the scroll, and the pairing gives the four shapes a shape of their own.
+ */
+/* Section head: heading left, lede right, the page's two-column header. */
+.mandateHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(2rem, 4vw, 4rem);
+  margin-bottom: 1.5rem;
+}
+
+.mandateLede {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--steel);
+  font-size: clamp(0.92rem, 1.05vw, 1.02rem);
+  line-height: 1.62;
+}
+
+@media (max-width: 899px) {
+  .mandateHeader {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
+}
+
+/* The four mandate shapes as one ledger, the grammar the homepage sells sets with. */
+.mandateLedger {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(16, 33, 43, 0.1);
+  border-radius: var(--panel-radius, 8px);
+  background: var(--mineral-light);
+  box-shadow: var(--shadow-raised);
+  list-style: none;
+}
+
+.mandateRow {
+  display: grid;
+  grid-template-columns: minmax(3rem, 0.24fr) minmax(13rem, 0.9fr) minmax(22rem, 1.6fr);
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+  min-height: 7rem;
+  padding: 1.4rem clamp(1.4rem, 2.5vw, 2.2rem);
+  border-top: 1px solid var(--rule);
+  box-shadow: inset 3px 0 0 var(--material-line);
+  transition: background-color 180ms ease;
+}
+
+.mandateRow:first-child {
+  border-top: 0;
+}
+
+.mandateRow:hover {
+  background: color-mix(in srgb, var(--material-tint) 55%, var(--mineral-light));
+}
+
+.mandateIndex {
+  color: var(--steel);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.mandateIdentity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.mandateIdentity h3 {
+  margin: 0;
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-size: clamp(1.15rem, 1.35vw, 1.35rem);
+  font-weight: 560;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+
+.mandateScope {
+  color: var(--steel);
+  font-size: var(--label-xs, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mandateRisk {
+  margin: 0;
+  color: var(--graphite);
+  font-size: 0.96rem;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+@media (max-width: 899px) {
+  .mandateRow {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    grid-template-areas:
+      'index identity'
+      'index risk';
+    row-gap: 0.6rem;
+    min-height: 0;
+    padding: 1.2rem;
+  }
+
+  .mandateIndex { grid-area: index; align-self: start; padding-top: 0.35rem; }
+  .mandateIdentity { grid-area: identity; }
+  .mandateRisk { grid-area: risk; }
+}
+
+/* Close ---------------------------------------------------------------- */
+
+/* Close: the shared light panel every page ends on. */
+.closeSection {
+  padding: clamp(2rem, 3vw, 2.75rem) 0 clamp(3rem, 4.5vw, 4rem);
+}
+
+.closePanel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.7fr);
+  align-items: end;
+  gap: clamp(3rem, 7vw, 6rem);
+  padding: clamp(3.25rem, 5vw, 4.25rem);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.94);
+  border-radius: var(--panel-radius, 8px);
+  background: linear-gradient(
+    135deg,
+    rgba(250, 249, 246, 0.97) 0%,
+    rgba(237, 240, 239, 0.94) 56%,
+    rgba(226, 232, 233, 0.9) 100%
+  );
+  -webkit-backdrop-filter: blur(14px) saturate(0.88);
+  backdrop-filter: blur(14px) saturate(0.88);
+  color: var(--ink);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(16, 33, 43, 0.07),
+    var(--shadow-floating);
+}
+
+.closeTitle {
+  max-width: 14ch;
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-size: clamp(2.4rem, 3.4vw, 3.4rem);
+  font-weight: 560;
+  letter-spacing: -0.05em;
+  line-height: 0.98;
+}
+
+.closeBody {
+  max-width: 34rem;
+  margin: 1.2rem 0 0;
+  color: var(--graphite);
+  font-size: 1.02rem;
+  line-height: 1.66;
+}
+
+.closeAction {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.closeAction > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--rule);
+}
+
+
+
+
+.closeCta {
+
+  align-self: flex-start;
+}
+
+
+
+/* The arrow chamber: the homepage primary action's second cell. */
+
+
+
+@media (max-width: 899px) {
+  .closePanel {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .closeCta {
+    width: 100%;
+    align-self: stretch;
+  }
+
+  .closeCta > span:first-child {
+    justify-content: center;
+    padding: 0 1rem;
+  }
+}
+
+/* Responsive ----------------------------------------------------------- */
+
+/*
+ * Every phone-width collapse lives here, after the base rules it overrides.
+ * The mandate list's single-column override used to sit near the top of the
+ * file, before the two-column base rule, and lost the cascade to it: at 375px
+ * the four shapes stayed two-up with their headings clipped. The chapter
+ * header and the close panel never collapsed at all, so a 17rem right column
+ * squeezed "Eight programs" into a column of syllables and set the close copy
+ * one word per line under the CTA.
+ */
+@media (max-width: 899px) {
+  .chapterHeader {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
+  .chapterHeader > p {
+    margin-top: 0;
+  }
+
+  /* One column, the way the homepage contact panel collapses: eyebrow,
+     heading and body, then the action and the address stacked beneath. */
+  .closePanel {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.25rem;
+    align-items: start;
+  }
+
+  .closeAction {
+    width: min(100%, 32rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .shell {
+    width: auto;
+    margin-left: max(var(--mobile-gutter), var(--safe-area-left, 0px));
+    margin-right: max(var(--mobile-gutter), var(--safe-area-right, 0px));
+  }
+
+  .sectionTitle,
+  .chapterTitle {
+    font-size: clamp(1.875rem, 9vw, 2rem);
+    line-height: 1;
+  }
+
+  .programChapter {
+    padding: var(--mobile-section-y) 0;
+  }
+
+  .programBook {
+    border-radius: 6px;
+  }
+
+  .chapterMedia {
+    height: 160px;
+  }
+
+  .chapterMediaImage {
+    object-position: 64% 42%;
+  }
+
+  .programBookContent {
+    padding: 1rem 1rem 1.25rem;
+  }
+
+  .chapterHeader {
+    gap: 0.75rem;
+    padding-bottom: 1rem;
+  }
+
+  .chapterHeader > p,
+  .mandateLede {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .mandateSection {
+    padding: var(--mobile-section-y) 0;
+  }
+
+  .mandateHeader {
+    margin-bottom: 1.25rem;
+  }
+
+  .mandateLedger::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 3.45rem;
+    z-index: 1;
+    width: 1px;
+    background: var(--rule);
+    pointer-events: none;
+  }
+
+  .mandateRow {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    grid-template-areas:
+      'index identity'
+      'index risk';
+    column-gap: 0.75rem;
+    row-gap: 0.75rem;
+    min-height: 0;
+    padding: 1.35rem 1rem;
+    border: 0;
+    border-top: 1px solid var(--rule);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: inset 3px 0 0 var(--material-line);
+  }
+
+  .mandateRow:first-child {
+    border-top: 0;
+  }
+
+  .mandateIndex {
+    grid-area: index;
+    align-self: start;
+    padding-top: 0.25rem;
+  }
+
+  .mandateIdentity {
+    grid-area: identity;
+  }
+
+  .mandateIdentity h3 {
+    font-size: 1.25rem;
+    line-height: 1.16;
+  }
+
+  .mandateRisk {
+    grid-area: risk;
+    font-size: 1rem;
+    line-height: 1.58;
+  }
+
+  .closePanel {
+    padding: 1.5rem;
+  }
+
+  .closeCta {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+}

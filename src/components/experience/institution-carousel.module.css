@@ -1,0 +1,230 @@
+/*
+ * Card width is derived from the measure, not from how many fit: ~21.5rem of
+ * card minus padding leaves about 46 characters a line, inside the 45-75 that
+ * reads comfortably. Seven across the plate would have been 24.
+ */
+.carousel {
+  --card-width: clamp(17.5rem, 24vw, 21.5rem);
+  --card-gap: 1rem;
+  --edge: clamp(1.75rem, 3.2vw, 3rem);
+  --arrow-gap: clamp(0.5rem, 1.2vw, 1.15rem);
+  position: relative;
+}
+
+.track {
+  display: flex;
+  gap: var(--card-gap);
+  /* Vertical padding is load-bearing: overflow-x on a flex row computes
+     overflow-y to auto as well, which would slice the cards' shadows off. */
+  padding: 0.5rem var(--edge) 1.5rem;
+  margin: 0;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 var(--edge),
+    #000 calc(100% - var(--edge)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 var(--edge),
+    #000 calc(100% - var(--edge)),
+    transparent 100%
+  );
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.track:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: var(--panel-radius);
+}
+
+.card {
+  display: flex;
+  flex: 0 0 var(--card-width);
+  flex-direction: column;
+  gap: 0.55rem;
+  width: var(--card-width);
+  padding: clamp(1.3rem, 1.9vw, 1.65rem);
+  border: 1px solid rgba(16, 33, 43, 0.09);
+  border-radius: var(--panel-radius);
+  background: var(--mineral-light);
+  box-shadow:
+    0 1px 2px rgba(16, 33, 43, 0.05),
+    0 10px 20px -14px rgba(16, 33, 43, 0.22);
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-raised);
+}
+
+.index {
+  color: var(--steel);
+  font-size: var(--label-xs, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.card h3 {
+  margin: 0;
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-size: 1.05rem;
+  font-weight: 560;
+  letter-spacing: -0.03em;
+  line-height: 1.24;
+  text-wrap: balance;
+}
+
+.card p {
+  margin: 0;
+  color: #55656c;
+  font-size: 0.865rem;
+  line-height: 1.55;
+}
+
+/*
+ * Glass, on the same construction as the homepage's floating panels, so the
+ * controls read as part of the system rather than as browser furniture.
+ */
+.arrow {
+  position: absolute;
+  top: calc(50% - 0.5rem);
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  transform: translateY(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 4px;
+  background: rgba(244, 245, 244, 0.82);
+  -webkit-backdrop-filter: blur(16px) saturate(0.9);
+  backdrop-filter: blur(16px) saturate(0.9);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.9),
+    0 2px 4px rgba(16, 33, 43, 0.08),
+    0 14px 26px -14px rgba(16, 33, 43, 0.32);
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.arrow:hover {
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.95),
+    var(--shadow-floating);
+}
+
+.arrow:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/*
+ * Clear of the track entirely, out past the point where the cards have finished
+ * fading, rather than sitting on top of them. calc(100% + gap) measures from the
+ * far edge, so each control lands in the page margin beside the carousel.
+ */
+.arrowPrev {
+  right: calc(100% + var(--arrow-gap));
+}
+
+.arrowNext {
+  left: calc(100% + var(--arrow-gap));
+}
+
+/*
+ * Below this the shell is only a gutter from the viewport edge, so there is no
+ * margin left to put a control in. They tuck back to the track edge rather than
+ * hang off the side of the page.
+ */
+@media (max-width: 1359px) {
+  .arrowPrev {
+    right: auto;
+    left: 0;
+  }
+
+  .arrowNext {
+    left: auto;
+    right: 0;
+  }
+}
+
+.phoneCue {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .carousel {
+    --card-width: 86vw;
+    --card-gap: 14px;
+  }
+
+  /* The controls would sit on top of the cards at this width; the track is
+     swipeable, so they step aside rather than overlap the reading. */
+  .arrow {
+    display: none;
+  }
+
+  .track {
+    --edge: 0;
+    box-sizing: border-box;
+    width: calc(100% + var(--mobile-gutter-right, 20px));
+    gap: var(--card-gap);
+    padding: 0 var(--mobile-gutter-right, 20px) 1rem 0;
+    scroll-padding-inline: 0 var(--mobile-gutter-right, 20px);
+    scroll-snap-type: x mandatory;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .card {
+    flex-basis: var(--card-width);
+    width: var(--card-width);
+    padding: 1.25rem;
+    border-color: rgba(16, 33, 43, 0.12);
+    background: #faf9f6;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      0 2px 4px rgba(16, 33, 43, 0.06),
+      0 18px 32px -24px rgba(31, 50, 59, 0.42);
+    scroll-snap-align: start;
+  }
+
+  .card p {
+    font-size: 1rem;
+    line-height: 1.58;
+  }
+
+  .phoneCue {
+    display: block;
+    margin-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    scroll-behavior: auto;
+  }
+
+  .card {
+    transition: none;
+  }
+}

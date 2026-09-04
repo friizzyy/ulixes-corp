@@ -1,0 +1,113 @@
+import { render, screen, within } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
+import {
+  calypsoContent,
+  calypsoDelivery,
+  calypsoDomains,
+  calypsoPrograms,
+} from '@/lib/calypso-content'
+import NasdaqCalypsoPage from './page'
+
+describe('Nasdaq Calypso page', () => {
+  it('opens with the open masthead and verified authority', () => {
+    render(<NasdaqCalypsoPage />)
+
+    const heading = screen.getByRole('heading', {
+      level: 1,
+      name: `${calypsoContent.hero.headlineLead} ${calypsoContent.hero.headlineTurn}`,
+    })
+
+    expect(heading).toBeInTheDocument()
+    expect(heading.textContent).toBe(
+      `${calypsoContent.hero.headlineLead} ${calypsoContent.hero.headlineTurn}`,
+    )
+    /*
+     * The hero is photographic, matching the homepage and the experience page.
+     * Pinned because two earlier versions put the lifecycle console in the
+     * hero instead: once tilted 54 degrees into the floor, once flat and full
+     * width. Both opened the page on a component rather than an image, which
+     * is what stopped it belonging to the rest of the site.
+     */
+    expect(screen.getByTestId('calypso-hero')).toHaveAttribute(
+      'data-layout',
+      'open-masthead',
+    )
+    expect(screen.getByTestId('calypso-hero')).toHaveAttribute(
+      'data-mobile-flow',
+      'message-first',
+    )
+    expect(screen.getByTestId('lifecycle-blotter')).toBeInTheDocument()
+    const authority = screen.getByLabelText('Calypso authority')
+    expect(authority.closest('[data-mobile-layout="two-by-two"]')).not.toBeNull()
+    expect(authority).toHaveTextContent('Banks and hedge funds')
+
+    const copy = screen.getByTestId('calypso-hero-copy')
+    const media = screen.getByTestId('calypso-hero-media')
+    expect(copy.compareDocumentPosition(media) & Node.DOCUMENT_POSITION_FOLLOWING)
+      .toBeTruthy()
+    expect(media.compareDocumentPosition(authority) & Node.DOCUMENT_POSITION_FOLLOWING)
+      .toBeTruthy()
+    expect(media).toHaveTextContent('')
+  })
+
+  it('uses the lifecycle as the route single depth composition', () => {
+    render(<NasdaqCalypsoPage />)
+
+    const depthCompositions = document.querySelectorAll(
+      '[data-depth-composition]',
+    )
+    expect(depthCompositions).toHaveLength(1)
+    expect(depthCompositions[0]).toHaveAttribute(
+      'data-depth-composition',
+      'three-office-trade-spine',
+    )
+    expect(depthCompositions[0]).toContainElement(
+      screen.getByTestId('lifecycle-blotter'),
+    )
+  })
+
+  it('recomposes every published Calypso scope into the new page chapters', () => {
+    render(<NasdaqCalypsoPage />)
+
+    expect(document.querySelector('[data-section="programs"]')).toBeInTheDocument()
+    expect(document.querySelector('[data-section="mandates"]')).toBeInTheDocument()
+    /*
+     * getAllByText, because the programs section is a grouped index beside an
+     * open detail panel: whichever program is selected renders its name in the
+     * index row and again as the panel heading. Every program must still be
+     * reachable from the index, which is what this asserts.
+     */
+    for (const program of calypsoPrograms) {
+      expect(screen.getAllByText(program.name).length).toBeGreaterThan(0)
+    }
+    for (const domain of calypsoDomains) {
+      expect(screen.getByText(domain.name)).toBeInTheDocument()
+    }
+    for (const mandate of calypsoDelivery) {
+      expect(screen.getByText(mandate.title)).toBeInTheDocument()
+    }
+  })
+
+  it('keeps programs in one bounded book with photography separate from copy', () => {
+    render(<NasdaqCalypsoPage />)
+
+    const book = screen.getByTestId('calypso-program-book')
+    expect(book).toHaveAttribute('data-mobile-layout', 'program-book')
+
+    const media = within(book).getByTestId('calypso-program-book-media')
+    const content = within(book).getByTestId('calypso-program-book-content')
+    expect(media).toHaveTextContent('')
+    expect(media.compareDocumentPosition(content) & Node.DOCUMENT_POSITION_FOLLOWING)
+      .toBeTruthy()
+  })
+
+  it('renders four mandates as one stacked ledger without a content rail', () => {
+    render(<NasdaqCalypsoPage />)
+
+    const ledger = screen.getByRole('list', { name: 'Calypso mandate shapes' })
+    expect(ledger).toHaveAttribute('data-mobile-layout', 'stacked')
+    expect(within(ledger).getAllByRole('listitem')).toHaveLength(
+      calypsoDelivery.length,
+    )
+  })
+})

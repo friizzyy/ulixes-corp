@@ -1,0 +1,517 @@
+/*
+ * Legal and status pages (privacy, terms, not-found, error) on the editorial
+ * system. Tokens come from [data-surface='editorial'] in src/styles/editorial.css.
+ *
+ * These four routes were the last ones still rendering the retired dark
+ * theme: near-black ground, purple accent, a glass table of contents, and
+ * Framer reveals that never resolved under prefers-reduced-motion. They now
+ * share the homepage's rail, its rule-and-caps eyebrow, its raised numbered
+ * ledger for the clauses, and its text link and primary action grammar.
+ */
+
+.page {
+  position: relative;
+  z-index: 1;
+  overflow: clip;
+  padding: calc(120px + var(--safe-area-top, 0px)) 0 96px;
+  background: var(--mineral);
+  color: var(--ink);
+  font-family: var(--font-outfit), sans-serif;
+}
+
+/*
+ * The same soft ground the experience and contact pages use: a wide highlight
+ * at the top and a grain over the cream, so the page is a material rather
+ * than a flat fill.
+ */
+.page::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 70% at 50% 0%,
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(255, 255, 255, 0) 58%
+  );
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+}
+
+.page > * {
+  position: relative;
+  z-index: 2;
+}
+
+.page :focus-visible {
+  outline: 2px solid #607985;
+  outline-offset: 4px;
+  box-shadow: none;
+}
+
+/*
+ * Status pages are sized to content with a 60vh floor: enough ground to seat
+ * the heading and its actions without the footer riding up under a two-line
+ * title. The root layout's main no longer forces a viewport, and the body
+ * behind it is the same mineral as the page, so a short route leaves cream
+ * above the footer rather than a dark band.
+ */
+.statusPage {
+  display: flex;
+  flex-direction: column;
+  min-height: 60vh;
+}
+
+.shell {
+  width: min(
+    calc(100% - 2 * (var(--page-gutter) + var(--page-rail))),
+    var(--page-shell)
+  );
+  margin-inline: auto;
+}
+
+.statusPage .shell {
+  flex: 1 0 auto;
+}
+
+/* Register ---------------------------------------------------------------- */
+
+.eyebrow {
+  margin: 0 0 1.05rem;
+  color: var(--steel);
+  font-size: var(--label-xs, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 0.145em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 1.6rem;
+  height: 1px;
+  margin: 0 0.7rem 0.2rem 0;
+  background: currentColor;
+}
+
+.title {
+  max-width: 16ch;
+  margin: 0;
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-size: clamp(2.4rem, 4.6vw, 3.6rem);
+  font-weight: 560;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+/* Label, then a hairline to the rail's right edge. With the eyebrow's rule
+   above the title this brackets the heading top and bottom. */
+.updated {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin: 1.5rem 0 0;
+  color: var(--steel);
+  font-size: var(--label-sm);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+
+.updatedValue {
+  color: var(--graphite);
+}
+
+/* Ledger ------------------------------------------------------------------ */
+
+/* The landmark stays on the page ground; the raised surface is the ledger
+   inside it. */
+.clauses {
+  margin-top: 2.5rem;
+}
+
+.ledger {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: var(--panel-radius);
+  background: var(--mineral-light);
+  box-shadow: var(--shadow-raised);
+}
+
+.clause {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 0.9fr) minmax(0, 1.5fr);
+  align-items: baseline;
+  column-gap: clamp(1rem, 2.5vw, 2.5rem);
+  padding: clamp(1.6rem, 2.4vw, 2.1rem) clamp(1.4rem, 2.5vw, 2.2rem);
+  border-top: 1px solid var(--rule);
+  /* Clears the fixed navigation when a clause is reached by its anchor. */
+  scroll-margin-top: 6.5rem;
+  transition: background-color 180ms ease;
+}
+
+.clause:first-child {
+  border-top: 0;
+}
+
+/* The clause a link pointed at, so the reader lands on the right row. */
+.clause:target {
+  background: color-mix(in srgb, var(--platinum) 24%, var(--mineral-light));
+}
+
+.clauseIndex {
+  color: var(--steel);
+  font-family: var(--font-jetbrains), monospace;
+  font-size: var(--label-sm);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1;
+}
+
+.clauseTitle {
+  margin: 0;
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.clauseBody {
+  max-width: 62ch;
+  margin: 0;
+  color: var(--graphite);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+/* Closing band ------------------------------------------------------------ */
+
+.closing {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1.25rem clamp(2rem, 5vw, 4rem);
+  margin-top: 2.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--rule);
+}
+
+.closingNote {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--graphite);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.closingLinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 2rem;
+}
+
+/* Actions ----------------------------------------------------------------- */
+
+.textLink {
+  position: relative;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 620;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.textLink::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 5px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0.26);
+  transform-origin: left;
+  transition: transform 190ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.textLink:hover::after {
+  transform: scaleX(1);
+}
+
+.textLink svg {
+  flex: 0 0 auto;
+  transition: transform 190ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.textLink:hover svg {
+  transform: translateX(3px);
+}
+
+.body {
+  max-width: 34rem;
+  margin: 1.35rem 0 0;
+  color: var(--graphite);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.6rem;
+  margin-top: 2.1rem;
+}
+
+.primaryAction {
+  display: inline-grid;
+  grid-template-columns: auto 3rem;
+  min-height: 3.25rem;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  background: var(--ink);
+  color: var(--mineral-light);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  appearance: none;
+  box-shadow: 0 18px 30px -25px rgba(16, 33, 43, 0.78);
+  transition:
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 180ms ease;
+}
+
+.primaryAction > span:first-child {
+  display: flex;
+  align-items: center;
+  padding-inline: 1.3rem;
+}
+
+.actionChamber {
+  display: grid;
+  place-items: center;
+  border-left: 1px solid rgba(250, 249, 246, 0.2);
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.primaryAction:hover {
+  transform: translateY(-2px);
+  background: #182c37;
+  box-shadow: 0 22px 36px -25px rgba(16, 33, 43, 0.8);
+}
+
+.primaryAction:hover .actionChamber {
+  transform: translate(1px, -1px);
+}
+
+.primaryAction:active {
+  transform: translateY(1px);
+}
+
+/* Entrance ---------------------------------------------------------------- */
+
+/*
+ * One short rise, CSS only. The resting state is the visible one, so a page
+ * that never runs the animation is simply a page at rest.
+ */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.header,
+.ledger,
+.closing,
+.statusPage .shell {
+  animation: rise 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.ledger {
+  animation-delay: 60ms;
+}
+
+.closing {
+  animation-delay: 120ms;
+}
+
+/* Responsive -------------------------------------------------------------- */
+
+@media (max-width: 899px) {
+  .clause {
+    grid-template-columns: 3rem minmax(0, 1fr);
+    row-gap: 0.55rem;
+  }
+
+  .clauseIndex {
+    grid-row: 1 / span 2;
+    align-self: start;
+    padding-top: 0.4rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .shell {
+    width: calc(100% - 2rem);
+  }
+
+  .closing {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .closingLinks {
+    gap: 0.25rem 1.75rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .page {
+    padding: calc(clamp(5.5rem, 20vw, 6.5rem) + var(--safe-area-top, 0px)) 0
+      clamp(3.5rem, 14vw, 4.5rem);
+  }
+
+  .shell {
+    width: 100%;
+    padding-inline: max(1.25rem, env(safe-area-inset-left))
+      max(1.25rem, env(safe-area-inset-right));
+  }
+
+  .title {
+    font-size: clamp(2.375rem, 12vw, 2.625rem);
+    line-height: 1.02;
+  }
+
+  .clauses {
+    margin-top: 2rem;
+  }
+
+  .ledger {
+    border-inline: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .clause {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.6rem;
+    padding: 1.45rem 0 1.6rem;
+  }
+
+  .clauseIndex {
+    grid-row: auto;
+    padding-top: 0;
+  }
+
+  .clauseTitle {
+    font-size: 1.28rem;
+  }
+
+  .clauseBody {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .updated {
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .closing {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+  }
+
+  .closingNote {
+    font-size: 1rem;
+  }
+
+  .textLink {
+    font-size: 0.95rem;
+  }
+
+  .actions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin-top: 1.75rem;
+  }
+
+  .primaryAction {
+    width: 100%;
+  }
+
+  .primaryAction > span:first-child {
+    justify-content: center;
+  }
+
+  .actions .textLink {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 350px) {
+  .eyebrow::before {
+    width: 1rem;
+    margin-right: 0.5rem;
+  }
+
+  .title {
+    font-size: 2.375rem;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .textLink:active::after {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .ledger,
+  .closing,
+  .statusPage .shell {
+    animation: none;
+  }
+
+  .page *,
+  .page *::before,
+  .page *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

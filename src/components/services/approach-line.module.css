@@ -1,0 +1,181 @@
+/*
+ * The approach line: four steps on a vertical path that draws as the dark
+ * chapter scrolls, each stop latching as the reading line passes it. Ported
+ * from concept A and set for the chapter's neutral charcoal; the values are
+ * the chapter's own so the register reads as part of it rather than a guest.
+ */
+
+.approach {
+  --chapter: #191b1d;
+  --chapter-text: #f1f3ef;
+  --chapter-rule: rgba(241, 243, 239, 0.2);
+  --chapter-muted: rgba(241, 243, 239, 0.66);
+  --chapter-faint: rgba(241, 243, 239, 0.42);
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --gutter: 2.4rem;
+  position: relative;
+  padding-left: var(--gutter);
+}
+
+/*
+ * The line is an SVG path normalised to pathLength 1, so the drawn length is
+ * exactly 1 minus the dash offset the scroll handler writes. The faint track
+ * beneath it shows the whole route before any of it is drawn.
+ */
+.approachLine {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  height: 100%;
+  overflow: visible;
+}
+
+.approachTrack,
+.approachDrawn {
+  fill: none;
+  stroke-width: 1;
+  stroke-linecap: butt;
+}
+
+.approachTrack {
+  stroke: var(--chapter-rule);
+}
+
+.approachDrawn {
+  stroke: var(--chapter-text);
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.approach[data-enhanced='true'] .approachDrawn {
+  stroke-dashoffset: 1;
+}
+
+/* Index and title share a baseline; the text sits under the title. */
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.7rem minmax(0, 1fr);
+  column-gap: 0.5rem;
+  align-items: baseline;
+  padding: 0.95rem 0;
+  border-top: 1px solid var(--chapter-rule);
+}
+
+.step:first-child {
+  padding-top: 0.2rem;
+  border-top: 0;
+}
+
+.step:last-child {
+  padding-bottom: 0.2rem;
+}
+
+.approach[data-enhanced='true'] .step {
+  transition:
+    opacity 560ms var(--ease-out),
+    transform 560ms var(--ease-out);
+}
+
+.approach[data-enhanced='true'] .step[data-reached='false'] {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+/* The stop sits on the line, centred on its 1px stroke and on the title's
+   first line. */
+.stepStop {
+  position: absolute;
+  top: calc(0.95rem + 0.45rem);
+  left: calc(-1 * var(--gutter) + 1px - 4.5px);
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--chapter-rule);
+  border-radius: 50%;
+  background: var(--chapter);
+  transition:
+    background-color 320ms ease,
+    border-color 320ms ease;
+}
+
+.step:first-child .stepStop {
+  top: calc(0.2rem + 0.45rem);
+}
+
+.step[data-reached='true'] .stepStop,
+.approach[data-enhanced='false'] .stepStop {
+  border-color: var(--chapter-text);
+  background: var(--chapter-text);
+}
+
+.stepIndex {
+  grid-column: 1;
+  color: var(--chapter-faint);
+  font-size: var(--label-xs, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.stepTitle {
+  grid-column: 2;
+  margin: 0;
+  color: var(--chapter-text);
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-size: 1.2rem;
+  font-weight: 555;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.stepText {
+  grid-column: 2;
+  max-width: 40rem;
+  margin: 0.4rem 0 0;
+  text-wrap: pretty;
+  color: var(--chapter-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 767px) {
+  .approach {
+    --gutter: 1.75rem;
+  }
+
+  .step {
+    padding: 1.05rem 0;
+  }
+
+  .stepStop {
+    top: calc(1.05rem + 0.45rem);
+  }
+
+  .step:first-child .stepStop {
+    top: calc(0.2rem + 0.45rem);
+  }
+
+  .stepText {
+    font-size: 1rem;
+  }
+}
+
+/* Reduced motion: the line fully drawn, every stop lit, every step in place. */
+@media (prefers-reduced-motion: reduce) {
+  .approachDrawn {
+    stroke-dashoffset: 0 !important;
+  }
+
+  .step {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .stepStop {
+    border-color: var(--chapter-text);
+    background: var(--chapter-text);
+    transition: none;
+  }
+}

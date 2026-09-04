@@ -1,403 +1,243 @@
-'use client'
-
-import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
-import { experienceContent, caseStudies } from '@/lib/content'
-import { ArrowUpRight, PageTransition } from '@/components/ui'
-import { fadeUp, staggerContainer, staggerContainerFast, viewportOnce } from '@/lib/motion'
+import { ArrowUpRight, MobileDisclosure } from '@/components/ui'
+import { InstitutionCarousel } from '@/components/experience/institution-carousel'
+import {
+  institutionalExperienceContent,
+  institutionsMedia,
+  practitionerPortrait,
+} from '@/lib/institutional-experience-content'
+import styles from './institutional-experience.module.css'
 
-export default function ExperiencePage() {
-  const { hero, stats, credibilityChips, intro, institutions, closing, cta } = experienceContent
-  const [activeStudy, setActiveStudy] = useState(0)
-  const study = caseStudies[activeStudy]
+/*
+ * Built to the consulting reference Julius picked: a contained intro panel
+ * carrying a statistic row, an alternating image and copy block for the
+ * practitioner, a credential checklist, and a card grid.
+ *
+ * The reference's statistics are invented (95%, 10+, $10m). This page carries
+ * the four verified facts at that scale instead, which is the only kind of
+ * claim the guardrails permit.
+ */
 
+/*
+ * The scope section is gone. It was eleven short labels with no room for
+ * depth, and both of its facts (front to back, four regions) belong to the
+ * homepage credential dock rather than to this page.
+ */
+const { introduction, practitioner, institutions, principles, contact } =
+  institutionalExperienceContent
+
+export default function InstitutionalExperiencePage() {
   return (
-    <PageTransition>
-      {/* Hero */}
-      <section className="pt-32 pb-12 sm:pt-40 sm:pb-16 md:pt-48 md:pb-20 relative z-10">
-        <div className="container-main">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.div variants={fadeUp} className="section-label">{hero.label}</motion.div>
-            <motion.h1 variants={fadeUp} className="font-display text-[2.5rem] sm:text-display-lg md:text-display-xl lg:text-[4.5rem] font-semibold mb-10 sm:mb-14 max-w-5xl leading-[1.1]">
-              {hero.headline}
-            </motion.h1>
-
-            {/* Description + inline stats */}
-            <motion.div variants={fadeUp} className="flex flex-col md:flex-row md:items-start md:justify-between gap-8 md:gap-16">
-              <p className="text-base sm:text-body-lg md:text-body-xl text-text-secondary leading-relaxed max-w-xl">
-                {hero.description}
-              </p>
-
-              <div className="flex items-start gap-6 sm:gap-8 shrink-0">
-                {stats.map((stat, idx) => (
-                  <div key={stat.label} className="flex items-start gap-6 sm:gap-8">
-                    {idx > 0 && (
-                      <div className="w-px h-14 sm:h-16 bg-border self-center" />
-                    )}
-                    <div>
-                      <div className="font-display text-4xl sm:text-5xl font-semibold text-text-primary mb-1">
-                        {stat.value}
-                      </div>
-                      <div className="text-body-sm text-text-muted font-mono uppercase tracking-wider">
-                        {stat.label}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* Credibility chips */}
-          <motion.div
-            className="mt-12 sm:mt-16 flex flex-wrap gap-x-8 gap-y-3"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
-          >
-            {credibilityChips.map((chip) => (
-              <div key={chip} className="flex items-center gap-3 text-text-muted">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                <span className="text-body-sm font-medium">{chip}</span>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Narrative Grid */}
-      <section className="pb-16 sm:pb-20 md:pb-32">
-        <div className="container-main">
-          <motion.div
-            className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-8"
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.div variants={fadeUp} className="lg:col-span-5 lg:sticky lg:top-32 lg:self-start">
-              <p className="text-body-lg text-text-secondary leading-relaxed">
-                {intro.paragraphs[0]}
-              </p>
-            </motion.div>
-
-            <motion.div variants={fadeUp} className="lg:col-span-6 lg:col-start-7 space-y-8">
-              <p className="text-body-md leading-relaxed text-text-primary font-medium border-l-2 border-accent pl-6">
-                {intro.paragraphs[1]}
-              </p>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Credentials Strip */}
-      <motion.section
-        className="py-12 border-y border-border bg-bg-secondary/30"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={viewportOnce}
-        transition={{ duration: 0.5 }}
+    <div className={styles.page} data-surface="editorial">
+      <section
+        className={styles.hero}
+        aria-labelledby="experience-title"
+        data-mobile-flow="copy-first"
       >
-        <div className="container-main">
-          <motion.div
-            className="flex flex-wrap justify-center gap-x-12 gap-y-4"
-            variants={staggerContainerFast}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+        <div
+          className={styles.heroStage}
+          data-depth-composition="institutional-threshold"
+        >
+          {/* The institutional interior sits behind him, masked, so the portrait
+              reads as being inside it rather than beside a picture of it. */}
+          <div
+            className={styles.heroMedia}
+            aria-hidden="true"
+            data-depth-plane="recessed-architecture"
           >
-            {credibilityChips.map((chip) => (
-              <motion.div
-                key={chip}
-                variants={fadeUp}
-                className="flex items-center gap-3 text-text-muted"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                <span className="text-body-sm font-medium">{chip}</span>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </motion.section>
+            <Image
+              src={institutionsMedia.src}
+              alt=""
+              fill
+              priority
+              sizes="(max-width: 767px) 320px, 60vw"
+              className={styles.heroMediaImage}
+            />
+          </div>
+          <div className={styles.heroTone} aria-hidden="true" />
 
-      {/* Institutions — static grid, no accordion (content too short to justify expand/collapse) */}
-      <section className="py-20 sm:py-28 md:py-36">
-        <div className="container-main">
-          <motion.div
-            className="mb-14 sm:mb-18 md:mb-20"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-          >
-            <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
-              Where We&apos;ve Worked
-            </motion.h2>
-            <motion.p variants={fadeUp} className="font-display text-[1.75rem] sm:text-display-sm md:text-display-md font-semibold max-w-2xl">
-              Seven distinct institutional sectors.
-            </motion.p>
-          </motion.div>
+          <div className={`${styles.shell} ${styles.heroGrid}`}>
+            <div className={styles.heroCopy}>
+              <p className={`ed-eyebrow ${styles.badge}`}>{introduction.eyebrow}</p>
+              <h1 id="experience-title" className={styles.heroTitle}>
+                {introduction.headlineLead}{' '}
+                <em className={styles.turn}>{introduction.headlineTurn}</em>
+              </h1>
+              <p className={styles.heroBody}>{introduction.body}</p>
 
-          <motion.div
-            className="space-y-0"
-            variants={staggerContainerFast}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-          >
-            {institutions.categories.map((category, index) => (
-              <motion.div
-                key={category.name}
-                variants={fadeUp}
-                className="group grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-8 py-6 sm:py-8 border-b border-border first:border-t"
-              >
-                <div className="md:col-span-1">
-                  <span className="text-xs font-mono text-text-muted group-hover:text-accent transition-colors">
-                    {String(index + 1).padStart(2, '0')}
+              <p className={styles.roleLine}>
+                <span>{practitioner.name}</span>
+                <span aria-hidden="true">·</span>
+                <span>{practitioner.role}</span>
+                <span aria-hidden="true">·</span>
+                <span>{practitioner.specialism}</span>
+              </p>
+
+              <div className={styles.heroActions}>
+                <Link href="/contact" className={`ed-primary ${styles.action}`}>
+                  <span>{introduction.cta}</span>
+                  <span className="ed-chamber" aria-hidden="true">
+                    <ArrowUpRight size={17} />
                   </span>
-                </div>
-                <div className="md:col-span-4">
-                  <h3 className="text-body-md sm:text-heading-sm font-semibold text-text-primary">
-                    {category.name}
-                  </h3>
-                </div>
-                <div className="md:col-span-7">
-                  <p className="text-body-sm text-text-secondary leading-relaxed">
-                    {category.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+                </Link>
+                <a
+                  className={`ed-textlink ${styles.textLink}`}
+                  href={practitioner.linkedinUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <span className={styles.textLinkLabel}>
+                    {practitioner.cta}
+                    <ArrowUpRight size={16} />
+                  </span>
+                  <span className="sr-only">(opens in a new tab)</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Framed rather than masked. A portrait dissolving into the page
+                would fade a face out, which a material study can take and a
+                person cannot. */}
+            <div
+              className={styles.heroPortrait}
+              data-depth-plane="raised-portrait"
+            >
+              <Image
+                src={practitionerPortrait.src}
+                alt={practitionerPortrait.alt}
+                fill
+                priority
+                sizes="(max-width: 767px) 250px, (max-width: 899px) 304px, 38vw"
+                className={styles.heroPortraitImage}
+              />
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Case Studies Section */}
-      <section className="py-20 sm:py-28 md:py-36 bg-bg-secondary/50 border-y border-border">
-        <div className="container-main">
-          <motion.div
-            className="mb-16"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-          >
-            <motion.h2 variants={fadeUp} className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
-              Selected Engagements
-            </motion.h2>
-            <motion.p variants={fadeUp} className="text-base sm:text-heading-lg md:text-display-sm font-display font-semibold max-w-xl">
-              Patterns from our work. Most clients require confidentiality. These represent what we can discuss.
-            </motion.p>
-          </motion.div>
+      {/*
+        The three sections below the hero were the same layout atom three times:
+        a two-column header, then NN/Title/Description repeated. They cost 2137px
+        between them to carry 13 short entries. These are registers instead:
+        dense, multi-column, ruled, and set inside one raised surface each, which
+        is where the homepage's depth actually comes from. No decorative imagery:
+        the only photographs on this page are the two in the hero, which carry
+        the subject rather than fill space.
+      */}
+      <section
+        className={styles.institutionsSection}
+        aria-labelledby="institutions-title"
+      >
+        {/*
+          No plate around this one. The entries are raised cards now, and a
+          raised card inside a raised card reads as muddle rather than as depth;
+          one surface per section is the rule the homepage actually follows.
+        */}
+        <div
+          className={`${styles.shell} ${styles.institutionShelf}`}
+          data-depth-plane="recessed-institution-shelf"
+        >
+          <div className={styles.plateHead}>
+            <div>
+              <p className={`ed-eyebrow ${styles.marginLabel}`}>{institutions.eyebrow}</p>
+              <h2 id="institutions-title" className={styles.plateTitle}>
+                {institutions.headlineLead}{' '}
+                <em className={styles.turn}>{institutions.headlineTurn}</em>
+              </h2>
+            </div>
+            <p className={styles.plateLead}>{institutions.body}</p>
+          </div>
 
-          {/* Case Study Navigation */}
-          <motion.div
-            className="flex items-center gap-1 mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={viewportOnce}
-            transition={{ duration: 0.5, delay: 0.3 }}
+          {/*
+            One line, drifting slowly, arrows to step through. Seven cards
+            across the measure would have been 154px each and 24 characters a
+            line; at this width they hold ~46, which is inside the range that
+            reads. The trade is that three of the seven start off-screen.
+          */}
+          <InstitutionCarousel />
+        </div>
+      </section>
+
+      {/*
+        Kept on a dark ground: it is the one tonal break on the page, and it is
+        what stops three light registers reading as one undifferentiated run.
+        Neutral charcoal rather than --ink, which is a blue slate and reads
+        unmistakably blue across a whole section.
+      */}
+      <section
+        className={styles.principlesSection}
+        aria-labelledby="principles-title"
+      >
+        <div className={styles.shell}>
+          <div className={styles.chapterHead}>
+            <p className={`ed-eyebrow ${styles.marginLabel}`}>{principles.eyebrow}</p>
+            <h2 id="principles-title" className={styles.chapterTitle}>
+              {principles.headlineLead}{' '}
+              <em className={styles.turn}>{principles.headlineTurn}</em>
+            </h2>
+          </div>
+
+          <ol
+            className={styles.positions}
+            aria-label="Ulixes delivery principles"
+            data-visible-from="768px"
           >
-            {caseStudies.map((cs, index) => (
-              <button
-                key={cs.id}
-                onClick={() => setActiveStudy(index)}
-                className={`group relative px-6 py-3 min-h-[44px] transition-all duration-300 ${
-                  activeStudy === index
-                    ? 'text-text-primary'
-                    : 'text-text-muted hover:text-text-secondary'
-                }`}
-              >
-                <span className="text-xs font-mono tracking-wider">
+            {principles.items.map((item, index) => (
+              <li key={item.title}>
+                <span className={styles.positionIndex} aria-hidden="true">
                   {String(index + 1).padStart(2, '0')}
                 </span>
-                <span className={`absolute bottom-0 left-0 right-0 h-px transition-all duration-300 ${
-                  activeStudy === index
-                    ? 'bg-accent'
-                    : 'bg-transparent group-hover:bg-border'
-                }`} />
-              </button>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </li>
             ))}
-            <div className="flex-1 h-px bg-border ml-4" />
-          </motion.div>
-
-          {/* Featured Case Study */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeStudy}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-24"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-            >
-              {/* Left: Title and Summary */}
-              <div>
-                <motion.div
-                  className="flex items-center gap-3 mb-8"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  <span className="text-xs font-mono tracking-wider text-text-muted uppercase">
-                    {study.industry}
-                  </span>
-                  <span className="w-1 h-1 rounded-full bg-border" />
-                  <span className="text-xs font-mono tracking-wider text-text-muted">
-                    {study.client}
-                  </span>
-                </motion.div>
-
-                <motion.h3
-                  className="text-[1.5rem] sm:text-display-sm md:text-display-md font-display font-semibold mb-6 leading-tight"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 }}
-                >
-                  {study.title}
-                </motion.h3>
-
-                <motion.p
-                  className="text-body-lg text-text-secondary leading-relaxed mb-10"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  {study.summary}
-                </motion.p>
-
-                {/* Services Tags */}
-                <motion.div
-                  className="flex flex-wrap gap-2"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.25 }}
-                >
-                  {study.services.map((service, idx) => (
-                    <motion.span
-                      key={service}
-                      className="px-4 py-2 text-body-sm text-accent border border-accent/30 rounded-full"
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.3 + idx * 0.05 }}
-                    >
-                      {service}
-                    </motion.span>
-                  ))}
-                </motion.div>
-              </div>
-
-              {/* Right: Details */}
-              <div className="space-y-12">
-                {/* Challenge */}
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <h4 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
-                    Challenge
-                  </h4>
-                  <p className="text-body-md text-text-secondary leading-relaxed">
-                    {study.challenge}
-                  </p>
-                </motion.div>
-
-                {/* Approach */}
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  <h4 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
-                    Approach
-                  </h4>
-                  <p className="text-body-md text-text-secondary leading-relaxed">
-                    {study.approach}
-                  </p>
-                </motion.div>
-
-                {/* Results */}
-                <motion.div
-                  className="pt-8 border-t border-border"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 }}
-                >
-                  <h4 className="text-xs font-mono uppercase tracking-widest text-accent mb-8">
-                    Results
-                  </h4>
-                  <div className="grid grid-cols-1 xs:grid-cols-3 gap-4 sm:gap-8">
-                    {study.outcome.metrics.map((metric, idx) => (
-                      <motion.div
-                        key={metric.label}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5 + idx * 0.1 }}
-                      >
-                        <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary mb-2">
-                          {metric.value}
-                        </div>
-                        <div className="text-body-sm text-text-muted">
-                          {metric.label}
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </section>
-
-      {/* Closing Quote + CTA */}
-      <section className="py-20 sm:py-28 md:py-36 border-t border-border">
-        <div className="container-main">
-          <motion.div
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-24"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+          </ol>
+          <div
+            className={styles.mobilePositions}
+            data-visible-through="767px"
           >
-            {/* Quote */}
-            <motion.div variants={fadeUp} className="relative">
-              <div className="relative">
-                <h2 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
-                  Our Perspective
-                </h2>
-                <blockquote className="text-[1.5rem] sm:text-display-sm font-display font-semibold mb-6 leading-tight">
-                  &ldquo;{closing.quote}&rdquo;
-                </blockquote>
-              </div>
-            </motion.div>
-
-            {/* CTA Card */}
-            <motion.div
-              variants={fadeUp}
-              className="relative p-5 sm:p-8 md:p-10 rounded-lg bg-bg-secondary border border-border"
-            >
-              <div className="relative">
-                <h3 className="text-xs font-mono uppercase tracking-widest text-accent mb-4">
-                  {cta.title}
-                </h3>
-                <p className="text-body-md text-text-secondary leading-relaxed mb-8">
-                  {cta.description}
-                </p>
-                <Link href="/contact" className="cta-primary">
-                  {cta.primaryCta}
-                  <ArrowUpRight size={16} />
-                </Link>
-              </div>
-            </motion.div>
-          </motion.div>
+            <MobileDisclosure
+              ariaLabel="Working positions"
+              tone="dark"
+              defaultOpenId="working-position-1"
+              items={principles.items.map((item, index) => ({
+                id: `working-position-${index + 1}`,
+                index: String(index + 1).padStart(2, '0'),
+                title: item.title,
+                panel: <p className={styles.positionPanel}>{item.description}</p>,
+              }))}
+            />
+          </div>
         </div>
       </section>
-    </PageTransition>
+
+      {/* Continuous with the chapter above rather than a fourth full section. */}
+      <section className={styles.closeSection} aria-labelledby="inquiry-title">
+        <div className={`${styles.shell} ${styles.closeCard}`}>
+          <div>
+            <p className={`ed-eyebrow ${styles.marginLabel}`}>{contact.eyebrow}</p>
+            <h2 id="inquiry-title" className={styles.closeTitle}>
+              {contact.headlineLead}{' '}
+              <em className={styles.turn}>{contact.headlineTurn}</em>
+            </h2>
+            <p className={styles.closeBody}>{contact.body}</p>
+          </div>
+
+          <div className={styles.closeAction}>
+            <Link href="/contact" className={`ed-primary ${styles.closeCta}`}>
+              <span>{contact.cta}</span>
+              <span className="ed-chamber" aria-hidden="true">
+                <ArrowUpRight size={17} />
+              </span>
+            </Link>
+            <a className={`ed-textlink ${styles.closeEmail}`} href={`mailto:${contact.email}`}>
+              {contact.email}
+            </a>
+            <p className={styles.closeResponse}>{contact.response}</p>
+          </div>
+        </div>
+      </section>
+    </div>
   )
 }

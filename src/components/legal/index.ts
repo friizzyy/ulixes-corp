@@ -1,0 +1,6 @@
+export { LegalPage } from './legal-page'
+export type { LegalCrossLink, LegalPageProps } from './legal-page'
+export { slugify, toLegalSections } from './legal-sections'
+export type { LegalSection, LegalSourceSection } from './legal-sections'
+export { StatusPage } from './status-page'
+export type { StatusPageProps, StatusPrimaryAction } from './status-page'

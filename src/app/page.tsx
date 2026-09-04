@@ -1,20 +1,5 @@
-import {
-  HeroSection,
-  ServicesSection,
-  CTASection,
-  PhilosophySection,
-  ProcessSection,
-} from '@/components/sections'
-import { PageTransition } from '@/components/ui'
+import { Homepage } from '@/components/home'
 
 export default function HomePage() {
-  return (
-    <PageTransition>
-      <HeroSection />
-      <PhilosophySection />
-      <ServicesSection />
-      <ProcessSection />
-      <CTASection />
-    </PageTransition>
-  )
+  return <Homepage />
 }

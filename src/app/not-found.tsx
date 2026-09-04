@@ -1,44 +1,28 @@
-'use client'
-
-import { motion } from 'framer-motion'
-import { Button, ArrowLeft } from '@/components/ui'
-import { fadeUp, staggerContainer } from '@/lib/motion'
+import type { Metadata } from 'next'
+import { StatusPage } from '@/components/legal/status-page'
 import { notFoundContent } from '@/lib/content'
 
+export const metadata: Metadata = {
+  title: 'Page not found',
+  alternates: { canonical: null },
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
+
+/*
+ * The content's title ("Page Not Found") would repeat the eyebrow word for
+ * word, so the heading is its statement instead.
+ */
 export default function NotFound() {
   return (
-    <section className="min-h-screen flex items-center justify-center relative z-10">
-      <motion.div
-        className="container-main text-center"
-        variants={staggerContainer}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.div
-          className="text-[5rem] sm:text-[8rem] md:text-[12rem] font-display font-semibold text-accent leading-none mb-4"
-          variants={fadeUp}
-        >
-          {notFoundContent.headline}
-        </motion.div>
-        <motion.h1
-          className="text-[1.75rem] sm:text-display-sm font-display font-semibold mb-4"
-          variants={fadeUp}
-        >
-          {notFoundContent.title}
-        </motion.h1>
-        <motion.p
-          className="text-base sm:text-body-lg text-text-secondary mb-8 sm:mb-10 max-w-md mx-auto"
-          variants={fadeUp}
-        >
-          {notFoundContent.description}
-        </motion.p>
-        <motion.div variants={fadeUp}>
-          <Button href="/" size="lg">
-            <ArrowLeft size={18} />
-            {notFoundContent.cta}
-          </Button>
-        </motion.div>
-      </motion.div>
-    </section>
+    <StatusPage
+      eyebrow="Page not found"
+      title={notFoundContent.description}
+      body="The address may have changed, or the page has been retired."
+      primary={{ label: 'Return home', href: '/' }}
+      secondary={{ label: 'See the capabilities', href: '/services' }}
+    />
   )
 }

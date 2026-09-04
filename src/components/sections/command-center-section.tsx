@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
+import { useRouter } from 'next/navigation'
 import { Section, SectionHeader, Button } from '@/components/ui'
 import {
   FeatureShowcase,
@@ -20,6 +21,7 @@ import {
 } from '@/components/system'
 
 export function CommandCenterSection() {
+  const router = useRouter()
   const { isOpen, open, close } = useCommandPalette()
   const logs = useMockLogStream(1400)
 
@@ -32,7 +34,7 @@ export function CommandCenterSection() {
         shortcut: '⌘ B',
         category: 'Engagement',
         action: () => {
-          window.location.href = '/contact'
+          router.push('/contact')
         },
       },
       {
@@ -42,7 +44,7 @@ export function CommandCenterSection() {
         shortcut: '⌘ D',
         category: 'Resources',
         action: () => {
-          window.location.href = '/work'
+          router.push('/services')
         },
       },
       {
@@ -62,7 +64,7 @@ export function CommandCenterSection() {
         action: () => {},
       },
     ],
-    []
+    [router]
   )
 
   const dataFlowNodes = [

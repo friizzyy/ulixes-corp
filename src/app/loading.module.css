@@ -1,0 +1,77 @@
+/*
+ * Route loading state.
+ *
+ * The site had no Suspense boundary on any segment, which meant a navigation
+ * with any latency left the previous page sitting frozen until the next one
+ * was ready. Nothing acknowledged the click. That reads as lag even when the
+ * wait is a few hundred milliseconds.
+ *
+ * This is deliberately not a spinner. It is the page's own furniture arriving
+ * a moment early: the rail, the eyebrow rule, and a progress hairline that
+ * runs the shell width.
+ */
+
+.loading {
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  justify-content: center;
+  padding: 76px var(--page-gutter, 2rem) 0;
+  background: var(--mineral, #f3f1ec);
+}
+
+.shell {
+  width: min(100% - 2rem, 78rem);
+  margin-inline: auto;
+}
+
+.rule {
+  position: relative;
+  height: 1px;
+  overflow: hidden;
+  background: rgba(16, 33, 43, 0.1);
+}
+
+/*
+ * A determinate-looking sweep rather than a loop that spins forever. It reads
+ * as progress even though it cannot know the real duration.
+ */
+.rule::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 38%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(16, 33, 43, 0.55),
+    transparent
+  );
+  animation: sweep 1.15s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@keyframes sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(365%);
+  }
+}
+
+.label {
+  margin: 1.15rem 0 0;
+  color: rgba(16, 33, 43, 0.42);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.145em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rule::after {
+    animation: none;
+    width: 100%;
+    opacity: 0.35;
+  }
+}

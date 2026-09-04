@@ -1,0 +1,543 @@
+/*
+ * Contact page, built to a reference Julius picked: one contained panel rather
+ * than a page of stacked sections, a form on its own surface inside it, filled
+ * fields with no hard borders, generous rounding, and the whole exchange
+ * visible without scrolling.
+ *
+ * The reference carries a saturated blue on its button and icon chips. This
+ * site has no accent colour, so those become ink; dropping a blue in would read
+ * as a different brand. Tokens come from [data-surface='editorial'].
+ */
+
+.page {
+  position: relative;
+  z-index: 1;
+  overflow: clip;
+  background: var(--mineral);
+  color: var(--ink);
+}
+
+/*
+ * A soft ground rather than flat cream. Two very wide radial washes give the
+ * page a centre of light for the panel to sit in, which is what stops the
+ * composition reading as a card pasted onto a colour.
+ */
+.page::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      120% 80% at 50% 0%,
+      rgba(255, 255, 255, 0.72) 0%,
+      rgba(255, 255, 255, 0) 62%
+    ),
+    radial-gradient(
+      90% 70% at 50% 108%,
+      rgba(16, 33, 43, 0.05) 0%,
+      rgba(16, 33, 43, 0) 60%
+    );
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+}
+
+.page > * {
+  position: relative;
+  z-index: 2;
+}
+
+.page :focus-visible {
+  outline: 2px solid #607985;
+  outline-offset: 3px;
+}
+
+.stage {
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  padding: clamp(7rem, 10vw, 9rem) var(--page-gutter) clamp(3.5rem, 6vw, 5rem);
+}
+
+/* Outer surface ---------------------------------------------------------- */
+
+/*
+ * Three regions rather than two columns, so the stacking order can differ from
+ * the desktop arrangement. Stacked, the form sat above the headline, which
+ * meant arriving on a bare form with no context.
+ */
+.panel {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  grid-template-areas:
+    'head card'
+    'details card';
+  align-content: center;
+  align-items: start;
+  gap: clamp(1.75rem, 3vw, 2.5rem) clamp(2.5rem, 5vw, 5rem);
+  width: min(100%, 74rem);
+  margin-inline: auto;
+  padding: clamp(2.5rem, 4.5vw, 4.25rem);
+  border-radius: var(--panel-radius, 8px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: linear-gradient(
+    170deg,
+    #fdfcfa 0%,
+    var(--mineral-light) 46%,
+    #f5f3ef 100%
+  );
+  box-shadow: var(--shadow-floating);
+}
+
+/* Left column ------------------------------------------------------------ */
+
+.eyebrow {
+
+  margin: 0 0 1.1rem;
+}
+
+
+.title {
+  max-width: 12ch;
+  margin: 0;
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-size: clamp(3.7rem, 4.5vw, 4.5rem);
+  /* The lighter weight is the default and the opening phrase carries the
+     emphasis, as in the reference. */
+  font-weight: 560;
+  letter-spacing: -0.052em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.title strong {
+  font-weight: 560;
+}
+
+.lead {
+  max-width: 30rem;
+  margin: 1.25rem 0 0;
+  color: #4f5f66;
+  font-size: 0.98rem;
+  line-height: 1.62;
+}
+
+.microLabel {
+  margin: 0 0 0.5rem;
+  color: var(--steel);
+  font-size: var(--label-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.introHead {
+  grid-area: head;
+}
+
+.introDetails {
+  grid-area: details;
+}
+
+.card {
+  padding: 0;
+  grid-area: card;
+  align-self: center;
+}
+
+.who {
+  padding-top: clamp(1.5rem, 2.5vw, 2rem);
+  border-top: 1px solid var(--rule);
+}
+
+.whoName {
+  margin: 0;
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.whoNote {
+  max-width: 30rem;
+  margin: 0.55rem 0 0;
+  color: #4f5f66;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.channels {
+  display: grid;
+  gap: 1.1rem;
+  margin: clamp(1.75rem, 3vw, 2.25rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.channels li {
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+}
+
+/* Ink rather than the reference's blue: this site has no accent colour. */
+.channelChip {
+  display: none;
+}
+
+.channelText {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.channelLabel {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--steel);
+  font-size: var(--label-xs, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 0.145em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+/* Negative margin cancels the padding, so the tap area grows to about 40px
+   without moving anything. The label sits directly above, so height cannot
+   simply be added. */
+.channelText a {
+  padding-block: 0.5rem;
+  margin-block: -0.5rem;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 560;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.channelText a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Form card -------------------------------------------------------------- */
+
+.card {
+  padding: clamp(1.75rem, 2.8vw, 2.5rem);
+  border-radius: var(--panel-radius, 8px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: linear-gradient(175deg, #ffffff 0%, #fdfdfc 100%);
+  box-shadow: var(--shadow-raised);
+}
+
+.form {
+  display: grid;
+  gap: 1.05rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.field label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  color: var(--graphite);
+  font-size: 0.84rem;
+  font-weight: 560;
+}
+
+.optional {
+  color: var(--steel);
+  font-size: var(--label-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Filled, not outlined. The reference has no hard borders anywhere, and that
+   is most of why it reads as calm. */
+.field input,
+.field textarea {
+  width: 100%;
+  /* 0.75rem, not 0.8: the type grew from 0.95rem to 1rem so iOS Safari
+     stops zooming the page on focus, and the padding gives back the 2px so
+     the field keeps its 48px height. */
+  padding: 0.75rem 0.95rem;
+  border: 1px solid transparent;
+  border-radius: var(--panel-radius, 8px);
+  background: #f4f4f1;
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  transition:
+    background 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.field textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  /* --steel: these read as guidance, so they stay above 4.5:1 on the field. */
+  color: #5d6e75;
+}
+
+.field input:hover,
+.field textarea:hover {
+  background: #f0f0ec;
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: rgba(16, 33, 43, 0.28);
+  background: var(--mineral-light);
+  outline: none;
+}
+
+.field input[aria-invalid='true'],
+.field textarea[aria-invalid='true'] {
+  border-color: #8a6a52;
+  background: rgba(150, 83, 75, 0.05);
+}
+
+.fieldError {
+  margin: 0;
+  color: #7d5f48;
+  font-size: 0.8rem;
+}
+
+.formError {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--panel-radius, 8px);
+  background: rgba(150, 83, 75, 0.08);
+  color: #7d5f48;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.formError span:first-child {
+  flex-shrink: 0;
+  padding-top: 0.1rem;
+}
+
+.submit {
+
+  justify-self: start;
+
+  margin-top: 0.3rem;
+}
+
+.submit > span:first-child {
+  padding: 0.9rem 1.35rem;
+}
+
+.actionChamber {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.9rem;
+  border-left: 1px solid rgba(250, 249, 246, 0.2);
+}
+
+
+
+/* Success ---------------------------------------------------------------- */
+
+.state {
+  display: grid;
+  justify-items: start;
+  gap: 0.8rem;
+  padding: clamp(1.5rem, 3vw, 3rem) 0;
+}
+
+.stateIcon {
+  display: inline-flex;
+  padding: 0.55rem;
+  border-radius: 999px;
+  background: rgba(63, 106, 88, 0.1);
+  color: #5d7a63;
+}
+
+.stateTitle {
+  margin: 0;
+  font-family: var(--font-home-display), var(--font-outfit), sans-serif;
+  font-size: 1.6rem;
+  font-weight: 560;
+  letter-spacing: -0.04em;
+}
+
+.stateBody {
+  margin: 0;
+  color: #4f5f66;
+  font-size: 0.96rem;
+  line-height: 1.6;
+}
+
+.stateAction {
+  margin-top: 0.4rem;
+  padding: 0 0 0.3rem;
+  border: 0;
+  border-bottom: 1px solid var(--rule-strong);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 620;
+  cursor: pointer;
+}
+
+/* Responsive ------------------------------------------------------------- */
+
+@media (max-width: 899px) {
+  .stage {
+    min-height: 0;
+    padding-top: clamp(6rem, 18vw, 8rem);
+  }
+
+  .panel {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'head'
+      'details'
+      'card';
+    gap: 2rem;
+    padding: clamp(1.75rem, 5vw, 2.5rem);
+    border-radius: var(--panel-radius, 8px);
+  }
+}
+
+@media (max-width: 767px) {
+  .stage {
+    padding-inline: 1rem;
+  }
+
+  .submit {
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+@media (max-width: 599px) {
+  .stage {
+    padding-block: clamp(5.75rem, 22vw, 6.5rem)
+      clamp(3.5rem, 14vw, 4.5rem);
+    padding-inline: max(1.25rem, env(safe-area-inset-left))
+      max(1.25rem, env(safe-area-inset-right));
+  }
+
+  .panel {
+    gap: 2rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .card {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .title {
+    max-width: 10ch;
+    font-size: clamp(2.5rem, 12vw, 2.625rem);
+    line-height: 1.02;
+  }
+
+  .lead,
+  .whoNote,
+  .stateBody,
+  .formError {
+    font-size: 1rem;
+  }
+
+  .lead {
+    margin-top: 1rem;
+    line-height: 1.58;
+  }
+
+  .who {
+    padding-top: 1.25rem;
+  }
+
+  .whoNote {
+    margin-top: 0.45rem;
+    line-height: 1.55;
+  }
+
+  .channels {
+    gap: 0;
+    margin-top: 1.25rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .channels li {
+    min-height: 4.5rem;
+    padding-block: 0.9rem;
+  }
+
+  .form {
+    gap: 1.2rem;
+  }
+
+  .field input,
+  .field textarea {
+    min-height: 3.25rem;
+  }
+
+  .field textarea {
+    min-height: 8.5rem;
+  }
+
+  .fieldError {
+    font-size: 0.875rem;
+  }
+
+  .state {
+    padding-block: 1.5rem;
+  }
+
+  .stateAction {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    padding-block: 0.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page *,
+  .page *::before,
+  .page *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
