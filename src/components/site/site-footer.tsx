@@ -20,7 +20,6 @@ export const footerSignposts = [
 ] as const
 
 const LINKEDIN_URL = 'https://www.linkedin.com/in/ulysses-williams-2379634/'
-const MAP_URL = 'https://www.google.com/maps/place/San+Francisco,+CA'
 
 const iconProps = {
   viewBox: '0 0 24 24',
@@ -105,12 +104,6 @@ export function SiteFooter() {
               <svg {...iconProps}>
                 <rect x="3.5" y="3.5" width="17" height="17" rx="3" />
                 <path d="M8 10.5V16M8 8v.01M12 16v-3.2a2.3 2.3 0 0 1 4.6 0V16M12 10.5V16" />
-              </svg>
-            </a>
-            <a href={MAP_URL} target="_blank" rel="noopener noreferrer" aria-label="San Francisco on the map (opens in a new tab)" title="San Francisco">
-              <svg {...iconProps}>
-                <path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z" />
-                <circle cx="12" cy="10" r="2.3" />
               </svg>
             </a>
           </div>

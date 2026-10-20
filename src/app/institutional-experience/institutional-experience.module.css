@@ -460,16 +460,14 @@
     justify-content: space-between;
   }
 
-  .linkedin {
+  /*
+   * The phone hero ends on the one action. LinkedIn lives in the footer, and
+   * the credential rows repeat the lede, so both step aside. Two classes so
+   * the global .tl display cannot win on source order.
+   */
+  .actions .linkedin,
+  .copy .cr {
     display: none;
-  }
-
-  .cr {
-    margin-top: 26px;
-  }
-
-  .cr dd {
-    font-size: 14px;
   }
 
   .h2,

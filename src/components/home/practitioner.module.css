@@ -433,11 +433,28 @@
     display: flex;
   }
 
+  /* Two secondary slabs under the primary, side by side; they stack when narrow. */
   .phoneLinks {
-    display: flex;
-    justify-content: center;
-    gap: 22px;
-    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .phoneLinks .phoneSecondary {
+    height: 48px;
+    color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--rule2);
+    font-size: 11.5px;
+  }
+
+  .phoneLinks .phoneSecondary > span {
+    padding: 0 16px;
+  }
+
+  .phoneLinks .phoneSecondary > i {
+    width: 44px;
+    border-color: var(--rule2);
   }
 }
 

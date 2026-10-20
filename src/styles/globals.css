@@ -312,11 +312,6 @@
 
 /* Mobile touch states: replace hover with active on touch devices */
 @media (hover: none) and (pointer: coarse) {
-  /* Ensure tap targets are accessible, scoped to standalone controls, not inline links */
-  button, [role="button"], input, select, textarea {
-    min-height: 44px;
-  }
-
   /* Remove hover-dependent effects on mobile */
   .link-underline:hover::after,
   .link-underline-ltr:hover::after {

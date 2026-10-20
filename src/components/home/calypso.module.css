@@ -374,9 +374,17 @@
     background: transparent;
     box-shadow: inset 0 0 0 1.5px #4a5960;
     cursor: pointer;
+    /* Stays a 10px dot; the tap area is the invisible ring below. */
+    min-height: 0;
     transition:
       background 0.4s,
       box-shadow 0.4s;
+  }
+
+  .stDot::after {
+    content: '';
+    position: absolute;
+    inset: -14px;
   }
 
   .stDot[data-state='done'] {

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { CONTACT_HREF, Eyebrow, Section, SlabButton, TextLink } from '@/components/site'
+import { CONTACT_HREF, Eyebrow, Section, SlabButton } from '@/components/site'
 import { homepageContent } from '@/lib/homepage-content'
 import styles from './practitioner.module.css'
 
@@ -110,11 +110,13 @@ export function HomePractitioner() {
             </SlabButton>
           </div>
           <div className={styles.phoneLinks}>
-            <TextLink href={p.experienceHref}>{p.experienceCta.phone}</TextLink>
-            <TextLink href={linkedin} arrow="↗" target="_blank" rel="noopener noreferrer">
+            <SlabButton href={p.experienceHref} variant="ghost" arrow="→" block className={styles.phoneSecondary}>
+              {p.experienceCta.phone}
+            </SlabButton>
+            <SlabButton href={linkedin} variant="ghost" arrow="↗" block external className={styles.phoneSecondary}>
               {p.linkedinCta}
               <span className="sr-only"> (opens in a new tab)</span>
-            </TextLink>
+            </SlabButton>
           </div>
         </div>
       </article>

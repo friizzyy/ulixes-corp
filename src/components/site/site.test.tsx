@@ -152,6 +152,7 @@ describe('SiteFooter', () => {
     const linkedin = screen.getByRole('link', { name: /LinkedIn/ })
     expect(linkedin).toHaveAttribute('target', '_blank')
     expect(linkedin).toHaveAttribute('rel', 'noopener noreferrer')
+    expect(screen.queryByRole('link', { name: /map/i })).toBeNull()
   })
 })
 
