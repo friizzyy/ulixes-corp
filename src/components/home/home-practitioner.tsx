@@ -113,7 +113,7 @@ export function HomePractitioner() {
             <SlabButton href={p.experienceHref} variant="ghost" arrow="→" block className={styles.phoneSecondary}>
               {p.experienceCta.phone}
             </SlabButton>
-            <SlabButton href={linkedin} variant="ghost" arrow="↗" block external className={styles.phoneSecondary}>
+            <SlabButton href={linkedin} variant="ghost" arrow="→" block external className={styles.phoneSecondary}>
               {p.linkedinCta}
               <span className="sr-only"> (opens in a new tab)</span>
             </SlabButton>
