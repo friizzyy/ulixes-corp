@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import type { LifecycleStage } from '@/lib/homepage-content'
+import { useLiveStage } from './live-stage'
 import styles from './calypso.module.css'
 
 /* Lane of each stage (0 front, 1 middle, 2 back) and its y in the 234px plot. */
@@ -33,6 +34,13 @@ export function LifecycleLive({ stages, lanes, label }: LifecycleLiveProps) {
   /* Until the visitor chooses, playback follows the motion preference. */
   const running = playing ?? reduced === false
   const count = stages.length
+  const live = useLiveStage()
+  const report = live?.setIndex
+
+  /* Tell the band which stage is showing, so its button can carry it. */
+  useEffect(() => {
+    report?.(current)
+  }, [current, report])
 
   useEffect(() => {
     if (!running) return

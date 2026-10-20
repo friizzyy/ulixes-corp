@@ -99,7 +99,7 @@ export default function InstitutionalExperiencePage() {
       </Section>
 
       {/* 03: Where the work has happened */}
-      <Section className={styles.inst} aria-labelledby="institutions-title">
+      <Section id="institutions" className={styles.inst} aria-labelledby="institutions-title">
         <Eyebrow centred>{institutions.eyebrow}</Eyebrow>
         <h2 id="institutions-title" className={`d ${styles.h2} ${styles.h2c}`}>
           {institutions.headlineLead} <span className="s">{institutions.headlineTurn}</span>

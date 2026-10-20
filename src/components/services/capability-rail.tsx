@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
+import { GLIDE_DELAY_MS, glideTo } from '@/components/site'
 import styles from './capabilities.module.css'
 
 const cardsOf = (rail: HTMLElement | null) =>
@@ -67,32 +68,39 @@ export function CapabilityRail({ children, titles }: CapabilityRailProps) {
   }, [])
 
   /*
-   * A link to one capability (/services#trading, from the home index or the
-   * hero bar) opens on that card. The page scroll is the browser's; on the
-   * phone this also centres the card in the sideways track, after the
-   * browser has landed, so the two scrolls do not fight.
+   * A link to one capability opens on that card. From another page it comes
+   * as /services?card=trading: the page opens at the top as usual, the phone
+   * track quietly centres the card while it is still off screen, and then
+   * the page glides the card to the middle of the screen and rings it. The
+   * hero bar's in-page #trading links keep the browser's own smooth scroll.
    */
   useEffect(() => {
-    let frame = 0
-    const open = () => {
-      const id = decodeURIComponent(window.location.hash.slice(1))
-      const index = cardsOf(railRef.current).findIndex((card) => card.id === id)
-      if (index < 0) return
-      cancelAnimationFrame(frame)
-      frame = requestAnimationFrame(() => {
-        show(index, true)
-        // A brief ring on the card the reader asked for (desktop shows all four).
-        const card = cardsOf(railRef.current)[index]
-        card.removeAttribute('data-landed')
-        void card.offsetWidth
-        card.setAttribute('data-landed', '')
-      })
+    const ring = (card: HTMLElement) => {
+      card.removeAttribute('data-landed')
+      void card.offsetWidth
+      card.setAttribute('data-landed', '')
     }
-    open()
-    window.addEventListener('hashchange', open)
+    const indexOf = (id: string | null) => cardsOf(railRef.current).findIndex((card) => card.id === id)
+    const timers: number[] = []
+
+    const arrived = indexOf(new URLSearchParams(window.location.search).get('card'))
+    if (arrived >= 0) {
+      show(arrived, true)
+      const card = cardsOf(railRef.current)[arrived]
+      timers.push(window.setTimeout(() => glideTo(card), GLIDE_DELAY_MS))
+      timers.push(window.setTimeout(() => ring(card), GLIDE_DELAY_MS + 520))
+    }
+
+    const onHash = () => {
+      const index = indexOf(decodeURIComponent(window.location.hash.slice(1)))
+      if (index < 0) return
+      show(index)
+      ring(cardsOf(railRef.current)[index])
+    }
+    window.addEventListener('hashchange', onHash)
     return () => {
-      cancelAnimationFrame(frame)
-      window.removeEventListener('hashchange', open)
+      timers.forEach((t) => window.clearTimeout(t))
+      window.removeEventListener('hashchange', onHash)
     }
   }, [show])
 

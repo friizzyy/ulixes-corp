@@ -138,6 +138,53 @@
   border-left: 1px solid var(--rule);
 }
 
+/* A fact that leads somewhere: the whole card is the link (its value's ::after). */
+.factLinked {
+  position: relative;
+  transition: background 0.35s;
+}
+
+.factLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.factLink:focus-visible {
+  outline: none;
+}
+
+.factLinked:has(.factLink:focus-visible) {
+  outline: 2px solid var(--ink);
+  outline-offset: -4px;
+  border-radius: 8px;
+}
+
+.factLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.factArrow {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0;
+  color: var(--steel);
+  transition: transform 0.5s var(--ease), color 0.3s;
+}
+
+@media (hover: hover) {
+  .factLinked:hover {
+    background: rgba(233, 239, 241, 0.55);
+  }
+
+  .factLinked:hover .factArrow {
+    transform: translateX(3px);
+    color: var(--ink);
+  }
+}
+
 .factLabel {
   font-size: 10px;
   line-height: 24px;

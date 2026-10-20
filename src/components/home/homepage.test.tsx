@@ -110,7 +110,7 @@ describe('Homepage', () => {
       .getAllByRole('link')
       .filter((link) => services.items.some((item) => link.textContent?.includes(item.title)))
     expect(rows).toHaveLength(4)
-    rows.forEach((row, i) => expect(row).toHaveAttribute('href', `/services#${services.items[i].id}`))
+    rows.forEach((row, i) => expect(row).toHaveAttribute('href', `/services?card=${services.items[i].id}`))
     services.items.forEach((item, i) => {
       expect(rows[i]).toHaveTextContent(item.number)
       expect(rows[i]).toHaveTextContent(item.scope)
@@ -159,9 +159,10 @@ describe('Homepage', () => {
     })
     expect(stage('Ledger')).toHaveAttribute('aria-current', 'step')
 
+    // The band's button carries the stage it is showing to the Calypso lifecycle.
     expect(within(region).getByRole('link', { name: calypso.cta })).toHaveAttribute(
       'href',
-      '/nasdaq-calypso',
+      '/nasdaq-calypso?stage=ledger',
     )
   })
 

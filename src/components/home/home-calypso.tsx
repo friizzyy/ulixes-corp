@@ -1,6 +1,7 @@
-import { Eyebrow, Section, SlabButton } from '@/components/site'
+import { Eyebrow, Section } from '@/components/site'
 import { homepageContent } from '@/lib/homepage-content'
 import { LifecycleLive } from './lifecycle-live'
+import { CalypsoStageLink, LiveStageProvider } from './live-stage'
 import styles from './calypso.module.css'
 
 /* 03-calteaser: the ink Calypso band with the live lifecycle. */
@@ -10,6 +11,7 @@ export function HomeCalypso() {
   return (
     <Section wrap={false} className={styles.section} aria-labelledby="home-calypso-title">
       <div className={styles.band}>
+        <LiveStageProvider>
         <div className={`wrap ${styles.grid}`}>
           <div>
             <Eyebrow className={styles.eyebrow}>{calypso.eyebrow}</Eyebrow>
@@ -29,18 +31,19 @@ export function HomeCalypso() {
               ))}
             </dl>
             <div className={styles.deskCta}>
-              <SlabButton href={calypso.href} variant="light" arrow="→">
+              <CalypsoStageLink href={calypso.href} stages={calypso.stages}>
                 {calypso.cta}
-              </SlabButton>
+              </CalypsoStageLink>
             </div>
           </div>
           <LifecycleLive stages={calypso.stages} lanes={calypso.lanes} label={calypso.diagramLabel} />
           <div className={styles.phoneCta}>
-            <SlabButton href={calypso.href} variant="light" arrow="→" block>
+            <CalypsoStageLink href={calypso.href} stages={calypso.stages} block>
               {calypso.cta}
-            </SlabButton>
+            </CalypsoStageLink>
           </div>
         </div>
+        </LiveStageProvider>
       </div>
     </Section>
   )

@@ -1,7 +1,7 @@
 'use client'
 
-import { useCallback, useRef, useState, type KeyboardEvent } from 'react'
-import { Eyebrow, SlabButton } from '@/components/site'
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react'
+import { Eyebrow, GLIDE_DELAY_MS, SlabButton, glideTo } from '@/components/site'
 import { calypsoLifecycle, calypsoOffices, calypsoStages, pad2 } from '@/lib/calypso-content'
 import styles from './lifecycle-chain.module.css'
 
@@ -32,6 +32,8 @@ export function LifecycleChain() {
   const [broken, setBroken] = useState(0)
   const [visible, setVisible] = useState(0)
   const rail = useRef<HTMLDivElement>(null)
+  const desk = useRef<HTMLDivElement>(null)
+  const phone = useRef<HTMLDivElement>(null)
   const inherit = LAST - broken
   const stage = calypsoStages[broken]
 
@@ -42,6 +44,29 @@ export function LifecycleChain() {
     const step = first.offsetWidth + 10
     const index = Math.min(LAST, Math.max(0, Math.round(el.scrollLeft / step)))
     setVisible(index)
+  }, [])
+
+  /*
+   * Arriving from the home band (/nasdaq-calypso?stage=collateral)
+   * opens the chain already broken at that stage, and on the phone the rail
+   * starts on its card. The slug is the stage name, lower-cased and hyphened,
+   * the same form the home band writes.
+   */
+  useEffect(() => {
+    const wanted = new URLSearchParams(window.location.search).get('stage')
+    if (!wanted) return
+    const index = calypsoStages.findIndex((s) => s.name.toLowerCase().replace(/\s+/g, '-') === wanted)
+    if (index < 0) return
+    setBroken(index)
+    setVisible(index)
+    const el = rail.current
+    const card = el?.children[index] as HTMLElement | undefined
+    if (el && card) el.scrollLeft = card.offsetLeft - (el.firstElementChild as HTMLElement).offsetLeft
+    /* Then glide the chain (whichever layout is showing) to the middle of the screen. */
+    const view = [desk.current, phone.current].find((v) => v && v.offsetParent)
+    if (!view) return
+    const timer = window.setTimeout(() => glideTo(view), GLIDE_DELAY_MS)
+    return () => window.clearTimeout(timer)
   }, [])
 
   const state = (j: number) => (j === broken ? 'broken' : j > broken ? 'inherits' : 'clear')
@@ -63,7 +88,7 @@ export function LifecycleChain() {
       </div>
 
       {/* Desktop and tablet */}
-      <div className={styles.desk} data-testid="lifecycle-desk">
+      <div ref={desk} className={styles.desk} data-testid="lifecycle-desk">
         <div className={styles.bands} aria-hidden="true">
           {calypsoOffices.map((office) => (
             <span key={office}>{office.toUpperCase()}</span>
@@ -113,7 +138,7 @@ export function LifecycleChain() {
       </div>
 
       {/* Phone */}
-      <div className={styles.phone} data-testid="lifecycle-phone">
+      <div ref={phone} className={styles.phone} data-testid="lifecycle-phone">
         <div
           className={styles.rl}
           ref={rail}

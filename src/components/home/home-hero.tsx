@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Brand, CONTACT_HREF, Eyebrow, Section, SlabButton, TextLink } from '@/components/site'
 import { homepageContent } from '@/lib/homepage-content'
 import { HeroMedia } from './hero-media'
@@ -48,9 +49,24 @@ export function HomeHero() {
 
       <dl className={styles.dock}>
         {facts.map((fact) => (
-          <div key={fact.label} className={styles.fact}>
-            <dt className={styles.factLabel}>{fact.label}</dt>
-            <dd className={styles.factValue}>{fact.value}</dd>
+          <div key={fact.label} className={`${styles.fact} ${fact.href ? styles.factLinked : ''}`}>
+            <dt className={styles.factLabel}>
+              {fact.label}
+              {fact.href ? (
+                <span className={styles.factArrow} aria-hidden="true">
+                  →
+                </span>
+              ) : null}
+            </dt>
+            <dd className={styles.factValue}>
+              {fact.href ? (
+                <Link href={fact.href} className={styles.factLink}>
+                  {fact.value}
+                </Link>
+              ) : (
+                fact.value
+              )}
+            </dd>
             <dd className={styles.factDetail}>{fact.detail}</dd>
           </div>
         ))}
