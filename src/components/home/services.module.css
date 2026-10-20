@@ -1,0 +1,272 @@
+/* Services index: docs/build-spec/home/02-svteaser-desk.html and -ph.html. */
+
+.head {
+  margin-bottom: 36px;
+  text-align: center;
+}
+
+.title {
+  font-size: 52px;
+  margin: 16px auto 0;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.intro p {
+  max-width: 62ch;
+  margin: 0;
+  color: var(--graphite);
+}
+
+.listWrap {
+  position: relative;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--ink);
+}
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 70px 1fr 380px 40px;
+  align-items: center;
+  gap: 24px;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--rule2);
+  color: var(--ink);
+}
+
+.txt {
+  display: contents;
+}
+
+.thumb {
+  display: none;
+}
+
+.num {
+  color: var(--steel);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-weight: 520;
+  font-size: 40px;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--graphite);
+  transition:
+    color 0.4s,
+    transform 0.7s var(--ease);
+}
+
+.scope {
+  font-size: 14px;
+  color: var(--steel);
+}
+
+.arrow {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--steel);
+  transition:
+    transform 0.6s var(--ease),
+    color 0.3s;
+}
+
+.phoneArrow {
+  display: none;
+}
+
+.row:focus-visible {
+  outline-offset: 0;
+}
+
+.row:hover .name,
+.row:focus-visible .name {
+  color: var(--ink);
+  transform: translateX(14px);
+}
+
+.row:hover .arrow,
+.row:focus-visible .arrow {
+  transform: translate(4px, -4px);
+  color: var(--ink);
+}
+
+/* The photograph that follows the hovered row. */
+.pic {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  right: 120px;
+  width: 240px;
+  height: 150px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 30px 50px -24px rgba(16, 33, 43, 0.6);
+  opacity: 0;
+  transform: scale(0.92) rotate(-2deg);
+  transition:
+    opacity 0.35s,
+    transform 0.6s var(--ease),
+    top 0.5s var(--ease);
+  pointer-events: none;
+}
+
+.picImage {
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+}
+
+.picImage[data-active='true'] {
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .listWrap:hover .pic[data-placed='true'] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.listWrap:has(.row:focus-visible) .pic[data-placed='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+.phoneCta {
+  display: none;
+}
+
+/* ---- Tablet ---------------------------------------------------------------- */
+@media (min-width: 768px) and (max-width: 1099px) {
+  .title {
+    font-size: clamp(34px, 4.6vw, 50px);
+    white-space: normal;
+  }
+
+  .row {
+    grid-template-columns: 44px 1fr minmax(170px, 34%) 24px;
+    gap: 20px;
+    padding: 26px 0;
+  }
+
+  .name {
+    font-size: clamp(26px, 3.4vw, 36px);
+    line-height: 1.05;
+  }
+
+  .scope {
+    font-size: 13px;
+  }
+
+  .pic {
+    right: 40px;
+    width: 200px;
+    height: 125px;
+  }
+}
+
+/* ---- Phone ------------------------------------------------------------------ */
+@media (max-width: 767px) {
+  .head {
+    margin-bottom: 22px;
+  }
+
+  .title {
+    font-size: 31px;
+    margin-top: 12px;
+    white-space: normal;
+  }
+
+  .title :global(.s) {
+    display: block;
+  }
+
+  .intro {
+    display: none;
+  }
+
+  .row {
+    grid-template-columns: 76px 1fr 18px;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .thumb {
+    display: block;
+    width: 76px;
+    height: 60px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  .txt {
+    display: block;
+    min-width: 0;
+  }
+
+  .num {
+    display: block;
+  }
+
+  .name {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+    margin-top: 2px;
+    color: var(--ink);
+  }
+
+  .scope,
+  .deskArrow,
+  .pic {
+    display: none;
+  }
+
+  .phoneArrow {
+    display: inline;
+  }
+
+  .arrow {
+    font-size: 15px;
+  }
+
+  .row:hover .name,
+  .row:focus-visible .name {
+    transform: none;
+  }
+
+  .phoneCta {
+    display: block;
+    margin-top: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .name,
+  .arrow,
+  .pic {
+    transition: none;
+  }
+}

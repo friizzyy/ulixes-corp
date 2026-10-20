@@ -14,7 +14,7 @@ export function TextLink({ children, arrow = '→', className, ...rest }: TextLi
     <Link {...rest} className={['tl', className ?? ''].filter(Boolean).join(' ')}>
       <span>
         {children}
-        {arrow ? <span aria-hidden="true">{` ${arrow}`}</span> : null}
+        {arrow ? <span className="tl-ar" aria-hidden="true">{` ${arrow}`}</span> : null}
       </span>
     </Link>
   )

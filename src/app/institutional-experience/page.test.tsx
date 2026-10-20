@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import {
   institutionalExperienceContent,
@@ -8,354 +8,79 @@ import {
 } from '@/lib/institutional-experience-content'
 import ExperiencePage from './page'
 
-const { principles } = institutionalExperienceContent
-const experienceStyles = readFileSync(
-  resolve(
-    process.cwd(),
-    'src/app/institutional-experience/institutional-experience.module.css',
-  ),
-  'utf8',
-)
-const mobileReaderStyles = readFileSync(
-  resolve(
-    process.cwd(),
-    'src/components/experience/mobile-institution-reader.module.css',
-  ),
+const { hero, institutions, positions } = institutionalExperienceContent
+const css = readFileSync(
+  resolve(process.cwd(), 'src/app/institutional-experience/institutional-experience.module.css'),
   'utf8',
 )
 
-describe('institutional experience route', () => {
-  it('composes the phone hero as a split portrait with actions below', () => {
+describe('institutional experience page', () => {
+  it('renders the staged portrait hero with the two-line headline and credentials', () => {
     render(<ExperiencePage />)
-    const hero = screen.getByRole('region', {
-      name: 'Inside the institutions. Not alongside them.',
-    })
-    const primaryAction = within(hero).getByRole('link', {
-      name: 'Discuss a mandate',
-    })
-    const portrait = within(hero).getByRole('img', {
-      name: practitionerPortrait.alt,
-    })
-    const split = hero.querySelector('[data-mobile-layout="split-portrait"]')
+    const h1 = screen.getByRole('heading', { level: 1 })
+    expect(h1).toHaveTextContent('Inside the institutions. Not alongside them.')
+    expect(h1.querySelector('.s')).toHaveTextContent('Not alongside them.')
 
-    expect(hero).toHaveAttribute('data-mobile-flow', 'editorial-split')
-    expect(split).not.toBeNull()
-    expect(split).toContainElement(portrait)
-    expect(portrait.compareDocumentPosition(primaryAction)).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING,
-    )
-  })
-
-  it('composes one institutional threshold from the hall and portrait', () => {
-    const { container } = render(<ExperiencePage />)
-
-    const compositions = container.querySelectorAll(
-      '[data-depth-composition="institutional-threshold"]',
-    )
-    expect(compositions).toHaveLength(1)
-
-    const threshold = compositions[0] as HTMLElement
-    const portrait = within(threshold).getByRole('img', {
-      name: practitionerPortrait.alt,
-    })
-    const primaryAction = within(threshold).getByRole('link', {
-      name: 'Discuss a mandate',
-    })
-
-    expect(threshold.querySelectorAll('img')).toHaveLength(2)
-    expect(portrait.compareDocumentPosition(primaryAction)).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING,
-    )
-    expect(
-      threshold.querySelector('[data-depth-plane="recessed-architecture"]'),
-    ).not.toBeNull()
-    expect(
-      threshold.querySelector('[data-depth-plane="raised-portrait"]'),
-    ).not.toBeNull()
-  })
-
-  it('leads with the practitioner and a single first-level heading', () => {
-    const { container } = render(<ExperiencePage />)
-
-    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
-    const heading = screen.getByRole('heading', {
-      level: 1,
-      name: 'Inside the institutions. Not alongside them.',
-    })
-    const introduction = screen.getByRole('region', {
-      name: 'Inside the institutions. Not alongside them.',
-    })
-
-    /*
-     * The statistics row that used to sit here is gone. All four of its cells
-     * previewed a section below it, so the page stated every fact twice before
-     * it had said anything once.
-     */
-    expect(
-      screen.queryByRole('list', { name: 'Institutional experience summary' }),
-    ).not.toBeInTheDocument()
-
-    expect(within(introduction).getByText('President')).toBeInTheDocument()
-    expect(
-      within(introduction).getByText('Calypso subject-matter expert'),
-    ).toBeInTheDocument()
-    expect(
-      within(introduction).getByRole('link', { name: 'Discuss a mandate' }),
-    ).toHaveAttribute('href', '/contact')
-
-    // The only external verification path on the site.
-    const linkedin = within(introduction).getByRole('link', { name: /LinkedIn/ })
-    expect(linkedin).toHaveAttribute(
+    const heroSection = screen.getByRole('region', { name: /Inside the institutions/ })
+    expect(within(heroSection).getByRole('img', { name: practitionerPortrait.alt })).toBeInTheDocument()
+    expect(within(heroSection).getByRole('link', { name: /Discuss a mandate/ })).toHaveAttribute(
       'href',
-      'https://www.linkedin.com/in/ulysses-williams-2379634/',
+      '/contact',
     )
-    // Opens a new tab, and says so to a screen reader.
+    const linkedin = within(heroSection).getByRole('link', { name: /View on LinkedIn/ })
+    expect(linkedin).toHaveAttribute('href', hero.linkedinUrl)
     expect(linkedin).toHaveAttribute('target', '_blank')
-    expect(linkedin).toHaveAccessibleName(/\(opens in a new tab\)$/)
 
-    expect(container.textContent).not.toContain('—')
-  })
-
-  it('does not restate the homepage credentials', () => {
-    render(<ExperiencePage />)
-
-    /*
-     * The scope section is gone. It was eleven short labels with no room for
-     * depth, and both of its facts belong to the homepage authority dock:
-     * this page owns the sector taxonomy and the six positions instead.
-     */
-    for (const retired of [
-      'Operating office perspective',
-      'Regional delivery experience',
-      'Institutional experience summary',
-      'Programs and scope',
-    ]) {
-      expect(screen.queryByRole('list', { name: retired })).not.toBeInTheDocument()
+    for (const item of hero.credentials) {
+      expect(within(heroSection).getByText(item.label)).toBeInTheDocument()
+      expect(within(heroSection).getByText(item.value)).toBeInTheDocument()
     }
-
-    expect(screen.queryByRole('table')).not.toBeInTheDocument()
-    expect(document.querySelector('[data-mobile-layout="carousel"]')).toBeNull()
+    expect(within(heroSection).getByText(hero.role)).toBeInTheDocument()
   })
 
-  it('keeps the page concise and closes with a direct inquiry', () => {
+  it('lists the seven institutions on desktop, ending on the dark summary tile', () => {
     render(<ExperiencePage />)
+    const section = screen.getByRole('region', { name: /Seven kinds of institution/ })
+    const eyebrow = within(section).getByText(institutions.eyebrow)
+    expect(eyebrow).toHaveClass('eb', 'eb-c')
 
-    const principles = screen.getByRole('region', {
-      name: 'Six positions the work is built on.',
-    })
-    expect(
-      within(principles).getByRole('list', {
-        name: 'Ulixes delivery principles',
-      }),
-    ).toBeInTheDocument()
-
-    /*
-     * This page has its own close. The homepage, expertise and experience
-     * pages all ended on the identical shared sentence.
-     */
-    const contact = screen.getByRole('region', {
-      name: 'Put that experience against the decision.',
-    })
-    expect(
-      within(contact).getByRole('link', { name: 'Discuss a mandate' }),
-    ).toHaveAttribute('href', '/contact')
-    expect(
-      within(contact).getByRole('link', { name: 'admin@ulixescorp.com' }),
-    ).toHaveAttribute('href', 'mailto:admin@ulixescorp.com')
-
-    // Guards against this page drifting back onto the shared closing line.
-    expect(
-      screen.queryByText('Start with the mandate.'),
-    ).not.toBeInTheDocument()
-
-    expect(
-      screen.queryByRole('navigation', { name: 'Experience page index' }),
-    ).not.toBeInTheDocument()
+    const names = within(section)
+      .getAllByRole('heading', { level: 3 })
+      .map((h) => h.textContent)
+    expect(names).toEqual(institutions.categories.map((c) => c.name))
+    expect(within(section).getByRole('article', { name: '7 Kinds of institution' })).toBeInTheDocument()
   })
 
-  it('publishes the seven institution types', () => {
-    const { container } = render(<ExperiencePage />)
-
-    /*
-     * Restored from the pre-redesign site, where it was the most specific
-     * material anywhere on it, and lost in the rebuild. Naming institution
-     * types breaks no guardrail because no client is identified.
-     */
-    const sectors = screen.getByRole('list', { name: 'Institution types' })
-    expect(
-      container.querySelector('[data-depth-plane="recessed-institution-shelf"]'),
-    ).toContainElement(sectors)
-    expect(within(sectors).getAllByRole('listitem')).toHaveLength(7)
-    for (const sector of [
-      'Global systemically important banks',
-      'Farm credit and agricultural lending',
-      'Brokerage and clearing platforms',
-    ]) {
-      expect(within(sectors).getByText(sector)).toBeInTheDocument()
-    }
-
-
-    // Recovered from the retired /philosophy page.
-    const principles = screen.getByRole('list', {
-      name: 'Ulixes delivery principles',
-    })
-    expect(within(principles).getAllByRole('listitem')).toHaveLength(6)
-    expect(
-      within(principles).getByText('Control is the outcome'),
-    ).toBeInTheDocument()
-  })
-
-  it('offers the six working positions as a one-open phone disclosure', () => {
+  it('carries a phone swipe rail with one progress dash per card', () => {
     render(<ExperiencePage />)
-    const disclosure = screen.getByRole('region', { name: 'Working positions' })
-    const controls = within(disclosure).getAllByRole('button')
-    const desktopPositions = screen.getByRole('list', {
-      name: 'Ulixes delivery principles',
-    })
-
-    expect(desktopPositions).toHaveAttribute('data-visible-from', '896px')
-    expect(disclosure.closest('[data-visible-through]')).toHaveAttribute(
-      'data-visible-through',
-      '895px',
-    )
-    expect(controls).toHaveLength(6)
-    expect(controls[0]).toHaveAttribute('aria-expanded', 'true')
-    expect(within(disclosure).getByText(principles.items[0].description)).toBeVisible()
-
-    fireEvent.click(controls[1])
-    expect(controls[0]).toHaveAttribute('aria-expanded', 'false')
-    expect(controls[1]).toHaveAttribute('aria-expanded', 'true')
-    expect(within(disclosure).getByText(principles.items[1].description)).toBeVisible()
-    expect(
-      within(disclosure).queryByText(principles.items[0].description),
-    ).not.toBeInTheDocument()
-
-    fireEvent.click(controls[1])
-    expect(controls[1]).toHaveAttribute('aria-expanded', 'true')
-    expect(within(disclosure).getByText(principles.items[1].description)).toBeVisible()
+    const rail = screen.getByRole('region', { name: 'Kinds of institution', hidden: true })
+    const dashes = within(rail).getAllByRole('button', { hidden: true })
+    expect(dashes).toHaveLength(institutions.categories.length + 1)
+    expect(dashes[0]).toHaveAttribute('aria-current', 'true')
   })
 
-  it('separates the touch reader from the desktop carousel at 895/896', () => {
+  it('sets the six positions as a register and as a phone accordion', () => {
     render(<ExperiencePage />)
-    const reader = screen.getByRole('region', { name: 'Institution reader' })
-    const carousel = screen.getByRole('list', { name: 'Institution types' })
+    const section = screen.getByRole('region', { name: /Six positions/ })
+    const items = within(section).getAllByRole('listitem')
+    expect(items).toHaveLength(6)
+    expect(items[0]).toHaveTextContent(positions.items[0].title)
 
-    expect(reader).toHaveAttribute('data-visible-through', '895px')
-    expect(carousel.closest('[data-visible-from]')).toHaveAttribute(
-      'data-visible-from',
-      '896px',
-    )
+    const triggers = within(section).getAllByRole('button', { hidden: true })
+    expect(triggers).toHaveLength(6)
+    expect(triggers[0]).toHaveAttribute('aria-expanded', 'true')
+    expect(triggers[1]).toHaveAttribute('aria-expanded', 'false')
   })
 
-  it('keeps phone institution and closing prose at the 16px reading floor', () => {
-    const experiencePhoneStyles = experienceStyles.slice(
-      experienceStyles.lastIndexOf('@media (max-width: 895px)'),
-    )
-
-    expect(experiencePhoneStyles).toMatch(
-      /\.closeBody,\s*\.closeResponse\s*\{[^}]*font-size:\s*1rem/,
-    )
-    expect(mobileReaderStyles).toMatch(
-      /\.description\s*\{[^}]*font-size:\s*1rem/,
-    )
+  it('closes on the brief card with this page’s headline', () => {
+    render(<ExperiencePage />)
+    const h2 = screen.getByRole('heading', { level: 2, name: /Put that experience/ })
+    expect(h2.querySelector('.s')).toHaveTextContent('against the decision.')
   })
 
-  it('centers the Working Positions title group without centering its scan content', () => {
-    const { container } = render(<ExperiencePage />)
-    const centeredIntros = container.querySelectorAll(
-      '[data-heading-composition="centered"]',
-    )
-    const principlesRegion = screen.getByRole('region', {
-      name: 'Six positions the work is built on.',
-    })
-    const desktopPositions = within(principlesRegion).getByRole('list', {
-      name: 'Ulixes delivery principles',
-    })
-    const mobilePositions = within(principlesRegion).getByRole('region', {
-      name: 'Working positions',
-    })
-    const desktopHeader = experienceStyles.slice(
-      experienceStyles.indexOf('.chapterHead {'),
-      experienceStyles.indexOf('/*\n * Two columns, three rows.'),
-    )
-    const touchRules = experienceStyles.slice(
-      experienceStyles.lastIndexOf('@media (max-width: 895px)'),
-    )
-
-    expect(centeredIntros).toHaveLength(1)
-    expect(centeredIntros[0]).toContainElement(
-      within(principlesRegion).getByText('Working perspective', {
-        selector: 'p',
-      }),
-    )
-    expect(centeredIntros[0]).toContainElement(
-      within(principlesRegion).getByRole('heading', {
-        level: 2,
-        name: 'Six positions the work is built on.',
-      }),
-    )
-    expect(centeredIntros[0]).not.toContainElement(desktopPositions)
-    expect(centeredIntros[0]).not.toContainElement(mobilePositions)
-    expect(experienceStyles).not.toContain('@media (max-width: 899px)')
-    expect(desktopHeader).toMatch(
-      /\.chapterHead\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)\s+minmax\(0,\s*2fr\)\s+minmax\(0,\s*1fr\)/,
-    )
-    expect(desktopHeader).toMatch(
-      /\.chapterHead\s+\.marginLabel\s*\{[\s\S]*?grid-column:\s*2[\s\S]*?text-align:\s*center/,
-    )
-    expect(desktopHeader).toMatch(
-      /\.chapterTitle\s*\{[\s\S]*?grid-column:\s*2[\s\S]*?text-align:\s*center/,
-    )
-    expect(touchRules).toMatch(
-      /\.chapterHead\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)/,
-    )
-    expect(touchRules).toMatch(
-      /\.chapterHead\s+\.marginLabel,[\s\S]*?\.chapterTitle\s*\{[\s\S]*?text-align:\s*center/,
-    )
-    expect(experienceStyles).toMatch(
-      /\.positions,\s*\.mobilePositions\s*\{[^}]*text-align:\s*left/,
-    )
-  })
-
-  it('carries two distinct images and no invented portrait', () => {
-    const { container } = render(<ExperiencePage />)
-
-    /*
-     * The page used to assert it carried no imagery at all. It now follows a
-     * reference layout that pairs copy with pictures, so the guard is that the
-     * two frames are different: running one image twice is what made the
-     * homepage's two skylines read as stock, and the first attempt here did
-     * exactly that.
-     */
-    const images = Array.from(container.querySelectorAll('img'))
-    expect(images).toHaveLength(2)
-    const sources = new Set(
-      images.map((img) => new URL(img.src, 'http://localhost').searchParams.get('url')),
-    )
-    expect(sources.size).toBe(2)
-
-    /*
-     * The portrait carries meaning and needs a description. The hall behind the
-     * sector taxonomy is decorative, so an empty alt is correct for it rather
-     * than a defect: describing it would make a screen reader read out scenery.
-     */
-    const described = images.filter((img) => img.alt.length > 0)
-    expect(described).toHaveLength(1)
-    expect(described[0].alt).toBe(practitionerPortrait.alt)
-
-    const decorative = images.filter((img) => img.alt.length === 0)
-    for (const img of decorative) {
-      expect(img.closest('[aria-hidden="true"]')).not.toBeNull()
-    }
-
-    /*
-     * Alt text has to match what the picture actually is. A stand-in must never
-     * claim to depict him; the real headshot should name him.
-     */
-    if (practitionerPortrait.isPlaceholder) {
-      expect(practitionerPortrait.alt.toLowerCase()).not.toContain('ulysses')
-    } else {
-      expect(practitionerPortrait.alt).toContain('Ulysses Williams')
-    }
+  it('uses no serif or italic', () => {
+    expect(css).not.toMatch(/font-serif|italic/)
+    render(<ExperiencePage />)
+    expect(document.querySelector('em, i.turn')).toBeNull()
   })
 })

@@ -1,162 +1,154 @@
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import {
-  calypsoContent,
-  calypsoDelivery,
-  calypsoDomains,
-  calypsoPrograms,
-} from '@/lib/calypso-content'
+import { calypsoStages } from '@/lib/calypso-content'
 import NasdaqCalypsoPage from './page'
 
+/*
+ * jsdom is 1024px wide and CSS modules are applied, so the phone-only
+ * compositions are display:none here: query them with { hidden: true }.
+ */
 describe('Nasdaq Calypso page', () => {
-  it('opens with the open masthead and verified authority', () => {
+  it('opens on the hero headline and the facts bar', () => {
     render(<NasdaqCalypsoPage />)
-
-    const heading = screen.getByRole('heading', {
-      level: 1,
-      name: `${calypsoContent.hero.headlineLead} ${calypsoContent.hero.headlineTurn}`,
-    })
-
-    expect(heading).toBeInTheDocument()
-    expect(heading.textContent).toBe(
-      `${calypsoContent.hero.headlineLead} ${calypsoContent.hero.headlineTurn}`,
-    )
-    /*
-     * The hero is photographic, matching the homepage and the experience page.
-     * Pinned because two earlier versions put the lifecycle console in the
-     * hero instead: once tilted 54 degrees into the floor, once flat and full
-     * width. Both opened the page on a component rather than an image, which
-     * is what stopped it belonging to the rest of the site.
-     */
-    expect(screen.getByTestId('calypso-hero')).toHaveAttribute(
-      'data-layout',
-      'open-masthead',
-    )
-    expect(screen.getByTestId('calypso-hero')).toHaveAttribute(
-      'data-mobile-flow',
-      'editorial-poster',
-    )
-    expect(heading).toHaveAttribute('data-mobile-title', 'two-lines')
-    expect(screen.getByTestId('calypso-hero-actions')).toHaveAttribute(
-      'data-mobile-layout',
-      'paired-actions',
-    )
-    expect(screen.getByTestId('lifecycle-blotter')).toBeInTheDocument()
-    const authority = screen.getByLabelText('Calypso authority')
-    expect(authority.closest('[data-mobile-layout="two-by-two"]')).not.toBeNull()
-    expect(authority.closest('[data-mobile-alignment="centered-cells"]')).not.toBeNull()
-    expect(authority).toHaveTextContent('Banks and hedge funds')
-
-    const copy = screen.getByTestId('calypso-hero-copy')
-    const media = screen.getByTestId('calypso-hero-media')
-    expect(copy.compareDocumentPosition(media) & Node.DOCUMENT_POSITION_FOLLOWING)
-      .toBeTruthy()
-    expect(media.compareDocumentPosition(authority) & Node.DOCUMENT_POSITION_FOLLOWING)
-      .toBeTruthy()
-    expect(media).toHaveTextContent('')
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Calypso since 2004. Every office it touches.' }),
+    ).toBeInTheDocument()
+    const facts = screen.getByRole('list', { name: 'The practice in numbers' })
+    expect(within(facts).getAllByRole('listitem').map((li) => li.textContent)).toEqual([
+      '7lifecycle stagesCapture to regulatory reporting',
+      '8programsEarnings, delivery and capital',
+      '6instrument classesRates through equity derivatives',
+      '3officesFront, middle and back',
+    ])
+    expect(screen.getAllByRole('link', { name: /Discuss a mandate/ })[0]).toHaveAttribute('href', '/contact')
+    expect(screen.getByRole('link', { name: /Explore the platform/ })).toHaveAttribute('href', '#lifecycle')
   })
 
-  it('uses the lifecycle as the route single depth composition', () => {
+  it('draws the brand inside the phone hero', () => {
     render(<NasdaqCalypsoPage />)
-
-    const depthCompositions = document.querySelectorAll(
-      '[data-depth-composition]',
-    )
-    expect(depthCompositions).toHaveLength(1)
-    expect(depthCompositions[0]).toHaveAttribute(
-      'data-depth-composition',
-      'three-office-trade-spine',
-    )
-    expect(depthCompositions[0]).toContainElement(
-      screen.getByTestId('lifecycle-blotter'),
+    const phone = screen.getByTestId('calypso-hero-phone')
+    expect(within(phone).getByRole('link', { name: 'Ulixes Corporation, home', hidden: true })).toHaveAttribute(
+      'href',
+      '/',
     )
   })
 
-  it('recomposes every published Calypso scope into the new page chapters', () => {
+  it('renders the section headings in order', () => {
     render(<NasdaqCalypsoPage />)
-
-    expect(document.querySelector('[data-section="programs"]')).toBeInTheDocument()
-    expect(document.querySelector('[data-section="mandates"]')).toBeInTheDocument()
-    /*
-     * getAllByText, because the programs section is a grouped index beside an
-     * open detail panel: whichever program is selected renders its name in the
-     * index row and again as the panel heading. Every program must still be
-     * reachable from the index, which is what this asserts.
-     */
-    for (const program of calypsoPrograms) {
-      expect(screen.getAllByText(program.name).length).toBeGreaterThan(0)
-    }
-    for (const domain of calypsoDomains) {
-      expect(screen.getByText(domain.name)).toBeInTheDocument()
-    }
-    for (const mandate of calypsoDelivery) {
-      expect(screen.getAllByText(mandate.title).length).toBeGreaterThan(0)
-    }
+    expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual([
+      'One trade, seven places it goes wrong.',
+      'Eight programs, six instrument classes.',
+      'Four shapes a Calypso mandate takes.',
+      'Bring the Calypso question.',
+    ])
   })
 
-  it('keeps programs in one bounded book with photography separate from copy', () => {
+  it('breaks a stage and shows how far the break travels', () => {
     render(<NasdaqCalypsoPage />)
+    const desk = screen.getByTestId('lifecycle-desk')
+    const stages = within(desk).getAllByRole('button').filter((b) => b.hasAttribute('aria-pressed'))
+    expect(stages).toHaveLength(7)
+    expect(stages[0]).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('lifecycle-count')).toHaveTextContent('6')
+    expect(screen.getByTestId('lifecycle-readout')).toHaveTextContent(`WHERE CAPTURE BREAKS${calypsoStages[0].breaks}`)
 
-    const book = screen.getByTestId('calypso-program-book')
-    expect(book).toHaveAttribute('data-mobile-layout', 'program-book')
-
-    const media = within(book).getByTestId('calypso-program-book-media')
-    const content = within(book).getByTestId('calypso-program-book-content')
-    expect(media).toHaveTextContent('')
-    expect(media.querySelector('img')).toHaveAttribute(
-      'sizes',
-      '(max-width: 895px) calc(100vw - 40px), 1248px',
+    fireEvent.click(stages[3])
+    expect(stages[3]).toHaveAttribute('aria-pressed', 'true')
+    expect(stages[0]).toHaveAttribute('aria-pressed', 'false')
+    expect(stages[3]).toHaveAttribute('data-state', 'broken')
+    expect(stages.slice(4).every((s) => s.dataset.state === 'inherits')).toBe(true)
+    expect(stages.slice(0, 3).every((s) => s.dataset.state === 'clear')).toBe(true)
+    expect(screen.getByTestId('lifecycle-count')).toHaveTextContent('3')
+    expect(screen.getByTestId('lifecycle-readout')).toHaveTextContent('WHERE COLLATERAL BREAKS')
+    expect(within(desk).getByRole('link', { name: /Discuss this stage/ })).toHaveAttribute(
+      'href',
+      '/contact?program=Calypso%20collateral%20stage',
     )
-    expect(media.compareDocumentPosition(content) & Node.DOCUMENT_POSITION_FOLLOWING)
-      .toBeTruthy()
+
+    fireEvent.keyDown(stages[6], { key: 'Enter' })
+    expect(screen.getByTestId('lifecycle-count')).toHaveTextContent('0')
   })
 
-  it('exposes stable hooks for the centered program title and mirrored mandate header', () => {
+  it('shares the break with the phone rail', () => {
     render(<NasdaqCalypsoPage />)
-
-    const programHeader = screen.getByTestId('calypso-program-header')
-    const programTitle = within(programHeader).getByTestId(
-      'calypso-program-title-group',
+    const phone = screen.getByTestId('lifecycle-phone')
+    const cards = within(phone).getAllByRole('button', { hidden: true })
+    expect(cards).toHaveLength(7)
+    fireEvent.keyDown(cards[1], { key: ' ' })
+    expect(cards[1]).toHaveAttribute('aria-pressed', 'true')
+    expect(cards[1]).toHaveTextContent('Break')
+    expect(cards[2]).toHaveTextContent('Inherits')
+    const desk = screen.getByTestId('lifecycle-desk')
+    expect(within(desk).getAllByRole('button').filter((b) => b.getAttribute('aria-pressed') === 'true')[0]).toHaveTextContent(
+      'Valuation',
     )
-    const programLede = within(programHeader).getByTestId(
-      'calypso-program-lede',
-    )
-    const mandateHeader = screen.getByTestId('calypso-mandate-header')
-    const mandateTitle = within(mandateHeader).getByTestId(
-      'calypso-mandate-title-group',
-    )
-    const mandateLede = within(mandateHeader).getByTestId(
-      'calypso-mandate-lede',
-    )
-
-    expect(programTitle).toContainElement(
-      screen.getByRole('heading', { level: 2, name: /eight programs/i }),
-    )
-    expect(programTitle.compareDocumentPosition(programLede))
-      .toBe(Node.DOCUMENT_POSITION_FOLLOWING)
-    expect(mandateTitle).toContainElement(
-      screen.getByRole('heading', { level: 2, name: /four shapes/i }),
-    )
-    expect(mandateTitle.compareDocumentPosition(mandateLede))
-      .toBe(Node.DOCUMENT_POSITION_FOLLOWING)
   })
 
-  it('renders four mandates as one stacked ledger without a content rail', () => {
+  it('opens one program at a time within each desktop column', () => {
+    render(<NasdaqCalypsoPage />)
+    const desk = screen.getByTestId('programs-desk')
+    const first = within(desk).getByRole('button', { name: /Hedge accounting framework design/ })
+    const second = within(desk).getByRole('button', { name: /Earnings volatility remediation/ })
+    const other = within(desk).getByRole('button', { name: /Calypso front-to-back implementation/ })
+    expect(first).toHaveAttribute('aria-expanded', 'true')
+    expect(other).toHaveAttribute('aria-expanded', 'true')
+    expect(second).toHaveAttribute('aria-expanded', 'false')
+
+    fireEvent.click(second)
+    expect(second).toHaveAttribute('aria-expanded', 'true')
+    expect(first).toHaveAttribute('aria-expanded', 'false')
+    expect(other).toHaveAttribute('aria-expanded', 'true')
+
+    fireEvent.click(second)
+    expect(second).toHaveAttribute('aria-expanded', 'false')
+    expect(document.getElementById(second.getAttribute('aria-controls')!)).toHaveAttribute('inert')
+  })
+
+  it('lists the eight programs and six instrument classes', () => {
+    render(<NasdaqCalypsoPage />)
+    const desk = screen.getByTestId('programs-desk')
+    expect(within(desk).getAllByRole('button')).toHaveLength(8)
+    expect(screen.getByRole('list', { name: 'APPLIED ACROSS SIX PRODUCT DOMAINS' }).children).toHaveLength(6)
+  })
+
+  it('opens program families and read-more notes on the phone', () => {
+    render(<NasdaqCalypsoPage />)
+    const phone = screen.getByTestId('programs-phone')
+    const families = ['Earnings and audit', 'Delivery and migration', 'Capital and regulatory'].map((name) =>
+      within(phone).getByRole('button', { name: new RegExp(name), hidden: true }),
+    )
+    expect(families.map((f) => f.getAttribute('aria-expanded'))).toEqual(['true', 'false', 'false'])
+    fireEvent.click(families[1])
+    expect(families.map((f) => f.getAttribute('aria-expanded'))).toEqual(['false', 'true', 'false'])
+
+    const more = within(phone)
+      .getAllByRole('button', { hidden: true })
+      .find((b) => b.textContent === 'Read more about Platform migration and data integrity')!
+    expect(more).toHaveAttribute('aria-expanded', 'false')
+    fireEvent.click(more)
+    expect(more).toHaveAttribute('aria-expanded', 'true')
+  })
+
+  it('shows four mandate cards and a phone accordion', () => {
+    render(<NasdaqCalypsoPage />)
+    expect(within(screen.getByTestId('mandates-desk')).getAllByRole('listitem')).toHaveLength(4)
+    const phone = screen.getByTestId('mandates-phone')
+    const items = within(phone).getAllByRole('button', { hidden: true })
+    expect(items.map((b) => b.getAttribute('aria-expanded'))).toEqual(['true', 'false', 'false', 'false'])
+    fireEvent.click(items[2])
+    expect(items.map((b) => b.getAttribute('aria-expanded'))).toEqual(['false', 'false', 'true', 'false'])
+    fireEvent.click(items[2])
+    expect(items.every((b) => b.getAttribute('aria-expanded') === 'false')).toBe(true)
+  })
+
+  it('closes on the brief card', () => {
+    render(<NasdaqCalypsoPage />)
+    expect(screen.getByRole('heading', { level: 2, name: 'Bring the Calypso question.' })).toBeInTheDocument()
+  })
+
+  it('uses no italic or serif turn', () => {
     const { container } = render(<NasdaqCalypsoPage />)
-
-    const ledger = screen.getByRole('list', { name: 'Calypso mandate shapes' })
-    expect(ledger).toHaveAttribute('data-visible-from', '896px')
-    expect(within(ledger).getAllByRole('listitem')).toHaveLength(
-      calypsoDelivery.length,
-    )
-
-    const mobile = screen.getByRole('region', {
-      name: 'Mobile Calypso mandates',
-    })
-    expect(mobile).toHaveAttribute('data-visible-through', '895px')
-    expect(within(mobile).getAllByRole('button')).toHaveLength(
-      calypsoDelivery.length,
-    )
-    expect(container.querySelectorAll('[data-mandate-risk]')).toHaveLength(1)
+    expect(container.querySelector('em.s, i.s')).toBeNull()
+    expect(container.innerHTML).not.toMatch(/font-serif/)
   })
 })

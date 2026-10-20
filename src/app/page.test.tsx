@@ -6,14 +6,12 @@ import { homepageContent } from '@/lib/homepage-content'
 import HomePage from './page'
 
 describe('homepage route', () => {
-  it('renders the refreshed homepage as the only route composition', () => {
+  it('renders the redesigned homepage as the only route composition', () => {
     render(<HomePage />)
 
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
-    expect(screen.getByRole('heading', { level: 1 })).toHaveAccessibleName(
-      homepageContent.hero.headline,
-    )
-    expect(screen.queryByText('Infrastructure Is')).not.toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(homepageContent.hero.headline)
+    expect(screen.getAllByRole('region')).toHaveLength(4)
   })
 
   it('keeps development annotation tooling out of the root layout', () => {

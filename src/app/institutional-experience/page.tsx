@@ -1,290 +1,147 @@
 import Image from 'next/image'
-import Link from 'next/link'
-import { ArrowUpRight, MobileDisclosure } from '@/components/ui'
-import {
-  Cascade,
-  CascadeItem,
-  Curtain,
-  Lift,
-} from '@/components/motion/editorial-motion'
+import { CONTACT_HREF, CtaCard, Eyebrow, Section, SlabButton, TextLink } from '@/components/site'
 import { InstitutionCarousel } from '@/components/experience/institution-carousel'
-import { MobileInstitutionReader } from '@/components/experience/mobile-institution-reader'
+import { InstitutionSummary, InstitutionTile } from '@/components/experience/institution-tile'
+import { PositionsAccordion } from '@/components/experience/positions-accordion'
 import {
   institutionalExperienceContent,
-  institutionsMedia,
   practitionerPortrait,
 } from '@/lib/institutional-experience-content'
 import styles from './institutional-experience.module.css'
 
 /*
- * Built to the consulting reference Julius picked: a contained intro panel
- * carrying a statistic row, an alternating image and copy block for the
- * practitioner, a credential checklist, and a card grid.
- *
- * The reference's statistics are invented (95%, 10+, $10m). This page carries
- * the four verified facts at that scale instead, which is the only kind of
- * claim the guardrails permit.
+ * /institutional-experience, built to docs/build-spec/experience:
+ * 02 hero "Portrait, Staged", 03 the seven institutions (grid on desktop,
+ * swipe rail on phone), 04 the six positions (two-column register on desktop,
+ * accordion on phone), 05 the closing brief card. Header, phone brand bar,
+ * footer and dock come from the root layout.
  */
-
-/*
- * The scope section is gone. It was eleven short labels with no room for
- * depth, and both of its facts (front to back, four regions) belong to the
- * homepage credential dock rather than to this page.
- */
-const { introduction, practitioner, institutions, principles, contact } =
-  institutionalExperienceContent
+const { hero, institutions, positions, close } = institutionalExperienceContent
 
 export default function InstitutionalExperiencePage() {
+  const total = institutions.categories.length
+  const tiles = (layout: 'grid' | 'card') => [
+    ...institutions.categories.map((item, i) => (
+      <InstitutionTile key={item.name} {...item} index={i} total={total} layout={layout} />
+    )),
+    <InstitutionSummary key="summary" {...institutions.summary} layout={layout} />,
+  ]
+
   return (
-    <div className={styles.page} data-surface="editorial">
-      <section
-        className={styles.hero}
-        aria-labelledby="experience-title"
-        data-mobile-flow="editorial-split"
-      >
-        <div
-          className={styles.heroStage}
-          data-depth-composition="institutional-threshold"
-        >
-          {/* The institutional interior sits behind him, masked, so the portrait
-              reads as being inside it rather than beside a picture of it. */}
-          <div
-            className={styles.heroMedia}
-            aria-hidden="true"
-            data-depth-plane="recessed-architecture"
-          >
-            <Image
-              src={institutionsMedia.src}
-              alt=""
-              fill
-              priority
-              sizes="(max-width: 895px) 320px, 60vw"
-              className={styles.heroMediaImage}
-            />
-          </div>
-          <div className={styles.heroTone} aria-hidden="true" />
-
-          <div
-            className={`${styles.shell} ${styles.heroGrid}`}
-            data-mobile-layout="split-portrait"
-          >
-            <div className={styles.heroCopy}>
-              <p className={`ed-eyebrow ${styles.badge}`}>{introduction.eyebrow}</p>
-              <Curtain className="ed-curtain" delay={0.05}>
-                <h1
-                  id="experience-title"
-                  className={styles.heroTitle}
-                  aria-label={`${introduction.headlineLead} ${introduction.headlineTurn}`}
-                  data-mobile-title="two-lines"
-                >
-                  <span className={styles.heroTitleLead}>
-                    Inside <span className={styles.heroTitleArticle}>the </span>
-                    institutions,
-                  </span>{' '}
-                  <em className={styles.turn}>{introduction.headlineTurn}</em>
-                </h1>
-              </Curtain>
-              <p className={`${styles.heroBody} ${styles.desktopHeroBody}`}>
-                {introduction.body}
-              </p>
-              <p className={`${styles.heroBody} ${styles.mobileHeroBody}`}>
-                Calypso experience since 2004, inside the teams and systems
-                where critical decisions are made.
-              </p>
-
-              <Lift delay={0.34} amount={0}>
-                <p className={styles.roleLine}>
-                  <span>{practitioner.name}</span>
-                  <span aria-hidden="true">·</span>
-                  <span>{practitioner.role}</span>
-                  <span aria-hidden="true">·</span>
-                  <span>{practitioner.specialism}</span>
-                </p>
-              </Lift>
-
-            </div>
-
-            {/* Framed rather than masked. A portrait dissolving into the page
-                would fade a face out, which a material study can take and a
-                person cannot. */}
-            <div
-              className={styles.heroPortrait}
-              data-depth-plane="raised-portrait"
-            >
-              <Image
-                src={practitionerPortrait.src}
-                alt={practitionerPortrait.alt}
-                fill
-                priority
-                sizes="(max-width: 895px) 38vw, 38vw"
-                className={styles.heroPortraitImage}
-              />
-            </div>
-
-            <div className={styles.heroActions} data-mobile-layout="paired-actions">
-              <Link href="/contact" className={`ed-primary ${styles.action}`}>
-                <span>{introduction.cta}</span>
-                <span className="ed-chamber" aria-hidden="true">
-                  <ArrowUpRight size={17} />
-                </span>
-              </Link>
-              <a
-                className={`ed-secondary ${styles.linkedinAction}`}
-                href={practitioner.linkedinUrl}
+    <div className={styles.page}>
+      {/* 02: Portrait, Staged */}
+      <Section space="none" wrap={false} className={styles.hero} aria-labelledby="experience-title">
+        <div className={styles.bg} aria-hidden="true">
+          <Image
+            src="/media/experience/ulixes-institutional-hall.jpg"
+            alt=""
+            fill
+            priority
+            sizes="(max-width: 767px) 100vw, 46vw"
+            className={styles.bgImg}
+          />
+        </div>
+        <div className={`wrap ${styles.g}`}>
+          <div className={styles.copy}>
+            <Eyebrow>{hero.eyebrow}</Eyebrow>
+            <h1 id="experience-title" className={`d ${styles.h1}`}>
+              <span className={styles.ln}>
+                <span>{hero.headlineLead}</span>
+              </span>{' '}
+              <span className={styles.ln}>
+                <span className="s">{hero.headlineTurn}</span>
+              </span>
+            </h1>
+            <p className={styles.lede}>{hero.body}</p>
+            <div className={styles.actions}>
+              <SlabButton href={CONTACT_HREF} className={styles.heroBtn}>
+                {hero.cta}
+              </SlabButton>
+              <TextLink
+                href={hero.linkedinUrl}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
+                arrow="↗"
+                className={styles.linkedin}
               >
-                <span>{practitioner.cta}</span>
-                <span className="ed-chamber" aria-hidden="true">
-                  <ArrowUpRight size={16} />
-                </span>
-                <span className="sr-only">(opens in a new tab)</span>
-              </a>
+                {hero.linkedinLabel}
+                <span className="sr-only"> (opens in a new tab)</span>
+              </TextLink>
             </div>
+            <dl className={styles.cr}>
+              {hero.credentials.map((item) => (
+                <div key={item.label}>
+                  <dt>{item.label}</dt>
+                  <dd>{item.value}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
+          <figure className={styles.pt}>
+            <Image
+              src={practitionerPortrait.src}
+              alt={practitionerPortrait.alt}
+              width={practitionerPortrait.width}
+              height={practitionerPortrait.height}
+              priority
+              sizes="(max-width: 767px) 234px, 470px"
+              className={styles.ptImg}
+            />
+            <figcaption className={styles.nc}>
+              <b>{hero.name}</b>
+              <span>
+                <i aria-hidden="true" />
+                {hero.role}
+              </span>
+            </figcaption>
+          </figure>
         </div>
-      </section>
+      </Section>
 
-      {/*
-        The three sections below the hero were the same layout atom three times:
-        a two-column header, then NN/Title/Description repeated. They cost 2137px
-        between them to carry 13 short entries. These are registers instead:
-        dense, multi-column, ruled, and set inside one raised surface each, which
-        is where the homepage's depth actually comes from. No decorative imagery:
-        the only photographs on this page are the two in the hero, which carry
-        the subject rather than fill space.
-      */}
-      <section
-        className={styles.institutionsSection}
-        aria-labelledby="institutions-title"
-      >
-        {/*
-          No plate around this one. The entries are raised cards now, and a
-          raised card inside a raised card reads as muddle rather than as depth;
-          one surface per section is the rule the homepage actually follows.
-        */}
-        <div
-          className={`${styles.shell} ${styles.institutionShelf}`}
-          data-depth-plane="recessed-institution-shelf"
-        >
-          <div className={styles.plateHead}>
-            <div>
-              <p className={`ed-eyebrow ${styles.marginLabel}`}>{institutions.eyebrow}</p>
-              <Curtain className="ed-curtain" inView>
-                <h2 id="institutions-title" className={styles.plateTitle}>
-                  {institutions.headlineLead}{' '}
-                  <em className={styles.turn}>{institutions.headlineTurn}</em>
-                </h2>
-              </Curtain>
-            </div>
-            <p className={styles.plateLead}>{institutions.body}</p>
-          </div>
-
-          {/* The wide layout keeps the drifting evidence rail. Touch layouts
-              use a separate reader so only the selected brief is mounted. */}
-          <div className={styles.desktopInstitutions} data-visible-from="896px">
-            <InstitutionCarousel />
-          </div>
-          <MobileInstitutionReader categories={institutions.categories} />
+      {/* 03: Where the work has happened */}
+      <Section className={styles.inst} aria-labelledby="institutions-title">
+        <Eyebrow centred>{institutions.eyebrow}</Eyebrow>
+        <h2 id="institutions-title" className={`d ${styles.h2} ${styles.h2c}`}>
+          {institutions.headlineLead} <span className="s">{institutions.headlineTurn}</span>
+        </h2>
+        <div className={styles.grid}>{tiles('grid')}</div>
+        <div className={styles.rail}>
+          <InstitutionCarousel
+            label="Kinds of institution"
+            slides={tiles('card')}
+            slideLabels={[...institutions.categories.map((c) => c.name), 'the summary']}
+          />
         </div>
-      </section>
+      </Section>
 
-      {/*
-        Kept on a dark ground: it is the one tonal break on the page, and it is
-        what stops three light registers reading as one undifferentiated run.
-        Neutral charcoal rather than --ink, which is a blue slate and reads
-        unmistakably blue across a whole section.
-      */}
-      <section
-        className={styles.principlesSection}
-        aria-labelledby="principles-title"
-      >
-        <div className={styles.shell}>
-          <div
-            className={styles.chapterHead}
-            data-heading-composition="centered"
-          >
-            <p className={`ed-eyebrow ${styles.marginLabel}`}>{principles.eyebrow}</p>
-            <Curtain className="ed-curtain" inView>
-              <h2 id="principles-title" className={styles.chapterTitle}>
-                <span className={styles.chapterTitleLead}>
-                  {principles.headlineLead}
-                </span>{' '}
-                <em className={styles.turn}>{principles.headlineTurn}</em>
-              </h2>
-            </Curtain>
-          </div>
-
-          <Cascade
-            as="ol"
-            className={styles.positions}
-            label="Ulixes delivery principles"
-            data-visible-from="896px"
-          >
-            {principles.items.map((item, index) => (
-              <CascadeItem key={item.title}>
-                <span className={styles.positionIndex} aria-hidden="true">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
+      {/* 04: Working perspective */}
+      <Section className={styles.pos} aria-labelledby="positions-title">
+        <Eyebrow>{positions.eyebrow}</Eyebrow>
+        <h2 id="positions-title" className={`d ${styles.h2}`}>
+          {positions.headlineLead} <span className="s">{positions.headlineTurn}</span>
+        </h2>
+        <ol className={styles.register}>
+          {positions.items.map((item, i) => (
+            <li key={item.title}>
+              <span className={styles.n} aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <div>
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
-              </CascadeItem>
-            ))}
-          </Cascade>
-          <div
-            className={styles.mobilePositions}
-            data-visible-through="895px"
-          >
-            <MobileDisclosure
-              ariaLabel="Working positions"
-              hint="Select a position"
-              tone="dark"
-              defaultOpenId="working-position-1"
-              allowCollapse={false}
-              items={principles.items.map((item, index) => ({
-                id: `working-position-${index + 1}`,
-                index: String(index + 1).padStart(2, '0'),
-                title: item.title,
-                panel: <p className={styles.positionPanel}>{item.description}</p>,
-              }))}
-            />
-          </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <div className={styles.accordion}>
+          <PositionsAccordion items={positions.items} />
         </div>
-      </section>
+      </Section>
 
-      {/* Continuous with the chapter above rather than a fourth full section. */}
-      <section className={styles.closeSection} aria-labelledby="inquiry-title">
-        <Lift>
-          <div className={`${styles.shell} ${styles.closeCard}`}>
-            <div>
-              <p className={`ed-eyebrow ${styles.marginLabel}`}>
-                {contact.eyebrow}
-              </p>
-              <h2 id="inquiry-title" className={styles.closeTitle}>
-                {contact.headlineLead}{' '}
-                <em className={styles.turn}>{contact.headlineTurn}</em>
-              </h2>
-              <p className={styles.closeBody}>{contact.body}</p>
-            </div>
-
-            <div className={styles.closeAction}>
-              <Link href="/contact" className={`ed-primary ${styles.closeCta}`}>
-                <span>{contact.cta}</span>
-                <span className="ed-chamber" aria-hidden="true">
-                  <ArrowUpRight size={17} />
-                </span>
-              </Link>
-              <a
-                className={`ed-textlink ${styles.closeEmail}`}
-                href={`mailto:${contact.email}`}
-              >
-                {contact.email}
-              </a>
-              <p className={styles.closeResponse}>{contact.response}</p>
-            </div>
-          </div>
-        </Lift>
-      </section>
+      {/* 05: the close */}
+      <Section wrap={false}>
+        <CtaCard lead={close.lead} turn={close.turn} />
+      </Section>
     </div>
   )
 }

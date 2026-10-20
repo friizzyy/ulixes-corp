@@ -1,0 +1,353 @@
+/* Engagement approach: 04-approach-desk.html (>= 768) and 03-approach-ph.html (<= 767). */
+
+.tp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+/* The spec's `.tp p` rule sets the eyebrow too: 15.5px on a 470px measure. */
+.eyebrow {
+  font-size: 15.5px;
+  width: 470px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding-bottom: 8px;
+}
+
+.h {
+  font-size: 52px;
+  margin-top: 16px;
+  white-space: nowrap;
+  text-align: center;
+  color: var(--ink);
+}
+
+.lede {
+  width: 470px;
+  max-width: 100%;
+  margin: 0;
+  padding-bottom: 8px;
+  color: var(--graphite);
+  font-size: 15.5px;
+  text-wrap: balance;
+}
+
+.n {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 250;
+  letter-spacing: -0.06em;
+  color: var(--line);
+}
+
+.phTitle {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 550;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+/* ---- Desktop and tablet: the line card --------------------------------- */
+
+.cd {
+  margin-top: 48px;
+  background: var(--paper);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(16, 33, 43, 0.06), 0 2px 4px rgba(16, 33, 43, 0.04), 0 60px 100px -60px rgba(16, 33, 43, 0.5);
+}
+
+.rl {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  height: 64px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.rl::before,
+.rl::after {
+  content: '';
+  position: absolute;
+  left: 39px;
+  right: 150px;
+  top: 50%;
+  height: 1.5px;
+  background: var(--plat);
+}
+
+.rl::after {
+  background: var(--ink);
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 1.6s var(--ease);
+}
+
+.cd[data-on] .rl::after {
+  transform: scaleX(1);
+}
+
+.rl i {
+  position: relative;
+  z-index: 1;
+  margin-left: 32px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 2px var(--plat);
+  transition: background 0.4s, box-shadow 0.4s;
+}
+
+.cd[data-on] .rl i {
+  background: var(--ink);
+  box-shadow: 0 0 0 5px var(--paper);
+}
+
+.cd[data-on] .rl i:nth-child(2) {
+  transition-delay: 0.35s;
+}
+
+.cd[data-on] .rl i:nth-child(3) {
+  transition-delay: 0.7s;
+}
+
+.cd[data-on] .rl i:nth-child(4) {
+  transition-delay: 1.05s;
+}
+
+.end {
+  position: absolute;
+  z-index: 1;
+  right: 24px;
+  top: 50%;
+  margin-top: -7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 14px;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.5s 1.4s, transform 0.7s 1.4s var(--ease);
+}
+
+.end b {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+
+.cd[data-on] .end {
+  opacity: 1;
+  transform: none;
+}
+
+.g {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  list-style: none;
+}
+
+.ph {
+  padding: 30px 32px 36px;
+  transition: background 0.4s;
+}
+
+.ph + .ph {
+  border-left: 1px solid var(--rule);
+}
+
+.ph .n {
+  font-size: 56px;
+  line-height: 0.85;
+  transition: color 0.4s;
+}
+
+.ph .phTitle {
+  font-size: 22px;
+  line-height: 1.6;
+  margin-top: 22px;
+}
+
+.ph p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--graphite);
+  margin-top: 10px;
+  text-wrap: pretty;
+}
+
+@media (hover: hover) {
+  .ph:hover {
+    background: rgba(233, 239, 241, 0.55);
+  }
+
+  .ph:hover .n {
+    color: var(--ink);
+  }
+}
+
+.pl {
+  display: none;
+}
+
+/* Tablet: fluid heading, phases two by two. */
+@media (min-width: 768px) and (max-width: 1099px) {
+  .h {
+    font-size: clamp(42px, 5.4vw, 52px);
+  }
+
+  .g {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* The four dots share the rule ahead of FIRST CLOSE, not the phase columns. */
+  .rl {
+    padding-right: 150px;
+  }
+
+  .ph:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .ph:nth-child(n + 3) {
+    border-top: 1px solid var(--rule);
+  }
+}
+
+/* ---- Phone: one paper card on a vertical rail -------------------------- */
+
+@media (max-width: 767px) {
+  .tp {
+    display: block;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    width: auto;
+    padding-bottom: 0;
+  }
+
+  .h {
+    font-size: 31px;
+    margin-top: 12px;
+    white-space: normal;
+  }
+
+  .h :global(.s) {
+    display: block;
+  }
+
+  .lede {
+    width: auto;
+    margin-top: 12px;
+    padding-bottom: 0;
+    font-size: 15px;
+    text-wrap: pretty;
+  }
+
+  .cd {
+    display: none;
+  }
+
+  .pl {
+    display: block;
+    list-style: none;
+    margin-top: 30px;
+    padding: 6px 22px 24px 18px;
+    background: var(--paper);
+    border-radius: 18px;
+    box-shadow: 0 0 0 1px var(--rule), 0 30px 50px -36px rgba(16, 33, 43, 0.5);
+  }
+
+  .pl li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 34px 1fr;
+  }
+
+  .pl li::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 31px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--ink);
+    z-index: 1;
+    box-shadow: 0 0 0 5px var(--paper);
+  }
+
+  .pl li:not(.plEnd)::after {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 36px;
+    bottom: -34px;
+    width: 1px;
+    background: var(--rule2);
+  }
+
+  .pl li > div {
+    grid-column: 2;
+    padding: 20px 0 22px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .pl .n {
+    font-size: 30px;
+    line-height: 1;
+  }
+
+  .pl .phTitle {
+    font-size: 20px;
+    line-height: 1.15;
+    margin-top: 12px;
+  }
+
+  .pl p {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--graphite);
+    margin-top: 8px;
+    text-wrap: pretty;
+  }
+
+  .pl .plEnd::before {
+    top: 26px;
+    background: var(--paper);
+    box-shadow: inset 0 0 0 2px var(--ink), 0 0 0 5px var(--paper);
+  }
+
+  .pl .plEnd > div {
+    padding: 21px 0 0;
+    border: 0;
+    font-size: 10.5px;
+    line-height: 1.6;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rl::after,
+  .rl i,
+  .end,
+  .ph,
+  .ph .n {
+    transition: none !important;
+  }
+}

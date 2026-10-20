@@ -1,0 +1,116 @@
+/* Phone accordion: docs/build-spec/experience/04-acc-ph.html (.acc, .it, .bd). */
+
+.acc {
+  margin-top: 24px;
+  border-top: 1px solid var(--ink);
+}
+
+.it {
+  border-bottom: 1px solid var(--rule);
+}
+
+.h {
+  font: inherit;
+  margin: 0;
+}
+
+.trigger {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 30px 1fr 30px;
+  column-gap: 12px;
+  align-items: start;
+  padding: 18px 0;
+  text-align: left;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+.n {
+  color: var(--line);
+  padding-top: 4px;
+  transition: color 0.4s;
+}
+
+.on .n {
+  color: var(--ink);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 550;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.pl {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--rule2);
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  line-height: 1;
+  margin-top: -4px;
+  transition:
+    transform 0.6s var(--ease),
+    background 0.4s,
+    color 0.4s;
+}
+
+.on .pl {
+  transform: rotate(45deg);
+  background: var(--ink);
+  color: var(--light);
+  box-shadow: none;
+}
+
+.bd {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.65s var(--ease);
+}
+
+.bd > div {
+  overflow: hidden;
+}
+
+.in {
+  padding: 0 0 24px 42px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.45s,
+    transform 0.6s var(--ease);
+}
+
+.in p {
+  color: var(--graphite);
+  font-size: 14.5px;
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.on .bd {
+  grid-template-rows: 1fr;
+}
+
+.on .in {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.12s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .n,
+  .pl,
+  .bd,
+  .in {
+    transition: none;
+  }
+}

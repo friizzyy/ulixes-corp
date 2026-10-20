@@ -1,0 +1,258 @@
+/* The mandate shapes: 05-mandates-desk.html (>= 768) and 04-mandates-m-ph.html (<= 767). */
+
+.tp {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 60px;
+  margin-bottom: 40px;
+}
+
+.h2 {
+  font-size: 50px;
+  margin-top: 16px;
+  color: var(--ink);
+}
+
+.lede {
+  max-width: 42ch;
+  color: var(--graphite);
+  text-wrap: pretty;
+}
+
+.g {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.g > li {
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  border-radius: 14px;
+  padding: 26px 24px 28px;
+  box-shadow: 0 0 0 1px var(--rule), 0 24px 40px -36px rgba(16, 33, 43, 0.5);
+  transition: transform 0.6s var(--ease);
+}
+
+@media (hover: hover) {
+  .g > li:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.n {
+  font-family: var(--font-display);
+  font-weight: 250;
+  font-size: 54px;
+  letter-spacing: -0.06em;
+  line-height: 0.85;
+  color: var(--line);
+}
+
+.g h3 {
+  font-family: var(--font-display);
+  font-size: 21px;
+  letter-spacing: -0.035em;
+  font-weight: 550;
+  line-height: 1.6;
+  margin-top: 22px;
+}
+
+.g small {
+  display: block;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--steel);
+  margin-top: 8px;
+  text-transform: uppercase;
+  min-height: 3em;
+  line-height: 1.5;
+}
+
+.g p {
+  font-size: 14px;
+  color: var(--graphite);
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  text-wrap: pretty;
+}
+
+@media (min-width: 1100px) {
+  .h2 {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 1099px) {
+  .h2 {
+    font-size: clamp(38px, 5vw, 50px);
+  }
+
+  .tp {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .g {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .g small {
+    min-height: 0;
+  }
+}
+
+/* ---- Phone ---------------------------------------------------------- */
+
+.cw {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .tp {
+    display: block;
+    margin-bottom: 0;
+  }
+
+  .h2 {
+    font-size: 31px;
+    margin-top: 12px;
+  }
+
+  .h2 :global(.s) {
+    display: block;
+  }
+
+  .lede,
+  .g {
+    display: none;
+  }
+
+  .cw {
+    display: block;
+    margin-top: 20px;
+    background: var(--paper);
+    border-radius: 16px;
+    padding: 2px 16px;
+    box-shadow: 0 0 0 1px var(--rule), 0 30px 50px -36px rgba(16, 33, 43, 0.5);
+  }
+}
+
+.it {
+  border-top: 1px solid var(--rule);
+}
+
+.it:first-child {
+  border-top: 0;
+}
+
+.ith {
+  font: inherit;
+}
+
+.ith button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 30px 1fr 28px;
+  align-items: start;
+  padding: 17px 0;
+  text-align: left;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+.idx {
+  color: var(--steel);
+  padding-top: 3px;
+}
+
+.ith b {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.6;
+}
+
+.ith b small {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--steel);
+  margin-top: 4px;
+  letter-spacing: 0;
+}
+
+.pl {
+  align-self: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--rule2);
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 0.6s var(--ease), background 0.4s, color 0.4s;
+}
+
+.bd {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.65s var(--ease);
+}
+
+.bd > div {
+  overflow: hidden;
+}
+
+.in {
+  padding: 0 0 22px 30px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.45s, transform 0.6s var(--ease);
+}
+
+.in p {
+  color: var(--graphite);
+  font-size: 14.5px;
+  text-wrap: pretty;
+}
+
+.it.on .bd {
+  grid-template-rows: 1fr;
+}
+
+.it.on .in {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.12s;
+}
+
+.it.on .pl {
+  transform: rotate(45deg);
+  background: var(--ink);
+  color: var(--light);
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g > li,
+  .pl,
+  .bd,
+  .in {
+    transition: none !important;
+  }
+
+  .g > li:hover {
+    transform: none;
+  }
+}

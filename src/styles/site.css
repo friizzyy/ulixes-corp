@@ -204,6 +204,11 @@ button:focus:not(:focus-visible) {
   padding-bottom: 4px;
 }
 
+/* Outfit has no arrows; a system face keeps the glyph compact. */
+.tl-ar {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
 .tl::after {
   content: '';
   position: absolute;

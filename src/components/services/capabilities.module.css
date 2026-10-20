@@ -1,0 +1,267 @@
+/* Capability cards: 03-rows-desk.html (>= 768) and 02-rows-ph.html (<= 767). */
+
+.section {
+  scroll-margin-top: 24px;
+}
+
+.g {
+  position: relative;
+}
+
+.cd {
+  background: var(--paper);
+  border-radius: 14px;
+  box-shadow: 0 0 0 1px var(--rule), 0 24px 40px -34px rgba(16, 33, 43, 0.5);
+  transition: box-shadow 0.4s;
+  scroll-margin-top: 24px;
+}
+
+.tp {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.tp :global(.m) {
+  color: var(--steel);
+}
+
+.icon {
+  width: 56px;
+  height: 56px;
+  color: var(--line);
+  transition: color 0.4s;
+}
+
+@media (hover: hover) {
+  .cd:hover {
+    box-shadow: 0 0 0 1px var(--rule2), 0 40px 60px -40px rgba(16, 33, 43, 0.6);
+  }
+
+  .cd:hover .icon {
+    color: var(--ink);
+  }
+}
+
+.title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  font-weight: 550;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.ds {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--graphite);
+  text-wrap: pretty;
+}
+
+.list {
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.list li {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--graphite);
+}
+
+.check {
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
+  color: var(--ink);
+}
+
+.slLabel {
+  display: block;
+  font-size: 10px;
+  line-height: 1.6;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--steel);
+  margin-bottom: 9px;
+}
+
+.spn {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.spn i {
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--plat);
+}
+
+.spn i.on {
+  background: var(--ink);
+}
+
+/* ---- Desktop and tablet: one subgrid, so every row aligns -------------- */
+
+@media (min-width: 768px) {
+  .g {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, auto);
+    gap: 0 16px;
+  }
+
+  .cd {
+    display: grid;
+    grid-row: span 5;
+    grid-template-rows: subgrid;
+    padding: 28px 24px 26px;
+  }
+
+  .title {
+    align-self: end;
+    margin-top: 30px;
+  }
+
+  .ds {
+    margin-top: 12px;
+  }
+
+  .list {
+    align-self: start;
+    margin-top: 22px;
+  }
+
+  .sl {
+    margin-top: 26px;
+  }
+
+  .dt {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1099px) {
+  .g {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: none;
+  }
+
+  .cd:nth-child(n + 3) {
+    margin-top: 16px;
+  }
+}
+
+/* ---- Phone: the swipe carousel ----------------------------------------- */
+
+@media (max-width: 767px) {
+  .g {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    margin-top: -6px;
+    padding-top: 6px;
+    padding-bottom: 14px;
+    scrollbar-width: none;
+  }
+
+  .g::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cd {
+    flex: 0 0 300px;
+    scroll-snap-align: center;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 22px 22px;
+  }
+
+  .icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .title {
+    margin-top: 22px;
+  }
+
+  .ds {
+    margin-top: 10px;
+  }
+
+  .list {
+    margin: 18px 0 22px;
+  }
+
+  .list li {
+    padding: 8px 0;
+  }
+
+  .sl {
+    margin-top: auto;
+  }
+
+  /* Progress dashes: a 2px line in a 22px tap row. */
+  .dt {
+    display: flex;
+    gap: 5px;
+    padding: 0 max(var(--gutter), var(--safe-right)) 0 max(var(--gutter), var(--safe-left));
+    margin-top: -6px;
+  }
+
+  .dot,
+  .dotOn {
+    flex: 1;
+    height: 22px;
+    position: relative;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .dot::before,
+  .dotOn::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 10px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--plat);
+    transition: background 0.3s;
+  }
+
+  .dotOn::before {
+    background: var(--ink);
+  }
+
+  .dot:focus-visible,
+  .dotOn:focus-visible {
+    outline-offset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cd,
+  .icon,
+  .dot::before,
+  .dotOn::before {
+    transition: none;
+  }
+}

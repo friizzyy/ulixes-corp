@@ -1,870 +1,379 @@
-/*
- * Grouped index on the left, one open program on the right. See the component
- * file for why the flat run of eight was replaced.
- *
- * Sits on the dark chapter, so every value here is tuned against ink. The
- * hairlines are --dark-rule, the rule the experience page draws on its own
- * charcoal chapter, so the two registers read as one system. Rows between
- * family rules take a lighter cut of the same token, which is what gives the
- * index its hierarchy without a second colour.
- */
+/* The programs: 04-programs-desk.html (>= 768) and 03-programs-m-ph.html (<= 767). */
 
-/*
- * The chapter header's rule closed at exactly the y this grid opens at, so it
- * sat directly on the first family label and sliced through the detail panel's
- * rounded top corner. The rule needs to read as closing the header, not as
- * belonging to whatever starts underneath it.
- */
-.programs {
-  --rule-dark: var(--dark-rule, rgba(241, 243, 239, 0.2));
-  --rule-row: color-mix(in srgb, var(--rule-dark) 60%, transparent);
-  --copy-primary: #f6f5f1;
-  --copy-secondary: #a8b4b9;
-  --copy-muted: rgba(246, 245, 241, 0.5);
-  /* Was 0.34, which measured 2.96:1 on the dark card. 0.52 clears 4.5 at 5.1
-     while staying clearly subordinate to the row titles. */
-  --copy-ghost: rgba(246, 245, 241, 0.52);
-  --mono: var(--font-jetbrains), ui-monospace, monospace;
-  --display: var(--font-home-display), var(--font-outfit), sans-serif;
-  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
-  --ease-lift: cubic-bezier(0.22, 1, 0.36, 1);
-  /* The gutter every rule, label and numeral hangs from. The travelling rule
-     lives in it, so text never sits on the register's left edge. */
-  --inset: 0.85rem;
-
-  margin-top: clamp(2.25rem, 3.6vw, 3.25rem);
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-  /* The index spans both rows so the domains register closes directly under
-     the card. Parking it in an unspanned second row made it wait for the
-     taller program list to end, which opened a ~260px hole under the card at
-     every desktop width. */
-  grid-template-areas:
-    'index detail'
-    'index domains';
-  gap: clamp(2rem, 5vw, 4.5rem);
-  align-items: start;
+.cd {
+  background: var(--paper);
+  border-radius: 26px;
+  padding: 56px 56px 44px;
+  box-shadow: 0 0 0 1px rgba(16, 33, 43, 0.06), 0 2px 4px rgba(16, 33, 43, 0.04), 0 70px 120px -60px rgba(16, 33, 43, 0.55);
 }
 
-/* Index ------------------------------------------------------------------ */
-
-.index {
-  grid-area: index;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1.15rem, 1.9vw, 1.6rem);
-  min-width: 0;
-}
-
-/*
- * A margin label, not a section heading: family name and count on one line in
- * the label-xs register, the note beneath in the secondary colour. The three
- * of them and the rows between are one ruled register, which is why the head
- * is inset to the same gutter as the numerals below it.
- */
-.familyHead {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: baseline;
-  column-gap: 1rem;
-  padding: 0 0.6rem 0.7rem var(--inset);
-  border-bottom: 1px solid var(--rule-dark);
-}
-
-.familyHead h3 {
-  margin: 0;
-  color: var(--copy-primary);
-  font-size: var(--label-xs, 0.68rem);
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  line-height: 1.3;
-  text-transform: uppercase;
-}
-
-.familyCount {
-  color: var(--copy-muted);
-  font-size: var(--label-xs, 0.68rem);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  line-height: 1.3;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.familyHead p {
-  grid-column: 1 / -1;
-  margin: 0.32rem 0 0;
-  text-wrap: pretty;
-  color: var(--copy-secondary);
-  font-size: 0.78rem;
-  line-height: 1.5;
-}
-
-.family ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.row {
-  position: relative;
-  display: grid;
-  grid-template-columns: 2rem minmax(0, 1fr);
-  gap: 0.6rem;
-  align-items: baseline;
-  width: 100%;
-  /* 44px at every width: the row is the touch target. */
-  min-height: 2.75rem;
-  padding: 0.7rem 0.6rem 0.7rem var(--inset);
-  border: 0;
-  border-bottom: 1px solid var(--rule-row);
-  background: none;
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-  text-align: left;
-  transition: background-color 200ms ease;
-}
-
-/* The last row closes its family with the same weight the head opened it. */
-.family li:last-child .row {
-  border-bottom-color: var(--rule-dark);
-}
-
-.row:hover {
-  background: rgba(246, 245, 241, 0.035);
-}
-
-/* Specific enough to beat the page-level focus rule, which lands later in the
-   cascade and was written for the cream ground. */
-.family .row:focus-visible {
-  outline: 2px solid rgba(246, 245, 241, 0.55);
-  outline-offset: -2px;
-}
-
-/*
- * The open row's mark. One element travels between rows rather than each row
- * drawing its own, so the selection is seen to move. Tinted by the family's
- * material, which is set on the section and read here.
- */
-.indicator {
-  position: absolute;
-  top: 0.45rem;
-  bottom: 0.45rem;
-  left: 0;
-  width: 2px;
-  background: var(--material-line, #f6f5f1);
-}
-
-.rowIndex {
-  color: var(--copy-ghost);
-  font-family: var(--mono);
-  font-size: var(--label-xs, 0.68rem);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  transition: color 200ms ease;
-}
-
-.rowName {
-  color: #c9d2d6;
-  font-size: clamp(0.9rem, 1.15vw, 1.02rem);
-  font-weight: 520;
-  letter-spacing: -0.018em;
-  line-height: 1.28;
-  transition: color 200ms ease;
-}
-
-.row:hover .rowIndex {
-  color: var(--copy-muted);
-}
-
-.row:hover .rowName,
-.row[data-active] .rowName,
-.row[data-active] .rowIndex {
-  color: var(--copy-primary);
-}
-
-/* Detail ----------------------------------------------------------------- */
-
-.detailColumn {
-  grid-area: detail;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1.5rem, 2.6vw, 2.25rem);
-  min-width: 0;
-}
-
-.detail {
-  padding: clamp(1.6rem, 2.8vw, 2.25rem) clamp(1.6rem, 2.8vw, 2.25rem)
-    clamp(0.9rem, 1.6vw, 1.2rem);
-  border: 1px solid rgba(246, 245, 241, 0.14);
-  border-radius: var(--panel-radius, 8px);
-  background: rgba(246, 245, 241, 0.05);
-  box-shadow:
-    inset 0 1px rgba(255, 255, 255, 0.06),
-    0 30px 60px -44px rgba(0, 0, 0, 0.7);
-}
-
-/*
- * The card holds its height across the swap. Every entry is laid out in the
- * same grid cell as the live one, invisible, so the card is always as tall as
- * the tallest program and the register below never moves when the selection
- * changes. Without this the card collapsed to its footer between exit and
- * entry and the domains jumped twice per click.
- */
-.detailStack {
-  display: grid;
-}
-
-.detailStack > * {
-  grid-area: 1 / 1;
-  min-width: 0;
-}
-
-.detailSizer {
-  display: grid;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.detailSizer > * {
-  grid-area: 1 / 1;
-}
-
-/*
- * A clip for each line to rise out of. Bottom padding with a matching
- * negative margin keeps descenders inside the clip without changing the
- * spacing between lines; overflow contains the child's own top margin, so the
- * rhythm below is set on the text elements exactly as before.
- */
-.line {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.25rem;
-  margin-bottom: -0.25rem;
-}
-
-.line > * {
-  display: block;
-}
-
-.detailFamily {
-  margin: 0;
-  color: var(--copy-muted);
-  font-size: var(--label-xs, 0.68rem);
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  line-height: 1.3;
-  text-transform: uppercase;
-}
-
-.detailTitle {
-  margin: 0.7rem 0 0;
-  color: var(--copy-primary);
-  font-family: var(--display);
-  font-size: clamp(1.45rem, 2.4vw, 2.05rem);
-  font-weight: 550;
-  letter-spacing: -0.042em;
-  line-height: 1.08;
-  text-wrap: balance;
-}
-
-.detailNote {
-  margin: 1rem 0 0;
-  text-wrap: pretty;
-  color: var(--copy-secondary);
-  font-size: clamp(0.86rem, 1.05vw, 0.95rem);
-  line-height: 1.66;
-}
-
-/* The link on the left, the counter on the right, one hairline over both. */
-.detailFoot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1.3rem;
-  padding-top: 0.35rem;
-  border-top: 1px solid var(--rule-dark);
-}
-
-/* The homepage's text link, set for ink: text and arrow, a rule beneath that
-   runs out to the full width on approach. */
-.discuss {
-  position: relative;
-  display: inline-flex;
-  min-height: 44px;
-  align-items: center;
-  gap: 0.55rem;
-  color: var(--copy-primary);
-  font-size: 0.86rem;
-  font-weight: 620;
-  text-decoration: none;
-}
-
-.discuss::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 7px;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0.26);
-  transform-origin: left;
-  transition: transform 190ms var(--ease-lift);
-}
-
-.discuss:hover::after,
-.discuss:focus-visible::after {
-  transform: scaleX(1);
-}
-
-.discuss svg {
-  transition: transform 190ms var(--ease-lift);
-}
-
-.discuss:hover svg {
-  transform: translate(2px, -2px);
-}
-
-.detail .discuss:focus-visible {
-  outline: 2px solid #607985;
-  outline-offset: 4px;
-}
-
-.detailCount {
-  color: var(--copy-ghost);
-  font-family: var(--mono);
-  font-size: var(--label-xs, 0.68rem);
-  font-weight: 620;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-}
-
-.detailCount i {
-  padding: 0 0.35rem;
-  font-style: normal;
-  opacity: 0.55;
-}
-
-/* Domains ---------------------------------------------------------------- */
-
-/*
- * Six numbered rows in two columns, closing the right-hand column under the
- * card. The notes are always in view; the hover only moves the numeral and
- * the name, and brings up the rule they hang from.
- */
-.domains {
-  grid-area: domains;
-  padding-top: clamp(1.1rem, 1.9vw, 1.5rem);
-  border-top: 1px solid var(--rule-dark);
-}
-
-.domainsHead {
-  display: flex;
-  align-items: baseline;
-  gap: 0.7rem;
-  margin: 0 0 0.85rem;
-  padding-left: var(--inset);
-}
-
-.domainsHead span {
-  color: var(--copy-muted);
-  font-size: var(--label-xs, 0.68rem);
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.domainsHead strong {
-  color: var(--copy-primary);
-  font-family: var(--display);
-  font-size: clamp(0.98rem, 1.3vw, 1.12rem);
-  font-weight: 560;
-  letter-spacing: -0.028em;
-}
-
-.domainList {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: clamp(1.25rem, 2.4vw, 2rem);
-  margin: 0;
-  padding: 0;
-  border-bottom: 1px solid var(--rule-row);
-  list-style: none;
-}
-
-.domain {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1.6rem minmax(0, 1fr);
-  column-gap: 0.5rem;
-  align-items: baseline;
-  padding: 0.72rem 0.5rem 0.78rem var(--inset);
-  border-top: 1px solid var(--rule-row);
-}
-
-.domain::before {
-  content: '';
-  position: absolute;
-  top: 0.8rem;
-  bottom: 0.8rem;
-  left: 0;
-  width: 1px;
-  background: rgba(246, 245, 241, 0.16);
-  transition: background-color 200ms ease;
-}
-
-.domainIndex {
-  display: block;
-  color: var(--copy-ghost);
-  font-family: var(--mono);
-  font-size: var(--label-xs, 0.68rem);
-  font-weight: 620;
-  letter-spacing: 0.08em;
-  transition:
-    transform 200ms var(--ease-out),
-    color 200ms ease;
-}
-
-.domainCore {
-  min-width: 0;
-}
-
-.domainName {
-  display: block;
-  color: var(--copy-primary);
-  font-family: var(--display);
-  font-size: 0.92rem;
-  font-weight: 560;
-  letter-spacing: -0.024em;
-  line-height: 1.25;
-  transition: transform 200ms var(--ease-out);
-}
-
-.domainNote {
-  margin: 0.22rem 0 0;
-  text-wrap: pretty;
-  color: var(--copy-secondary);
-  font-size: 0.75rem;
-  line-height: 1.5;
-}
-
-@media (hover: hover) {
-  .domain:hover::before {
-    background: var(--copy-primary);
-  }
-
-  .domain:hover .domainIndex,
-  .domain:hover .domainName {
-    transform: translateX(4px);
-  }
-
-  .domain:hover .domainIndex {
-    color: var(--copy-muted);
-  }
-}
-
-/* Responsive ------------------------------------------------------------- */
-
-@media (prefers-reduced-motion: reduce) {
-  .row,
-  .rowIndex,
-  .rowName,
-  .discuss::after,
-  .discuss svg,
-  .domain::before,
-  .domainIndex,
-  .domainName {
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* Mobile family book ---------------------------------------------------- */
-
-.mobile {
-  display: block;
-  grid-area: mobile;
-}
-
-@media (max-width: 895px) {
-  .programs {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: 'mobile';
-    gap: 0;
-    margin-top: 1.25rem;
-  }
-
-  .index,
-  .detailColumn,
-  .domains {
-    display: none;
-  }
-
-  .mobileFamilySelector {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 3px;
-    padding: 3px;
-    border: 1px solid rgba(246, 245, 241, 0.14);
-    border-radius: 6px;
-    background: rgba(246, 245, 241, 0.035);
-  }
-
-  .mobileFamilyControl {
-    position: relative;
-    min-width: 0;
-    min-height: 3.25rem;
-    padding: 0.5rem 0.3rem;
-    border: 0;
-    border-radius: 3px;
-    background: transparent;
-    color: rgba(246, 245, 241, 0.58);
-    font: inherit;
-    font-size: 0.72rem;
-    font-weight: 650;
-    letter-spacing: -0.015em;
-    line-height: 1.2;
-    text-align: center;
-    cursor: pointer;
-  }
-
-  .mobileFamilyControl[aria-pressed='true'] {
-    background: rgba(246, 245, 241, 0.11);
-    color: var(--copy-primary);
-    box-shadow:
-      inset 0 0 0 1px rgba(246, 245, 241, 0.12),
-      0 8px 22px -18px rgba(0, 0, 0, 0.9);
-  }
-
-  .mobileFamilyControl[aria-pressed='true']::after {
-    content: '';
-    position: absolute;
-    inset: auto 0.65rem 0.35rem;
-    height: 2px;
-    background: #c6d1d5;
-  }
-
-  .mobileFamilyControl:focus-visible {
-    outline: 2px solid #c6d1d5;
-    outline-offset: 2px;
-  }
-
-  .mobileFamilyIntro {
-    position: relative;
-    margin-top: 1rem;
-    padding: 0.65rem 0 0.7rem 1rem;
-    border-top: 1px solid var(--rule-dark);
-    border-bottom: 1px solid var(--rule-dark);
-  }
-
-  .mobileFamilyIntro::before {
-    content: '';
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 2px;
-    background: var(--material-line);
-  }
-
-  .mobileFamilyLabel {
-    margin: 0;
-    color: var(--copy-primary);
-    font-family: var(--display);
-    font-size: 1.1rem;
-    font-weight: 580;
-    letter-spacing: -0.025em;
-    line-height: 1.25;
-  }
-
-  .mobileFamilyNote {
-    margin: 0.4rem 0 0;
-    color: var(--copy-secondary);
-    font-size: 1rem;
-    line-height: 1.48;
-    text-wrap: pretty;
-  }
-
-  .mobileProgramList {
-    margin: 0;
-    padding: 0;
-    border-bottom: 1px solid var(--rule-dark);
-    list-style: none;
-  }
-
-  .mobileProgram {
-    position: relative;
-    border-bottom: 1px solid var(--rule-row);
-  }
-
-  .mobileProgram:last-child {
-    border-bottom: 0;
-  }
-
-  .mobileProgram[data-active='true'] {
-    background: rgba(246, 245, 241, 0.04);
-    box-shadow: inset 2px 0 0 var(--material-line);
-  }
-
-  .mobileProgramControl {
-    display: grid;
-    grid-template-columns: 3.6rem minmax(0, 1fr) 1.75rem;
-    gap: 0.65rem;
-    align-items: center;
-    width: 100%;
-    min-height: var(--mobile-control-height);
-    padding: 0.6rem 0.75rem 0.6rem 1rem;
-    border: 0;
-    background: transparent;
-    color: var(--copy-primary);
-    font: inherit;
-    text-align: left;
-    cursor: pointer;
-  }
-
-  .mobileProgramControl:focus-visible {
-    outline: 2px solid #c6d1d5;
-    outline-offset: -2px;
-  }
-
-  .mobileProgramIndex {
-    padding-top: 0;
-    color: var(--copy-muted);
-    font-family: var(--mono);
-    font-size: 0.68rem;
-    font-weight: 650;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-  }
-
-  .mobileProgramName {
-    font-family: var(--display);
-    font-size: 1.08rem;
-    font-weight: 560;
-    letter-spacing: -0.028em;
-    line-height: 1.25;
-    text-wrap: pretty;
-  }
-
-  .mobileProgramToggle {
-    display: grid;
-    width: 1.75rem;
-    height: 1.75rem;
-    place-items: center;
-    border: 1px solid rgba(246, 245, 241, 0.22);
-    border-radius: 50%;
-    color: var(--copy-secondary);
-    font-size: 1rem;
-    line-height: 1;
-  }
-
-  .mobileProgramPanel {
-    margin-left: 0;
-    padding: 0 1rem 0.8rem;
-    animation: mobile-program-in 210ms var(--ease-out) both;
-  }
-
-  .mobileProgramNote {
-    margin: 0;
-    color: var(--copy-secondary);
-    font-size: 1rem;
-    line-height: 1.48;
-    text-wrap: pretty;
-  }
-
-  .mobileDiscuss {
-    position: relative;
-    display: inline-flex;
-    min-height: 44px;
-    align-items: center;
-    gap: 0.55rem;
-    margin-top: 0.65rem;
-    color: var(--copy-primary);
-    font-size: 1rem;
-    font-weight: 620;
-    text-decoration: none;
-  }
-
-  .mobileDiscuss::after {
-    content: '';
-    position: absolute;
-    inset: auto 0 4px;
-    height: 1px;
-    background: currentColor;
-    transform: scaleX(0.28);
-    transform-origin: left;
-    transition: transform 190ms var(--ease-lift);
-  }
-
-  .mobileDiscuss:focus-visible {
-    outline: 2px solid #c6d1d5;
-    outline-offset: 2px;
-  }
-
-}
-
-@media (min-width: 896px) {
-  .mobile {
-    display: none;
-  }
-}
-
-@media (max-width: 359px) {
-  .mobileProgramControl {
-    grid-template-columns: 2.75rem minmax(0, 1fr) 1.75rem;
-    gap: 0.35rem;
-    padding-left: 0.55rem;
-  }
-
-  .mobileProgramPanel {
-    margin-left: 0;
-  }
-}
-
-/* The desktop register arrives at 896px, but it needs a short intermediate
-   composition before the full three-column chapter heading has room. */
-@media (min-width: 896px) and (max-width: 1100px) {
-  .programs {
-    --inset: 0.7rem;
-    gap: 1.5rem;
-  }
-
-  .detail {
-    padding: 1.35rem 1.25rem 0.9rem;
-  }
-}
-
-.mobileDomainsTrigger {
-  display: flex;
-  width: 100%;
-  min-height: 3.5rem;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1rem;
-  padding: 0.65rem 0.9rem 0.65rem 1rem;
-  border: 1px solid var(--rule-dark);
-  border-radius: 4px;
-  background: rgba(246, 245, 241, 0.055);
-  color: var(--copy-primary);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-
-.mobileDomainsTrigger:hover {
-  background: rgba(246, 245, 241, 0.09);
-}
-
-.mobileDomainsTrigger:focus-visible {
-  outline: 2px solid #c6d1d5;
-  outline-offset: 2px;
-}
-
-.mobileDomainsTrigger > span {
-  display: grid;
-  gap: 0.18rem;
-}
-
-.mobileDomainsTrigger small {
-  color: var(--copy-muted);
-  font-size: var(--label-xs, 0.68rem);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  line-height: 1.2;
-  text-transform: uppercase;
-}
-
-.mobileDomainsTrigger strong {
-  font-family: var(--display);
-  font-size: 1rem;
-  font-weight: 570;
-  letter-spacing: -0.025em;
-  line-height: 1.25;
-}
-
-.domainSheet {
+.h2 {
+  font-size: 50px;
+  margin-top: 16px;
   color: var(--ink);
 }
 
-.mobileDomainList {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+/* ---- Desktop columns ------------------------------------------------ */
+
+.g {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  align-items: start;
+  margin-top: 40px;
 }
 
-.mobileDomain {
-  display: grid;
-  grid-template-columns: 2rem minmax(0, 1fr);
-  gap: 0.65rem;
-  padding: 0.8rem 0;
+.col {
+  background: rgba(233, 239, 241, 0.45);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(16, 33, 43, 0.08);
+}
+
+.hd {
+  background: var(--ink);
+  color: var(--light);
+  padding: 20px 22px 18px;
+}
+
+.hd small {
+  display: block;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--line);
+}
+
+.hd h3 {
+  font-family: var(--font-display);
+  font-size: 21px;
+  letter-spacing: -0.04em;
+  font-weight: 550;
+  line-height: 1.6;
+  margin-top: 8px;
+}
+
+.hd span {
+  display: block;
+  font-size: 13px;
+  color: #a9b8be;
+  margin-top: 4px;
+  min-height: 3.25em;
+  text-wrap: pretty;
+}
+
+.acc {
+  padding: 4px 22px 8px;
+}
+
+.it {
   border-top: 1px solid var(--rule);
 }
 
-.mobileDomain:first-child {
-  padding-top: 0;
+.it:first-child {
   border-top: 0;
 }
 
-.mobileDomainIndex {
-  padding-top: 0.14rem;
+.ith {
+  font: inherit;
+}
+
+.ith button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 30px 1fr 34px;
+  align-items: start;
+  padding: 15px 0;
+  text-align: left;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+.idx {
   color: var(--steel);
-  font-family: var(--mono);
-  font-size: var(--label-xs, 0.68rem);
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  padding-top: 2px;
 }
 
-.mobileDomain strong {
-  display: block;
-  color: var(--ink);
-  font-family: var(--display);
-  font-size: 1.05rem;
-  font-weight: 580;
-  letter-spacing: -0.025em;
-  line-height: 1.25;
-}
-
-.mobileDomain p {
-  margin: 0.25rem 0 0;
-  color: var(--graphite);
-  font-size: 1rem;
-  line-height: 1.48;
+.ith b {
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
   text-wrap: pretty;
 }
 
-@keyframes mobile-program-in {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
+.pl {
+  justify-self: end;
+  margin-top: -2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--rule2);
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  line-height: 1;
+  transition: transform 0.6s var(--ease), background 0.4s, color 0.4s;
+}
+
+.bd {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.65s var(--ease);
+}
+
+.bd > div {
+  overflow: hidden;
+}
+
+.in {
+  padding: 0 34px 22px 30px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.45s, transform 0.6s var(--ease);
+}
+
+.in p {
+  color: var(--graphite);
+  font-size: 13.5px;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.it.on .bd {
+  grid-template-rows: 1fr;
+}
+
+.it.on .in {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.12s;
+}
+
+.it.on .pl {
+  transform: rotate(45deg);
+  background: var(--ink);
+  color: var(--light);
+  box-shadow: none;
+}
+
+/* ---- Tablet --------------------------------------------------------- */
+
+@media (min-width: 1100px) {
+  .h2 {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 1099px) {
+  .cd {
+    padding: 48px 40px 40px;
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .h2 {
+    font-size: clamp(38px, 5vw, 50px);
   }
+}
+
+@media (max-width: 959px) {
+  .g {
+    grid-template-columns: 1fr;
+  }
+
+  .hd span {
+    min-height: 0;
+  }
+}
+
+/* ---- Phone ---------------------------------------------------------- */
+
+.fm {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .cd {
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .h2 {
+    font-size: 31px;
+    margin-top: 12px;
+  }
+
+  .h2 :global(.s) {
+    display: block;
+  }
+
+  .g {
+    display: none;
+  }
+
+  .fm {
+    display: block;
+    margin-top: 20px;
+  }
+}
+
+.fit {
+  margin-top: 10px;
+  background: var(--paper);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--rule), 0 24px 40px -32px rgba(16, 33, 43, 0.5);
+}
+
+.fh {
+  font: inherit;
+}
+
+.fh button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 28px;
+  align-items: center;
+  gap: 10px;
+  padding: 18px;
+  text-align: left;
+  background: var(--ink);
+  color: var(--light);
+  border: 0;
+  cursor: pointer;
+}
+
+.fh small {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--line);
+}
+
+.fh b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.6;
+  margin-top: 4px;
+}
+
+.fpl {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 0.6s var(--ease), background 0.4s, color 0.4s;
+}
+
+.fit.on .fpl {
+  transform: rotate(45deg);
+  background: var(--light);
+  color: var(--ink);
+}
+
+.bdy {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.65s var(--ease);
+}
+
+.bdy > div {
+  overflow: hidden;
+}
+
+.fit.on .bdy {
+  grid-template-rows: 1fr;
+}
+
+.pg {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  column-gap: 4px;
+  padding: 16px 18px;
+  border-top: 1px solid var(--rule);
+  cursor: pointer;
+}
+
+.pg:first-child {
+  border-top: 0;
+}
+
+.pidx {
+  grid-row: 1 / 4;
+  padding-top: 3px;
+  color: var(--steel);
+}
+
+.pg h4 {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.pg p {
+  grid-column: 2;
+  font-size: 13.5px;
+  color: var(--graphite);
+  margin-top: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-wrap: pretty;
+}
+
+.pg.x p {
+  -webkit-line-clamp: unset;
+  display: block;
+}
+
+.more {
+  grid-column: 2;
+  justify-self: start;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--steel);
+  margin-top: 6px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.pg.x .more {
+  display: none;
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mobileDiscuss::after {
-    transition: none;
-  }
-
-  .mobileProgramPanel {
-    animation: none;
-  }
-}
-
-
-/*
- * The partial underline is a hover affordance that completes on pointer-over.
- * A coarse pointer never delivers that hover, so the stub rested permanently
- * at roughly a quarter width and read as an unfinished rule rather than as a
- * link. It rests drawn and quiet on touch instead.
- */
-@media (hover: none) {
-  .discuss::after,
-  .mobileDiscuss::after {
-    transform: scaleX(1);
-    opacity: 0.32;
+  .pl,
+  .fpl,
+  .bd,
+  .bdy,
+  .in {
+    transition: none !important;
   }
 }

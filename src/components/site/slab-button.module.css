@@ -54,6 +54,8 @@
   border-left: 1px solid rgba(255, 255, 255, 0.16);
   font-style: normal;
   font-size: 15px;
+  /* Outfit has no arrows; name a system face so the glyph is not the wide Arial fallback. */
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
   transition: transform 0.6s var(--ease);
 }
 

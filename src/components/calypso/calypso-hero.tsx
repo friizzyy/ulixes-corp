@@ -1,116 +1,98 @@
 import Image from 'next/image'
-import Link from 'next/link'
-import { ArrowRight, ArrowUpRight } from '@/components/ui/icons'
-import { calypsoContent } from '@/lib/calypso-content'
-import { Cascade, CascadeItem, Curtain, Lift } from './calypso-motion'
+import { Brand, CONTACT_HREF, Eyebrow, SlabButton, TextLink } from '@/components/site'
+import { calypsoFacts, calypsoHero } from '@/lib/calypso-content'
 import styles from './calypso-hero.module.css'
 
+const HERO_IMAGE = '/media/calypso/ulixes-calypso-hall.jpg'
+
 /*
- * The site's hero grammar, which this page kept failing to speak.
- *
- * Every other hero on the site is the same three moves: a pill eyebrow, copy
- * flush left, and a photograph on the right that bleeds to the viewport edge
- * under a horizontal mask. Services then closes with a ruled index beneath the
- * copy; the homepage closes with the authority dock.
- *
- * This page had a rounded card holding an aurora gradient and no photograph at
- * all. The gradient appears nowhere else on the site and the card belongs to
- * the homepage, so the result read as neither one thing nor the other.
- *
- * So: same grammar, different content. Full bleed like services and the
- * experience page rather than a card, the hall photograph on the right, and
- * the four authority values as the ruled index beneath the copy. What keeps it
- * from being services twice is the serif turn in the headline, which is the
- * voice this page and the experience page share.
+ * Two compositions of one hero (02-calhero-desk / 01-calhero-ph). Desktop and
+ * tablet: an inset image card with centred type and the facts bar lifted over
+ * its foot. Phone: a full-bleed image that draws the brand itself (the layout
+ * renders no brand bar on this route), type set low, and the facts as a
+ * ticker. Only one is displayed at a time, so only one h1 is ever exposed.
  */
 export function CalypsoHero() {
-  const { hero, authority } = calypsoContent
-
   return (
-    <section
-      className={styles.hero}
-      data-testid="calypso-hero"
-      data-layout="open-masthead"
-      data-mobile-flow="editorial-poster"
-      aria-labelledby="calypso-title"
-    >
-      <div className={`${styles.shell} ${styles.copyShell}`}>
-        <div className={styles.copy} data-testid="calypso-hero-copy">
-          <Curtain delay={0.05}>
-            <p className={styles.eyebrow}>{hero.eyebrow}</p>
-          </Curtain>
-
-          <h1
-            id="calypso-title"
-            className={styles.title}
-            aria-label={`${hero.headlineLead} ${hero.headlineTurn}`}
-            data-mobile-title="two-lines"
-          >
-            <Curtain delay={0.12}>
-              <span data-line="lead">
-                {hero.headlineLead}{' '}
+    <section className={styles.root} data-testid="calypso-hero">
+      <div className={styles.desk} data-testid="calypso-hero-desk">
+        <div className={styles.card}>
+          <Image src={HERO_IMAGE} alt="" fill priority sizes="100vw" className={styles.img} />
+          <div className={styles.tx}>
+            <Eyebrow centred tone="light" className={styles.eyebrow}>
+              {calypsoHero.eyebrow}
+            </Eyebrow>
+            <h1 className={`d ${styles.h1}`}>
+              <span className={styles.ln}>
+                <span>{calypsoHero.lead}</span>
+              </span>{' '}
+              <span className={styles.ln}>
+                <span>{calypsoHero.turn}</span>
               </span>
-            </Curtain>
-            <Curtain delay={0.2}>
-              <span data-line="turn">{hero.headlineTurn}</span>
-            </Curtain>
-          </h1>
-
-          <Curtain delay={0.3}>
-            <p className={styles.body}>{hero.body}</p>
-          </Curtain>
-
-          <div
-            data-testid="calypso-hero-actions"
-            data-mobile-layout="paired-actions"
-          >
-            <Lift className={styles.actions} delay={0.4} amount={0}>
-              <Link href="/contact" className={styles.primaryAction}>
-                <span>{hero.primaryCta}</span>
-                <span className={styles.actionChamber} aria-hidden="true">
-                  <ArrowUpRight size={17} />
-                </span>
-              </Link>
-              <Link href="#lifecycle" className={styles.secondaryAction}>
-                {hero.secondaryCta}
-                <ArrowRight size={16} />
-              </Link>
-            </Lift>
+            </h1>
+            <p className={styles.body}>{calypsoHero.body}</p>
+            <div className={styles.actions}>
+              <SlabButton href={CONTACT_HREF} variant="light">
+                {calypsoHero.cta}
+              </SlabButton>
+              <TextLink href="#lifecycle" className={styles.explore}>
+                {calypsoHero.explore}
+              </TextLink>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div className={styles.media} data-testid="calypso-hero-media" aria-hidden="true">
-        <Image
-          src="/media/calypso/ulixes-calypso-hall.jpg"
-          alt=""
-          fill
-          priority
-          sizes="(max-width: 767px) 100vw, (max-width: 895px) 100vw, 60vw"
-          className={styles.mediaImage}
-        />
-      </div>
-
-      <div
-        className={`${styles.shell} ${styles.authorityShell}`}
-        data-mobile-layout="two-by-two"
-        data-mobile-alignment="centered-cells"
-      >
-        <Cascade
-          className={styles.authorityDock}
-          amount={0}
-          label="Calypso authority"
-        >
-          {authority.map((item, index) => (
-            <CascadeItem key={item.value} primary={index === 0}>
-              <span className={styles.dockIndex}>
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <strong>{item.value}</strong>
-              <small>{item.label}</small>
-            </CascadeItem>
+        <ul className={styles.facts} aria-label="The practice in numbers">
+          {calypsoFacts.map((fact) => (
+            <li key={fact.unit}>
+              <div className={styles.f}>
+                <b>{fact.value}</b>
+                <em>{fact.unit}</em>
+              </div>
+              <span className={styles.x}>{fact.note}</span>
+            </li>
           ))}
-        </Cascade>
+        </ul>
+      </div>
+
+      <div className={styles.phone} data-testid="calypso-hero-phone">
+        <div className={styles.ph}>
+          <Image src={HERO_IMAGE} alt="" fill priority sizes="100vw" className={styles.img} />
+          <div className={styles.top}>
+            <Brand tone="light" />
+          </div>
+          <div className={styles.ptx}>
+            <Eyebrow tone="light">{calypsoHero.eyebrow}</Eyebrow>
+            <h1 className={`d ${styles.ph1}`}>
+              {calypsoHero.lead} <span className="s">{calypsoHero.turn}</span>
+            </h1>
+            <p className={styles.pl}>{calypsoHero.body}</p>
+            <SlabButton href={CONTACT_HREF} variant="light" block className={styles.pbtn}>
+              {calypsoHero.cta}
+            </SlabButton>
+          </div>
+        </div>
+        <div className={styles.tk}>
+          <ul className={styles.sr}>
+            {calypsoFacts.map((fact) => (
+              <li key={fact.unit}>
+                {fact.value} {fact.unit}: {fact.note}
+              </li>
+            ))}
+          </ul>
+          <div className={styles.run} aria-hidden="true">
+            {[0, 1].map((copy) =>
+              calypsoFacts.map((fact) => (
+                <span key={`${copy}-${fact.unit}`}>
+                  <b>
+                    {fact.value} {fact.unit}
+                  </b>
+                  {fact.note}
+                  <em>•</em>
+                </span>
+              )),
+            )}
+          </div>
+        </div>
       </div>
     </section>
   )

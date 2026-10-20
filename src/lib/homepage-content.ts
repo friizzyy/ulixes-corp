@@ -1,3 +1,13 @@
+/*
+ * Home page copy, taken from the approved prototype (docs/build-spec/home).
+ * Where the desktop and phone files word a line differently, both are kept:
+ * `desk` for >= 768px, `phone` for <= 767px.
+ *
+ * Other content files read `homepageContent.contact` and
+ * `homepageContent.credibility.linkedinUrl`, and the icon / material types
+ * below; keep those exports stable.
+ */
+
 export type AuthorityIconName = 'history' | 'lifecycle' | 'regions' | 'access'
 export type ServiceIconName =
   | 'implementation'
@@ -5,142 +15,235 @@ export type ServiceIconName =
   | 'testing'
   | 'readiness'
 export type ServiceMaterial = 'steel' | 'sage' | 'clay' | 'platinum'
-/* The four capabilities the homepage ledger sells; ids match expertiseAreas. */
-export type ServiceCapabilityId =
-  | 'architecture'
-  | 'accounting'
-  | 'trading'
-  | 'assurance'
 
-export type AuthorityItem = {
-  context: 'Continuity' | 'Lifecycle' | 'Reach' | 'Access'
-  value: string
+export interface HeroFact {
   label: string
-  detail?: string
-  icon: AuthorityIconName
+  value: string
+  /** The dock's detail line on desktop and tablet. */
+  detail: string
+  /** The ticker's detail line on phone. */
+  phoneDetail: string
 }
 
-export type ServiceModule = {
-  id: ServiceCapabilityId
+export interface HomeService {
+  id: 'architecture' | 'accounting' | 'trading' | 'assurance'
+  number: string
   title: string
   scope: string
-  description: string
   href: string
-  icon: ServiceIconName
-  material: ServiceMaterial
+  image: { src: string; width: number; height: number }
 }
 
-/*
- * Home, Expertise, Experience, Contact.
- *
- * Expertise and Services were two labels for one concept: the homepage section
- * with id="expertise" is the services section, and its CTA already links to
- * /services. The anchor is gone and the page owns the label. The Approach
- * anchor is also gone: it pointed at the practitioner bio, so it read as
- * methodology and landed on a biography.
- */
-/*
- * Contact is deliberately absent: the persistent "Discuss a mandate" action in
- * the navigation and footer already points at /contact, and listing it here
- * would give one destination two labels.
- */
-export const editorialNavigation = [
-  { label: 'Services', href: '/services' },
-  { label: 'Experience', href: '/institutional-experience' },
-  /*
-   * Calypso sits after Experience deliberately. The reposition exists so Ulixes
-   * stops reading as a Calypso implementation shop, and second position in the
-   * navigation is the first thing that would undo it. After the track record it
-   * reads as the depth behind the work rather than as the whole offer, and the
-   * page ranks identically either way.
-   */
-  { label: 'Nasdaq Calypso', href: '/nasdaq-calypso' },
-] as const
-
-/*
- * The public routes, every one of them rendered in the editorial system. The
- * list is informational now. The navigation and footer once read it to choose
- * between the editorial chrome and the retired interior theme; privacy and
- * terms were the last routes on that theme, and once they, not-found and
- * error were rebuilt on the editorial surface there was no second branch
- * left to choose.
- */
-export const editorialRoutes: readonly string[] = [
-  '/',
-  '/services',
-  '/nasdaq-calypso',
-  '/institutional-experience',
-  '/contact',
-  '/privacy',
-  '/terms',
-]
-
-/*
- * Always true: every pathname, unknown ones served by not-found included,
- * renders the editorial chrome. The signature is kept so callers compile.
- */
-export function isEditorialRoute(_pathname: string | null | undefined): boolean {
-  return true
+export interface LifecycleStage {
+  name: string
+  office: 'Front office' | 'Middle office' | 'Back office'
+  does: string
 }
+
+export interface PractitionerFact {
+  value: string
+  /** Desktop unit beside the figure ("offices"); absent for the year. */
+  unit?: string
+  detail: string
+  /** Phone label under the figure and the shorter phone detail. */
+  phoneLabel: string
+  phoneDetail: string
+}
+
+export const LINKEDIN_URL = 'https://www.linkedin.com/in/ulysses-williams-2379634/'
 
 export const homepageContent = {
   hero: {
-    /* Ulysses's own top-level message from his note of 2 September 2026. */
-    eyebrow: 'Senior-led advisory for banks and hedge funds',
-    headline: 'Capital markets transformation and architecture.',
-    headlineLines: [
-      'Capital markets',
-      'transformation & architecture.',
-    ],
-    body: 'Deep expertise in Nasdaq Calypso and complex front-to-back transformation: trading platforms, accounting and controls, risk, data, and intelligent automation.',
+    eyebrow: {
+      desk: 'Senior-led advisory for banks and hedge funds',
+      phone: 'Senior-led · Banks & hedge funds',
+    },
+    headline: 'Capital markets transformation & architecture.',
+    body: {
+      desk: 'Deep expertise in Nasdaq Calypso and complex front-to-back transformation.',
+      phone: 'Deep expertise in Nasdaq Calypso and front-to-back transformation.',
+    },
     primaryCta: 'Discuss a mandate',
     secondaryCta: 'Review the capabilities',
     imageAlt:
       'Blue-hour view of downtown San Francisco with Salesforce Tower and the Financial District skyline.',
+    videoSrc: '/media/home/ulixes-san-francisco-loop.mp4',
+    posterSrc: '/media/home/ulixes-san-francisco-blue-hour.webp',
+    facts: [
+      {
+        label: 'Clients',
+        value: 'Banks & hedge funds',
+        detail: 'Institutional scope',
+        phoneDetail: 'Institutional scope',
+      },
+      {
+        label: 'Institutions',
+        value: '7 kinds',
+        detail: 'G-SIBs to clearing platforms',
+        phoneDetail: 'of institution',
+      },
+      {
+        label: 'Lifecycle',
+        value: 'Capture to reporting',
+        detail: 'Every stage of the trade',
+        phoneDetail: 'Every stage of the trade',
+      },
+      {
+        label: 'Base',
+        value: 'San Francisco',
+        detail: 'Advising internationally',
+        phoneDetail: 'Advising internationally',
+      },
+    ] satisfies readonly HeroFact[],
   },
   services: {
-    eyebrow: 'Capabilities',
-    headline: 'Four points where delivery risk concentrates.',
+    eyebrow: 'What the work covers',
+    headlineLead: 'Four points where',
+    headlineTurn: 'delivery risk concentrates.',
     body: 'Transformation and architecture lead. Accounting, risk, post-trade, and assurance follow the same decision through the system.',
-    cta: 'Explore the capabilities',
+    cta: 'All services',
+    href: '/services',
+    items: [
+      {
+        id: 'architecture',
+        number: '01',
+        title: 'Transformation & architecture',
+        scope: 'Modernization · Architecture · Operating model',
+        href: '/services',
+        image: { src: '/media/services/ulixes-services-atrium.jpg', width: 1920, height: 1280 },
+      },
+      {
+        id: 'accounting',
+        number: '02',
+        title: 'Accounting & controls',
+        scope: 'Accounting · Reconciliation · Controls',
+        href: '/services',
+        image: { src: '/media/experience/ulixes-institutional-hall.jpg', width: 1800, height: 1350 },
+      },
+      {
+        id: 'trading',
+        number: '03',
+        title: 'Trading, risk & post-trade',
+        scope: 'Pricing · Collateral · Lifecycle',
+        href: '/services',
+        image: { src: '/media/home/ulixes-financial-district-day.webp', width: 1672, height: 941 },
+      },
+      {
+        id: 'assurance',
+        number: '04',
+        title: 'Automation & assurance',
+        scope: 'Testing · Validation · Readiness',
+        href: '/services',
+        image: { src: '/media/services/ulixes-services-floor.jpg', width: 1920, height: 1280 },
+      },
+    ] satisfies readonly HomeService[],
   },
-  /*
-   * The platform credential gets one quiet band between the capabilities and
-   * the practitioner, so the Calypso depth stays visible without leading. The
-   * eight areas named in the body are the ones already published on /services.
-   */
   calypso: {
-    eyebrow: 'Platform depth',
-    sinceLabel: 'Calypso work since',
-    since: '2004',
-    headline: 'Deep expertise in Nasdaq Calypso.',
-    body: 'Front office, risk, accounting, collateral, operations, testing, migration, and implementation, on one platform since 2004.',
-    cta: 'Review Calypso expertise',
-    href: '/nasdaq-calypso',
-  },
-  credibility: {
-    eyebrow: 'The practitioner',
-    headline: 'Ulysses Williams leads the work.',
-    /* A pointer, not the biography. The full account, the institution types
-       and the regional depth are the experience page's to carry. */
-    body: 'Ulysses Williams leads every mandate personally, bringing a front-, middle-, and back-office view of Calypso delivery to the decisions that shape it.',
-    imageAlt:
-      'Daylight view of the San Francisco Financial District with Salesforce Tower above the city skyline.',
-    cta: 'View Ulysses on LinkedIn',
-    linkedinUrl: 'https://www.linkedin.com/in/ulysses-williams-2379634/',
-    /*
-     * The region list is owned by the hero authority dock and the front-to-back
-     * line by the checkpoints below. The footprint plate restates neither.
-     */
-    footprint: {
-      label: 'Delivery footprint',
-      value: 'San Francisco base',
+    eyebrow: 'Nasdaq Calypso',
+    headlineLead: 'Calypso since 2004.',
+    headlineTurn: 'Every office it touches.',
+    body: {
+      desk: 'Senior-led advisory across the full trade lifecycle, from the first booking decision to the close it eventually reaches.',
+      phone: 'Senior-led advisory across the full trade lifecycle.',
     },
-    checkpoints: [
-      'Calypso experience since 2004',
-      'Front-, middle-, and back-office perspective',
+    stats: [
+      { value: '7', label: 'Lifecycle stages' },
+      { value: '8', label: 'Programs' },
+      { value: '6', label: 'Instrument classes' },
     ],
+    diagramLabel: 'One trade · Seven stages',
+    lanes: ['Front', 'Middle', 'Back'],
+    cta: 'Explore Calypso expertise',
+    href: '/nasdaq-calypso',
+    stages: [
+      {
+        name: 'Capture',
+        office: 'Front office',
+        does: 'Trade booked against product, book, counterparty, and static data',
+      },
+      {
+        name: 'Valuation',
+        office: 'Front office',
+        does: 'Curves built, marks struck, independent price verification run',
+      },
+      {
+        name: 'Risk',
+        office: 'Middle office',
+        does: 'Sensitivities, limits, and the market data the measures depend on',
+      },
+      {
+        name: 'Collateral',
+        office: 'Middle office',
+        does: 'Margin called, exposure agreed, agreement terms applied',
+      },
+      {
+        name: 'Settlement',
+        office: 'Back office',
+        does: 'Cash and securities move, confirmations matched, breaks worked',
+      },
+      {
+        name: 'Ledger',
+        office: 'Back office',
+        does: 'Sub-ledger posts, hedge designation and effectiveness carried through',
+      },
+      {
+        name: 'Regulatory reporting',
+        office: 'Back office',
+        does: 'Regulatory submissions assembled and traced back to the transaction',
+      },
+    ] satisfies readonly LifecycleStage[],
   },
+  practitioner: {
+    eyebrow: 'The practitioner',
+    headlineLead: 'One senior practitioner,',
+    headlineTurn: 'on every mandate.',
+    name: 'Ulysses Williams',
+    role: 'President · Calypso subject-matter expert',
+    imageSrc: '/media/experience/ulysses-williams.jpg',
+    imageAlt: 'Portrait of Ulysses Williams, President of Ulixes Corporation.',
+    experienceCta: { desk: 'Institutional experience', phone: 'Experience' },
+    experienceHref: '/institutional-experience',
+    linkedinCta: 'LinkedIn',
+    facts: [
+      {
+        value: '2004',
+        detail: 'Calypso work since',
+        phoneLabel: 'Calypso',
+        phoneDetail: 'Work since',
+      },
+      {
+        value: '3',
+        unit: 'offices',
+        detail: 'Front, middle and back',
+        phoneLabel: 'Offices',
+        phoneDetail: 'Front to back',
+      },
+      {
+        value: '4',
+        unit: 'regions',
+        detail: 'NA · EU · APAC · LatAm',
+        phoneLabel: 'Regions',
+        phoneDetail: 'Worldwide',
+      },
+    ] satisfies readonly PractitionerFact[],
+    briefLead: 'Put that experience',
+    briefTurn: 'against the decision.',
+    briefBody: {
+      desk: 'Describe the platform change, where it sits, and what it depends on. A useful first note covers three things.',
+      phone: 'A useful first note covers three things.',
+    },
+    briefPoints: [
+      { title: 'The platform state', body: 'What runs today and what is changing' },
+      { title: 'The delivery stage', body: 'Design, build, migration, testing or go-live' },
+      { title: 'The decision', body: 'What needs senior attention, and by when' },
+    ],
+    cta: 'Discuss a mandate',
+  },
+  /* Read by the experience page. */
+  credibility: {
+    linkedinUrl: LINKEDIN_URL,
+  },
+  /* Read by the services, Calypso, expertise and experience content. */
   contact: {
     eyebrow: 'Start a conversation',
     headline: 'Start with the mandate.',
@@ -152,80 +255,3 @@ export const homepageContent = {
   },
 } as const
 
-export const authorityItems: readonly AuthorityItem[] = [
-  {
-    context: 'Continuity',
-    value: 'Since 2004',
-    label: 'Calypso experience',
-    icon: 'history',
-  },
-  {
-    context: 'Lifecycle',
-    value: 'Front to back',
-    label: 'Delivery perspective',
-    icon: 'lifecycle',
-  },
-  {
-    context: 'Reach',
-    value: '4 regions',
-    label: 'North America · Europe · APAC · Latin America',
-    icon: 'regions',
-  },
-  {
-    context: 'Access',
-    value: 'Senior led',
-    label: 'Direct practitioner access',
-    icon: 'access',
-  },
-]
-
-/*
- * The four capabilities from Ulysses Williams's positioning note of
- * 2 September 2026. They replaced four Calypso-named engagement areas so the
- * homepage sells the firm (capital markets transformation and architecture)
- * and lets the Calypso page carry the platform depth. Titles and scope lines
- * match `expertiseAreas` in expertise-content.ts; a test pins the two together.
- * The glyphs were drawn for the earlier names and map by nearest meaning.
- */
-export const serviceModules: readonly ServiceModule[] = [
-  {
-    id: 'architecture',
-    title: 'Transformation and solution architecture',
-    scope: 'Modernization · Architecture · Operating model',
-    description:
-      'Platform modernization, front-to-back architecture, and migration strategy decided before technology selection.',
-    href: '/services#architecture',
-    icon: 'implementation',
-    material: 'steel',
-  },
-  {
-    id: 'accounting',
-    title: 'Accounting and controls',
-    scope: 'Accounting · Reconciliation · Controls',
-    description:
-      'Capital markets and hedge accounting, reconciliation, and the control architecture that holds at the close.',
-    href: '/services#accounting',
-    icon: 'readiness',
-    material: 'sage',
-  },
-  {
-    id: 'trading',
-    title: 'Trading, risk and post-trade',
-    scope: 'Pricing · Collateral · Lifecycle',
-    description:
-      'Derivatives and securities through pricing, market data, collateral, settlement, and lifecycle processing.',
-    href: '/services#trading',
-    icon: 'migration',
-    material: 'clay',
-  },
-  {
-    id: 'assurance',
-    title: 'Automation and transformation assurance',
-    scope: 'Testing · Validation · Readiness',
-    description:
-      'Automated testing, migration validation, SIT and UAT, and production readiness, with intelligent automation applied to each.',
-    href: '/services#assurance',
-    icon: 'testing',
-    material: 'platinum',
-  },
-]

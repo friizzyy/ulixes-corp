@@ -1,170 +1,160 @@
-import {
-  chainStages,
-  expertiseAreas,
-  expertiseContent,
-  type ExpertiseArea,
-} from './expertise-content'
-import { homepageContent } from './homepage-content'
-
 /*
- * Content for the rebuilt /services page and its three coded concepts.
- *
- * Positioning follows Ulysses Williams's note of 2 September 2026: Ulixes is a
- * capital markets transformation and architecture firm, supported by deep
- * Nasdaq Calypso expertise. The four capabilities are his, taken from
- * `expertiseAreas` unchanged. Nothing here is a new claim: scope lines, risk
- * lines and coverage were already verified. The engagement examples are
- * structural slots until Ulysses supplies the copy, and they are marked so a
- * test can refuse to ship them.
+ * Content for /services, taken from the approved build spec
+ * (docs/build-spec/services). The capabilities are Ulysses Williams's own
+ * positioning (the same four as expertise-content.ts); the approach phases are
+ * the published engagement approach. Nothing here is a new claim.
  *
  * Bound by the same guardrails as every page: no company-wide "we", no named
  * clients, no invented metrics or outcomes, no em dashes.
  */
 
-export type CapabilityId = ExpertiseArea['id']
+export const lifecycleStages = [
+  'Capture',
+  'Valuation',
+  'Risk',
+  'Collateral',
+  'Settlement',
+  'Ledger',
+  'Reporting',
+] as const
 
-export type EngagementExample = {
-  /* The situation the mandate arrived in. */
-  situation: string
-  /* What was done, as prose rather than a list. */
-  work: string
-  /* What changed. Supplied by Ulysses; never invented here. */
-  change: string
-  /* 'draft' until Ulysses supplies the example. */
-  status: 'draft' | 'confirmed'
-}
+export type LifecycleStage = (typeof lifecycleStages)[number]
 
-export type ServiceCapability = ExpertiseArea & {
-  /* The scope line split for compositions that set it as a spec row. */
-  scopeTerms: readonly string[]
-  /* Coverage as one sentence, for compositions that avoid lists. */
-  coversSentence: string
-  example: EngagementExample
-  contactHref: string
-}
+export type CapabilityId = 'architecture' | 'accounting' | 'trading' | 'assurance'
 
-const stageLabel = (id: ExpertiseArea['span']['from']) =>
-  chainStages.find((stage) => stage.id === id)?.label ?? id
-
-/*
- * Until Ulysses supplies the examples, the situation line is drawn from the
- * capability's lifecycle span rather than repeating the risk line the plate
- * already leads with. The span is published content, flagged for his
- * confirmation in expertise-content.ts.
- */
-const situationFromSpan = (area: ExpertiseArea) =>
-  area.span.from === 'capture' && area.span.to === 'reporting'
-    ? 'A platform change whose consequences run the whole lifecycle, from capture to regulatory reporting.'
-    : `A platform change whose risk concentrates between ${stageLabel(area.span.from).toLowerCase()} and ${stageLabel(area.span.to).toLowerCase()}.`
-
-/* Lowercase a list item's first letter unless it opens with an acronym. */
-const lower = (item: string) =>
-  /^[A-Z]{2,}/.test(item) ? item : item.charAt(0).toLowerCase() + item.slice(1)
-
-const sentence = (items: readonly string[]) => {
-  if (items.length <= 1) return items.join('')
-  return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`
-}
-
-export const serviceCapabilities: readonly ServiceCapability[] = expertiseAreas.map(
-  (area) => ({
-    ...area,
-    scopeTerms: area.scope.split('·').map((term) => term.trim()),
-    coversSentence: `${sentence(area.covers.map((item, index) => (index === 0 ? item : lower(item))))}.`,
-    example: {
-      situation: situationFromSpan(area),
-      work: `The work covers ${sentence(
-        area.covers.map(lower),
-      )}, sequenced so dependent decisions land in the order they depend on.`,
-      change: 'Outcome statement to be supplied by Ulysses Williams.',
-      status: 'draft',
-    },
-    contactHref: `/contact?program=${encodeURIComponent(area.title)}`,
-  }),
-)
-
-export type AutomationArea = {
-  name: string
-  capability: CapabilityId
-  /* Scope of application only. No claim about results. */
-  note: string
+export type ServiceCapability = {
+  id: CapabilityId
+  /* Full title, as the card sets it. */
+  title: string
+  /* The short form the hero's capability bar and the phone ticker use. */
+  short: string
+  description: string
+  covers: readonly string[]
+  /* Where the capability's delivery risk concentrates, as a contiguous range. */
+  span: { from: LifecycleStage; to: LifecycleStage }
 }
 
 /*
- * Ulysses named the six areas. The capability each one reports to is a first
- * cut for him to correct, so a composition can hand each area to the plate
- * above it.
+ * The card copy keeps the spec's non-breaking hyphens (U+2011) in
+ * "front‑to‑back" and "post‑trade" so those compounds never split at a line end.
  */
-export const automationAreas: readonly AutomationArea[] = [
+export const serviceCapabilities: readonly ServiceCapability[] = [
   {
-    name: 'Testing',
-    capability: 'assurance',
-    note: 'Coverage shaped by lifecycle event and generated rather than scripted by hand.',
+    id: 'architecture',
+    title: 'Transformation and solution architecture',
+    short: 'Transformation & architecture',
+    description:
+      'Platform modernization, front‑to‑back architecture, and migration strategy decided before technology selection.',
+    covers: [
+      'Platform modernization',
+      'Front-to-back architecture',
+      'Implementation and migration strategy',
+      'Integration',
+      'Operating-model design',
+    ],
+    span: { from: 'Capture', to: 'Reporting' },
   },
   {
-    name: 'Controls',
-    capability: 'accounting',
-    note: 'Control checks that run continuously instead of at period end.',
+    id: 'accounting',
+    title: 'Accounting and controls',
+    short: 'Accounting & controls',
+    description:
+      'Capital markets and hedge accounting, reconciliation, and the control architecture that holds at the close.',
+    covers: [
+      'Capital markets accounting',
+      'Hedge accounting',
+      'Reconciliation',
+      'Transaction and ledger integrity',
+      'Control architecture',
+    ],
+    span: { from: 'Settlement', to: 'Reporting' },
   },
   {
-    name: 'Reconciliation',
-    capability: 'accounting',
-    note: 'Breaks classified and routed before a person has to read them.',
+    id: 'trading',
+    title: 'Trading, risk and post‑trade',
+    short: 'Trading, risk & post-trade',
+    description:
+      'Derivatives and securities through pricing, market data, collateral, settlement, and lifecycle processing.',
+    covers: [
+      'Derivatives and securities',
+      'Pricing and P&L',
+      'Market data',
+      'Collateral',
+      'Settlements',
+      'Lifecycle processing',
+    ],
+    span: { from: 'Capture', to: 'Settlement' },
   },
   {
-    name: 'Exception management',
-    capability: 'trading',
-    note: 'Exceptions grouped by cause rather than by queue.',
-  },
-  {
-    name: 'Migration',
-    capability: 'architecture',
-    note: 'Mapping validated against the target model at full volume.',
-  },
-  {
-    name: 'Operations',
-    capability: 'trading',
-    note: 'Lifecycle processing watched against what the desk expects to see.',
+    id: 'assurance',
+    title: 'Automation and transformation assurance',
+    short: 'Automation & assurance',
+    description:
+      'Automated testing, migration validation, SIT and UAT, and production readiness, with intelligent automation applied to each.',
+    covers: [
+      'Automated testing',
+      'Exception and reconciliation workflows',
+      'Migration validation',
+      'SIT and UAT',
+      'Production readiness',
+    ],
+    span: { from: 'Risk', to: 'Reporting' },
   },
 ]
 
+/* Stage indices a capability spans, inclusive. */
+export function spanRange(capability: ServiceCapability): readonly [number, number] {
+  return [lifecycleStages.indexOf(capability.span.from), lifecycleStages.indexOf(capability.span.to)]
+}
+
 export const servicesContent = {
   hero: {
-    eyebrow: 'Capital markets transformation and architecture',
-    headline: expertiseContent.hero.headline,
-    headlineLines: ['Architecture.', 'Not configuration.'],
-    body: expertiseContent.hero.body,
+    eyebrow: 'Capital markets transformation',
+    lines: ['Architecture.', 'Not configuration.'],
+    /* The phone hero sets only the first sentence. */
+    lead: 'Four capabilities, applied to front-to-back platform change for banks and hedge funds.',
+    more: 'Each one concentrates where delivery risk does.',
     primaryCta: 'Discuss a mandate',
     secondaryCta: 'View capabilities',
     secondaryHref: '#capabilities',
   },
   capabilities: {
-    eyebrow: 'Four capabilities',
-    headline: 'One decision, followed through the system.',
-    body: 'Transformation and architecture lead. Accounting, risk, post-trade and assurance follow the same decision through the system.',
-    exampleLabel: 'Engagement example',
-    exampleParts: {
-      situation: 'Situation',
-      work: 'What was done',
-      change: 'What changed',
-    },
-    contactCta: 'Discuss this capability',
+    label: 'Four capabilities',
+    spanLabel: 'Lifecycle span',
   },
-  negation: expertiseContent.negation,
-  approach: expertiseContent.approach,
-  automation: {
-    eyebrow: 'Intelligent automation',
-    headline: 'Applied where the work already is.',
-    body: 'Not a practice of its own. Automation is applied to processes the firm already runs by hand: testing, controls, reconciliation, exception management, migration, and operations.',
+  approach: {
+    eyebrow: 'Engagement approach',
+    lead: 'Go-live is',
+    turn: 'not success.',
+    body: 'Success is the first close, the first regulatory submission, and the first exception handled by the people who now own the system.',
+    end: 'First close',
+    phases: [
+      {
+        title: 'Architecture definition',
+        description:
+          'Accounting treatment, capital impact, and regulatory requirements are defined before vendors or platforms enter the conversation.',
+      },
+      {
+        title: 'Lifecycle mapping',
+        description:
+          'Every instrument type is mapped through its full lifecycle, identifying where accounting, risk, and capital intersect.',
+      },
+      {
+        title: 'Validation design',
+        description:
+          'Validation is designed against edges and stress scenarios rather than happy-path processing.',
+      },
+      {
+        title: 'Control transfer',
+        description:
+          'Documentation is written for successors rather than for project sign-off, building internal capability instead of dependency.',
+      },
+    ],
   },
-  calypso: {
-    eyebrow: 'Platform depth',
-    headline: 'Deep expertise in Nasdaq Calypso.',
-    since: expertiseContent.calypso.since,
-    sinceLabel: expertiseContent.calypso.sinceLabel,
-    body: expertiseContent.calypso.body,
-    cta: expertiseContent.calypso.cta,
-    href: expertiseContent.calypso.href,
+  cta: {
+    lead: 'Start with',
+    turn: 'the platform decision.',
   },
-  contact: homepageContent.contact,
 } as const
+
+export const pad = (n: number) => String(n).padStart(2, '0')

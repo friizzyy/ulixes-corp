@@ -18,7 +18,7 @@ const nb = t => t.replace(/-/g, '‑');
 {
   const sv = get('svhero'), [, , desk, phone] = sv.opts.A;
   sv.opts.A[2] = add(desk, '.tx p{text-wrap:balance}.lg b{text-wrap:balance}');
-  sv.opts.A[3] = add(phone, '.h p.l{text-wrap:pretty}.tk{-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}.tk span{font-size:13.5px;color:#b4c2c7}.tk b{font-size:15px;font-weight:450;color:#fff}');
+  sv.opts.A[3] = add(phone, '.h p.l{text-wrap:pretty}.tk{position:relative}.tk:before,.tk:after{content:"";position:absolute;top:0;bottom:0;width:64px;z-index:2;pointer-events:none}.tk:before{left:0;background:linear-gradient(90deg,var(--ink),rgba(16,33,43,0))}.tk:after{right:0;background:linear-gradient(270deg,var(--ink),rgba(16,33,43,0))}.tk span{font-size:13.5px;color:#b4c2c7}.tk b{font-size:15px;font-weight:450;color:#fff}');
 }
 
 /* ================================================================ capability cards */

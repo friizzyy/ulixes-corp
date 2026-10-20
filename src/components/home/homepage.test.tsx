@@ -1,369 +1,215 @@
-import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
-import { render, screen, waitFor, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import {
-  authorityItems,
-  homepageContent,
-  serviceModules,
-} from '@/lib/homepage-content'
+import { homepageContent } from '@/lib/homepage-content'
 import { Homepage } from './homepage'
+import { LIFECYCLE_STEP_MS } from './lifecycle-live'
 
-const homepageStylesheet = readFileSync(
-  resolve(process.cwd(), 'src/components/home/homepage.module.css'),
-  'utf8',
-)
+const { hero, services, calypso, practitioner } = homepageContent
+
+function section(name: string | RegExp) {
+  return screen.getByRole('region', { name })
+}
 
 describe('Homepage', () => {
   afterEach(() => {
+    vi.useRealTimers()
     vi.restoreAllMocks()
   })
 
-  it('renders the precise living hero, still fallback, and grounded authority', () => {
-    const { container } = render(<Homepage />)
+  it('renders the four sections in order, with one h1 and no closing card', () => {
+    render(<Homepage />)
 
-    expect(container.querySelector('main')).not.toBeInTheDocument()
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
+    const headings = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)
+    expect(headings).toEqual([
+      `${services.headlineLead} ${services.headlineTurn}`,
+      `${calypso.headlineLead} ${calypso.headlineTurn}`,
+      `${practitioner.headlineLead} ${practitioner.headlineTurn}`,
+    ])
+    /* The footer (05-close) belongs to the layout. */
+    expect(screen.queryByRole('contentinfo')).not.toBeInTheDocument()
+  })
 
-    const heading = screen.getByRole('heading', {
-      level: 1,
-      name: homepageContent.hero.headline,
-    })
-    expect(container.querySelectorAll('[data-hero-line]')).toHaveLength(2)
-    const hero = screen.getByRole('region', {
-      name: homepageContent.hero.headline,
-    })
-    expect(hero).toHaveAttribute('data-mobile-flow', 'image-led')
-    expect(heading).toHaveAttribute('data-mobile-title', 'two-lines')
-    expect(hero.querySelector('[data-mobile-layout="image-background"]')).not.toBeNull()
-    expect(hero.querySelector('[data-mobile-layout="paired-actions"]')).not.toBeNull()
+  it('leads with the hero copy, both actions and the poster', () => {
+    render(<Homepage />)
+    const region = section(hero.headline)
 
-    const heroImage = within(hero).getByRole('img', {
-      name: homepageContent.hero.imageAlt,
-    })
-    const heroBody = within(hero).getByText(homepageContent.hero.body)
-    const primaryAction = within(hero).getByRole('link', {
-      name: homepageContent.hero.primaryCta,
-    })
-    const secondaryAction = within(hero).getByRole('link', {
-      name: homepageContent.hero.secondaryCta,
-    })
-    for (const messageElement of [
-      heading,
-      heroBody,
-      primaryAction,
-      secondaryAction,
-    ]) {
-      expect(
-        Boolean(
-          messageElement.compareDocumentPosition(heroImage) &
-            Node.DOCUMENT_POSITION_FOLLOWING,
-        ),
-      ).toBe(true)
-    }
+    expect(within(region).getByRole('heading', { level: 1 })).toHaveTextContent(hero.headline)
+    expect(within(region).getByText(hero.eyebrow.desk)).toBeInTheDocument()
+    expect(within(region).getByText(hero.body.desk)).toBeInTheDocument()
+    expect(within(region).getByRole('link', { name: hero.primaryCta })).toHaveAttribute(
+      'href',
+      '/contact',
+    )
+    expect(within(region).getByRole('link', { name: hero.secondaryCta })).toHaveAttribute(
+      'href',
+      '/services',
+    )
+    expect(within(region).getByRole('img', { name: hero.imageAlt })).toBeInTheDocument()
+  })
 
-    expect(within(hero).getByText('San Francisco')).toBeInTheDocument()
-    expect(within(hero).queryByText('37.7749° N')).not.toBeInTheDocument()
-
-    expect(primaryAction).toHaveAttribute('href', '/contact')
-    expect(secondaryAction).toHaveAttribute('href', '#expertise')
-    expect(heroImage).toBeInTheDocument()
+  it('draws the brand inside the phone hero', () => {
+    render(<Homepage />)
+    const region = section(hero.headline)
     expect(
-      container.querySelector('[data-video-ready="true"]'),
-    ).toBeInTheDocument()
+      within(region).getByRole('link', { name: 'Ulixes Corporation, home', hidden: true }),
+    ).toHaveAttribute('href', '/')
+  })
+
+  it('loads the loop only after mount on wide screens and lets the visitor pause it', () => {
+    const { container } = render(<Homepage />)
     const video = container.querySelector('video')
-    expect(video).not.toHaveAttribute('poster')
-    expect(video?.querySelector('source')).toHaveAttribute(
-      'src',
-      '/media/home/ulixes-san-francisco-loop.mp4',
-    )
     expect(video).toHaveProperty('muted', true)
+    expect(video).toHaveAttribute('aria-hidden', 'true')
+    expect(video?.querySelector('source')).toHaveAttribute('src', hero.videoSrc)
 
-    const dock = within(hero).getByRole('list', {
-      name: 'Ulixes advisory perspective',
+    /* The control follows the element's own play / pause events. */
+    act(() => {
+      video?.dispatchEvent(new Event('play'))
     })
-    expect(dock).toHaveAttribute('data-mobile-layout', 'two-by-two')
-    expect(within(dock).getAllByRole('listitem')).toHaveLength(
-      authorityItems.length,
-    )
-    for (const item of authorityItems) {
-      expect(within(dock).getByText(item.context)).toBeInTheDocument()
-    }
+    const control = screen.getByRole('button', { name: 'Pause background video' })
+    const pause = vi.spyOn(HTMLMediaElement.prototype, 'pause')
+    fireEvent.click(control)
+    expect(pause).toHaveBeenCalled()
+    expect(screen.getByRole('button', { name: 'Play background video' })).toBeInTheDocument()
   })
 
-  it('composes one city threshold from the message, skyline, and authority ledger', () => {
-    const { container } = render(<Homepage />)
-
-    const compositions = container.querySelectorAll(
-      '[data-depth-composition="city-threshold"]',
-    )
-    expect(compositions).toHaveLength(1)
-
-    const threshold = compositions[0] as HTMLElement
-    const skyline = within(threshold).getByRole('img', {
-      name: homepageContent.hero.imageAlt,
-    })
-    const message = within(threshold).getByText(homepageContent.hero.body)
-    const authorityLedger = within(threshold).getByRole('list', {
-      name: 'Ulixes advisory perspective',
-    })
-
-    expect(message.compareDocumentPosition(skyline)).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING,
-    )
-    expect(authorityLedger).toHaveAttribute(
-      'data-depth-plane',
-      'raised-ledger',
-    )
-  })
-
-  it('keeps one desktop capability ledger and one mobile progressive index', () => {
-    const { container } = render(<Homepage />)
-
-    const services = screen.getByRole('region', {
-      name: homepageContent.services.headline,
-    })
-    const engagementList = within(services).getByRole('list', {
-      name: 'Ulixes capabilities',
-    })
-    const mobileIndex = services.querySelector<HTMLOListElement>(
-      'ol[aria-label="Mobile capability index"]',
-    )
-    expect(mobileIndex).not.toBeNull()
-    expect(within(engagementList).getAllByRole('listitem')).toHaveLength(4)
-    expect(
-      within(mobileIndex!).getAllByRole('listitem', { hidden: true }),
-    ).toHaveLength(4)
-    expect(engagementList).toHaveAttribute('aria-label', 'Ulixes capabilities')
-    expect(engagementList).toHaveAttribute(
-      'data-layout',
-      'ledger',
-    )
-    expect(engagementList).toHaveAttribute(
-      'data-mobile-layout',
-      'action-list',
-    )
-    expect(engagementList).toHaveAttribute(
-      'data-depth-plane',
-      'recessed-decision-shelf',
-    )
-    expect(container.querySelectorAll('[data-service-icon]')).toHaveLength(
-      serviceModules.length,
-    )
-
-    for (const service of serviceModules) {
-      /*
-       * No aria-label on the link. One carrying the title alone replaced the
-       * scope and description for assistive tech, so the accessible name is
-       * now the link's own text and must carry all three.
-       */
-      const serviceLink = within(engagementList).getByRole('link', {
-        name: (name) =>
-          name.includes(service.title) &&
-          name.includes(service.scope) &&
-          name.includes(service.description),
-      })
-      expect(serviceLink).not.toHaveAttribute('aria-label')
-      expect(serviceLink).toHaveAttribute('href', service.href)
-      expect(serviceLink.querySelectorAll('svg')).toHaveLength(2)
-      expect(within(engagementList).getByText(service.scope)).toBeInTheDocument()
-      expect(within(mobileIndex!).getByText(service.scope)).toBeInTheDocument()
-      expect(
-        within(mobileIndex!).queryByText(service.description),
-      ).not.toBeInTheDocument()
-    }
-  })
-
-  it('centers only the capability heading as an all-width composition pause', () => {
-    const { container } = render(<Homepage />)
-    const services = screen.getByRole('region', {
-      name: homepageContent.services.headline,
-    })
-    const heading = within(services).getByRole('heading', {
-      level: 2,
-      name: homepageContent.services.headline,
-    })
-    const headingComposition = services.querySelector(
-      '[data-heading-composition="centered-command"]',
-    )
-
-    expect(headingComposition).not.toBeNull()
-    expect(headingComposition).toContainElement(heading)
-    expect(headingComposition).not.toContainElement(
-      within(services).getByText(homepageContent.services.body),
-    )
-    expect(headingComposition).not.toContainElement(
-      within(services).getByRole('link', {
-        name: homepageContent.services.cta,
-      }),
-    )
-
-    const centeredHeadingRule = homepageStylesheet.match(
-      /\.services\s+\.sectionHeading\s*\{([^}]*)\}/,
-    )
-    expect(centeredHeadingRule?.[1]).toMatch(/justify-self:\s*center/)
-    expect(centeredHeadingRule?.[1]).toMatch(/text-align:\s*center/)
-    expect(homepageStylesheet).toMatch(
-      /\.services\s+\.sectionHeading\s+\.sectionTitle\s*\{[^}]*margin-inline:\s*auto/,
-    )
-
-    // The base rule reaches both sides of the 895/896 composition boundary.
-    expect(homepageStylesheet.indexOf('.services .sectionHeading')).toBeLessThan(
-      homepageStylesheet.indexOf('@media'),
-    )
-    expect(homepageStylesheet.match(/\.services\s+\.sectionHeading\s*\{/g)).toHaveLength(1)
-
-    // Body copy, action, and both capability scans retain their reading edge.
-    const centeredSelectors = Array.from(
-      homepageStylesheet.matchAll(
-        /([^{}]+)\{[^{}]*text-align:\s*center[^{}]*\}/g,
-      ),
-      (match) => match[1],
-    ).join('\n')
-    for (const selector of [
-      '.sectionLead',
-      '.serviceLedger',
-      '.mobileCapabilityIndex',
-    ]) {
-      expect(homepageStylesheet).toContain(selector)
-      expect(centeredSelectors).not.toContain(selector)
-    }
-    expect(container.querySelectorAll('[data-heading-composition]')).toHaveLength(1)
-  })
-
-  it('centers named practitioner authority and one direct inquiry close', () => {
-    const { container } = render(<Homepage />)
-
-    const practitioner = screen.getByRole('region', {
-      name: homepageContent.credibility.headline,
-    })
-    expect(
-      within(practitioner).getByRole('img', {
-        name: homepageContent.credibility.imageAlt,
-      }),
-    ).toBeInTheDocument()
-    const linkedin = within(practitioner).getByRole('link', { name: /LinkedIn/ })
-    expect(linkedin).toHaveAttribute('href', homepageContent.credibility.linkedinUrl)
-    // Opens a new tab, and says so to a screen reader.
-    expect(linkedin).toHaveAttribute('target', '_blank')
-    expect(linkedin).toHaveAccessibleName(/\(opens in a new tab\)$/)
-    /*
-     * The credibility grid goes single column at 899px, so the sizes hint
-     * has to say so: a 767px breakpoint had next/image serving an upscaled
-     * source between the two.
-     */
-    expect(
-      within(practitioner).getByRole('img', {
-        name: homepageContent.credibility.imageAlt,
-      }),
-    ).toHaveAttribute(
-      'sizes',
-      '(max-width: 895px) 100vw, (max-width: 1120px) 44vw, 640px',
-    )
-    expect(within(practitioner).getAllByRole('listitem')).toHaveLength(
-      homepageContent.credibility.checkpoints.length,
-    )
-    const footprint = within(practitioner).getByRole('complementary', {
-      name: 'Ulixes delivery footprint',
-    })
-    expect(within(footprint).getByText('Delivery footprint')).toBeInTheDocument()
-    expect(within(footprint).getByText('San Francisco base')).toBeInTheDocument()
-    expect(within(footprint).queryByText('Ulysses Williams')).not.toBeInTheDocument()
-
-    const contact = screen.getByRole('region', {
-      name: homepageContent.contact.headline,
-    })
-    expect(
-      within(contact).getByRole('link', { name: 'Discuss a mandate' }),
-    ).toHaveAttribute('href', '/contact')
-    expect(
-      within(contact).getByRole('link', { name: homepageContent.contact.email }),
-    ).toHaveAttribute('href', `mailto:${homepageContent.contact.email}`)
-    expect(within(contact).getByText('Or write directly')).toBeInTheDocument()
-
-    expect(
-      screen.queryByRole('region', { name: 'Experience across markets' }),
-    ).not.toBeInTheDocument()
-    expect(container.querySelector('[data-home-reveal]')).not.toBeInTheDocument()
-  })
-
-  it('stops the hero video loading under reduced motion and keeps the poster', async () => {
-    /*
-     * The stylesheet hides the video under reduced motion, but display: none
-     * does not stop an autoplaying source downloading and decoding. The
-     * source has to leave the tree and the element has to be told so.
-     */
-    vi.spyOn(window, 'matchMedia').mockImplementation((query: string) => ({
-      matches: query === '(prefers-reduced-motion: reduce)',
-      media: query,
-      onchange: null,
-      addEventListener: () => {},
-      removeEventListener: () => {},
-      addListener: () => {},
-      removeListener: () => {},
-      dispatchEvent: () => false,
-    }))
-    const pause = vi
-      .spyOn(HTMLMediaElement.prototype, 'pause')
-      .mockImplementation(() => {})
-    const load = vi
-      .spyOn(HTMLMediaElement.prototype, 'load')
-      .mockImplementation(() => {})
-
-    const { container } = render(<Homepage />)
-
-    await waitFor(() =>
-      expect(container.querySelector('video')).toHaveAttribute(
-        'data-motion',
-        'reduced',
-      ),
-    )
-    const video = container.querySelector('video') as HTMLVideoElement
-    expect(video.querySelector('source')).toBeNull()
-    expect(video).not.toHaveAttribute('autoplay')
-    expect(video).toHaveAttribute('preload', 'none')
-    expect(pause).not.toHaveBeenCalled()
-    expect(load).not.toHaveBeenCalled()
-    expect(
-      screen.getByRole('img', { name: homepageContent.hero.imageAlt }),
-    ).toBeInTheDocument()
-  })
-
-  it('leaves the ambient video unloaded on narrow screens until the visitor asks for it', async () => {
-    vi.spyOn(window, 'matchMedia').mockImplementation((query: string) => ({
+  it('keeps phones on the still image', () => {
+    const matchMedia = window.matchMedia
+    window.matchMedia = ((query: string) => ({
+      ...matchMedia(query),
       matches: false,
-      media: query,
-      onchange: null,
-      addEventListener: () => {},
-      removeEventListener: () => {},
-      addListener: () => {},
-      removeListener: () => {},
-      dispatchEvent: () => false,
-    }))
-    vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => {})
-    vi.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => {})
-
-    const { container } = render(<Homepage />)
-
-    await waitFor(() => {
-      const video = container.querySelector('video') as HTMLVideoElement
-      expect(video.querySelector('source')).toBeNull()
-      expect(video).not.toHaveAttribute('autoplay')
-      expect(video).toHaveAttribute('preload', 'none')
-    })
-    expect(
-      screen.getByRole('button', { name: 'Play background video' }),
-    ).toBeInTheDocument()
+    })) as typeof window.matchMedia
+    try {
+      const { container } = render(<Homepage />)
+      expect(container.querySelector('video source')).toBeNull()
+      expect(screen.getByRole('button', { name: 'Play background video' })).toBeInTheDocument()
+    } finally {
+      window.matchMedia = matchMedia
+    }
   })
 
-  it('uses semantic lists without nested article landmarks for linked modules', () => {
-    const { container } = render(<Homepage />)
+  it('lists the four facts in the dock and once, accessibly, in the phone ticker', () => {
+    render(<Homepage />)
+    const region = section(hero.headline)
+    const dock = region.querySelector('dl') as HTMLElement
+    for (const fact of hero.facts) {
+      expect(within(dock).getByText(fact.label)).toBeInTheDocument()
+      expect(within(dock).getByText(fact.value)).toBeInTheDocument()
+      expect(within(dock).getByText(fact.detail)).toBeInTheDocument()
+    }
+    const ticker = within(region).getByRole('list', { name: 'At a glance', hidden: true })
+    expect(within(ticker).getAllByRole('listitem', { hidden: true })).toHaveLength(hero.facts.length)
+    expect(region.querySelectorAll('ul[aria-hidden="true"] li')).toHaveLength(hero.facts.length)
+  })
 
-    expect(container.querySelectorAll('article')).toHaveLength(0)
+  it('links every service row to the services page and moves the hover photograph', () => {
+    const { container } = render(<Homepage />)
+    const region = section(`${services.headlineLead} ${services.headlineTurn}`)
+    const rows = within(region)
+      .getAllByRole('link')
+      .filter((link) => services.items.some((item) => link.textContent?.includes(item.title)))
+    expect(rows).toHaveLength(4)
+    rows.forEach((row) => expect(row).toHaveAttribute('href', '/services'))
+    services.items.forEach((item, i) => {
+      expect(rows[i]).toHaveTextContent(item.number)
+      expect(rows[i]).toHaveTextContent(item.scope)
+    })
+
+    expect(within(region).getByRole('link', { name: services.cta })).toHaveAttribute(
+      'href',
+      '/services',
+    )
+
+    const pic = container.querySelector('[data-placed]')
+    expect(pic).toHaveAttribute('aria-hidden', 'true')
+    expect(pic).toHaveAttribute('data-placed', 'false')
+    fireEvent.mouseEnter(rows[2]!)
+    expect(pic).toHaveAttribute('data-placed', 'true')
+    const active = pic?.querySelector('[data-active="true"]')
+    expect(active).toHaveAttribute('src', expect.stringContaining('financial-district-day'))
+  })
+
+  it('walks the lifecycle, stops on a chosen stage and resumes from the live control', () => {
+    vi.useFakeTimers()
+    render(<Homepage />)
+    const region = section(`${calypso.headlineLead} ${calypso.headlineTurn}`)
+    const stage = (name: string) =>
+      within(region).getByRole('button', { name: new RegExp(`^${name},`) })
+
+    expect(stage('Capture')).toHaveAttribute('aria-current', 'step')
+    act(() => {
+      vi.advanceTimersByTime(LIFECYCLE_STEP_MS)
+    })
+    expect(stage('Valuation')).toHaveAttribute('aria-current', 'step')
+    expect(within(region).getByText(calypso.stages[1]!.does)).toBeInTheDocument()
+
+    fireEvent.click(stage('Settlement'))
+    expect(stage('Settlement')).toHaveAttribute('aria-current', 'step')
+    act(() => {
+      vi.advanceTimersByTime(LIFECYCLE_STEP_MS * 3)
+    })
+    expect(stage('Settlement')).toHaveAttribute('aria-current', 'step')
+
+    const toggle = within(region).getByRole('button', { name: /^Paused/ })
+    fireEvent.click(toggle)
+    expect(within(region).getByRole('button', { name: /^Live/ })).toBeInTheDocument()
+    act(() => {
+      vi.advanceTimersByTime(LIFECYCLE_STEP_MS)
+    })
+    expect(stage('Ledger')).toHaveAttribute('aria-current', 'step')
+
+    expect(within(region).getByRole('link', { name: calypso.cta })).toHaveAttribute(
+      'href',
+      '/nasdaq-calypso',
+    )
+  })
+
+  it('starts the lifecycle paused under reduced motion', () => {
+    vi.useFakeTimers()
+    const matchMedia = window.matchMedia
+    window.matchMedia = ((query: string) => ({
+      ...matchMedia(query),
+      matches: query === '(prefers-reduced-motion: reduce)' || query === '(min-width: 768px)',
+    })) as typeof window.matchMedia
+    try {
+      const { container } = render(<Homepage />)
+      const region = section(`${calypso.headlineLead} ${calypso.headlineTurn}`)
+      act(() => {
+        vi.advanceTimersByTime(LIFECYCLE_STEP_MS * 2)
+      })
+      expect(within(region).getByRole('button', { name: /^Capture,/ })).toHaveAttribute(
+        'aria-current',
+        'step',
+      )
+      expect(within(region).getByRole('button', { name: /^Paused/ })).toBeInTheDocument()
+      /* The loop stays out of the tree until the visitor asks for it. */
+      expect(container.querySelector('video source')).toBeNull()
+    } finally {
+      window.matchMedia = matchMedia
+    }
+  })
+
+  it('introduces the practitioner with the first-note brief and his links', () => {
+    render(<Homepage />)
+    const region = section(`${practitioner.headlineLead} ${practitioner.headlineTurn}`)
+
+    expect(within(region).getByRole('heading', { level: 3, name: practitioner.name })).toBeInTheDocument()
+    expect(within(region).getByRole('img', { name: practitioner.imageAlt })).toBeInTheDocument()
+    for (const point of practitioner.briefPoints) {
+      expect(within(region).getByText(point.title)).toBeInTheDocument()
+      expect(within(region).getByText(point.body)).toBeInTheDocument()
+    }
+    const linkedin = within(region).getByRole('link', { name: /^LinkedIn/ })
+    expect(linkedin).toHaveAttribute('href', homepageContent.credibility.linkedinUrl)
+    expect(linkedin).toHaveAttribute('target', '_blank')
+    expect(linkedin).toHaveAttribute('rel', 'noopener noreferrer')
     expect(
-      screen.getByRole('list', { name: 'Ulixes capabilities' }),
-    ).toBeInTheDocument()
-    expect(
-      container.querySelector('ol[aria-label="Mobile capability index"]'),
-    ).toBeInTheDocument()
+      within(region).getByRole('link', { name: practitioner.experienceCta.desk }),
+    ).toHaveAttribute('href', '/institutional-experience')
+    expect(within(region).getByRole('link', { name: practitioner.cta })).toHaveAttribute(
+      'href',
+      '/contact',
+    )
   })
 })

@@ -1,14 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import {
-  automationAreas,
+  lifecycleStages,
   serviceCapabilities,
   servicesContent,
+  spanRange,
 } from './services-content'
 
 const EM_DASH = '—'
 
 describe('services content', () => {
-  it('carries the four capabilities from the expertise areas', () => {
+  it('carries the four capabilities in order', () => {
     expect(serviceCapabilities.map((c) => c.id)).toEqual([
       'architecture',
       'accounting',
@@ -16,26 +17,35 @@ describe('services content', () => {
       'assurance',
     ])
     for (const capability of serviceCapabilities) {
-      expect(capability.scopeTerms.length).toBeGreaterThanOrEqual(3)
-      expect(capability.coversSentence.endsWith('.')).toBe(true)
-      expect(capability.contactHref).toContain('/contact?program=')
+      expect(capability.covers.length).toBeGreaterThanOrEqual(5)
+      expect(capability.description.endsWith('.')).toBe(true)
     }
   })
 
-  it('assigns every automation area to a real capability', () => {
-    const ids = new Set(serviceCapabilities.map((c) => c.id))
-    expect(automationAreas).toHaveLength(6)
-    for (const area of automationAreas) expect(ids.has(area.capability)).toBe(true)
+  it('gives every capability a forward span over real lifecycle stages', () => {
+    expect(lifecycleStages).toHaveLength(7)
+    const counts = serviceCapabilities.map((capability) => {
+      const [from, to] = spanRange(capability)
+      expect(from).toBeGreaterThanOrEqual(0)
+      expect(to).toBeGreaterThanOrEqual(from)
+      return to - from + 1
+    })
+    expect(counts).toEqual([7, 3, 5, 5])
   })
 
-  it('keeps engagement examples marked as drafts until Ulysses confirms them', () => {
-    for (const capability of serviceCapabilities) {
-      expect(capability.example.status).toBe('draft')
-    }
+  it('holds the four approach phases and the closing headline', () => {
+    expect(servicesContent.approach.phases.map((p) => p.title)).toEqual([
+      'Architecture definition',
+      'Lifecycle mapping',
+      'Validation design',
+      'Control transfer',
+    ])
+    expect(servicesContent.cta).toEqual({ lead: 'Start with', turn: 'the platform decision.' })
   })
 
-  it('contains no em dashes', () => {
-    const text = JSON.stringify({ serviceCapabilities, automationAreas, servicesContent })
+  it('contains no em dashes and no company-wide "we"', () => {
+    const text = JSON.stringify({ serviceCapabilities, servicesContent })
     expect(text.includes(EM_DASH)).toBe(false)
+    expect(/\bwe\b/i.test(text)).toBe(false)
   })
 })

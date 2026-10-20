@@ -1,0 +1,145 @@
+/* Institution tiles: docs/build-spec/experience/03-inst-desk.html (grid) and 03-inst-m-ph.html (card). */
+
+.t {
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow:
+    0 0 0 1px var(--rule),
+    0 24px 40px -36px rgba(16, 33, 43, 0.5);
+}
+
+.grid {
+  border-radius: 14px;
+  padding: 26px 26px 30px;
+  transition:
+    transform 0.6s var(--ease),
+    box-shadow 0.4s;
+}
+
+@media (hover: hover) {
+  .grid:not(.end):hover {
+    transform: translateY(-5px);
+    box-shadow:
+      0 0 0 1px var(--rule2),
+      0 40px 60px -40px rgba(16, 33, 43, 0.6);
+  }
+}
+
+.card {
+  border-radius: 16px;
+  padding: 22px 22px 26px;
+  box-shadow:
+    0 0 0 1px var(--rule),
+    0 24px 40px -30px rgba(16, 33, 43, 0.5);
+}
+
+.hd {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.icon {
+  width: 42px;
+  height: 42px;
+  margin: -2px 0 0 -2px;
+  color: var(--ink);
+}
+
+.card .icon {
+  width: 40px;
+  height: 40px;
+}
+
+.num {
+  color: var(--line);
+}
+
+.name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 550;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  margin-top: 34px;
+  min-height: 2.3em;
+  text-wrap: balance;
+}
+
+.card .name {
+  font-size: 21px;
+  letter-spacing: -0.04em;
+  margin-top: 30px;
+}
+
+.desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--graphite);
+  margin-top: 12px;
+  text-wrap: pretty;
+}
+
+.card .desc {
+  margin-top: 10px;
+}
+
+.nw {
+  white-space: nowrap;
+}
+
+/* The dark summary tile. */
+.end {
+  background: var(--ink);
+  color: var(--light);
+  box-shadow: none;
+}
+
+.k {
+  font-family: var(--font-display);
+  font-weight: 250;
+  font-size: 80px;
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+  color: #c3cfd3;
+}
+
+.kl {
+  margin-top: 18px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9fb0b7;
+}
+
+.card .kl {
+  margin-top: 16px;
+}
+
+.end .desc {
+  color: #b9c6cb;
+  margin: 10px 0 28px;
+}
+
+.btn {
+  margin-top: auto;
+}
+
+.grid .btn {
+  align-self: flex-start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid {
+    transition: none;
+  }
+
+  .grid:not(.end):hover {
+    transform: none;
+  }
+}
