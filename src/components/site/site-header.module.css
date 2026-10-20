@@ -9,14 +9,24 @@
   z-index: 30;
 }
 
+/* Solid mineral behind the whole bar, so nothing shows through it... */
 .root::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--mineral);
+  pointer-events: none;
+}
+
+/* ...then a short fade that starts right at its bottom edge. */
+.root::after {
   content: '';
   position: absolute;
   left: 0;
   right: 0;
-  top: 0;
-  height: calc(100% + 32px);
-  background: linear-gradient(180deg, var(--mineral) 0%, rgba(243, 241, 236, 0.9) 64%, rgba(243, 241, 236, 0));
+  top: 100%;
+  height: 14px;
+  background: linear-gradient(180deg, var(--mineral), rgba(243, 241, 236, 0));
   pointer-events: none;
 }
 
@@ -98,7 +108,8 @@
     position: static;
   }
 
-  .root::before {
+  .root::before,
+  .root::after {
     display: none;
   }
 
