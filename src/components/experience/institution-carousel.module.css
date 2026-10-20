@@ -5,14 +5,15 @@
 }
 
 .rail {
+  --slide: min(300px, calc(100vw - 2 * var(--gutter) - 20px));
   display: flex;
   gap: 12px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--gutter);
   overscroll-behavior-x: contain;
   margin: 0 calc(var(--gutter) * -1);
-  padding: 4px var(--gutter) 14px;
+  /* Half the leftover width each side, so the first and last cards centre too. */
+  padding: 4px calc((100vw - var(--slide)) / 2) 14px;
   scrollbar-width: none;
 }
 
@@ -27,8 +28,8 @@
 
 .slide {
   display: flex;
-  flex: 0 0 min(300px, calc(100vw - 2 * var(--gutter) - 20px));
-  scroll-snap-align: start;
+  flex: 0 0 var(--slide);
+  scroll-snap-align: center;
 }
 
 .slide > * {

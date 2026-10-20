@@ -178,6 +178,12 @@
     scrollbar-width: none;
   }
 
+  /* Side room of half the leftover width, so the first and last cards centre too. */
+  .g.g {
+    padding-left: calc((100vw - 300px) / 2);
+    padding-right: calc((100vw - 300px) / 2);
+  }
+
   .g::-webkit-scrollbar {
     display: none;
   }

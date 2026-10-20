@@ -308,8 +308,8 @@
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   margin: 12px calc(-1 * var(--gutter)) 0;
-  padding: 4px var(--gutter) 12px;
-  scroll-padding-inline: var(--gutter);
+  /* Half the leftover width each side, so the first and last cards centre too. */
+  padding: 4px calc((100vw - min(280px, calc(100vw - 40px))) / 2) 12px;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
 }
