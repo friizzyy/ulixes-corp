@@ -1,3 +1,25 @@
+/*
+ * Desktop and tablet: the header stays with the reader. It sticks to the top
+ * and sits on a mineral fade, the same treatment as the phone dock, so the
+ * page passes softly under it rather than against a hard edge.
+ */
+.root {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.root::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(100% + 32px);
+  background: linear-gradient(180deg, var(--mineral) 0%, rgba(243, 241, 236, 0.9) 64%, rgba(243, 241, 236, 0));
+  pointer-events: none;
+}
+
 /* Desktop and tablet: brand, centred route links, the slab action. */
 .hdr {
   position: relative;
@@ -71,6 +93,15 @@
 }
 
 @media (max-width: 767px) {
+  /* Phones keep the bottom dock; the brand bar scrolls away with the page. */
+  .root {
+    position: static;
+  }
+
+  .root::before {
+    display: none;
+  }
+
   .hdr {
     display: none;
   }

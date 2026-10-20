@@ -239,14 +239,15 @@
     padding-bottom: 0;
   }
 
+  /* One line on every phone: the size follows the width so 320 still fits. */
   .h {
-    font-size: 31px;
+    font-size: min(31px, 8vw);
     margin-top: 12px;
-    white-space: normal;
+    white-space: nowrap;
   }
 
   .h :global(.s) {
-    display: block;
+    display: inline;
   }
 
   .lede {

@@ -21,7 +21,7 @@ export function SiteHeader() {
   const heroBrand = heroBrandRoutes.some((route) => isActiveRoute(pathname, route))
 
   return (
-    <header>
+    <header className={styles.root}>
       <div className={styles.hdr} data-site-header="desktop">
         <Brand />
         <nav aria-label="Primary" className={styles.nav}>

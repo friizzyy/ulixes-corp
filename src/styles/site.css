@@ -235,3 +235,10 @@ button:focus:not(:focus-visible) {
     transition: none;
   }
 }
+
+/* In-page links land below the sticky header, not under it. */
+@media (min-width: 768px) {
+  html {
+    scroll-padding-top: 104px;
+  }
+}
