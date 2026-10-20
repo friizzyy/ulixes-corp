@@ -15,8 +15,9 @@
     right: 0;
     bottom: 0;
     z-index: 40;
-    height: calc(160px + var(--safe-bottom));
-    background: linear-gradient(180deg, rgba(243, 241, 236, 0), rgba(243, 241, 236, 0.86) 48%, var(--mineral) 70%);
+    /* A short fade that lands just above the dock, solid mineral from there down. */
+    height: calc(116px + var(--safe-bottom));
+    background: linear-gradient(180deg, rgba(243, 241, 236, 0), var(--mineral) 28px);
     pointer-events: none;
   }
 
