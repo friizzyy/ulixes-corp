@@ -48,9 +48,6 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   keywords: ['capital markets transformation', 'solution architecture', 'hedge accounting', 'trading platforms', 'post-trade', 'Nasdaq Calypso', 'Calypso consulting', 'capital markets'],
   authors: [{ name: siteConfig.name }],
-  icons: {
-    icon: '/icon.svg',
-  },
   ...createRouteMetadata({
     title: `${siteConfig.name} | ${siteConfig.tagline}`,
     description: siteConfig.description,

@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ulixes Mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400..700&display=swap" rel="stylesheet">
+<!--
+  Round 2. Same mechanics as the 3 Line picker (Mockup 1/Options.html):
+  #home hub, #s/<id> area view, A/B/C keys, Pick This One, a note per option
+  saved as you type, Copy My Picks. New this round: every area is previewed
+  inside its full page flow, stacked with your other picks, and #page/<flow>
+  shows any whole page with everything you have picked. Round 1 is kept in
+  round-1/Options.html.
+-->
+<style>
+:root{--stone:#eeece8;--ink:#141413;--body:#4d4b47;--mute:#6b6862;--soft:#aca89e;--line:#d9d5cd;--ok:#2f6b3f;--live:#c4762b;--wrap:1480px;--gut:clamp(16px,3vw,40px);--ease:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--stone);color:var(--ink);font:15px/1.5 'Mona Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+svg{flex:none}
+.ux-bar{position:sticky;top:0;z-index:70;padding:9px var(--gut);background:rgba(238,236,232,.82);backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);box-shadow:0 1px 0 rgba(20,20,19,.09)}
+.ux-bar .in{max-width:var(--wrap);margin:0 auto;display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap}
+.ux-back,.ux-pick,.ux-next{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:38px;border-radius:11px;font-size:14px;font-weight:550;white-space:nowrap}
+.ux-back{padding:0 14px 0 10px;background:rgba(255,255,255,.55);box-shadow:inset 0 0 0 1px rgba(20,20,19,.12)}
+.ux-back:hover{background:#fff}
+.ux-back svg,.ux-next svg{width:14px;height:14px}
+.ux-where{display:flex;flex-direction:column;line-height:1.2;margin-right:auto;min-width:0}
+.ux-where small{font-size:11.5px;color:var(--mute);font-weight:500}
+.ux-where b{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ux-seg{display:inline-flex;padding:3px;border-radius:12px;background:rgba(255,255,255,.5);box-shadow:inset 0 0 0 1px rgba(20,20,19,.11)}
+.ux-seg button{all:unset;cursor:pointer;display:inline-flex;gap:7px;padding:7px 13px;border-radius:9px;font-size:13.5px;font-weight:500;color:var(--body);white-space:nowrap;transition:background .25s,box-shadow .25s}
+.ux-seg button b{font-weight:650;color:var(--ink)}
+.ux-seg button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(20,20,19,.08),0 0 0 1px rgba(20,20,19,.1)}
+.ux-seg button:focus-visible,.ux-back:focus-visible,.ux-pick:focus-visible,.ux-next:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.ux-seg .ok{color:var(--ok);font-weight:650;font-size:12px}
+.ux-pick{padding:0 16px;font-weight:600;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 1px var(--ink)}
+.ux-pick:hover{background:#fff}
+.ux-pick[data-on="true"]{color:var(--ok);box-shadow:inset 0 0 0 1.5px var(--ok)}
+.ux-next{padding:0 10px 0 12px;color:var(--body)}.ux-next:hover{color:var(--ink)}
+.ux-note{max-width:var(--wrap);margin:8px auto 0;display:flex;align-items:center;gap:10px;padding:0 12px 0 14px;height:40px;border-radius:12px;background:rgba(255,255,255,.55);box-shadow:inset 0 0 0 1px rgba(20,20,19,.11)}
+.ux-note:focus-within{background:#fff;box-shadow:inset 0 0 0 1.5px var(--ink)}
+.ux-note label{font-size:12.5px;font-weight:600;white-space:nowrap}
+.ux-note input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:14.5px;outline:none;color:var(--ink)}
+.ux-note input::placeholder{color:var(--soft)}
+.ux-note .sv{font-size:12px;color:var(--mute);opacity:0;transition:opacity .3s}.ux-note .sv.on{opacity:1}
+.ux-toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,16px);opacity:0;z-index:90;padding:11px 18px;border-radius:12px;background:rgba(255,255,255,.95);box-shadow:0 0 0 1px rgba(20,20,19,.1),0 20px 40px -20px rgba(20,20,19,.4);font-size:14px;transition:opacity .3s,transform .5s var(--ease);pointer-events:none}
+.ux-toast.on{opacity:1;transform:translate(-50%,0)}
+.ux-home{min-height:100vh}
+.ux-home .hd{max-width:var(--wrap);margin:0 auto;padding:clamp(28px,4vw,56px) var(--gut) 0;display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:20px}
+.ux-home .logo{display:flex;align-items:center;gap:10px;margin-bottom:22px;color:#10212b}.ux-home .logo svg{width:30px;height:30px}.ux-home .logo b{font-size:13px;letter-spacing:.2em}
+.ux-home h1{margin:0;font-size:clamp(34px,4vw,60px);line-height:1;font-weight:460;letter-spacing:-.045em}
+.ux-home .hd p{margin:12px 0 0;max-width:64ch;color:var(--body)}
+.ux-home .acts{display:flex;gap:10px;flex-wrap:wrap}
+.ux-btn{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:9px;height:44px;padding:0 18px;border-radius:12px;font-size:14.5px;font-weight:600;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 1px rgba(20,20,19,.16)}
+.ux-btn:hover{background:#fff;box-shadow:inset 0 0 0 1px var(--ink)}
+.ux-btn.main{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.ux-btn svg{width:15px;height:15px}
+.ux-btn:focus-visible,.ux-sc:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.ux-grid{max-width:var(--wrap);margin:0 auto;padding:clamp(24px,3vw,40px) var(--gut) 40px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:1100px){.ux-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:700px){.ux-grid{grid-template-columns:1fr}}
+.ux-sc{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:22px;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 1px rgba(255,255,255,.85),0 0 0 1px rgba(20,20,19,.07),0 24px 50px -40px rgba(20,20,19,.4);transition:transform .5s var(--ease),box-shadow .3s}
+.ux-sc:hover{transform:translateY(-3px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.85),0 0 0 1px rgba(20,20,19,.16),0 30px 60px -40px rgba(20,20,19,.5)}
+.ux-sc .top2{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ux-sc .meta{font-size:12.5px;color:var(--mute);font-weight:500}
+.ux-sc .st{font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:8px;box-shadow:inset 0 0 0 1px var(--line);color:var(--mute);white-space:nowrap}
+.ux-sc .st.on{color:var(--ok);box-shadow:inset 0 0 0 1px var(--ok)}
+.ux-sc b.nm{font-size:clamp(26px,2.2vw,34px);font-weight:470;letter-spacing:-.04em;line-height:1}
+.ux-sc .why{font-size:14px;color:var(--mute)}
+.rd{display:inline-block;font-size:11px;font-weight:650;letter-spacing:.04em;padding:2px 7px;border-radius:6px;margin-right:6px;vertical-align:1px}
+.rd.new{background:#f3e3d3;color:#8a4a17}.rd.refined{background:#e3ebe4;color:#2f6b3f}.rd.kept{background:#e6e4df;color:#5a5750}
+.ux-sc ul{list-style:none;margin:0;padding:0;border-top:1px solid rgba(20,20,19,.08)}
+.ux-sc li{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid rgba(20,20,19,.08);font-size:14.5px;color:var(--body)}
+.ux-sc li>span{width:1.4em;font-weight:650;color:var(--ink)}
+.ux-sc li.on{color:var(--ink);font-weight:550}
+.ux-sc li em{display:block;font-style:normal;font-size:13px;color:var(--mute);font-weight:400;margin-top:2px}
+.ux-sc .gol{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;margin-top:auto}
+.ux-sc .gol svg{width:14px;height:14px;transition:transform .5s var(--ease)}
+.ux-sc:hover .gol svg{transform:translateX(4px)}
+.ux-info{max-width:var(--wrap);margin:18px auto 0;padding:0 var(--gut);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px}
+@media (max-width:900px){.ux-info{grid-template-columns:1fr}}
+.ux-card{padding:18px 20px;border-radius:16px;background:rgba(255,255,255,.55);box-shadow:inset 0 0 0 1px rgba(20,20,19,.08)}
+.ux-card h3{margin:0 0 6px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:600;display:flex;justify-content:space-between;gap:10px}
+.ux-card p{margin:0;color:var(--body);font-size:14.5px}
+.ux-card .opt{color:var(--ink);font-weight:600}
+.ux-refs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ux-refs a{font-size:12.5px;color:var(--ink);text-decoration:none;padding:4px 10px;border-radius:8px;box-shadow:inset 0 0 0 1px var(--line);background:rgba(255,255,255,.6)}
+.ux-refs a:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.ux-tabs{display:inline-flex;flex-wrap:wrap;gap:4px;padding:3px;border-radius:12px;background:rgba(255,255,255,.5);box-shadow:inset 0 0 0 1px rgba(20,20,19,.11)}
+.ux-tabs button{all:unset;cursor:pointer;padding:7px 12px;border-radius:9px;font-size:13px;font-weight:550;color:var(--body)}
+.ux-tabs button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(20,20,19,.08),0 0 0 1px rgba(20,20,19,.1)}
+.ux-flowname{max-width:var(--wrap);margin:22px auto 10px;padding:0 var(--gut);display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px;color:var(--mute)}
+.ux-flowname b{color:var(--ink);font-weight:600}
+.ux-stage{max-width:var(--wrap);margin:0 auto 70px;padding:0 var(--gut)}
+.ux-flow{border-radius:14px;overflow:hidden;background:#f3f1ec;box-shadow:0 0 0 1px rgba(20,20,19,.1),0 40px 80px -50px rgba(20,20,19,.5)}
+.fx{position:relative;overflow:hidden}
+.fx iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;display:block}
+.fx.live:after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;box-shadow:inset 0 0 0 3px var(--live)}
+.fx .lv{position:absolute;z-index:4;top:12px;left:12px;display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:10px;font-size:12.5px;font-weight:600;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);box-shadow:0 0 0 1px rgba(20,20,19,.1),0 10px 24px -14px rgba(20,20,19,.4);pointer-events:none}
+.fx .lv i{width:7px;height:7px;border-radius:50%;background:var(--live)}
+.ux-spec{margin-bottom:22px}
+.ux-phone{display:flex;justify-content:center}
+.ux-phone .dev{width:417px;padding:12px;border-radius:52px;background:#161617;box-shadow:0 0 0 1px #2c2c2e,0 50px 80px -40px rgba(20,20,19,.6)}
+.ux-phone .scr{position:relative;width:393px;height:852px;border-radius:40px;overflow:hidden;background:#f3f1ec}
+.ux-phone .col{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.ux-phone .col::-webkit-scrollbar{display:none}
+.ux-phone .fx iframe{position:static}
+.ux-phone .fx:first-child .lv{top:56px}
+.ux-phone .ov{position:absolute;inset:0;z-index:5;width:393px;height:852px;border:0;pointer-events:none;background:transparent}
+.ux-phone .isl{position:absolute;z-index:8;top:11px;left:50%;transform:translateX(-50%);width:120px;height:34px;border-radius:20px;background:#000}
+.ux-phone .hint{text-align:center;font-size:12.5px;color:var(--mute);margin-top:14px}
+.ux-h2{max-width:var(--wrap);margin:34px auto 0;padding:0 var(--gut);font-size:22px;font-weight:550;letter-spacing:-.03em}.ux-h2 span{display:block;font-size:14px;font-weight:400;color:var(--mute);letter-spacing:0;margin-top:4px}.ux-pages{max-width:var(--wrap);margin:16px auto 0;padding:0 var(--gut);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}@media (max-width:1100px){.ux-pages{grid-template-columns:repeat(2,minmax(0,1fr))}}.ux-pg{padding:18px;border-radius:18px;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 1px rgba(20,20,19,.08)}.ux-pg b{font-size:19px;font-weight:550;letter-spacing:-.03em}.ux-pg .dv{display:flex;gap:6px;margin:12px 0 10px}.ux-pg .dv .ux-btn{height:34px;font-size:13px;padding:0 12px}.ux-pg p{margin:6px 0 0;font-size:13px;color:var(--body)}.ux-pg small{display:block;font-size:10.5px;font-weight:650;letter-spacing:.08em;color:var(--mute)}.ux-pg em{font-style:normal}.ux-pg em.no{color:var(--soft)}
+.kbd{display:inline-block;min-width:20px;padding:1px 6px;border-radius:5px;box-shadow:inset 0 0 0 1px var(--line);background:#fff;font-size:12px;font-weight:600;text-align:center}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="ux-toast" id="toast" role="status" aria-live="polite"></div>
+<script src="base.js"></script>
+<script src="areas.js"></script>
+<script src="round3-blocks.js"></script>
+<script src="round4-blocks.js"></script>
+<script src="round5-blocks.js"></script>
+<script src="round6-blocks.js"></script>
+<script>
+const ARW = '<svg viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5"/></svg>';
+const BACKI = '<svg viewBox="0 0 14 14" fill="none"><path d="M12 7H2M6 3 2 7l4 4" stroke="currentColor" stroke-width="1.5"/></svg>';
+const SECTIONS = window.AREAS, N = SECTIONS.length;
+const pad = n => String(n).padStart(2, '0');
+const PHONE_OF = { home: 'home-m', experience: 'experience-m' };
+
+/* ---------- state ---------- */
+const PKEY = 'ulixes-r6-picks', NKEY = 'ulixes-r6-notes', MKEY = 'ulixes-r6-phone';
+let PKM = null;
+try { PKM = JSON.parse(localStorage.getItem(MKEY) || 'null'); } catch (e) {}
+if (!PKM) PKM = { approach: 'B' };
+let PK = {}, NT = {};
+try { PK = JSON.parse(localStorage.getItem(PKEY) || 'null'); NT = JSON.parse(localStorage.getItem(NKEY) || '{}'); } catch (e) {}
+/* Round 1 picks carried forward for the areas that were settled. */
+if (!PK) PK = { btn: 'B', nav: 'A', mhero: 'B', video: 'A', heads: 'B', rows: 'A', meet: 'A', cta: 'A', foot: 'B', svhero: 'A', approach: 'A', exphero: 'A', inst: 'B', 'inst-m': 'A', positions: 'A', acc: 'A', calhero: 'B', blotter: 'A', mandates: 'A', 'mandates-m': 'B', contact: 'B' };
+const PAGES = ['home', 'services', 'experience', 'calypso', 'contact'];
+const save = () => { try { localStorage.setItem(PKEY, JSON.stringify(PK)); localStorage.setItem(NKEY, JSON.stringify(NT)); localStorage.setItem(MKEY, JSON.stringify(PKM)); } catch (e) {} };
+const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const area = id => SECTIONS.find(s => s.id === id);
+/* A phone pick, where one exists, overrides the desktop pick on phone pages. */
+const pickFor = (id, phone) => (phone && PKM[id]) || PK[id];
+const letterFor = (id, phone) => { const a = area(id), v = pickFor(id, phone); return a && a.opts[v] ? v : Object.keys(a.opts)[0]; };
+const pickLabel = (s, i) => PK[s.id] ? (i + 1) + PK[s.id] + (PKM[s.id] && PKM[s.id] !== PK[s.id] ? ' · phone ' + (i + 1) + PKM[s.id] : '') : '';
+const DV = {};
+const app = document.getElementById('app');
+const say = t => { const e = document.getElementById('toast'); e.textContent = t; e.classList.add('on'); clearTimeout(say.t); say.t = setTimeout(() => e.classList.remove('on'), 2200); };
+const STATUS = { new: 'New round', refined: 'Refined', kept: 'Kept' };
+
+const BASEURL = location.href.replace(/[#?].*$/, '').replace(/[^/]*$/, '');
+const FONTS = '<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@200..800&family=JetBrains+Mono&family=Outfit:wght@300..700&display=swap" rel="stylesheet">';
+function doc(html, o = {}){
+  return `<!doctype html><html><head><meta charset="utf-8"><base href="${BASEURL}">${FONTS}<style>${window.BASE}${window.BTNCSS[o.btn || 'A']}${o.first ? 'body{padding-top:54px}' : ''}</style></head><body>${html}${(o.btn || 'A') === 'C' ? window.BTNJS : '<script>window.BT=()=>{}</' + 'script>'}</body></html>`;
+}
+
+/* What renders in one slot of a flow: a kept section, or an area at its pick (or the option previewed). */
+function slotHTML(slot, flow, act, actL){
+  if (slot[0] === '@') { const [k, arg] = slot.slice(1).split(':'); return { html: window.STATIC[k].html(arg), name: window.STATIC[k].name }; }
+  const a = area(slot); if (!a) return null;
+  const L = slot === act ? actL : letterFor(slot, flow.device === 'phone'), o = a.opts[L];
+  if (flow.device === 'desktop' && a.device === 'phone') return null;
+  if (flow.device === 'phone' && a.device === 'desktop') return null;
+  const fn = flow.device === 'phone' && a.device === 'pair' ? o[3] : o[2];
+  /* An option drawn for desktop only still holds its place in the phone flow, so the page reads in order. */
+  if (!fn) return { html: `<div style="margin:16px;padding:26px 20px;border-radius:14px;border:1.5px dashed #8ba0a9;text-align:center;font:14px Outfit;color:#5d6e75"><b style="display:block;color:#10212b;font-size:15px">${a.name} · ${L} ${a.opts[L][0]}</b>No phone version drawn for this option yet. Pick it and I will build one.</div>`, area: a, L };
+  return { html: fn(), area: a, L };
+}
+
+function flowHTML(fid, act, actL, btn){
+  const f = window.FLOWS[fid];
+  const parts = f.slots.map((slot, i) => { const s = slotHTML(slot, f, act, actL); if (!s) return ''; const live = slot === act; const ai = s.area ? SECTIONS.indexOf(s.area) : -1; return `<div class="fx${live ? ' live' : ''}" data-i="${i}">${live ? `<span class="lv"><i></i>Previewing ${ai + 1}${actL} · ${esc(s.area.opts[actL][0])}</span>` : ''}</div>`; }).join('');
+  return f.device === 'phone'
+    ? `<div class="ux-phone"><div><div class="dev"><div class="scr"><span class="isl"></span><div class="col" id="col">${parts}</div>${f.overlay ? '<iframe class="ov" id="ov" title="Navigation"></iframe>' : ''}</div></div><p class="hint">Scroll inside the phone</p></div></div>`
+    : `<div class="ux-flow" id="flow">${parts}</div>`;
+}
+
+/* Fill each slot's iframe and size it: desktop draws at 1440px and scales, phone draws at 393px. */
+function mountFlow(fid, act, actL, btn){
+  const f = window.FLOWS[fid], phone = f.device === 'phone';
+  let first = true;
+  f.slots.forEach((slot, i) => {
+    const box = document.querySelector(`.fx[data-i="${i}"]`); if (!box) return;
+    const s = slotHTML(slot, f, act, actL);
+    const fr = document.createElement('iframe'); fr.setAttribute('scrolling', 'no'); fr.title = s.name || s.area.name;
+    fr.onload = () => { fit(); setTimeout(fit, 500); setTimeout(fit, 1400); };
+    fr.srcdoc = doc(s.html, { btn, first: phone && first });
+    first = false;
+    box.appendChild(fr);
+  });
+  const ov = document.getElementById('ov');
+  if (ov && f.overlay) { const nl = act === 'nav' ? actL : letterFor('nav', true); ov.srcdoc = doc(area('nav').opts[nl][2](), { btn }); }
+}
+function fit(){
+  document.querySelectorAll('.fx iframe').forEach(fr => {
+    const box = fr.parentNode, d = fr.contentDocument; if (!d || !d.body) return;
+    const phone = !!box.closest('.ux-phone'), W = phone ? 393 : 1440, sc = phone ? 1 : box.clientWidth / W;
+    fr.style.width = W + 'px'; fr.style.height = '10px';
+    const h = Math.max(60, d.documentElement.scrollHeight);
+    fr.style.height = h + 'px'; if (!phone) fr.style.transform = `scale(${sc})`;
+    box.style.height = Math.ceil(h * sc) + 'px';
+  });
+}
+addEventListener('resize', fit);
+addEventListener('message', e => { if (e.data && e.data.fit) { fit(); setTimeout(fit, 300); } });
+function scrollToLive(){
+  const live = document.querySelector('.fx.live'); if (!live) return;
+  const col = document.getElementById('col');
+  if (col && col.contains(live)) col.scrollTop = Math.max(0, live.offsetTop - 20);
+  else { const bar = document.querySelector('.ux-bar'); window.scrollTo({ top: live.getBoundingClientRect().top + scrollY - (bar ? bar.offsetHeight : 0) - 70, behavior: 'instant' }); }
+}
+
+const noteBox = (id, L) => { const i = SECTIONS.findIndex(x => x.id === id); return `<div class="ux-note"><label for="nt">Note on ${i + 1}${L}</label><input id="nt" data-note="${id}${L}" value="${esc(NT[id + L] || '')}" placeholder="Why you like it or don't. Saved as you type." autocomplete="off"><span class="sv">Saved</span></div>`; };
+const flowTabs = (cur, attr) => `<div class="ux-tabs" role="group" aria-label="Pages">${Object.keys(window.FLOWS).map(k => `<button type="button" ${attr}="${k}" aria-pressed="${k === cur}">${window.FLOWS[k].name}</button>`).join('')}</div>`;
+
+function card(s){ const i = SECTIONS.indexOf(s); return `<button class="ux-sc" type="button" data-open="${s.id}"><span class="top2"><span class="meta">Area ${pad(i + 1)} · ${({ phone: 'Phone', pair: 'Desktop + Phone' })[s.device] || 'Desktop'}</span><span class="st${PK[s.id] ? ' on' : ''}">${PK[s.id] ? 'Picked ' + pickLabel(s, i) : 'Not Picked'}</span></span><b class="nm">${s.name}</b><span class="why"><span class="rd ${s.status}">${STATUS[s.status]}</span>${s.where}</span>
+      <ul>${Object.keys(s.opts).map(L => `<li class="${PK[s.id] === L || PKM[s.id] === L ? 'on' : ''}"><span>${L}</span><div>${s.opts[L][0]}${NT[s.id + L] ? `<em>“${esc(NT[s.id + L])}”</em>` : ''}</div></li>`).join('')}</ul><span class="gol">Open Area ${ARW}</span></button>`; }
+function home(){
+  app.className = ''; delete app.dataset.sec;
+  const picked = SECTIONS.filter(s => PK[s.id]).length;
+  const review = SECTIONS.filter(s => s.status !== 'kept' || !PK[s.id]), settled = SECTIONS.filter(s => !review.includes(s));
+  const pnote = k => NT['page:' + k] ? `<em>“${esc(NT['page:' + k])}”</em>` : '<em class="no">No note yet</em>';
+  app.innerHTML = `<div class="ux-home"><div class="hd"><div><span class="logo"><svg viewBox="0 0 30 30" fill="currentColor"><path d="M4 3h6v14c0 4.1 1.8 6.2 5 6.2s5-2.1 5-6.2V3h6v14c0 7.5-4.2 11-11 11S4 24.5 4 17V3Z"/></svg><b>ULIXES</b></span><h1>Round 6, the last three.</h1><p>Picks can now differ by device: on any Desktop + Phone area, switch to Phone and press Pick for Phone. Everything else is settled. This round covers only Calypso Programs on desktop (now on a floating card with the domain ribbon), Programs on the phone, and a polished Lifecycle carousel on the phone. Page notes are still on every full page, and Copy My Picks includes them.</p></div>
+    <div class="acts"><button class="ux-btn" type="button" data-copy>Copy My Picks</button><button class="ux-btn main" type="button" data-full>See Full Pages ${ARW}</button></div></div>
+    <h2 class="ux-h2">Whole pages <span>Open one to read it top to bottom and leave a note on the page</span></h2>
+    <div class="ux-pages">${PAGES.map(k => `<div class="ux-pg"><b>${window.FLOWS[k].name}</b><div class="dv"><button class="ux-btn" type="button" data-full="${k}">Desktop</button><button class="ux-btn" type="button" data-full="${k}-m">Phone</button></div><p><small>DESKTOP</small>${pnote(k)}</p><p><small>PHONE</small>${pnote(k + '-m')}</p></div>`).join('')}</div>
+    <h2 class="ux-h2">To review this round <span>${review.length} areas: new sections, and the ones refined from your notes</span></h2>
+    <div class="ux-grid">${review.map(card).join('')}</div>
+    <h2 class="ux-h2">Settled <span>Picked and unchanged. Open any of them to see it in place.</span></h2>
+    <div class="ux-grid">${settled.map(card).join('')}</div>
+    <p style="max-width:var(--wrap);margin:0 auto;padding:0 var(--gut) 60px;color:var(--mute);font-size:14px">${picked} of ${N} areas picked. Earlier rounds are kept at round-1 to round-5 in this folder.</p></div>`;
+  window.scrollTo(0, 0);
+}
+
+function section(id){
+  const i = SECTIONS.findIndex(s => s.id === id), s = SECTIONS[i], nxt = SECTIONS[i + 1];
+  app.className = 'view'; app.dataset.sec = id;
+  const refs = `<div class="ux-refs">${s.refs.map(r => `<a href="${r[1]}" target="_blank" rel="noopener">${esc(r[0])} ↗</a>`).join('')}</div>`;
+  const dev = s.device === 'pair' ? `<div class="ux-tabs" role="group" aria-label="Device"><button type="button" data-dv="desktop" aria-pressed="${(DV[id] || 'desktop') === 'desktop'}">Desktop</button><button type="button" data-dv="phone" aria-pressed="${DV[id] === 'phone'}">Phone</button></div>` : '';
+  app.innerHTML = `<div class="ux-bar"><div class="in"><button class="ux-back" type="button" data-home>${BACKI}All Areas</button><span class="ux-where"><small>Area ${i + 1} of ${N} · ${s.where}</small><b>${s.name}</b></span>${dev}
+    <div class="ux-seg" role="group" aria-label="Options" id="segL"></div><button class="ux-pick" type="button" data-pick></button>
+    <button class="ux-next" type="button" data-next>${nxt ? `<span>Next: ${nxt.name}</span>` : '<span>Done</span>'}${ARW}</button></div><div id="noteSlot"></div></div>
+    <div class="ux-info"><div class="ux-card"><h3><span>What this round does</span><span class="rd ${s.status}">${STATUS[s.status]}</span></h3><p>${s.issue}</p>${refs}</div><div class="ux-card"><h3>This option</h3><p id="od"></p></div></div><div id="stageSlot"></div>`;
+  setL(letterFor(id, phoneView(s)), true);
+}
+
+const phoneView = s => s.device === 'phone' || (s.device === 'pair' && DV[s.id] === 'phone');
+const curPick = s => phoneView(s) ? pickFor(s.id, true) : PK[s.id];
+function setL(L, first){
+  const id = app.dataset.sec, i = SECTIONS.findIndex(x => x.id === id), s = SECTIONS[i], o = s.opts[L];
+  app.dataset.l = L;
+  document.getElementById('segL').innerHTML = Object.keys(s.opts).map(x => `<button type="button" data-l="${x}" aria-pressed="${x === L}"><b>${x}</b><span class="nm">${s.opts[x][0]}</span>${curPick(s) === x ? '<span class="ok">✓</span>' : ''}</button>`).join('');
+  const p = document.querySelector('[data-pick]'), on = curPick(s) === L; p.dataset.on = on; p.textContent = on ? 'Picked ✓' : (s.device === 'pair' ? (phoneView(s) ? 'Pick for Phone' : 'Pick for Desktop') : 'Pick This One');
+  document.getElementById('noteSlot').innerHTML = noteBox(id, L);
+  document.getElementById('od').innerHTML = `<span class="opt">${i + 1}${L} · ${esc(o[0])}.</span> ${esc(o[1])}`;
+  const fid = s.device === 'pair' && DV[id] === 'phone' ? s.page + '-m' : s.page;
+  const btn = id === 'btn' ? L : letterFor('btn');
+  const slot = document.getElementById('stageSlot'), key = fid + '|' + id;
+  /* Switching options swaps only what changed, in place, so the page keeps its height and your scroll position. */
+  if (!first && slot.dataset.k === key) return refresh(fid, id, L, btn, i, o);
+  slot.dataset.k = key;
+  const spec = s.slotless ? `<div class="ux-flow ux-spec"><div class="fx live" data-spec><span class="lv"><i></i>Previewing ${i + 1}${L} · ${esc(o[0])}</span></div></div><div class="ux-flowname" style="padding:0;margin:0 0 10px"><span>Below: the <b>Home</b> page with this button system applied</span></div>` : '';
+  slot.innerHTML = `<div class="ux-flowname"><span>Shown in the <b>${window.FLOWS[fid].name}</b> page, with your other picks</span><button class="ux-btn" style="height:34px;font-size:13px" type="button" data-full="${fid}">Open the whole page ${ARW}</button></div><div class="ux-stage">${spec}${flowHTML(fid, id, L, btn)}</div>`;
+  if (s.slotless) { const box = document.querySelector('[data-spec]'), fr = document.createElement('iframe'); fr.setAttribute('scrolling', 'no'); fr.onload = () => { fit(); setTimeout(fit, 500); }; fr.srcdoc = doc(o[2](), { btn }); box.appendChild(fr); }
+  mountFlow(fid, id, L, btn);
+  if (first) window.scrollTo(0, 0);
+  if (s.overlay) setTimeout(() => { const c = document.getElementById('col'); if (c) c.scrollTop = 560; }, 1600);
+  else if (!s.slotless) setTimeout(scrollToLive, 1500);
+}
+function refresh(fid, id, L, btn, i, o){
+  const f = window.FLOWS[fid], phone = f.device === 'phone';
+  document.querySelectorAll('.fx.live .lv').forEach(t => t.innerHTML = `<i></i>Previewing ${i + 1}${L} · ${esc(o[0])}`);
+  const spec = document.querySelector('[data-spec] iframe'); if (spec) spec.srcdoc = doc(o[2](), { btn });
+  let firstSeen = false;
+  f.slots.forEach((sl, j) => {
+    const box = document.querySelector(`.fx[data-i="${j}"]`); if (!box) return;
+    const isFirst = !firstSeen; firstSeen = true;
+    if (sl !== id && id !== 'btn') return;
+    const fr = box.querySelector('iframe'), h = slotHTML(sl, f, id, L); if (!fr || !h) return;
+    box.style.minHeight = box.style.height;
+    fr.onload = () => { fit(); setTimeout(fit, 500); setTimeout(() => { fit(); box.style.minHeight = ''; }, 1400); };
+    fr.srcdoc = doc(h.html, { btn, first: phone && isFirst });
+  });
+  const ov = document.getElementById('ov'); if (ov && f.overlay && (id === 'nav' || id === 'btn')) ov.srcdoc = doc(area('nav').opts[id === 'nav' ? L : letterFor('nav')][2](), { btn });
+}
+
+function full(fid){
+  app.className = 'view'; delete app.dataset.sec;
+  if (!window.FLOWS[fid]) fid = 'home';
+  const base = fid.replace(/-m$/, ''), ph = fid.endsWith('-m');
+  const tabs = `<div class="ux-tabs" role="group" aria-label="Pages">${PAGES.map(k => `<button type="button" data-full="${k}${ph ? '-m' : ''}" aria-pressed="${k === base}">${window.FLOWS[k].name}</button>`).join('')}</div><div class="ux-tabs" role="group" aria-label="Device"><button type="button" data-full="${base}" aria-pressed="${!ph}">Desktop</button><button type="button" data-full="${base}-m" aria-pressed="${ph}">Phone</button></div>`;
+  const nk = 'page:' + fid;
+  app.innerHTML = `<div class="ux-bar"><div class="in"><button class="ux-back" type="button" data-home>${BACKI}All Areas</button><span class="ux-where"><small>Full page with your picks · ${ph ? 'Phone' : 'Desktop'}</small><b>${window.FLOWS[fid].name}</b></span>${tabs}<button class="ux-btn" type="button" data-copy style="height:38px">Copy My Picks</button></div><div class="ux-note"><label for="pn">Note on the ${window.FLOWS[fid].name} page (${ph ? 'phone' : 'desktop'})</label><input id="pn" data-note="${nk}" value="${esc(NT[nk] || '')}" placeholder="How the whole page flows: order, spacing, what feels off between sections. Saved as you type." autocomplete="off"><span class="sv">Saved</span></div></div><div style="height:18px"></div><div class="ux-stage">${flowHTML(fid, null, null, letterFor('btn'))}</div>`;
+  mountFlow(fid, null, null, letterFor('btn')); window.scrollTo(0, 0);
+}
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('button,[data-open]'); if (!t) return;
+  if (t.dataset.open) location.hash = '#s/' + t.dataset.open;
+  else if ('home' in t.dataset) location.hash = '#home';
+  else if (t.dataset.full !== undefined) location.hash = '#page/' + (t.dataset.full || 'home');
+  else if (t.dataset.dv) { DV[app.dataset.sec] = t.dataset.dv; section(app.dataset.sec); }
+  else if (t.dataset.l) setL(t.dataset.l);
+  else if ('pick' in t.dataset) { const id = app.dataset.sec, L = app.dataset.l, i = SECTIONS.findIndex(x => x.id === id), s = SECTIONS[i]; if (s.device === 'pair' && phoneView(s)) { PKM[id] = L; if (!PK[id]) PK[id] = L; } else { PK[id] = L; if (s.device === 'pair' && PKM[id] === undefined) {} } save(); say(`Picked ${i + 1}${L} for ${s.name}${s.device === 'pair' ? (phoneView(s) ? ' on phone' : ' on desktop') : ''}. It now shows on every page that uses it.`); setL(L); }
+  else if ('next' in t.dataset) { const i = SECTIONS.findIndex(x => x.id === app.dataset.sec); location.hash = SECTIONS[i + 1] ? '#s/' + SECTIONS[i + 1].id : '#home'; }
+  else if ('copy' in t.dataset) {
+    const txt = SECTIONS.map((s, i) => [PK[s.id] ? `${i + 1}. ${s.name}: picked ${i + 1}${PK[s.id]} ${s.opts[PK[s.id]][0]}${PKM[s.id] && PKM[s.id] !== PK[s.id] && s.opts[PKM[s.id]] ? `, phone ${i + 1}${PKM[s.id]} ${s.opts[PKM[s.id]][0]}` : ''}` : `${i + 1}. ${s.name}: not picked`, ...Object.keys(s.opts).filter(L => (NT[s.id + L] || '').trim()).map(L => `   ${i + 1}${L} ${s.opts[L][0]}: ${NT[s.id + L].trim()}`)].join('\n')).join('\n');
+    const pages = Object.keys(window.FLOWS).filter(k => (NT['page:' + k] || '').trim()).map(k => `   ${window.FLOWS[k].name} (${k.endsWith('-m') ? 'phone' : 'desktop'}): ${NT['page:' + k].trim()}`);
+    const out = 'Ulixes Mockups, Round 6\n' + txt + (pages.length ? '\nPage notes\n' + pages.join('\n') : ''), done = () => say('Copied. Paste it back in chat.');
+    (navigator.clipboard ? navigator.clipboard.writeText(out) : Promise.reject()).then(done).catch(() => { const ta = document.createElement('textarea'); ta.value = out; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); done(); });
+  }
+});
+document.addEventListener('input', e => { const k = e.target.dataset && e.target.dataset.note; if (!k) return; NT[k] = e.target.value; save(); const sv = e.target.parentNode.querySelector('.sv'); sv.classList.add('on'); clearTimeout(sv.t); sv.t = setTimeout(() => sv.classList.remove('on'), 1200); });
+document.addEventListener('keydown', e => { if (location.hash.indexOf('#s/') !== 0 || /input|textarea|select/i.test(e.target.tagName) || e.metaKey || e.ctrlKey || e.altKey) return; const k = e.key.toUpperCase(); const sec = area(app.dataset.sec); if (sec && sec.opts[k]) setL(k); });
+function route(){ const h = location.hash; if (h.indexOf('#s/') === 0 && area(h.slice(3))) section(h.slice(3)); else if (h.indexOf('#page') === 0) full(h.slice(6)); else home(); }
+addEventListener('hashchange', route); route();
+</script>
+</body>
+</html>

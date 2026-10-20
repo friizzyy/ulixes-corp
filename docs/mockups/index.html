@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ulixes Prototype</title>
+<!--
+  Clickable prototype of the approved mockups. Every page is assembled from
+  the picks below, the site's own links move between pages, and the only
+  extra control is the Desktop / Phone switch. The picker that produced
+  these picks is still at Options.html.
+-->
+<style>
+:root{--bg:#f3f1ec;--frame:#d9d6cf}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);font:14px/1.4 Outfit,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body.ph{background:#e6e3dc}
+#desk,#col{opacity:0;transition:opacity .35s ease}#desk.shown,#col.shown{opacity:1}#desk .fx{position:relative;overflow:hidden}iframe{outline:none}iframe:focus,iframe:focus-visible{outline:none}
+#desk .fx iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;display:block}
+#phone{display:none;justify-content:center;padding:28px 16px 90px}
+body.ph #phone{display:flex}body.ph #desk{display:none}
+.dev{width:417px;padding:12px;border-radius:52px;background:#161617;box-shadow:0 0 0 1px #2c2c2e,0 50px 80px -40px rgba(20,20,19,.6)}
+.scr{position:relative;width:393px;height:852px;border-radius:40px;overflow:hidden;background:var(--bg)}
+.col{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.col::-webkit-scrollbar{display:none}
+.col .fx{position:relative;overflow:hidden}
+.col .fx iframe{position:absolute;top:0;left:0;width:393px;border:0;display:block}
+.ov{position:absolute;z-index:5;left:0;right:0;bottom:0;width:393px;height:170px;border:0;background:transparent}
+.isl{position:absolute;z-index:8;top:11px;left:50%;transform:translateX(-50%);width:120px;height:34px;border-radius:20px;background:#000}
+.sw{position:fixed;z-index:100;right:18px;bottom:18px;display:flex;padding:4px;border-radius:12px;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 0 0 1px rgba(20,20,19,.1),0 16px 30px -18px rgba(20,20,19,.5)}
+.sw button{all:unset;cursor:pointer;padding:8px 14px;border-radius:9px;font-size:13px;font-weight:600;color:#5a5750}
+.sw button[aria-pressed="true"]{background:#10212b;color:#faf9f6}
+.sw button:focus-visible{outline:2px solid #10212b;outline-offset:2px}
+</style>
+</head>
+<body>
+<div id="desk"></div>
+<div id="phone"><div class="dev"><div class="scr"><span class="isl"></span><div class="col" id="col"></div><iframe class="ov" id="ov" title="Navigation"></iframe></div></div></div>
+<div class="sw" role="group" aria-label="View"><button type="button" data-v="desk">Desktop</button><button type="button" data-v="ph">Phone</button></div>
+<!--
+  The mockup scripts load one after another, fresh on every visit and with a
+  retry, and the page builds only once all of them have arrived. Loading them
+  in parallel let the browser drop a file now and then, which left the page
+  half on old picks.
+-->
+<script>
+(() => {
+  const FILES = ['base.js', 'areas.js', 'round3-blocks.js', 'round4-blocks.js', 'round5-blocks.js', 'round6-blocks.js', 'round7-blocks.js', 'round8-blocks.js', 'page-services.js', 'page-experience.js', 'page-calypso.js', 'page-contact.js', 'round9-blocks.js'];
+  const load = (f, tries = 3) => new Promise((ok, fail) => { const el = document.createElement('script'); el.src = `${f}?t=${Date.now()}`; el.onload = ok; el.onerror = () => { el.remove(); tries > 1 ? setTimeout(() => load(f, tries - 1).then(ok, fail), 300) : fail(new Error('Could not load ' + f)); }; document.head.appendChild(el); });
+  FILES.reduce((p, f) => p.then(() => load(f)), Promise.resolve()).then(() => { window.READY = true; if (window.BOOT) window.BOOT(); }, e => { document.body.insertAdjacentHTML('afterbegin', `<p style="padding:20px;font:15px Outfit,sans-serif">${e.message}. Refresh to try again.</p>`); });
+})();
+</script>
+<script>
+window.BOOT = () => {
+/* The approved picks (Round 7). PHONE holds the one area picked differently on the phone. */
+const PICKS = { svteaser: 'A', calteaser: 'A', btn: 'B', nav: 'A', mhero: 'B', video: 'A', heads: 'B', rows: 'A', meet: 'A', cta: 'A', close: 'A', svhero: 'A', approach: 'A', exphero: 'A', inst: 'B', 'inst-m': 'A', positions: 'A', acc: 'A', calhero: 'B', blotter: 'A', 'blotter-m': 'A', programs: 'A', 'programs-m': 'B', mandates: 'A', 'mandates-m': 'B', contact: 'B' };
+const PHONE = { approach: 'B' };
+const PAGES = ['home', 'services', 'experience', 'calypso', 'contact'];
+const area = id => AREAS.find(a => a.id === id);
+
+/*
+ * Links inside a section post the page they point to; the parent changes
+ * page. Matching is by label, since the mockups are static HTML.
+ */
+const ROUTER = `<script>
+const R=[[/^(home|ulixes)$/,'home'],[/^(services|view capabilities|review the capabilities|all capabilities|explore( →)?|explore the capabilities)/,'services'],[/^(experience|institutional experience|full experience)/,'experience'],[/(calypso|explore the platform)/,'calypso'],[/^(discuss|start the brief|write to)/,'contact']];
+document.addEventListener('mousedown',e=>{if(e.target.closest('a,.brand'))e.preventDefault()});document.addEventListener('click',e=>{const a=e.target.closest('a,.brand');if(!a)return;if(a.classList.contains('brand')){e.preventDefault();parent.postMessage({go:'home'},'*');return}if(a.dataset.go){e.preventDefault();parent.postMessage({go:a.dataset.go},'*');return}const t=(a.getAttribute('aria-label')||a.querySelector('span[data-t]')?.dataset.t||a.textContent||'').replace(/[↗→←]/g,'').trim().toLowerCase();for(const [re,p] of R)if(re.test(t)){e.preventDefault();parent.postMessage({go:p},'*');return}});
+addEventListener('wheel',e=>{if(document.body.dataset.ov)parent.postMessage({wheel:e.deltaY},'*')},{passive:true});
+</` + `script>`;
+const BTN = window.BTNCSS[PICKS.btn];
+function doc(html, o = {}){
+  return `<!doctype html><html><head><meta charset="utf-8"><base href="${location.href.replace(/[#?].*$/, '').replace(/[^/]*$/, '')}"><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@200..800&family=JetBrains+Mono&family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style>${window.BASE}${BTN}${o.first ? 'body{padding-top:54px}' : ''}a,.brand{cursor:pointer}a,button,[tabindex]{outline:none;-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:2px}nav a,.brand{user-select:none;-webkit-user-select:none}</style></head><body${o.ov ? ' data-ov="1"' : ''}>${html}${PICKS.btn === 'C' ? window.BTNJS : '<script>window.BT=()=>{}</' + 'script>'}${ROUTER}</body></html>`;
+}
+function slot(s, flow, phone){
+  if (s[0] === '@') { const [k, arg] = s.slice(1).split(':'); return window.STATIC[k].html(arg); }
+  const a = area(s); if (!a) return null;
+  if (!phone && a.device === 'phone') return null;
+  if (phone && a.device === 'desktop') return null;
+  if (s === 'cta' && PICKS.close === 'C') return null;
+  const L = (phone && PHONE[s]) || PICKS[s] || Object.keys(a.opts)[0], o = a.opts[L];
+  window.CUR_FLOW = flow;
+  const fn = phone && a.device === 'pair' ? o[3] : o[2];
+  return fn ? fn() : null;
+}
+const DOCK = { home: 'Home', services: 'Services', experience: 'Experience', calypso: 'Calypso' };
+
+/*
+ * Spacing rhythm. Each section draws its own top and bottom padding, so two
+ * neighbours used to stack (110 + 110 = 220px of nothing). Here every section
+ * is measured for the blank space at its edges, and the boundary between two
+ * sections is set to one gap: GAP on desktop and phone, TIGHT where a section
+ * header introduces the content under it. The site header, the first section
+ * and the last are left as drawn. Values are design pixels (1440 / 393 wide).
+ */
+const RHYTHM = { desk: { GAP: 128, TIGHT: 44 }, ph: { GAP: 72, TIGHT: 24 } };
+function edges(d){
+  const H = d.documentElement.scrollHeight; let top = Infinity, bot = -Infinity;
+  d.querySelectorAll('body *').forEach(el => {
+    const cs = d.defaultView.getComputedStyle(el);
+    if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0' || cs.position === 'fixed') return;
+    const r = el.getBoundingClientRect(); if (r.width < 2 || r.height < 2 || r.bottom > H + 1) return;
+    const bg = cs.backgroundColor !== 'rgba(0, 0, 0, 0)' || cs.backgroundImage !== 'none' || parseFloat(cs.borderTopWidth) > 0 || parseFloat(cs.borderBottomWidth) > 0;
+    const leaf = /^(IMG|VIDEO|svg|INPUT|TEXTAREA|SELECT)$/.test(el.tagName) || [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim());
+    if (bg || leaf) { top = Math.min(top, r.top); bot = Math.max(bot, r.bottom); }
+  });
+  return top === Infinity ? { top: 0, bot: 0 } : { top: Math.max(0, Math.round(top)), bot: Math.max(0, Math.round(H - bot)) };
+}
+function fit(){
+  const phone = document.body.classList.contains('ph'), R = RHYTHM[phone ? 'ph' : 'desk'];
+  const frs = [...document.querySelectorAll(phone ? '#col .fx iframe' : '#desk .fx iframe')];
+  const sc = phone ? 1 : innerWidth / 1440;
+  const info = frs.map(fr => {
+    const d = fr.contentDocument; if (!d || !d.body) return null;
+    fr.style.width = (phone ? 393 : 1440) + 'px'; fr.style.height = '10px';
+    const h = d.documentElement.scrollHeight; fr.style.height = h + 'px';
+    if (!fr._e && fr._ready) fr._e = edges(d);
+    return { fr, h, e: fr._e || { top: 0, bot: 0 }, id: fr.title };
+  });
+  info.forEach((x, i) => {
+    if (!x) return;
+    const prev = info[i - 1], next = info[i + 1], head = id => !id || id[0] === '@';
+    /* What this section should keep above and below it. */
+    let wantTop = x.e.top, wantBot = x.e.bot;
+    if (prev && x.e && !head(prev.id) && prev.fr._e && x.fr._e) wantTop = (prev.id === 'heads' ? R.TIGHT : R.GAP) / 2;
+    if (next && x.e && !head(x.id) && next.fr._e && x.fr._e) wantBot = (x.id === 'heads' ? R.TIGHT : R.GAP) / 2;
+    const cutTop = x.fr._e ? x.e.top - wantTop : 0, cutBot = x.fr._e ? x.e.bot - wantBot : 0;
+    x.fr.style.position = 'absolute'; x.fr.style.left = '0';
+    x.fr.style.top = (-cutTop * sc) + 'px';
+    x.fr.style.transform = phone ? '' : `scale(${sc})`;
+    x.fr.parentNode.style.height = Math.max(0, Math.ceil((x.h - cutTop - cutBot) * sc)) + 'px';
+  });
+}
+function render(){
+  const [page, view] = (location.hash.slice(1) || 'home/desk').split('/');
+  const p = PAGES.includes(page) ? page : 'home', phone = view === 'ph';
+  document.body.classList.toggle('ph', phone);
+  document.querySelectorAll('.sw button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === (phone ? 'ph' : 'desk'))));
+  const flow = window.FLOWS[phone ? p + '-m' : p];
+  document.title = `${flow.name} · Ulixes Prototype`;
+  const host = phone ? document.getElementById('col') : document.getElementById('desk');
+  document.getElementById(phone ? 'desk' : 'col').innerHTML = '';
+  host.innerHTML = '';
+  /*
+   * Hold the page hidden until every section has loaded its fonts and been
+   * measured, so the spacing rhythm is in place on the first frame you see
+   * instead of snapping the gaps closed after load.
+   */
+  host.classList.remove('shown');
+  const total = flow.slots.filter(sl => slot(sl, flow, phone)).length;
+  let settled = 0;
+  const reveal = () => { fit(); requestAnimationFrame(() => host.classList.add('shown')); };
+  clearTimeout(window.__rv); window.__rv = setTimeout(reveal, 3000);
+  let first = true;
+  flow.slots.forEach(s => {
+    const html = slot(s, flow, phone); if (!html) return;
+    const box = document.createElement('div'); box.className = 'fx';
+    const fr = document.createElement('iframe'); fr.setAttribute('scrolling', 'no'); fr.title = s;
+    fr.onload = () => {
+      const d = fr.contentDocument, fonts = d && d.fonts ? d.fonts.ready : Promise.resolve();
+      const imgs = d ? [...d.images].filter(i => !i.complete).map(i => new Promise(r => { i.onload = i.onerror = r; })) : [];
+      Promise.all([fonts, ...imgs]).then(() => requestAnimationFrame(() => {
+        fr._ready = true; fr._e = null; fit();
+        if (++settled >= total) { clearTimeout(window.__rv); reveal(); }
+      }));
+    };
+    fr.srcdoc = doc(html, { first: phone && first }); first = false;
+    box.appendChild(fr); host.appendChild(box);
+  });
+  if (phone) {
+    /* The dock marks the page you are on. */
+    const lab = DOCK[p];
+    let nav = area('nav').opts[PICKS.nav][2]();
+    document.getElementById('ov').dataset.on = lab || '';
+    nav = nav.replace('html,body{background:transparent!important}', 'html,body{background:transparent!important;height:170px;overflow:hidden}');
+    document.getElementById('ov').srcdoc = doc(nav, { ov: true });
+    document.getElementById('col').scrollTop = 0;
+  }
+  window.scrollTo(0, 0);
+}
+addEventListener('message', e => {
+  const m = e.data || {};
+  if (m.go) { const v = document.body.classList.contains('ph') ? 'ph' : 'desk'; location.hash = `${m.go}/${v}`; }
+  if (m.wheel) document.getElementById('col').scrollTop += m.wheel;
+  if (m.fit) { fit(); setTimeout(fit, 300); }
+});
+/* The dock's own links: map its labels to pages. */
+document.getElementById('ov').addEventListener('load', () => {
+  const d = document.getElementById('ov').contentDocument; if (!d) return;
+  const on = document.getElementById('ov').dataset.on;
+  d.querySelectorAll('.pill a').forEach(a => a.classList.toggle('on', a.textContent.trim() === on));
+  d.querySelectorAll('.pill a').forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); const k = Object.keys(DOCK).find(x => DOCK[x] === a.textContent.trim()); if (k) location.hash = `${k}/ph`; }, true));
+  const go = d.querySelector('.go'); if (go) go.addEventListener('click', ev => { ev.preventDefault(); location.hash = 'contact/ph'; }, true);
+});
+document.querySelectorAll('.sw button').forEach(b => b.onclick = () => { const p = (location.hash.slice(1) || 'home').split('/')[0] || 'home'; location.hash = `${p}/${b.dataset.v}`; });
+addEventListener('resize', fit);
+addEventListener('hashchange', render);
+render();
+};
+if (window.READY) window.BOOT();
+</script>
+</body>
+</html>
