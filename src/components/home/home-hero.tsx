@@ -39,7 +39,7 @@ export function HomeHero() {
             <SlabButton href={CONTACT_HREF} variant="light" block className={styles.phoneAction}>
               {hero.primaryCta}
             </SlabButton>
-            <TextLink href="/services" className={styles.deskAction}>
+            <TextLink href="/services#capabilities" className={styles.deskAction}>
               {hero.secondaryCta}
             </TextLink>
           </div>

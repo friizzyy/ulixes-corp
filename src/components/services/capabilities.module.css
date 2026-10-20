@@ -265,3 +265,20 @@
     transition: none;
   }
 }
+
+/* The card a link landed on: an ink ring that fades out. */
+.cd[data-landed] {
+  animation: landed 2.4s var(--ease) 0.2s both;
+}
+
+@keyframes landed {
+  from {
+    box-shadow: 0 0 0 1.5px var(--ink), 0 24px 40px -34px rgba(16, 33, 43, 0.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cd[data-landed] {
+    animation: none;
+  }
+}

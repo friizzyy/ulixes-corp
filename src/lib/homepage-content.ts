@@ -109,7 +109,7 @@ export const homepageContent = {
         number: '01',
         title: 'Transformation & architecture',
         scope: 'Modernization · Architecture · Operating model',
-        href: '/services',
+        href: '/services#architecture',
         image: { src: '/media/services/ulixes-services-atrium.jpg', width: 1920, height: 1280 },
       },
       {
@@ -117,7 +117,7 @@ export const homepageContent = {
         number: '02',
         title: 'Accounting & controls',
         scope: 'Accounting · Reconciliation · Controls',
-        href: '/services',
+        href: '/services#accounting',
         image: { src: '/media/experience/ulixes-institutional-hall.jpg', width: 1800, height: 1350 },
       },
       {
@@ -125,7 +125,7 @@ export const homepageContent = {
         number: '03',
         title: 'Trading, risk & post-trade',
         scope: 'Pricing · Collateral · Lifecycle',
-        href: '/services',
+        href: '/services#trading',
         image: { src: '/media/home/ulixes-financial-district-day.webp', width: 1672, height: 941 },
       },
       {
@@ -133,7 +133,7 @@ export const homepageContent = {
         number: '04',
         title: 'Automation & assurance',
         scope: 'Testing · Validation · Readiness',
-        href: '/services',
+        href: '/services#assurance',
         image: { src: '/media/services/ulixes-services-floor.jpg', width: 1920, height: 1280 },
       },
     ] satisfies readonly HomeService[],

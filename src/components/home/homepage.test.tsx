@@ -43,7 +43,7 @@ describe('Homepage', () => {
     )
     expect(within(region).getByRole('link', { name: hero.secondaryCta })).toHaveAttribute(
       'href',
-      '/services',
+      '/services#capabilities',
     )
     expect(within(region).getByRole('img', { name: hero.imageAlt })).toBeInTheDocument()
   })
@@ -103,14 +103,14 @@ describe('Homepage', () => {
     expect(region.querySelectorAll('ul[aria-hidden="true"] li')).toHaveLength(hero.facts.length)
   })
 
-  it('links every service row to the services page and moves the hover photograph', () => {
+  it('links every service row to its card on the services page and moves the hover photograph', () => {
     const { container } = render(<Homepage />)
     const region = section(`${services.headlineLead} ${services.headlineTurn}`)
     const rows = within(region)
       .getAllByRole('link')
       .filter((link) => services.items.some((item) => link.textContent?.includes(item.title)))
     expect(rows).toHaveLength(4)
-    rows.forEach((row) => expect(row).toHaveAttribute('href', '/services'))
+    rows.forEach((row, i) => expect(row).toHaveAttribute('href', `/services#${services.items[i].id}`))
     services.items.forEach((item, i) => {
       expect(rows[i]).toHaveTextContent(item.number)
       expect(rows[i]).toHaveTextContent(item.scope)

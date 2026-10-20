@@ -52,19 +52,49 @@ export function CapabilityRail({ children, titles }: CapabilityRailProps) {
     }
   }, [sync])
 
-  const show = (index: number) => {
+  const show = useCallback((index: number, instant = false) => {
     const rail = railRef.current
     const card = cardsOf(rail)[index]
     if (!rail || !card) return
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
     const left = card.offsetLeft + card.offsetWidth / 2 - rail.clientWidth / 2
     if (typeof rail.scrollTo === 'function') {
-      rail.scrollTo({ left, behavior: reduce ? 'auto' : 'smooth' })
+      rail.scrollTo({ left, behavior: instant || reduce ? 'auto' : 'smooth' })
     } else {
       rail.scrollLeft = left
     }
     setActive(index)
-  }
+  }, [])
+
+  /*
+   * A link to one capability (/services#trading, from the home index or the
+   * hero bar) opens on that card. The page scroll is the browser's; on the
+   * phone this also centres the card in the sideways track, after the
+   * browser has landed, so the two scrolls do not fight.
+   */
+  useEffect(() => {
+    let frame = 0
+    const open = () => {
+      const id = decodeURIComponent(window.location.hash.slice(1))
+      const index = cardsOf(railRef.current).findIndex((card) => card.id === id)
+      if (index < 0) return
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        show(index, true)
+        // A brief ring on the card the reader asked for (desktop shows all four).
+        const card = cardsOf(railRef.current)[index]
+        card.removeAttribute('data-landed')
+        void card.offsetWidth
+        card.setAttribute('data-landed', '')
+      })
+    }
+    open()
+    window.addEventListener('hashchange', open)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('hashchange', open)
+    }
+  }, [show])
 
   return (
     <>
