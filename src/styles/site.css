@@ -1,0 +1,232 @@
+/*
+ * The redesign's shared tokens and global primitives.
+ *
+ * Copied from the base CSS at the top of every file in docs/build-spec. This
+ * file is imported after globals.css and editorial.css and is unlayered, so
+ * these rules win over the Tailwind layers. The class names are the spec's
+ * own (.d, .s, .eb, .m, .wrap, .tl) so a section can be translated straight
+ * from the exported HTML. Components in src/components/site own everything
+ * else (button, brand, header, dock, footer, closing card) in CSS modules.
+ *
+ * Breakpoints (docs/build-spec/README.md):
+ *   phone    <= 767px   (fluid from 320px)
+ *   tablet   768-1099px
+ *   desktop  >= 1100px
+ */
+
+:root {
+  /* Colour */
+  --mineral: #f3f1ec;
+  --light: #faf9f6;
+  --paper: #fffefb;
+  --ink: #10212b;
+  --ink2: #182c37;
+  --graphite: #34434b;
+  --steel: #5d6e75;
+  --plat: #d7dcde;
+  --rule: rgba(16, 33, 43, 0.12);
+  --rule2: rgba(16, 33, 43, 0.2);
+  --dark: #1a1b1d;
+  --dark2: #222327;
+  --drule: rgba(241, 243, 239, 0.14);
+  --mist: #e9eff1;
+  --line: #8ba0a9;
+  --sage: #91a393;
+  --ok: #4f8a5b;
+  /* The slab button's hover sweep. */
+  --ink-sweep: #25404d;
+
+  /* Motion */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Type: next/font variables set on <html> in app/layout.tsx. */
+  --font-display: var(--font-home-display), 'Archivo', system-ui, sans-serif;
+  --font-sans: var(--font-outfit), 'Outfit', system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Layout */
+  --wrap-max: 1312px;
+  --gutter: 64px;
+
+  /*
+   * Rhythm: the visible gap between one section's last content and the next
+   * section's first content. Apply it with <Section> (or the .sec / .sec-head
+   * classes), never with a section's own padding.
+   */
+  --rhythm: 128px;
+  --rhythm-head: 44px;
+
+  /* Safe areas (viewport-fit=cover is set in the root layout). */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  /*
+   * The phone frames in the spec carry a 54px simulated status bar. On a real
+   * phone that space is the top safe area; this is what replaces it, with a
+   * floor for browsers that report no inset. Phone heroes that draw the
+   * brand inside the image offset it by this value.
+   */
+  --phone-top: max(14px, calc(var(--safe-top) + 6px));
+  /* Space the fixed phone dock occupies, for anything that must clear it. */
+  --dock-clearance: calc(110px + var(--safe-bottom));
+}
+
+@media (max-width: 1099px) {
+  :root {
+    --gutter: 40px;
+    --rhythm: 96px;
+    --rhythm-head: 36px;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --gutter: 20px;
+    --rhythm: 72px;
+    --rhythm-head: 24px;
+  }
+}
+
+html,
+body {
+  background: var(--mineral);
+}
+
+body {
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Focus: one ink outline held off the control, keyboard only. */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 2px;
+  box-shadow: none;
+}
+
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ---- Primitives ------------------------------------------------------- */
+
+/* Display: Archivo headline. */
+.d {
+  font-family: var(--font-display);
+  font-weight: 560;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+}
+
+/* The steel second half of a headline. Never italic. */
+.s {
+  font: inherit;
+  letter-spacing: inherit;
+  color: var(--steel);
+}
+
+/* Mono */
+.m {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+/* Eyebrow, with a leading rule. .eb-c centres it and adds the trailing rule. */
+.eb {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1.6;
+  text-transform: uppercase;
+  color: var(--steel);
+}
+
+.eb::before,
+.eb-c::after {
+  content: '';
+  flex: none;
+  width: 26px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.eb-c {
+  justify-content: center;
+  text-align: center;
+}
+
+/* Eyebrow over an image or dark ground. */
+.eb-lt {
+  color: #dfe6e8;
+}
+
+.mute {
+  color: var(--steel);
+}
+
+/* Content wrap: 1312 max / 64px >= 1100, 40px tablet, 20px phone. */
+.wrap {
+  width: 100%;
+  max-width: var(--wrap-max);
+  margin-inline: auto;
+  padding-inline: max(var(--gutter), var(--safe-left)) max(var(--gutter), var(--safe-right));
+}
+
+/* Section rhythm (see <Section>). */
+.sec {
+  padding-top: var(--rhythm);
+}
+
+.sec-head {
+  padding-top: var(--rhythm-head);
+}
+
+/* Text link with a partial underline that runs full on hover. */
+.tl {
+  position: relative;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 600;
+  font-size: 14px;
+  padding-bottom: 4px;
+}
+
+.tl::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 34%;
+  background: currentColor;
+  transition: width 0.5s var(--ease);
+}
+
+@media (hover: hover) {
+  .tl:hover::after {
+    width: 100%;
+  }
+}
+
+.tl:focus-visible::after {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tl::after {
+    transition: none;
+  }
+}

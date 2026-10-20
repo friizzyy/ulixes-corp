@@ -14,7 +14,8 @@
   position: relative;
   z-index: 1;
   overflow: clip;
-  padding: calc(120px + var(--safe-area-top, 0px)) 0 96px;
+  /* The header is in flow (components/site): only the page-head rhythm above. */
+  padding: calc(var(--rhythm-head) + 40px) 0 0;
   background: var(--mineral);
   color: var(--ink);
   font-family: var(--font-outfit), sans-serif;
@@ -308,8 +309,7 @@
  */
 @media (max-width: 895px) {
   .page {
-    padding: calc(clamp(4.9rem, 18vw, 6rem) + var(--safe-area-top, 0px)) 0
-      clamp(3rem, 11vw, 4rem);
+    padding: calc(var(--rhythm-head) + 16px) 0 0;
   }
 
   .shell {

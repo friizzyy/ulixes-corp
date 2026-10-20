@@ -1,0 +1,41 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mark {
+  flex: none;
+  width: 26px;
+  height: 26px;
+}
+
+.name {
+  display: block;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.sub {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--steel);
+  margin-top: 3px;
+}
+
+/* Over an image: white mark and name, pale platinum sub line. */
+.light {
+  color: #fff;
+}
+
+.light .sub {
+  color: #d5dde0;
+}

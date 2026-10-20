@@ -1,0 +1,210 @@
+/* The closing brief card (services/05-cta-desk.html, 04-cta-ph.html). */
+.cd {
+  display: grid;
+  grid-template-columns: 1fr 460px;
+  background: var(--paper);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(16, 33, 43, 0.07), 0 2px 4px rgba(16, 33, 43, 0.05), 0 60px 100px -60px rgba(16, 33, 43, 0.55);
+}
+
+.l {
+  padding: 60px 60px 48px;
+  display: flex;
+  flex-direction: column;
+}
+
+.h {
+  font-size: 58px;
+  margin-top: 22px;
+  color: var(--ink);
+}
+
+.h :global(.s) {
+  display: block;
+}
+
+.p {
+  color: var(--graphite);
+  margin-top: 18px;
+  max-width: 42ch;
+  font-size: 16px;
+}
+
+.who {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 26px;
+  border-top: 1px solid var(--rule);
+}
+
+
+.who > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.portrait {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.whoName {
+  display: block;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.whoRole {
+  font-size: 12.5px;
+  color: var(--steel);
+}
+
+.r {
+  background: var(--mist);
+  padding: 48px 44px;
+}
+
+.r h3 {
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--steel);
+  margin-bottom: 8px;
+}
+
+.ck {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ck li {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 4px;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(16, 33, 43, 0.1);
+}
+
+.nu {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--rule2);
+}
+
+.ck b {
+  display: block;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.ck li span:not(.nu) {
+  font-size: 13px;
+  color: var(--steel);
+}
+
+.action {
+  margin-top: 28px;
+}
+
+.em {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--steel);
+  text-align: center;
+}
+
+.em a {
+  text-decoration: underline;
+  text-decoration-color: var(--rule2);
+  text-underline-offset: 3px;
+  transition: color 0.3s, text-decoration-color 0.3s;
+}
+
+@media (hover: hover) {
+  .em a:hover {
+    color: var(--ink);
+    text-decoration-color: currentColor;
+  }
+}
+
+/* Tablet: the two halves stack; the headline scales. */
+@media (max-width: 1099px) {
+  .cd {
+    grid-template-columns: 1fr;
+  }
+
+  .l {
+    padding: 48px 44px 40px;
+  }
+
+  .h {
+    font-size: clamp(40px, 5.6vw, 58px);
+  }
+
+  .who {
+    margin-top: 32px;
+  }
+}
+
+/* Phone: the card holds a 14px gutter; the portrait row follows the copy. */
+@media (max-width: 767px) {
+  :global(.wrap).wrap {
+    padding-inline: max(14px, var(--safe-left)) max(14px, var(--safe-right));
+  }
+
+  .cd {
+    box-shadow: 0 0 0 1px var(--rule), 0 30px 50px -36px rgba(16, 33, 43, 0.5);
+  }
+
+  .l {
+    padding: 26px 22px 20px;
+  }
+
+  .h {
+    font-size: clamp(28px, 8.2vw, 32px);
+    margin-top: 14px;
+  }
+
+  .p {
+    margin-top: 12px;
+    font-size: 15px;
+  }
+
+  .who {
+    margin-top: 18px;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .r {
+    padding: 20px 22px 24px;
+  }
+
+  .r h3 {
+    letter-spacing: 0.16em;
+    margin-bottom: 6px;
+  }
+
+  .action {
+    margin-top: 18px;
+  }
+
+  .em {
+    display: none;
+  }
+}

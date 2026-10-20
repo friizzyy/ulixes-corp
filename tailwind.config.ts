@@ -47,7 +47,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        display: ['var(--font-serif)', 'Georgia', 'Times New Roman', 'serif'],
+        display: ['var(--font-home-display)', 'Archivo', 'system-ui', 'sans-serif'],
         sans: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-jetbrains)', 'monospace'],
       },

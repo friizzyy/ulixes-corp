@@ -121,7 +121,7 @@ describe('legal mobile reading surface', () => {
     )
 
     expect(phoneRules).toMatch(
-      /\.page\s*\{[^}]*padding:\s*calc\(clamp\([^;]*5\.5rem[^;]*6\.5rem[^;]*\)\s*\+\s*var\(--safe-area-top,\s*0px\)\)\s+0\s+clamp\([^;]*3\.5rem[^;]*4\.5rem[^;]*\)/,
+      /\.page\s*\{[^}]*padding:\s*calc\(var\(--rhythm-head\)\s*\+\s*16px\)\s+0\s+0/,
     )
     expect(phoneRules).toMatch(
       /\.title\s*\{[^}]*font-size:\s*clamp\([^;]*2\.375rem[^;]*2\.625rem[^;]*\)/,
@@ -137,14 +137,19 @@ describe('legal mobile reading surface', () => {
     )
   })
 
-  it('adds the top safe-area inset to the base route offset', () => {
+  /*
+   * The site header is in flow now and carries the top safe-area inset
+   * itself, so the page only adds the page-head rhythm, and the footer
+   * supplies the gap below.
+   */
+  it('offsets the page by the page-head rhythm under the in-flow header', () => {
     const baseRules = legalStylesheet.slice(
       legalStylesheet.indexOf('.page {'),
       legalStylesheet.indexOf('.page::after'),
     )
 
     expect(baseRules).toMatch(
-      /padding:\s*calc\(120px\s*\+\s*var\(--safe-area-top,\s*0px\)\)\s+0\s+96px/,
+      /padding:\s*calc\(var\(--rhythm-head\)\s*\+\s*40px\)\s+0\s+0/,
     )
   })
 })
