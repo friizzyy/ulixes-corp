@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8"><base href="http://localhost:4180/"><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@200..800&family=JetBrains+Mono&family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style>
+:root{--mineral:#f3f1ec;--light:#faf9f6;--paper:#fffefb;--ink:#10212b;--ink2:#182c37;--graphite:#34434b;--steel:#5d6e75;--plat:#d7dcde;--rule:rgba(16,33,43,.12);--rule2:rgba(16,33,43,.2);--dark:#1a1b1d;--dark2:#222327;--drule:rgba(241,243,239,.14);--mist:#e9eff1;--line:#8ba0a9;--sage:#91a393;--clay:#ad9884;--ok:#4f8a5b;--ease:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--mineral)}
+body{color:var(--ink);font:15px/1.6 Outfit,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none;cursor:pointer}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.d{font-family:Archivo,sans-serif;font-weight:560;letter-spacing:-.045em;line-height:1.02}
+/* The serif italic turn is gone: the second half of a headline now turns by tone, not by script. */
+.s{font:inherit;letter-spacing:inherit;color:var(--steel)}
+.m{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.02em}
+.eb{display:flex;align-items:center;gap:12px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--steel)}
+.eb:before{content:'';width:26px;height:1px;background:currentColor;opacity:.6}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;box-shadow:inset 0 0 0 1px var(--rule2);color:var(--graphite)}
+.chip i{width:6px;height:6px;border-radius:50%;background:var(--ink)}
+.tag{display:inline-flex;padding:5px 11px;border-radius:999px;font-size:12px;box-shadow:inset 0 0 0 1px var(--rule2);color:var(--graphite)}
+.wrap{max-width:1312px;margin:0 auto;padding:0 64px}
+.mute{color:var(--steel)}
+.brand{display:flex;align-items:center;gap:10px}.brand svg{width:26px;height:26px}
+.brand b{display:block;font-size:13px;letter-spacing:.2em;font-weight:700;line-height:1}.brand small{display:block;font-size:9px;letter-spacing:.24em;font-weight:600;color:var(--steel);margin-top:3px}
+.tl{position:relative;display:inline-flex;gap:8px;align-items:center;font-weight:600;font-size:14px;padding-bottom:4px}
+.tl:after{content:'';position:absolute;left:0;bottom:0;height:1px;width:34%;background:currentColor;transition:width .5s var(--ease)}
+.tl:hover:after{width:100%}
+
+.btn{position:relative;display:inline-flex;align-items:stretch;height:54px;border-radius:3px;background:var(--ink);color:var(--light);font-weight:600;font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;overflow:hidden;isolation:isolate;box-shadow:0 18px 30px -24px rgba(16,33,43,.9)}
+.btn:before{content:'';position:absolute;inset:0;z-index:-1;background:#25404d;transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease)}
+.btn:hover:before{transform:none}
+.btn span{display:flex;align-items:center;padding:0 24px}
+.btn i{display:grid;place-items:center;width:54px;border-left:1px solid rgba(255,255,255,.16);font-style:normal;font-size:15px;transition:transform .6s var(--ease)}
+.btn:hover i{transform:translateX(3px)}
+.btn.lt{background:var(--light);color:var(--ink)}.btn.lt:before{background:var(--mist)}.btn.lt i{border-color:var(--rule2)}
+.btn.gh{background:transparent;color:inherit;box-shadow:inset 0 0 0 1px currentColor}.btn.gh:before{background:rgba(127,140,146,.14)}.btn.gh i{border-color:currentColor}
+a,.brand{cursor:pointer}a,button,[tabindex]{outline:none;-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:2px}nav a,.brand{user-select:none;-webkit-user-select:none}</style></head><body><style>.hdr{display:flex;justify-content:space-between;align-items:center;padding:18px 32px;position:relative;z-index:5}.hdr nav{display:flex;gap:36px;font-size:13.5px;font-weight:500;color:var(--steel)}.hdr nav a{position:relative;padding:8px 0;outline:none;transition:color .3s}.hdr nav a:hover{color:var(--ink)}.hdr nav a:after{content:'';position:absolute;left:0;right:0;bottom:2px;height:1.5px;border-radius:2px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}.hdr nav a:hover:after{transform:scaleX(.35)}.hdr nav a.on{color:var(--ink)}.hdr nav a.on:after{transform:none}.hdr.dk{color:#fff}.hdr.dk nav{color:#d7e0e3}.hdr.dk nav a:hover,.hdr.dk nav a.on{color:#fff}</style><header class="hdr"><span class="brand"><svg viewBox="0 0 30 30" fill="currentColor"><path d="M4 3h6v14c0 4.1 1.8 6.2 5 6.2s5-2.1 5-6.2V3h6v14c0 7.5-4.2 11-11 11S4 24.5 4 17V3Z"/></svg><span><b>ULIXES</b><small>CORPORATION</small></span></span><nav><a class="">Services</a><a class="">Experience</a><a class="">Nasdaq Calypso</a></nav><a class="btn"><span>Discuss a mandate</span><i>↗</i></a></header><script>window.BT=()=>{}</script><script>
+const R=[[/^(home|ulixes)$/,'home'],[/^(services|view capabilities|review the capabilities|all capabilities|explore( →)?|explore the capabilities)/,'services'],[/^(experience|institutional experience|full experience)/,'experience'],[/(calypso|explore the platform)/,'calypso'],[/^(discuss|start the brief|write to)/,'contact']];
+document.addEventListener('mousedown',e=>{if(e.target.closest('a,.brand'))e.preventDefault()});document.addEventListener('click',e=>{const a=e.target.closest('a,.brand');if(!a)return;if(a.classList.contains('brand')){e.preventDefault();parent.postMessage({go:'home'},'*');return}if(a.dataset.go){e.preventDefault();parent.postMessage({go:a.dataset.go},'*');return}const t=(a.getAttribute('aria-label')||a.querySelector('span[data-t]')?.dataset.t||a.textContent||'').replace(/[↗→←]/g,'').trim().toLowerCase();for(const [re,p] of R)if(re.test(t)){e.preventDefault();parent.postMessage({go:p},'*');return}});
+addEventListener('wheel',e=>{if(document.body.dataset.ov)parent.postMessage({wheel:e.deltaY},'*')},{passive:true});
+</script></body></html>

@@ -1,0 +1,115 @@
+<!doctype html><html><head><meta charset="utf-8"><base href="http://localhost:4180/"><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@200..800&family=JetBrains+Mono&family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style>
+:root{--mineral:#f3f1ec;--light:#faf9f6;--paper:#fffefb;--ink:#10212b;--ink2:#182c37;--graphite:#34434b;--steel:#5d6e75;--plat:#d7dcde;--rule:rgba(16,33,43,.12);--rule2:rgba(16,33,43,.2);--dark:#1a1b1d;--dark2:#222327;--drule:rgba(241,243,239,.14);--mist:#e9eff1;--line:#8ba0a9;--sage:#91a393;--clay:#ad9884;--ok:#4f8a5b;--ease:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--mineral)}
+body{color:var(--ink);font:15px/1.6 Outfit,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none;cursor:pointer}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.d{font-family:Archivo,sans-serif;font-weight:560;letter-spacing:-.045em;line-height:1.02}
+/* The serif italic turn is gone: the second half of a headline now turns by tone, not by script. */
+.s{font:inherit;letter-spacing:inherit;color:var(--steel)}
+.m{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.02em}
+.eb{display:flex;align-items:center;gap:12px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--steel)}
+.eb:before{content:'';width:26px;height:1px;background:currentColor;opacity:.6}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;box-shadow:inset 0 0 0 1px var(--rule2);color:var(--graphite)}
+.chip i{width:6px;height:6px;border-radius:50%;background:var(--ink)}
+.tag{display:inline-flex;padding:5px 11px;border-radius:999px;font-size:12px;box-shadow:inset 0 0 0 1px var(--rule2);color:var(--graphite)}
+.wrap{max-width:1312px;margin:0 auto;padding:0 64px}
+.mute{color:var(--steel)}
+.brand{display:flex;align-items:center;gap:10px}.brand svg{width:26px;height:26px}
+.brand b{display:block;font-size:13px;letter-spacing:.2em;font-weight:700;line-height:1}.brand small{display:block;font-size:9px;letter-spacing:.24em;font-weight:600;color:var(--steel);margin-top:3px}
+.tl{position:relative;display:inline-flex;gap:8px;align-items:center;font-weight:600;font-size:14px;padding-bottom:4px}
+.tl:after{content:'';position:absolute;left:0;bottom:0;height:1px;width:34%;background:currentColor;transition:width .5s var(--ease)}
+.tl:hover:after{width:100%}
+
+.btn{position:relative;display:inline-flex;align-items:stretch;height:54px;border-radius:3px;background:var(--ink);color:var(--light);font-weight:600;font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;overflow:hidden;isolation:isolate;box-shadow:0 18px 30px -24px rgba(16,33,43,.9)}
+.btn:before{content:'';position:absolute;inset:0;z-index:-1;background:#25404d;transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease)}
+.btn:hover:before{transform:none}
+.btn span{display:flex;align-items:center;padding:0 24px}
+.btn i{display:grid;place-items:center;width:54px;border-left:1px solid rgba(255,255,255,.16);font-style:normal;font-size:15px;transition:transform .6s var(--ease)}
+.btn:hover i{transform:translateX(3px)}
+.btn.lt{background:var(--light);color:var(--ink)}.btn.lt:before{background:var(--mist)}.btn.lt i{border-color:var(--rule2)}
+.btn.gh{background:transparent;color:inherit;box-shadow:inset 0 0 0 1px currentColor}.btn.gh:before{background:rgba(127,140,146,.14)}.btn.gh i{border-color:currentColor}
+body{padding-top:54px}a,.brand{cursor:pointer}a,button,[tabindex]{outline:none;-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:2px}nav a,.brand{user-select:none;-webkit-user-select:none}</style></head><body><style>
+.c{padding:36px 20px 44px}
+.g{display:grid;grid-template-columns:1fr;gap:28px;align-items:start}
+h1{font-size:36px;margin-top:14px}h1 span{display:block}
+.l{color:var(--graphite);margin-top:14px;max-width:40ch;font-size:15px}
+.who{display:flex;align-items:center;gap:14px;margin-top:22px;padding-top:20px;border-top:1px solid var(--rule)}
+.who img{width:48px;height:48px;border-radius:50%;object-fit:cover;object-position:50% 20%}
+.who b{display:block;font-size:14.5px;font-weight:600}.who span{display:block;font-size:13px;color:var(--steel);line-height:1.45}
+.dl{margin-top:0}.dl div{display:grid;grid-template-columns:92px 1fr;align-items:center;min-height:52px;border-bottom:1px solid var(--rule)}.dl div:first-child{border-top:1px solid var(--rule)}
+.dl dt{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--steel)}
+.dl dd{font-size:15px;color:var(--ink)}.dl a{display:inline-flex;align-items:center;gap:8px;font-weight:500}.dl a i{font-style:normal;font-size:12px;color:var(--steel);transition:transform .5s var(--ease),color .3s}.dl a:hover i{transform:translate(2px,-2px);color:var(--ink)}
+.alt{margin-top:30px}.alt .k{font-size:12.5px;color:var(--steel);margin-bottom:12px}
+.cd{background:var(--paper);border-radius:14px;box-shadow:0 0 0 1px var(--rule),0 40px 70px -50px rgba(16,33,43,.55);padding:24px 20px 22px}
+.pr{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;list-style:none}
+.pr button{display:block;width:100%;text-align:left;font-size:11.5px;font-weight:600;color:var(--steel);padding:0 0 4px;cursor:default;white-space:nowrap}
+.pr button:before{content:'';display:block;height:2px;background:var(--plat);margin-bottom:10px;transition:background .45s var(--ease)}
+.pr button b{font-family:'JetBrains Mono',monospace;font-weight:400;font-size:10.5px;margin-right:5px;letter-spacing:.04em}
+.pr button.on{color:var(--ink)}.pr button.on:before{background:var(--ink)}.pr button.dn{cursor:pointer}.pr button.dn:hover{color:var(--ink)}
+.stk{display:grid;margin-top:26px}
+.st{grid-area:1/1;visibility:hidden;opacity:0;transform:translateY(6px);transition:opacity .4s var(--ease),transform .5s var(--ease),visibility 0s .4s}
+.st.on{visibility:visible;opacity:1;transform:none;transition:opacity .45s var(--ease) .05s,transform .55s var(--ease) .05s}
+.st h3{font-family:Archivo,sans-serif;font-size:24px;font-weight:560;letter-spacing:-.04em;line-height:1.1;outline:none}
+.st p.h{color:var(--steel);margin-top:8px;font-size:14px;line-height:1.5}
+.fs{display:flex;flex-wrap:wrap;gap:18px;margin-top:22px}.f{flex:1 1 100%;min-width:0}.f.hf{flex:1 1 100%}
+.f label,.gl{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;font-weight:600;color:var(--ink);letter-spacing:.01em}
+.f label em{font-style:normal;font-weight:400;font-size:12px;color:var(--steel)}
+.f input,.f textarea{display:block;width:100%;margin-top:8px;padding:14px 14px;border-radius:6px;border:0;background:#fff;box-shadow:inset 0 0 0 1px var(--rule2);font:inherit;font-size:16px;line-height:1.4;color:var(--ink);outline:none;resize:none;transition:box-shadow .25s}
+.f input{height:52px}
+.f input::placeholder,.f textarea::placeholder{color:#93a1a7}
+.f input:hover,.f textarea:hover{box-shadow:inset 0 0 0 1px rgba(16,33,43,.34)}
+.f input:focus,.f textarea:focus{box-shadow:inset 0 0 0 1.5px var(--ink),0 0 0 4px rgba(16,33,43,.07)}
+.seg{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin-top:8px;background:var(--rule2);border-radius:6px;overflow:hidden;box-shadow:0 0 0 1px var(--rule2)}
+.seg button{display:flex;align-items:center;gap:10px;height:50px;padding:0 14px;background:#fff;font-size:14.5px;text-align:left;transition:background .3s,color .3s}
+.seg button b{font-family:'JetBrains Mono',monospace;font-weight:400;font-size:10.5px;color:#93a1a7;transition:color .3s}
+.seg button:hover{background:var(--light)}
+.seg button[aria-checked=true]{background:var(--ink);color:var(--light)}.seg button[aria-checked=true] b{color:#8ba0a9}
+.seg button:focus-visible{outline:2px solid var(--ink);outline-offset:-4px;border-radius:4px}
+.seg button[aria-checked=true]:focus-visible{outline-color:var(--light)}
+.ft{display:flex;flex-direction:column;gap:6px;margin-top:26px;padding-top:0;}
+.ft .btn{width:100%;justify-content:space-between}
+#bk{font-size:14px;font-weight:600;color:var(--steel);transition:color .3s;align-self:center;padding:12px 16px}#bk:hover{color:var(--ink)}#bk[hidden]{display:none}
+.ft .nt{font-size:12.5px;color:var(--steel)}
+.dn-s .ok{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ok)}
+.dn-s .ok:before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.dn-s h3{margin-top:14px}
+.nx{list-style:none;margin-top:20px;border-top:1px solid var(--rule)}
+.nx li{display:grid;grid-template-columns:30px 1fr;padding:13px 0;border-bottom:1px solid var(--rule);font-size:14.5px;color:var(--graphite);line-height:1.5}
+.nx li b{font-family:'JetBrains Mono',monospace;font-weight:400;font-size:10.5px;color:var(--steel);padding-top:3px}
+.again{display:inline-block;margin-top:18px;font-size:14px;font-weight:600;color:var(--steel)}.again:hover{color:var(--ink)}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+body{padding-top:0!important}
+.hh{position:relative;height:500px;color:#fff;overflow:hidden}.hh>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hh:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,33,43,.45),transparent 22%,rgba(16,33,43,.35) 45%,rgba(16,33,43,.95) 88%)}
+.hh .top{position:relative;z-index:2;padding:58px 20px 0}.hh .tx{position:absolute;z-index:2;left:20px;right:20px;bottom:92px}
+.hh .eb{color:#dfe6e8}.hh h1{font-size:40px;line-height:1.02;margin-top:14px;color:#fff}.hh h1 .s{display:block;color:#c9d6db}.hh .l{margin-top:14px;font-size:15px;line-height:1.5;color:#e6ecee;max-width:32ch}
+.c{padding:0 14px 44px!important;position:relative;z-index:3}.g>div:first-child{display:none}.cd{margin-top:-64px;border-radius:18px!important;box-shadow:0 0 0 1px var(--rule),0 40px 70px -40px rgba(16,33,43,.6)!important}
+.to{display:grid;grid-template-columns:auto 40px 1fr;align-items:center;gap:12px;padding-bottom:18px;margin-bottom:22px;border-bottom:1px solid var(--rule)}
+.to .k{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--steel);padding-right:2px}
+.to img{width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:50% 20%}.to b{display:block;font-size:14.5px;font-weight:600}.to span{display:block;font-size:12.5px;color:var(--steel);margin-top:1px}
+.alt{padding:0 6px}</style><section class="hh"><img src="img/ulixes-san-francisco-blue-hour.webp" alt=""><div class="top"><span class="brand" style="color:#fff"><svg viewBox="0 0 30 30" fill="currentColor"><path d="M4 3h6v14c0 4.1 1.8 6.2 5 6.2s5-2.1 5-6.2V3h6v14c0 7.5-4.2 11-11 11S4 24.5 4 17V3Z"/></svg><span><b>ULIXES</b><small style="color:#d5dde0">CORPORATION</small></span></span></div><div class="tx"><p class="eb">Discuss a mandate</p><h1 class="d">Three questions. <span class="s">One conversation.</span></h1><p class="l">For decisions where product, risk, operations and reporting meet.</p></div></section><section class="c"><div class=""><div class="g"><div><p class="eb">Discuss a mandate</p><h1 class="d">Three questions. <span class="s">One conversation.</span></h1><p class="l">For decisions where product, risk, operations and reporting meet.</p><div class="who"><img src="img/ulysses-williams.jpg" alt="Ulysses Williams"><div><b>Ulysses Williams</b><span>President. Reads every inquiry and replies himself.</span></div></div></div><div class="cd"><div class="to"><span class="k">To</span><img src="img/ulysses-williams.jpg" alt=""><div><b>Ulysses Williams</b><span>President · reads every inquiry himself</span></div></div><ol class="pr" aria-label="Inquiry steps"><li><button type="button" class="on" data-i="0" tabindex="-1"><b>01</b>You</button></li><li><button type="button" class="" data-i="1" tabindex="-1"><b>02</b>Platform</button></li><li><button type="button" class="" data-i="2" tabindex="-1"><b>03</b>Decision</button></li></ol><p class="vh" aria-live="polite" id="lv">Step 1 of 3</p><div class="stk">
+<div class="st on" data-i="0"><h3 tabindex="-1">Who is asking?</h3><p class="h">So Ulysses knows who he is replying to.</p><div class="fs"><div class="f hf"><label for="n">Name</label><input id="n" type="text" placeholder="Full name" autocomplete="name"></div><div class="f hf"><label for="o">Institution</label><input id="o" type="text" placeholder="Bank, fund or firm" autocomplete="organization"></div><div class="f"><label for="e">Work email</label><input id="e" type="email" placeholder="you@institution.com" autocomplete="email"></div></div></div>
+<div class="st" data-i="1"><h3 tabindex="-1">Where does it sit?</h3><p class="h">The delivery stage, and the platform as it stands today.</p><div class="fs"><div class="f"><p class="gl" id="sg">Delivery stage</p><div class="seg" role="radiogroup" aria-labelledby="sg"><button type="button" role="radio" aria-checked="true" tabindex="0"><b>01</b>Design</button><button type="button" role="radio" aria-checked="false" tabindex="-1"><b>02</b>Build</button><button type="button" role="radio" aria-checked="false" tabindex="-1"><b>03</b>Migration</button><button type="button" role="radio" aria-checked="false" tabindex="-1"><b>04</b>Testing</button><button type="button" role="radio" aria-checked="false" tabindex="-1"><b>05</b>Go-live</button><button type="button" role="radio" aria-checked="false" tabindex="-1"><b>06</b>Post go-live</button></div></div><div class="f"><label for="p">Platform today</label><input id="p" type="text" placeholder="For example, front to back"></div></div></div>
+<div class="st" data-i="2"><h3 tabindex="-1">What needs deciding?</h3><p class="h">One or two sentences is enough. Detail can wait for the call.</p><div class="fs"><div class="f"><label for="d">The decision</label><textarea id="d" rows="4" placeholder="The decision that needs senior attention."></textarea></div><div class="f"><label for="w">By when<em>Optional</em></label><input id="w" type="text" placeholder="A date, a release or a quarter"></div></div></div>
+<div class="st dn-s" data-i="3"><p class="ok">Inquiry sent</p><h3 tabindex="-1" id="ty">Thank you.</h3><p class="h">It has gone to Ulysses directly.</p><ol class="nx"><li><b>01</b>He reads it himself, usually within one business day.</li><li><b>02</b>He replies from admin@ulixescorp.com, with a time to talk.</li><li><b>03</b>A first conversation about the decision, not a pitch.</li></ol><a class="again" id="ag">Start a new inquiry</a></div></div><div class="ft"><a class="btn" id="go"><span>Continue</span><i>→</i></a><a id="bk" hidden>← Back</a></div></div></div></div></section><script>
+(()=>{const $=q=>document.querySelector(q),S=[...document.querySelectorAll('.st')],P=[...document.querySelectorAll('.pr button')],go=$('#go'),bk=$('#bk'),ft=$('.ft'),sp=go.querySelector('span');let s=0;
+const fit=()=>parent.postMessage({fit:1},'*');
+const set=(n,focus)=>{s=n;S.forEach((x,i)=>{x.classList.toggle('on',i===s);x.inert=i!==s});P.forEach((x,i)=>{x.classList.toggle('on',i<=s);x.classList.toggle('dn',i<s&&s<3);x.tabIndex=i<s&&s<3?0:-1});
+bk.hidden=!s||s>2;ft.style.display=s>2?'none':'';const t=s===2?'Send inquiry':'Continue';sp.dataset.t?(sp.dataset.t=t):(sp.textContent=t);go.querySelector('i').textContent=s===2?'↗':'→';
+$('#lv').textContent=s>2?'Inquiry sent':'Step '+(s+1)+' of 3';if(focus)S[s].querySelector('h3').focus({preventScroll:true});fit();};
+go.onclick=e=>{e.preventDefault();if(s===2){const n=($('#n').value||'').trim().split(' ')[0];$('#ty').textContent=n?'Thank you, '+n+'.':'Thank you.';}if(s<3)set(s+1,1)};
+bk.onclick=e=>{e.preventDefault();if(s>0)set(s-1,1)};
+$('#ag').onclick=e=>{e.preventDefault();document.querySelectorAll('input,textarea').forEach(x=>x.value='');set(0,1)};
+P.forEach(p=>p.onclick=()=>{const i=+p.dataset.i;if(i<s&&s<3)set(i,1)});
+document.querySelectorAll('.st input').forEach(x=>x.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go.click()}}));
+const R=[...document.querySelectorAll('.seg button')];const pick=b=>{R.forEach(x=>{const on=x===b;x.setAttribute('aria-checked',on);x.tabIndex=on?0:-1})};
+R.forEach((b,i)=>{b.onclick=()=>pick(b);b.onkeydown=e=>{const k={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key];if(k){e.preventDefault();const n=R[(i+k+R.length)%R.length];pick(n);n.focus()}}});
+set(0);})();
+</script><script>window.BT=()=>{}</script><script>
+const R=[[/^(home|ulixes)$/,'home'],[/^(services|view capabilities|review the capabilities|all capabilities|explore( →)?|explore the capabilities)/,'services'],[/^(experience|institutional experience|full experience)/,'experience'],[/(calypso|explore the platform)/,'calypso'],[/^(discuss|start the brief|write to)/,'contact']];
+document.addEventListener('mousedown',e=>{if(e.target.closest('a,.brand'))e.preventDefault()});document.addEventListener('click',e=>{const a=e.target.closest('a,.brand');if(!a)return;if(a.classList.contains('brand')){e.preventDefault();parent.postMessage({go:'home'},'*');return}if(a.dataset.go){e.preventDefault();parent.postMessage({go:a.dataset.go},'*');return}const t=(a.getAttribute('aria-label')||a.querySelector('span[data-t]')?.dataset.t||a.textContent||'').replace(/[↗→←]/g,'').trim().toLowerCase();for(const [re,p] of R)if(re.test(t)){e.preventDefault();parent.postMessage({go:p},'*');return}});
+addEventListener('wheel',e=>{if(document.body.dataset.ov)parent.postMessage({wheel:e.deltaY},'*')},{passive:true});
+</script></body></html>

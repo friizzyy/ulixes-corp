@@ -1,0 +1,48 @@
+<!doctype html><html><head><meta charset="utf-8"><base href="http://localhost:4180/"><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@200..800&family=JetBrains+Mono&family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style>
+:root{--mineral:#f3f1ec;--light:#faf9f6;--paper:#fffefb;--ink:#10212b;--ink2:#182c37;--graphite:#34434b;--steel:#5d6e75;--plat:#d7dcde;--rule:rgba(16,33,43,.12);--rule2:rgba(16,33,43,.2);--dark:#1a1b1d;--dark2:#222327;--drule:rgba(241,243,239,.14);--mist:#e9eff1;--line:#8ba0a9;--sage:#91a393;--clay:#ad9884;--ok:#4f8a5b;--ease:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--mineral)}
+body{color:var(--ink);font:15px/1.6 Outfit,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none;cursor:pointer}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.d{font-family:Archivo,sans-serif;font-weight:560;letter-spacing:-.045em;line-height:1.02}
+/* The serif italic turn is gone: the second half of a headline now turns by tone, not by script. */
+.s{font:inherit;letter-spacing:inherit;color:var(--steel)}
+.m{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.02em}
+.eb{display:flex;align-items:center;gap:12px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--steel)}
+.eb:before{content:'';width:26px;height:1px;background:currentColor;opacity:.6}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;box-shadow:inset 0 0 0 1px var(--rule2);color:var(--graphite)}
+.chip i{width:6px;height:6px;border-radius:50%;background:var(--ink)}
+.tag{display:inline-flex;padding:5px 11px;border-radius:999px;font-size:12px;box-shadow:inset 0 0 0 1px var(--rule2);color:var(--graphite)}
+.wrap{max-width:1312px;margin:0 auto;padding:0 64px}
+.mute{color:var(--steel)}
+.brand{display:flex;align-items:center;gap:10px}.brand svg{width:26px;height:26px}
+.brand b{display:block;font-size:13px;letter-spacing:.2em;font-weight:700;line-height:1}.brand small{display:block;font-size:9px;letter-spacing:.24em;font-weight:600;color:var(--steel);margin-top:3px}
+.tl{position:relative;display:inline-flex;gap:8px;align-items:center;font-weight:600;font-size:14px;padding-bottom:4px}
+.tl:after{content:'';position:absolute;left:0;bottom:0;height:1px;width:34%;background:currentColor;transition:width .5s var(--ease)}
+.tl:hover:after{width:100%}
+
+.btn{position:relative;display:inline-flex;align-items:stretch;height:54px;border-radius:3px;background:var(--ink);color:var(--light);font-weight:600;font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;overflow:hidden;isolation:isolate;box-shadow:0 18px 30px -24px rgba(16,33,43,.9)}
+.btn:before{content:'';position:absolute;inset:0;z-index:-1;background:#25404d;transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease)}
+.btn:hover:before{transform:none}
+.btn span{display:flex;align-items:center;padding:0 24px}
+.btn i{display:grid;place-items:center;width:54px;border-left:1px solid rgba(255,255,255,.16);font-style:normal;font-size:15px;transition:transform .6s var(--ease)}
+.btn:hover i{transform:translateX(3px)}
+.btn.lt{background:var(--light);color:var(--ink)}.btn.lt:before{background:var(--mist)}.btn.lt i{border-color:var(--rule2)}
+.btn.gh{background:transparent;color:inherit;box-shadow:inset 0 0 0 1px currentColor}.btn.gh:before{background:rgba(127,140,146,.14)}.btn.gh i{border-color:currentColor}
+a,.brand{cursor:pointer}a,button,[tabindex]{outline:none;-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:2px}nav a,.brand{user-select:none;-webkit-user-select:none}</style></head><body><style>.p{padding:40px 20px 36px;}.p h2{font-size:31px;margin-top:12px}.p h2 .s{display:block}.p .l{color:var(--graphite);margin-top:12px;font-size:15px}.p .l{text-wrap:pretty}
+.pl{list-style:none;margin-top:30px;padding:6px 22px 24px 18px;background:var(--paper);border-radius:18px;box-shadow:0 0 0 1px var(--rule),0 30px 50px -36px rgba(16,33,43,.5)}
+.pl li{position:relative;display:grid;grid-template-columns:34px 1fr}
+.pl li:before{content:'';position:absolute;left:7px;top:31px;width:9px;height:9px;border-radius:50%;background:var(--ink);z-index:1;box-shadow:0 0 0 5px var(--paper)}
+.pl li:not(.end):after{content:'';position:absolute;left:11px;top:36px;bottom:-34px;width:1px;background:var(--rule2)}
+.pl li>div{grid-column:2;padding:20px 0 22px;border-bottom:1px solid var(--rule)}
+.pl .n{display:block;font-family:Archivo;font-weight:250;font-size:30px;letter-spacing:-.06em;line-height:1;color:var(--line)}
+.pl b{display:block;font-family:Archivo;font-size:20px;font-weight:550;letter-spacing:-.04em;line-height:1.15;margin-top:12px}
+.pl p{font-size:14.5px;line-height:1.6;color:var(--graphite);margin-top:8px;text-wrap:pretty}
+.pl .end:before{top:26px;background:var(--paper);box-shadow:inset 0 0 0 2px var(--ink),0 0 0 5px var(--paper)}
+.pl .end>div{padding:21px 0 0;border:0;font-size:10.5px;font-weight:700;letter-spacing:.16em;color:var(--ink)}.p>.eb{justify-content:center}.p>.eb:after{content:'';width:26px;height:1px;background:currentColor;opacity:.6}.p>h2{text-align:center;margin-left:auto;margin-right:auto}.p>.l{text-align:center;margin-left:auto;margin-right:auto}</style><section class="p"><p class="eb">Engagement approach</p><h2 class="d">Go-live is <span class="s">not success.</span></h2><p class="l">Success is the first close, the first regulatory submission, and the first exception handled by the people who now own the system.</p><ol class="pl"><li><div><span class="n">01</span><b>Architecture definition</b><p>Accounting treatment, capital impact, and regulatory requirements are defined before vendors or platforms enter the conversation.</p></div></li><li><div><span class="n">02</span><b>Lifecycle mapping</b><p>Every instrument type is mapped through its full lifecycle, identifying where accounting, risk, and capital intersect.</p></div></li><li><div><span class="n">03</span><b>Validation design</b><p>Validation is designed against edges and stress scenarios rather than happy-path processing.</p></div></li><li><div><span class="n">04</span><b>Control transfer</b><p>Documentation is written for successors rather than for project sign-off, building internal capability instead of dependency.</p></div></li><li class="end"><div>FIRST CLOSE</div></li></ol></section><script>window.BT=()=>{}</script><script>
+const R=[[/^(home|ulixes)$/,'home'],[/^(services|view capabilities|review the capabilities|all capabilities|explore( →)?|explore the capabilities)/,'services'],[/^(experience|institutional experience|full experience)/,'experience'],[/(calypso|explore the platform)/,'calypso'],[/^(discuss|start the brief|write to)/,'contact']];
+document.addEventListener('mousedown',e=>{if(e.target.closest('a,.brand'))e.preventDefault()});document.addEventListener('click',e=>{const a=e.target.closest('a,.brand');if(!a)return;if(a.classList.contains('brand')){e.preventDefault();parent.postMessage({go:'home'},'*');return}if(a.dataset.go){e.preventDefault();parent.postMessage({go:a.dataset.go},'*');return}const t=(a.getAttribute('aria-label')||a.querySelector('span[data-t]')?.dataset.t||a.textContent||'').replace(/[↗→←]/g,'').trim().toLowerCase();for(const [re,p] of R)if(re.test(t)){e.preventDefault();parent.postMessage({go:p},'*');return}});
+addEventListener('wheel',e=>{if(document.body.dataset.ov)parent.postMessage({wheel:e.deltaY},'*')},{passive:true});
+</script></body></html>
